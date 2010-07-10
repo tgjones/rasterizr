@@ -1,0 +1,21 @@
+﻿<navigation:Page x:Class="Apollo.Examples.SoftwareRasterizer.Views.Texturing.Texturing" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+	xmlns:local="clr-namespace:Apollo.Examples.SoftwareRasterizer.Controls"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
+    Title="Texturing" 
+    Style="{StaticResource PageStyle}" Loaded="Page_Loaded">
+
+	<Grid x:Name="LayoutRoot">
+		<ScrollViewer x:Name="PageScrollViewer" Style="{StaticResource PageScrollViewerStyle}">
+			<StackPanel x:Name="ContentStackPanel" HorizontalAlignment="Left">
+				<TextBlock x:Name="HeaderText" Style="{StaticResource HeaderTextStyle}" 
+									 Text="Texturing"/>
+				<Image Name="ImageViewport1" Width="500" Height="300" Margin="0,0,0,5" />
+				<Image Name="ImageViewport2" Width="500" Height="300" />
+			</StackPanel>
+		</ScrollViewer>
+	</Grid>
+</navigation:Page>

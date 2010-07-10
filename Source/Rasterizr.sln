@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr", "Rasterizr\Rasterizr.csproj", "{DEB98B3D-FCDD-4936-B242-CE9301D95BF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Silverlight", "Rasterizr.Silverlight\Rasterizr.Silverlight.csproj", "{7AC5E69A-BD82-4EF9-A062-D6693F4BCBE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nexus", "Nexus", "{7B94ECC6-F764-43DE-9489-B88401B92C35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus", "..\..\Nexus\Source\Nexus\Nexus.csproj", "{0E5E31FF-D903-40BD-A787-7DA4E1D30138}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.Silverlight", "..\..\Nexus\Source\Nexus.Silverlight\Nexus.Silverlight.csproj", "{6345C30B-B140-4F73-B037-227F73B44BDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Platform.WindowsSilverlightShared", "Rasterizr.Platform.WindowsSilverlightShared\Rasterizr.Platform.WindowsSilverlightShared.csproj", "{D6EB36A6-51B1-42B2-8AA9-A352D6AB6BBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.SilverlightExamples", "Rasterizr.SilverlightExamples\Rasterizr.SilverlightExamples.csproj", "{E3A48E37-7BE0-4E13-807D-A8753A7A4AD3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEB98B3D-FCDD-4936-B242-CE9301D95BF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEB98B3D-FCDD-4936-B242-CE9301D95BF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEB98B3D-FCDD-4936-B242-CE9301D95BF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEB98B3D-FCDD-4936-B242-CE9301D95BF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AC5E69A-BD82-4EF9-A062-D6693F4BCBE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AC5E69A-BD82-4EF9-A062-D6693F4BCBE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AC5E69A-BD82-4EF9-A062-D6693F4BCBE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AC5E69A-BD82-4EF9-A062-D6693F4BCBE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E5E31FF-D903-40BD-A787-7DA4E1D30138}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E5E31FF-D903-40BD-A787-7DA4E1D30138}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E5E31FF-D903-40BD-A787-7DA4E1D30138}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E5E31FF-D903-40BD-A787-7DA4E1D30138}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6345C30B-B140-4F73-B037-227F73B44BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6345C30B-B140-4F73-B037-227F73B44BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6345C30B-B140-4F73-B037-227F73B44BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6345C30B-B140-4F73-B037-227F73B44BDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6EB36A6-51B1-42B2-8AA9-A352D6AB6BBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6EB36A6-51B1-42B2-8AA9-A352D6AB6BBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6EB36A6-51B1-42B2-8AA9-A352D6AB6BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6EB36A6-51B1-42B2-8AA9-A352D6AB6BBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3A48E37-7BE0-4E13-807D-A8753A7A4AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3A48E37-7BE0-4E13-807D-A8753A7A4AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3A48E37-7BE0-4E13-807D-A8753A7A4AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3A48E37-7BE0-4E13-807D-A8753A7A4AD3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0E5E31FF-D903-40BD-A787-7DA4E1D30138} = {7B94ECC6-F764-43DE-9489-B88401B92C35}
+		{6345C30B-B140-4F73-B037-227F73B44BDD} = {7B94ECC6-F764-43DE-9489-B88401B92C35}
+	EndGlobalSection
+EndGlobal
