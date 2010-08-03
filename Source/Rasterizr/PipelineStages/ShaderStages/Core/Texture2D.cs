@@ -1,20 +1,33 @@
 using System;
+using System.Windows;
+using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using Nexus;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core
+namespace Rasterizr.PipelineStages.ShaderStages.Core
 {
 	public class Texture2D
 	{
-		private ITextureImage _textureSource;
+		private readonly ITextureImage _textureSource;
 		private TextureMipMapLevel[] _levels;
-		private int _xBound, _yBound;
+		private readonly int _xBound;
+		private readonly int _yBound;
 
-		public Texture2D(ITextureImage textureSource)
+		public Texture2D(string uriResource)
 		{
+#if SILVERLIGHT
+			StreamResourceInfo imageStream = Application.GetResourceStream(new Uri(uriResource, UriKind.Relative));
+			BitmapImage bitmapImage = new BitmapImage();
+			bitmapImage.SetSource(imageStream.Stream);
+#else
+			BitmapImage bitmapImage = new BitmapImage(new Uri(uriResource));
+#endif
+
+			BitmapTextureImage2D textureSource = new BitmapTextureImage2D(bitmapImage);
 			_textureSource = textureSource;
 
 			if (textureSource.Dimensions != 2)
-				throw new ArgumentOutOfRangeException("textureSource", "Texture source for Texture2D must have 2 dimensions");
+				throw new ArgumentOutOfRangeException("uriResource", "Texture source for Texture2D must have 2 dimensions");
 
 			_xBound = textureSource.GetBound(0);
 			_yBound = textureSource.GetBound(1);

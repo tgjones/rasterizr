@@ -1,4 +1,4 @@
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes
+namespace Rasterizr.VertexAttributes
 {
 	public interface IVertexAttributeValue
 	{

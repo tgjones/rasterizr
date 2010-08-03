@@ -1,6 +1,6 @@
 using Nexus;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core
+namespace Rasterizr.PipelineStages.ShaderStages.Core
 {
 	public class SamplerState
 	{
@@ -18,5 +18,15 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineSta
 		/// In conjunction with the MinFilter, there are 4 combinations of filters.
 		/// </summary>
 		public TextureMipMapFilter MipFilter { get; set; }
+
+		public SamplerState()
+		{
+			AddressU = TextureAddressMode.Wrap;
+			AddressV = TextureAddressMode.Wrap;
+			BorderColor = ColorsF.White;
+			MagFilter = TextureFilter.Bilinear;
+			MinFilter = TextureFilter.Bilinear;
+			MipFilter = TextureMipMapFilter.Linear;
+		}
 	}
 }

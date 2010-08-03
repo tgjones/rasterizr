@@ -1,19 +1,19 @@
 using System.Collections.Generic;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader;
 using Nexus;
+using Rasterizr.PipelineStages.ShaderStages.VertexShader;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PerspectiveDivide
+namespace Rasterizr.PipelineStages.PerspectiveDivide
 {
 	public class PerspectiveDivideStage : PipelineStageBase<VertexShaderOutput, ScreenSpaceVertex>
 	{
 		public int ScreenWidth { get; set; }
 		public int ScreenHeight { get; set; }
 
-		public PerspectiveDivideStage()
+		public PerspectiveDivideStage(Viewport3D viewport)
 		{
 			// TODO: Remove this
-			ScreenWidth = 500;
-			ScreenHeight = 300;
+			ScreenWidth = viewport.Width;
+			ScreenHeight = viewport.Height;
 		}
 
 		public override void Process(IList<VertexShaderOutput> inputs, IList<ScreenSpaceVertex> outputs)

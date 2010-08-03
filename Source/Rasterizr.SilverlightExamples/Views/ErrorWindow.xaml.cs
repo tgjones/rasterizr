@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Apollo.Examples.SoftwareRasterizer
+namespace Rasterizr.SilverlightExamples.Views
 {
 	public partial class ErrorWindow : ChildWindow
 	{

@@ -1,18 +1,27 @@
 using System;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup;
+using Rasterizr.PipelineStages.TriangleSetup;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.Rasterizer
+namespace Rasterizr.PipelineStages.Rasterizer
 {
 	/// <summary>
 	/// A potential pixel.
 	/// </summary>
-	public struct Fragment
+	public class Fragment
 	{
 		public int X;
 		public int Y;
 		public float W; // Debugging only
 
-		public InterpolatedVertexAttribute[] Attributes;
+		public InterpolatedVertexAttributeCollection Attributes;
+
+		public Fragment(int x, int y)
+		{
+			X = x;
+			Y = y;
+			Attributes = new InterpolatedVertexAttributeCollection(RenderPipeline.MaxVertexAttributes);
+			for (int i = 0; i < RenderPipeline.MaxVertexAttributes; ++i)
+				Attributes.Add(new InterpolatedVertexAttribute());
+		}
 
 		public override string ToString()
 		{

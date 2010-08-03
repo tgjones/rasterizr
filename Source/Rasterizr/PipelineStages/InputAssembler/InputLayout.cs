@@ -1,4 +1,4 @@
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.InputAssembler
+namespace Rasterizr.PipelineStages.InputAssembler
 {
 	public class InputLayout
 	{

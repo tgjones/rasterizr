@@ -1,6 +1,6 @@
 using System;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core
+namespace Rasterizr.PipelineStages.ShaderStages.Core
 {
 	[AttributeUsage(AttributeTargets.Field)]
 	public class SemanticAttribute : Attribute

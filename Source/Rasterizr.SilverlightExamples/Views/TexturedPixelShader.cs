@@ -1,8 +1,8 @@
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PixelShader;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core;
 using Nexus;
+using Rasterizr.PipelineStages.ShaderStages.Core;
+using Rasterizr.PipelineStages.ShaderStages.PixelShader;
 
-namespace Apollo.Examples.SoftwareRasterizer.Views
+namespace Rasterizr.SilverlightExamples.Views
 {
 	public struct TexturedPixelShaderInput
 	{

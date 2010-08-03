@@ -1,7 +1,7 @@
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes;
 using Nexus;
+using Rasterizr.VertexAttributes;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PerspectiveDivide
+namespace Rasterizr.PipelineStages.PerspectiveDivide
 {
 	public struct ScreenSpaceVertex
 	{

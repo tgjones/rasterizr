@@ -19,10 +19,10 @@
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>Apollo.Examples.SoftwareRasterizer.xap</XapFilename>
+    <XapFilename>Rasterizr.SilverlightExamples.xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
-    <SilverlightAppEntry>Apollo.Examples.SoftwareRasterizer.App</SilverlightAppEntry>
-    <TestPageFileName>Apollo.Examples.SoftwareRasterizerTestPage.html</TestPageFileName>
+    <SilverlightAppEntry>Rasterizr.SilverlightExamples.App</SilverlightAppEntry>
+    <TestPageFileName>Rasterizr.SilverlightExamplesTestPage.html</TestPageFileName>
     <CreateTestPage>true</CreateTestPage>
     <ValidateXaml>true</ValidateXaml>
     <EnableOutOfBrowser>false</EnableOutOfBrowser>
@@ -152,15 +152,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Koala.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\TestTexture.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\TinyCheckerboard.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Assets\Koala.jpg" />
+    <Resource Include="Assets\TestTexture.png" />
+    <Resource Include="Assets\TinyCheckerboard.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

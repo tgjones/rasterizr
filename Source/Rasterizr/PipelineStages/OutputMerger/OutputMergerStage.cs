@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PixelShader;
+using Rasterizr.PipelineStages.ShaderStages.PixelShader;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.OutputMerger
+namespace Rasterizr.PipelineStages.OutputMerger
 {
 	public class OutputMergerStage
 	{

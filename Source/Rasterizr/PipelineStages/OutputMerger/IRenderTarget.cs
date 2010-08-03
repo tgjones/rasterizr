@@ -1,6 +1,6 @@
 using Nexus;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.OutputMerger
+namespace Rasterizr.PipelineStages.OutputMerger
 {
 	public interface IRenderTarget
 	{

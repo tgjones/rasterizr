@@ -1,11 +1,17 @@
 using Nexus;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PixelShader
+namespace Rasterizr.PipelineStages.ShaderStages.PixelShader
 {
-	public struct Pixel
+	public class Pixel
 	{
 		public int X;
 		public int Y;
 		public Color Color;
+
+		public Pixel(int x, int y)
+		{
+			X = x;
+			Y = y;
+		}
 	}
 }

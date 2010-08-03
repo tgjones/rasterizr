@@ -1,7 +1,7 @@
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.Rasterizer;
 using Nexus;
+using Rasterizr.PipelineStages.Rasterizer;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PixelShader
+namespace Rasterizr.PipelineStages.ShaderStages.PixelShader
 {
 	public interface IPixelShader
 	{

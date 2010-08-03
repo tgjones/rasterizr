@@ -1,4 +1,4 @@
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.GeometryShader
+namespace Rasterizr.PipelineStages.ShaderStages.GeometryShader
 {
 	public struct Triangle<TGeometryShaderInput>
 	{

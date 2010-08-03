@@ -5,17 +5,16 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Apollo.Graphics.Rendering;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PerspectiveDivide;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.Rasterizer;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes;
 using Nexus;
+using Rasterizr.PipelineStages.PerspectiveDivide;
+using Rasterizr.PipelineStages.Rasterizer;
+using Rasterizr.PipelineStages.ShaderStages.VertexShader;
+using Rasterizr.PipelineStages.TriangleSetup;
+using Rasterizr.VertexAttributes;
 using Color = Nexus.Color;
 using Colors = System.Windows.Media.Colors;
 
-namespace Apollo.Examples.SoftwareRasterizer.Views
+namespace Rasterizr.SilverlightExamples.Views
 {
 	public partial class Scanlines : Page
 	{
@@ -180,7 +179,7 @@ namespace Apollo.Examples.SoftwareRasterizer.Views
 				CreateVertexShaderOutput(viewport, view, projection, wvp, v3, -20, ColorsF.Red, out actualPoints[2])
 			};
 
-			PerspectiveDivideStage perspectiveDivideStage = new PerspectiveDivideStage
+			PerspectiveDivideStage perspectiveDivideStage = new PerspectiveDivideStage(new Viewport3D())
 			{
 				ScreenWidth = ScreenGrid1.NumColumns,
 				ScreenHeight = ScreenGrid1.NumRows
@@ -247,7 +246,7 @@ namespace Apollo.Examples.SoftwareRasterizer.Views
 			}
 			scanlineTooltip += Environment.NewLine;
 
-			RasterizerStage rasterizerStage = new RasterizerStage();
+			RasterizerStage rasterizerStage = new RasterizerStage(new Viewport3D());
 			List<Fragment> fragments = new List<Fragment>();
 			rasterizerStage.ProcessScanline(triangle, scanline, fragments);
 			//ScreenGrid.SetPixel(scanline.XStart, scanline.Y, BlueBrush, scanlineToolip);

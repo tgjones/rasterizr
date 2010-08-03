@@ -1,6 +1,6 @@
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.VertexAttributes;
+using Rasterizr.VertexAttributes;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.InputAssembler
+namespace Rasterizr.PipelineStages.InputAssembler
 {
 	public class InputElementDescription
 	{

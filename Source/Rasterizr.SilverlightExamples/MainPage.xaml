@@ -1,5 +1,5 @@
-﻿<UserControl
-    x:Class="Apollo.Examples.SoftwareRasterizer.MainPage"
+<UserControl
+    x:Class="Rasterizr.SilverlightExamples.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation" 

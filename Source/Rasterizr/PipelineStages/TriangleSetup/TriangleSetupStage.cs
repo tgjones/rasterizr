@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PerspectiveDivide;
+using Rasterizr.PipelineStages.PerspectiveDivide;
+using Rasterizr.VertexAttributes;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup
+namespace Rasterizr.PipelineStages.TriangleSetup
 {
 	public class TriangleSetupStage : PipelineStageBase<ScreenSpaceVertex, Triangle>
 	{
@@ -20,7 +20,7 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineSta
 		/// <param name="outputs"></param>
 		public override void Process(IList<ScreenSpaceVertex> inputs, IList<Triangle> outputs)
 		{
-			// This will ultimately depend on the Input Assembler primitive type -
+			// TODO: This will ultimately depend on the Input Assembler primitive topology -
 			// triangle list, triangle strip, etc.
 			for (int i = 0; i < inputs.Count; i += 3)
 			{
@@ -44,8 +44,8 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineSta
 			triangle = new Triangle();
 			triangleSetupInfo = new TriangleSetupInfo { Gradients = new TriangleGradients(vertices) };
 			triangle.DOneOverWdX = triangleSetupInfo.Gradients.DOneOverWdX;
-			triangle.VertexAttributeXStepValues = new VertexShader.VertexAttributes.IVertexAttributeValue[triangleSetupInfo.Gradients.VertexAttributeStepValues.Length];
-			triangle.VertexAttributeYStepValues = new VertexShader.VertexAttributes.IVertexAttributeValue[triangleSetupInfo.Gradients.VertexAttributeStepValues.Length];
+			triangle.VertexAttributeXStepValues = new IVertexAttributeValue[triangleSetupInfo.Gradients.VertexAttributeStepValues.Length];
+			triangle.VertexAttributeYStepValues = new IVertexAttributeValue[triangleSetupInfo.Gradients.VertexAttributeStepValues.Length];
 			for (int i = 0; i < triangleSetupInfo.Gradients.VertexAttributeStepValues.Length; ++i)
 			{
 				triangle.VertexAttributeXStepValues[i] = triangleSetupInfo.Gradients.VertexAttributeStepValues[i].XStep;

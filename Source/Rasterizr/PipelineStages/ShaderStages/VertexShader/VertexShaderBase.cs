@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.ShaderCore;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.VertexAttributes;
+using Rasterizr.VertexAttributes;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader
+namespace Rasterizr.PipelineStages.ShaderStages.VertexShader
 {
 	public abstract class VertexShaderBase<TVertexShaderInput, TVertexShaderOutput> : ShaderBase, IVertexShader
 		where TVertexShaderInput : new()

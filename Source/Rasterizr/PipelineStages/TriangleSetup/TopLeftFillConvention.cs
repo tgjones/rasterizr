@@ -1,6 +1,6 @@
 using System;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup
+namespace Rasterizr.PipelineStages.TriangleSetup
 {
 	public class TopLeftFillConvention : IFillConvention
 	{

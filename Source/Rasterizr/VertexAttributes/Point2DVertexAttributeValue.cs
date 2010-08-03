@@ -1,6 +1,6 @@
 using Nexus;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes
+namespace Rasterizr.VertexAttributes
 {
 	public struct Point2DVertexAttributeValue : IVertexAttributeValue
 	{

@@ -9,7 +9,7 @@
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rasterizr.Silverlight</RootNamespace>
+    <RootNamespace>Rasterizr</RootNamespace>
     <AssemblyName>Rasterizr.Silverlight</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -55,12 +55,6 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Rasterizr.Platform.WindowsSilverlightShared\BitmapTextureImage2D.cs">
-      <Link>Platform\BitmapTextureImage2D.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr.Platform.WindowsSilverlightShared\WriteableBitmapWrapper.cs">
-      <Link>Platform\WriteableBitmapWrapper.cs</Link>
-    </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\InputAssembler\InputAssemblerStage.cs">
       <Link>PipelineStages\InputAssembler\InputAssemblerStage.cs</Link>
     </Compile>
@@ -93,6 +87,21 @@
     </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\RasterizerStage.cs">
       <Link>PipelineStages\Rasterizer\RasterizerStage.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\BasicEffect.cs">
+      <Link>PipelineStages\ShaderStages\Core\BasicEffect.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\BitmapTextureImage2D.cs">
+      <Link>PipelineStages\ShaderStages\Core\BitmapTextureImage2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\Effect.cs">
+      <Link>PipelineStages\ShaderStages\Core\Effect.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\EffectPass.cs">
+      <Link>PipelineStages\ShaderStages\Core\EffectPass.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\EffectTechnique.cs">
+      <Link>PipelineStages\ShaderStages\Core\EffectTechnique.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\ITextureImage.cs">
       <Link>PipelineStages\ShaderStages\Core\ITextureImage.cs</Link>
@@ -175,6 +184,9 @@
     <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\InterpolatedVertexAttribute.cs">
       <Link>PipelineStages\TriangleSetup\InterpolatedVertexAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\InterpolatedVertexAttributeCollection.cs">
+      <Link>PipelineStages\TriangleSetup\InterpolatedVertexAttributeCollection.cs</Link>
+    </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\InterpolatedVertexAttributes.cs">
       <Link>PipelineStages\TriangleSetup\InterpolatedVertexAttributes.cs</Link>
     </Compile>
@@ -205,11 +217,17 @@
     <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\VertexGradients.cs">
       <Link>PipelineStages\TriangleSetup\VertexGradients.cs</Link>
     </Compile>
+    <Compile Include="..\Rasterizr\RasterizrDevice.cs">
+      <Link>RasterizrDevice.cs</Link>
+    </Compile>
     <Compile Include="..\Rasterizr\RenderPipeline.cs">
       <Link>RenderPipeline.cs</Link>
     </Compile>
-    <Compile Include="..\Rasterizr\SoftwareRasterizer.cs">
-      <Link>SoftwareRasterizer.cs</Link>
+    <Compile Include="..\Rasterizr\Util\PartiallyActiveCollection.cs">
+      <Link>Util\PartiallyActiveCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\Util\WriteableBitmapWrapper.cs">
+      <Link>Util\WriteableBitmapWrapper.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\VertexAttributes\ColorFVertexAttributeValue.cs">
       <Link>VertexAttributes\ColorFVertexAttributeValue.cs</Link>
@@ -232,6 +250,9 @@
     <Compile Include="..\Rasterizr\VertexAttributes\Point4DVertexAttributeValue.cs">
       <Link>VertexAttributes\Point4DVertexAttributeValue.cs</Link>
     </Compile>
+    <Compile Include="..\Rasterizr\VertexAttributes\Vector3DVertexAttributeValue.cs">
+      <Link>VertexAttributes\Vector3DVertexAttributeValue.cs</Link>
+    </Compile>
     <Compile Include="..\Rasterizr\VertexAttributes\VertexAttribute.cs">
       <Link>VertexAttributes\VertexAttribute.cs</Link>
     </Compile>
@@ -243,6 +264,15 @@
     </Compile>
     <Compile Include="..\Rasterizr\VertexAttributes\VertexAttributeValueUtility.cs">
       <Link>VertexAttributes\VertexAttributeValueUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\VertexPositionColor.cs">
+      <Link>VertexPositionColor.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\VertexPositionColorTexture.cs">
+      <Link>VertexPositionColorTexture.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\VertexPositionNormalTexture.cs">
+      <Link>VertexPositionNormalTexture.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\Viewport3D.cs">
       <Link>Viewport3D.cs</Link>

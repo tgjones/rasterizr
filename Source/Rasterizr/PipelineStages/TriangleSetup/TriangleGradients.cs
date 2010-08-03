@@ -1,7 +1,7 @@
 using System;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PerspectiveDivide;
+using Rasterizr.PipelineStages.PerspectiveDivide;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup
+namespace Rasterizr.PipelineStages.TriangleSetup
 {
 	public struct TriangleGradients
 	{

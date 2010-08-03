@@ -1,6 +1,4 @@
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core;
-
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.ShaderCore
+namespace Rasterizr.PipelineStages.ShaderStages
 {
 	public abstract class ShaderBase
 	{

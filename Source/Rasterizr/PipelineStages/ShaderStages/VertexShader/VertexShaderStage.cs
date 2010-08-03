@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader
+namespace Rasterizr.PipelineStages.ShaderStages.VertexShader
 {
 	/// <summary>
 	/// Applies a vertex program to the input vertices. The vertex program

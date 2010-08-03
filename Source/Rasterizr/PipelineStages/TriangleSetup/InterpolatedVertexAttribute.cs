@@ -1,7 +1,7 @@
 using System;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes;
+using Rasterizr.VertexAttributes;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup
+namespace Rasterizr.PipelineStages.TriangleSetup
 {
 	public struct InterpolatedVertexAttribute
 	{

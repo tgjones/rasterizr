@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.Rasterizer;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.ShaderCore;
 using Nexus;
+using Rasterizr.PipelineStages.Rasterizer;
+using Rasterizr.PipelineStages.ShaderStages.Core;
+using Rasterizr.PipelineStages.TriangleSetup;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PixelShader
+namespace Rasterizr.PipelineStages.ShaderStages.PixelShader
 {
 	public abstract class PixelShaderBase<TPixelShaderInput> : ShaderBase, IPixelShader
 		where TPixelShaderInput : new()
@@ -16,6 +15,9 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineSta
 		/// The presence of this field means the PixelShaderBase class is not thread-safe.
 		/// </summary>
 		private readonly Dictionary<SamplerState, TextureCoordinatePartialDifferentials> _partialDifferentials = new Dictionary<SamplerState,TextureCoordinatePartialDifferentials>();
+
+		private readonly Dictionary<string, SemanticAttribute> _semanticAttributes = new Dictionary<string, SemanticAttribute>();
+		private readonly Dictionary<string, FieldInfo> _fieldInfos = new Dictionary<string, FieldInfo>();
 
 		public abstract Color Execute(TPixelShaderInput pixelShaderInput);
 
@@ -36,11 +38,10 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineSta
 			object wrapper = typedInput;
 			foreach (InterpolatedVertexAttribute vertexAttribute in fragment.Attributes)
 			{
-				FieldInfo fieldInfo = typeof(TPixelShaderInput).GetField(vertexAttribute.Name);
-				SemanticAttribute[] semanticAttributes = (SemanticAttribute[]) fieldInfo.GetCustomAttributes(typeof(SemanticAttribute), false);
-				if (semanticAttributes != null && semanticAttributes.Length > 0)
+				FieldInfo fieldInfo = GetFieldInfo(vertexAttribute.Name);
+				SemanticAttribute semanticAttribute = GetSemanticAttribute(fieldInfo, vertexAttribute.Name);
+				if (semanticAttribute != null)
 				{
-					SemanticAttribute semanticAttribute = semanticAttributes[0];
 					SamplerState samplerState = (SamplerState) GetType().GetProperties()
 						.Where(pi => pi.PropertyType == typeof(SamplerState))
 						.ElementAt(semanticAttribute.Index)
@@ -57,6 +58,26 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineSta
 			}
 			typedInput = (TPixelShaderInput) wrapper;
 			return typedInput;
+		}
+
+		private FieldInfo GetFieldInfo(string name)
+		{
+			if (!_fieldInfos.ContainsKey(name))
+				_fieldInfos.Add(name, typeof(TPixelShaderInput).GetField(name));
+			return _fieldInfos[name];
+		}
+
+		private SemanticAttribute GetSemanticAttribute(FieldInfo fieldInfo, string name)
+		{
+			if (!_semanticAttributes.ContainsKey(name))
+			{
+				SemanticAttribute[] semanticAttributes = (SemanticAttribute[]) fieldInfo.GetCustomAttributes(typeof(SemanticAttribute), false);
+				if (semanticAttributes != null && semanticAttributes.Length > 0)
+					_semanticAttributes.Add(name, semanticAttributes[0]);
+				else
+					_semanticAttributes.Add(name, null);
+			}
+			return _semanticAttributes[name];
 		}
 
 		#region Intrinsic shader functions

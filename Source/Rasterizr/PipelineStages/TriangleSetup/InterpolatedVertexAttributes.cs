@@ -1,4 +1,4 @@
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup
+namespace Rasterizr.PipelineStages.TriangleSetup
 {
 	public struct InterpolatedVertexAttributes
 	{

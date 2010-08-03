@@ -1,4 +1,4 @@
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader
+namespace Rasterizr.PipelineStages.ShaderStages.VertexShader
 {
 	public interface IVertexShader
 	{

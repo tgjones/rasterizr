@@ -2,7 +2,7 @@ using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.Util
+namespace Rasterizr.Util
 {
 	/// <summary>
 	/// With thanks to http://writeablebitmapex.codeplex.com/
@@ -22,6 +22,13 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.Util
 		#endregion
 
 		#region Properties
+
+#if !SILVERLIGHT
+		public int[] Pixels
+		{
+			get { return _pixels; }
+		}
+#endif
 
 		public WriteableBitmap InnerBitmap
 		{

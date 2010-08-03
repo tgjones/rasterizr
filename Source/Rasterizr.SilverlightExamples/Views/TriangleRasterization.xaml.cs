@@ -5,15 +5,15 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PerspectiveDivide;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PixelShader;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.Rasterizer;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes;
 using Nexus;
+using Rasterizr.PipelineStages.PerspectiveDivide;
+using Rasterizr.PipelineStages.Rasterizer;
+using Rasterizr.PipelineStages.ShaderStages.PixelShader;
+using Rasterizr.PipelineStages.TriangleSetup;
+using Rasterizr.VertexAttributes;
 using Colors = System.Windows.Media.Colors;
 
-namespace Apollo.Examples.SoftwareRasterizer.Views
+namespace Rasterizr.SilverlightExamples.Views
 {
 	public partial class TriangleRasterization : Page
 	{
@@ -164,14 +164,14 @@ namespace Apollo.Examples.SoftwareRasterizer.Views
 
 			// Rasterizer
 
-			RasterizerStage rasterizerStage = new RasterizerStage();
+			RasterizerStage rasterizerStage = new RasterizerStage(new Viewport3D());
 
 			IList<Fragment> fragments = new List<Fragment>();
 			rasterizerStage.Process(triangles, fragments);
 
 			// Pixel shader
 
-			PixelShaderStage pixelShaderStage = new PixelShaderStage();
+			PixelShaderStage pixelShaderStage = new PixelShaderStage(new Viewport3D());
 			pixelShaderStage.PixelShader = new PixelShaderInputTestShader();
 
 			IList<Pixel> pixels = new List<Pixel>();

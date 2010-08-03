@@ -1,6 +1,6 @@
 using Nexus;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader
+namespace Rasterizr.PipelineStages.ShaderStages.VertexShader
 {
 	public interface IVertexShaderOutput
 	{

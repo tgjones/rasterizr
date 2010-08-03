@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.VertexAttributes;
+using Rasterizr.PipelineStages.ShaderStages.VertexShader;
+using Rasterizr.VertexAttributes;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.InputAssembler
+namespace Rasterizr.PipelineStages.InputAssembler
 {
 	public class InputAssemblerStage
 	{
 		public InputLayout InputLayout { get; set; }
+		public PrimitiveTopology PrimitiveTopology { get; set; }
 
 		public IList Vertices { get; set; }
 		//public IVertexShaderInputBuilder<TVertexInput, TVertexShaderInput> VertexShaderInputBuilder { get; set; }
 
 		public void Process(IList<VertexShaderInput> outputs)
 		{
-			foreach (object input in Vertices)
+			foreach (VertexShaderInput input in Vertices)
 			{
 				VertexShaderInput vertexShaderInput = new VertexShaderInput
 				{

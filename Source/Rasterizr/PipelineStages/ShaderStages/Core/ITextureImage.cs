@@ -1,6 +1,6 @@
 using Nexus;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core
+namespace Rasterizr.PipelineStages.ShaderStages.Core
 {
 	public interface ITextureImage
 	{

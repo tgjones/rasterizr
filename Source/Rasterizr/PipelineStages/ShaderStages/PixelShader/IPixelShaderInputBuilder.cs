@@ -1,6 +1,6 @@
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup;
+using Rasterizr.PipelineStages.TriangleSetup;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PixelShader
+namespace Rasterizr.PipelineStages.ShaderStages.PixelShader
 {
 	public interface IPixelShaderInputBuilder<out TPixelShaderInput>
 	{

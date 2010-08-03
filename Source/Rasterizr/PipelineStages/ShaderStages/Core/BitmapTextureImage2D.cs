@@ -1,9 +1,9 @@
 using System;
 using System.Windows.Media.Imaging;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.Util;
 using Nexus;
+using Rasterizr.Util;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core
+namespace Rasterizr.PipelineStages.ShaderStages.Core
 {
 	public class BitmapTextureImage2D : ITextureImage
 	{

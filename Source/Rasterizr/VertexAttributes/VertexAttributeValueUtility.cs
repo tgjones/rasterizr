@@ -1,8 +1,7 @@
 using System;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes;
 using Nexus;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.VertexAttributes
+namespace Rasterizr.VertexAttributes
 {
 	public static class VertexAttributeValueUtility
 	{
@@ -14,14 +13,18 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.VertexAttri
 
 			switch (format)
 			{
+				case VertexAttributeValueFormat.ColorF:
+					return new ColorFVertexAttributeValue { Value = (ColorF) value };
 				case VertexAttributeValueFormat.Float:
 					return new FloatVertexAttributeValue { Value = (float) value };
+				case VertexAttributeValueFormat.Point2D:
+					return new Point2DVertexAttributeValue { Value = (Point2D) value };
 				case VertexAttributeValueFormat.Point3D:
 					return new Point3DVertexAttributeValue { Value = (Point3D) value };
 				case VertexAttributeValueFormat.Point4D:
 					return new Point4DVertexAttributeValue { Value = (Point4D) value };
-				case VertexAttributeValueFormat.ColorF:
-					return new ColorFVertexAttributeValue { Value = (ColorF) value };
+				case VertexAttributeValueFormat.Vector3D:
+					return new Vector3DVertexAttributeValue { Value = (Vector3D) value };
 				default:
 					throw new NotSupportedException();
 			}
@@ -36,10 +39,16 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.VertexAttri
 		{
 			if (type == typeof(float))
 				return VertexAttributeValueFormat.Float;
-			if (type == typeof(Point4D))
-				return VertexAttributeValueFormat.Point4D;
 			if (type == typeof(ColorF))
 				return VertexAttributeValueFormat.ColorF;
+			if (type == typeof(Point2D))
+				return VertexAttributeValueFormat.Point2D;
+			if (type == typeof(Point3D))
+				return VertexAttributeValueFormat.Point3D;
+			if (type == typeof(Point4D))
+				return VertexAttributeValueFormat.Point4D;
+			if (type == typeof(Vector3D))
+				return VertexAttributeValueFormat.Vector3D;
 			throw new NotSupportedException();
 		}
 	}

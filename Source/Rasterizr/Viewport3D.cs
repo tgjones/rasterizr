@@ -1,8 +1,7 @@
-using System;
 using System.Globalization;
 using Nexus;
 
-namespace Apollo.Graphics.Rendering
+namespace Rasterizr
 {
 	public struct Viewport3D
 	{

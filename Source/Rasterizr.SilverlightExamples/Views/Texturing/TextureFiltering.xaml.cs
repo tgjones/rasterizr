@@ -4,22 +4,20 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Apollo.Graphics.Rendering;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.OutputMerger;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PerspectiveDivide;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.PixelShader;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.Rasterizer;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader.VertexAttributes;
 using Nexus;
+using Rasterizr.PipelineStages.OutputMerger;
+using Rasterizr.PipelineStages.PerspectiveDivide;
+using Rasterizr.PipelineStages.Rasterizer;
+using Rasterizr.PipelineStages.ShaderStages.Core;
+using Rasterizr.PipelineStages.ShaderStages.PixelShader;
+using Rasterizr.PipelineStages.ShaderStages.VertexShader;
+using Rasterizr.PipelineStages.TriangleSetup;
+using Rasterizr.VertexAttributes;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 
-namespace Apollo.Examples.SoftwareRasterizer.Views.Texturing
+namespace Rasterizr.SilverlightExamples.Views.Texturing
 {
 	public partial class TextureFiltering : Page, IRenderTarget
 	{
@@ -28,7 +26,7 @@ namespace Apollo.Examples.SoftwareRasterizer.Views.Texturing
 		private readonly Rectangle[] _vertexMarkers = new Rectangle[4];
 		private readonly Point[] _vertices = new Point[4];
 		private PathFigure _rawTriangleFigure;
-		private BitmapImage _texture;
+		private Texture2D _texture;
 		private bool _loaded;
 
 		public TextureFiltering()
@@ -37,13 +35,10 @@ namespace Apollo.Examples.SoftwareRasterizer.Views.Texturing
 
 			Loaded += (sender, e) =>
 			{
-				_texture = new BitmapImage(new Uri("Assets/Koala.jpg", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.None };
-				_texture.ImageOpened += (sender2, e2) =>
-				{
-					CreateVertices();
-					RefreshTriangle();
-					_loaded = true;
-				};
+				_texture = new Texture2D("Assets/Koala.jpg");
+				CreateVertices();
+				RefreshTriangle();
+				_loaded = true;
 			};
 		}
 
@@ -197,7 +192,7 @@ namespace Apollo.Examples.SoftwareRasterizer.Views.Texturing
 				CreateVertexShaderOutput(viewport, view, projection, wvp, v4, -30, 1, 1, out actualPoints[2])
 			};
 
-			PerspectiveDivideStage perspectiveDivideStage = new PerspectiveDivideStage
+			PerspectiveDivideStage perspectiveDivideStage = new PerspectiveDivideStage(new Viewport3D())
 			{
 				ScreenWidth = ScreenGrid1.NumColumns,
 				ScreenHeight = ScreenGrid1.NumRows
@@ -217,18 +212,18 @@ namespace Apollo.Examples.SoftwareRasterizer.Views.Texturing
 			List<Triangle> triangles = new List<Triangle>();
 			triangleSetupStage.Process(screenSpaceVertices, triangles);
 
-			RasterizerStage rasterizerStage = new RasterizerStage();
+			RasterizerStage rasterizerStage = new RasterizerStage(new Viewport3D());
 			List<Fragment> fragments = new List<Fragment>();
 			rasterizerStage.Process(triangles, fragments);
 
 			TextureFilter magFilter = (TextureFilter) Enum.Parse(typeof(TextureFilter), (string) ((ComboBoxItem) cboMagFilter.SelectedValue).Content, true);
 			TextureFilter minFilter = (TextureFilter) Enum.Parse(typeof(TextureFilter), (string) ((ComboBoxItem) cboMinFilter.SelectedValue).Content, true);
 			TextureMipMapFilter mipFilter = (TextureMipMapFilter) Enum.Parse(typeof(TextureMipMapFilter), (string) ((ComboBoxItem) cboMipFilter.SelectedValue).Content, true);
-			PixelShaderStage pixelShaderStage = new PixelShaderStage
+			PixelShaderStage pixelShaderStage = new PixelShaderStage(new Viewport3D())
 			{
 				PixelShader = new TexturedPixelShader
 				{
-					Texture = new Texture2D(new BitmapTextureImage2D(_texture)),
+					Texture = _texture,
 					Sampler =
 						{
 							MagFilter = magFilter,

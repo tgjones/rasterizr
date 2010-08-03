@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages
+namespace Rasterizr.PipelineStages
 {
 	public abstract class PipelineStageBase<TInput, TOutput>
 	{

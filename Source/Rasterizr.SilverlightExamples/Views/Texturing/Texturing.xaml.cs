@@ -1,25 +1,23 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.InputAssembler;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.OutputMerger;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.ShaderStages.Core;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.VertexShader;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.Util;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.VertexAttributes;
+using System.Windows.Media;
 using Nexus;
+using Rasterizr.PipelineStages.OutputMerger;
+using Rasterizr.PipelineStages.ShaderStages.Core;
+using Rasterizr.Util;
 using Color = System.Windows.Media.Color;
 
-namespace Apollo.Examples.SoftwareRasterizer.Views.Texturing
+namespace Rasterizr.SilverlightExamples.Views.Texturing
 {
 	public partial class Texturing : Page, IRenderTarget
 	{
-		private VertexInputTest[] _vertices = new VertexInputTest[3];
+		private VertexPositionColor[] _vertices = new VertexPositionColor[3];
+		private RasterizrDevice _device;
+		private BasicEffect _basicEffect;
+
 		private WriteableBitmapWrapper _renderTarget1, _renderTarget2;
-		private RenderPipeline _renderPipeline;
-		private BitmapImage _texture;
+		private Texture2D _texture;
+
 		private float _angle;
 
 		public Texturing()
@@ -37,172 +35,79 @@ namespace Apollo.Examples.SoftwareRasterizer.Views.Texturing
 
 			CreateVertices();
 
-			_texture = new BitmapImage(new Uri("Assets/TestTexture.png", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.None };
-			_texture.ImageFailed += (sender2, e2) => { int i = 0; };
-			_texture.ImageOpened += (sender2, e2) =>
-			{
-				CreateRenderPipeline();
-				RefreshTriangle();
-			};
+			_texture = new Texture2D("Rasterizr.SilverlightExamples;component/Assets/TestTexture.png");
 
-			//CreateRenderPipeline();
+			CreateRenderPipeline();
+			RefreshTriangle();
 
-			//RefreshTriangle();
-
-			//CompositionTarget.Rendering += OnCompositionTargetRendering;
+			CompositionTarget.Rendering += CompositionTarget_Rendering;
 		}
 
-		private void OnCompositionTargetRendering(object sender, System.EventArgs e)
+		void CompositionTarget_Rendering(object sender, System.EventArgs e)
 		{
-			//RefreshTriangle();
+			_angle += 0.01f;
+			RefreshTriangle();
 		}
 
 		private void CreateRenderPipeline()
 		{
-			_renderPipeline = new RenderPipeline();
+			_device = new RasterizrDevice(0, 0);
 
-			_renderPipeline.InputAssembler.InputLayout = new InputLayout
-			{
-				Elements = new[]
-				{
-					new InputElementDescription("Position", VertexAttributeValueFormat.Point3D),
-					new InputElementDescription("TexU", VertexAttributeValueFormat.Float),
-					new InputElementDescription("TexV", VertexAttributeValueFormat.Float)
-				}
-			};
-			_renderPipeline.InputAssembler.Vertices = _vertices;
+			//_device.RenderPipeline.InputAssembler.InputLayout = VertexPositionNormalTexture.InputLayout;
+			_device.RenderPipeline.InputAssembler.InputLayout = VertexPositionColor.InputLayout;
+			_device.RenderPipeline.InputAssembler.Vertices = _vertices;
 
-			_renderPipeline.VertexShader.VertexShader = new VertexShaderInputTestShader
-			{
-				WorldViewProjection = Matrix3D.Identity // World
-					* Matrix3D.CreateLookAt(Point3D.Zero, Vector3D.Forward, Vector3D.Up) // View
-					* Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_2 + MathUtility.PI_OVER_4, (float) (ImageViewport1.Width / ImageViewport1.Height), 1, 200) // Projection
-			};
+			_device.RenderPipeline.OutputMerger.RenderTarget = this;
 
-			_renderPipeline.PixelShader.PixelShader = new TexturedPixelShader
-			{
-				Texture = new Texture2D(new BitmapTextureImage2D(_texture))
-			};
-
-			_renderPipeline.OutputMerger.RenderTarget = this;
+			_basicEffect = new BasicEffect(_device);
 		}
 
 		private void CreateVertices()
 		{
 			_vertices = new[]
 			{
-				// Triangle 1
-				new VertexInputTest { Position = new Point3D(-150, 50, -50), TexU = 0, TexV = 0 },
-				new VertexInputTest { Position = new Point3D(100, 50, -30), TexU = 1, TexV = 0 },
-				new VertexInputTest { Position = new Point3D(-150, -50, -50), TexU = 0, TexV = 1 },
+				/*// Triangle 1
+				new VertexPositionNormalTexture(new Point3D(-150, 50, -50), Vector3D.Zero, new Point2D(0, 0)),
+				new VertexPositionNormalTexture(new Point3D(100, 50, -30), Vector3D.Zero, new Point2D(1, 0)),
+				new VertexPositionNormalTexture(new Point3D(-150, -50, -50), Vector3D.Zero, new Point2D(0, 1)),
 
 				// Triangle 2
-				new VertexInputTest { Position = new Point3D(100, 50, -30), TexU = 1, TexV = 0 },
-				new VertexInputTest { Position = new Point3D(-150, -50, -50), TexU = 0, TexV = 1 },
-				new VertexInputTest { Position = new Point3D(100, -50, -30), TexU = 1, TexV = 1 }
-			};
-			/*_vertices = new[]
-			{
-				new ScreenVertex { Position = new Point3D(-1,  1, 0), TexU = 0, TexV = 0 },
-				new ScreenVertex { Position = new Point3D( 1,  1, 0), TexU = 1, TexV = 0 },
-				new ScreenVertex { Position = new Point3D(-1, -1, 0), TexU = 0, TexV = 1 },
+				new VertexPositionNormalTexture(new Point3D(100, 50, -30), Vector3D.Zero, new Point2D(1, 0)),
+				new VertexPositionNormalTexture(new Point3D(-150, -50, -50), Vector3D.Zero, new Point2D(0, 1)),
+				new VertexPositionNormalTexture(new Point3D(100, -50, -30), Vector3D.Zero, new Point2D(1, 1))*/
+				// Triangle 1
+				new VertexPositionColor(new Point3D(-150, 50, -50), ColorsF.Red),
+				new VertexPositionColor(new Point3D(100, 50, -30), ColorsF.Blue),
+				new VertexPositionColor(new Point3D(-150, -50, -50), ColorsF.Green),
 
-				new ScreenVertex { Position = new Point3D( 1,  1, 0), TexU = 1, TexV = 0 },
-				new ScreenVertex { Position = new Point3D(-1, -1, 0), TexU = 0, TexV = 1 },
-				new ScreenVertex { Position = new Point3D( 1, -1, 0), TexU = 1, TexV = 1 }
-			};*/
+				// Triangle 2
+				new VertexPositionColor(new Point3D(100, 50, -30), ColorsF.Blue),
+				new VertexPositionColor(new Point3D(-150, -50, -50), ColorsF.Green),
+				new VertexPositionColor(new Point3D(-150, -50, -50), ColorsF.White)
+			};
 		}
 
 		private void RefreshTriangle()
 		{
-			//_angle += 0.01f;
-			/*_renderPipeline.VertexShader.VertexShader = new VertexShaderInputTestShader
-			{
-				WorldViewProjection = Matrix3D.CreateRotationY(_angle) // World
-					* Matrix3D.CreateLookAt(Point3D.Zero, Vector3D.Forward, Vector3D.Up) // View
-					* Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_2 + MathUtility.PI_OVER_4, (float) (Width / Height), 1, 200) // Projection
-			};*/
-
-			_renderPipeline.Clear();
+			_device.RenderPipeline.Clear();
 			DrawTriangle();
 		}
 
 		private void DrawTriangle()
 		{
-			_renderPipeline.Draw();
-			_renderPipeline.OutputMerger.RenderTarget.EndFrame();
-		}
+			_basicEffect.World = Matrix3D.CreateRotationY(_angle);
+			_basicEffect.View = Matrix3D.CreateLookAt(Point3D.Zero, Vector3D.Forward, Vector3D.Up);
+			_basicEffect.Projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_2 + MathUtility.PI_OVER_4,
+				_renderTarget1.InnerBitmap.PixelWidth / (float) _renderTarget1.InnerBitmap.PixelHeight,
+				1, 200);
+			_basicEffect.Texture = _texture;
+			_basicEffect.VertexColorEnabled = true;
 
-		// http://msdn.microsoft.com/en-us/library/bb205123%28v=VS.85%29.aspx
-		// http://msdn.microsoft.com/en-us/library/bb219690%28VS.85%29.aspx
-		// http://msdn.microsoft.com/en-us/library/cc627092%28VS.85%29.aspx
-		// http://msdn.microsoft.com/en-us/library/cc308049%28v=VS.85%29.aspx
+			_basicEffect.CurrentTechnique.Passes[0].Apply();
 
-		/*public struct ScreenVertex
-		{
-			public Point3D Position;
-			public float TexU;
-			public float TexV;
-		}
+			_device.Draw();
 
-		public struct ScreenVertexShaderOutput : IVertexShaderOutput
-		{
-			public Point4D Position { get; set; }
-			public float TexU;
-			public float TexV;
-		}
-
-		public class ScreenVertexShader : VertexShaderBase<ScreenVertex, ScreenVertexShaderOutput>
-		{
-			public override ScreenVertexShaderOutput Execute(ScreenVertex vertexShaderInput)
-			{
-				return new ScreenVertexShaderOutput
-				{
-					Position = new Point4D(vertexShaderInput.Position, 1),
-					TexU = vertexShaderInput.TexU,
-					TexV = vertexShaderInput.TexV
-				};
-			}
-		}*/
-
-		public struct VertexInputTest
-		{
-			public Point3D Position;
-			public float TexU, TexV;
-			//public ColorF Color;
-		}
-
-		public struct VertexShaderInputTest
-		{
-			public Point3D Position;
-			public float TexU, TexV;
-			//public ColorF Color;
-		}
-
-		public struct VertexShaderOutputTest : IVertexShaderOutput
-		{
-			public Point4D Position { get; set; }
-			public float TexU, TexV;
-			public float W;
-			//public ColorF Color;
-		}
-
-		public class VertexShaderInputTestShader : VertexShaderBase<VertexShaderInputTest, VertexShaderOutputTest>
-		{
-			public Matrix3D WorldViewProjection { get; set; }
-
-			public override VertexShaderOutputTest Execute(VertexShaderInputTest vertexShaderInput)
-			{
-				Point4D position = WorldViewProjection.Transform(vertexShaderInput.Position.ToHomogeneousPoint3D());
-				return new VertexShaderOutputTest
-				{
-					Position = position,
-					TexU = vertexShaderInput.TexU,
-					TexV = vertexShaderInput.TexV,
-					//Color = vertexShaderInput.Color
-					W = position.W
-				};
-			}
+			_device.RenderPipeline.OutputMerger.RenderTarget.EndFrame();
 		}
 
 		public void Clear()

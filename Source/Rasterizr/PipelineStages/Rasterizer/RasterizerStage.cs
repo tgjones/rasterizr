@@ -1,10 +1,20 @@
 using System.Collections.Generic;
-using Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.TriangleSetup;
+using Rasterizr.PipelineStages.TriangleSetup;
 
-namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineStages.Rasterizer
+namespace Rasterizr.PipelineStages.Rasterizer
 {
 	public class RasterizerStage : PipelineStageBase<Triangle, Fragment>
 	{
+		private readonly Fragment[,] _fragments;
+
+		public RasterizerStage(Viewport3D viewport)
+		{
+			_fragments = new Fragment[viewport.Width, viewport.Height];
+			for (int y = 0; y < viewport.Height; ++y)
+				for (int x = 0; x < viewport.Width; ++x)
+					_fragments[x, y] = new Fragment(x, y);
+		}
+
 		public override void Process(IList<Triangle> inputs, IList<Fragment> outputs)
 		{
 			foreach (Triangle triangle in inputs)
@@ -23,26 +33,29 @@ namespace Apollo.Graphics.Rendering.Rasterization.SoftwareRasterizer.PipelineSta
 			InterpolatedVertexAttributes attributes = scanline.InterpolatedVertexAttributes;
 			for (int x = scanline.XStart; x <= scanline.XStart + scanline.Width; ++x)
 			{
-				float w = 1 / oneOverW;
-				InterpolatedVertexAttribute[] interpolatedAttributes = new InterpolatedVertexAttribute[attributes.Attributes.Length];
-				for (int i = 0; i < attributes.Attributes.Length; ++i)
+				// TODO: Remove this check once culling and clipping are implemented.
+				if (x >= 0 && x < _fragments.GetLength(0) && scanline.Y >= 0 && scanline.Y < _fragments.GetLength(1))
 				{
-					interpolatedAttributes[i].Name = attributes.Attributes[i].Name;
-					interpolatedAttributes[i].InterpolationType = attributes.Attributes[i].InterpolationType;
-					interpolatedAttributes[i].Value = attributes.Attributes[i].GetValue(w);
+					Fragment fragment = _fragments[x, scanline.Y];
+					fragment.Attributes.ActiveLength = attributes.Attributes.Length;
 
-					// Constant over the triangle, so could be moved to a higher level entity.
-					interpolatedAttributes[i].DValueDx = triangle.VertexAttributeXStepValues[i].Multiply(w);
-					interpolatedAttributes[i].DValueDy = triangle.VertexAttributeYStepValues[i].Multiply(w);
+					float w = 1 / oneOverW;
+					for (int i = 0; i < attributes.Attributes.Length; ++i)
+					{
+						fragment.Attributes[i] = new InterpolatedVertexAttribute
+						{
+							Name = attributes.Attributes[i].Name,
+							InterpolationType = attributes.Attributes[i].InterpolationType,
+							Value = attributes.Attributes[i].GetValue(w),
+							DValueDx = triangle.VertexAttributeXStepValues[i].Multiply(w),
+							// Constant over the triangle, so could be moved to a higher level entity.
+							DValueDy = triangle.VertexAttributeYStepValues[i].Multiply(w)
+						};
+					}
+
+					fragment.W = oneOverW;
+					outputs.Add(fragment);
 				}
-
-				outputs.Add(new Fragment
-				{
-					X = x,
-					Y = scanline.Y,
-					Attributes = interpolatedAttributes,
-					W = oneOverW
-				});
 
 				oneOverW += triangle.DOneOverWdX;
 				for (int i = 0; i < attributes.Attributes.Length; ++i)

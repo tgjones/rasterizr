@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace Apollo.Examples.SoftwareRasterizer.Controls
+namespace Rasterizr.SilverlightExamples.Controls
 {
 	public class ScreenGrid : Panel
 	{
