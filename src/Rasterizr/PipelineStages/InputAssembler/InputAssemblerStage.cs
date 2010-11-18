@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Nexus;
 using Rasterizr.PipelineStages.ShaderStages.VertexShader;
 using Rasterizr.VertexAttributes;
@@ -13,7 +14,6 @@ namespace Rasterizr.PipelineStages.InputAssembler
 
 		public IList Vertices { get; set; }
 		public Int32Collection Indices { get; set; }
-		//public IVertexShaderInputBuilder<TVertexInput, TVertexShaderInput> VertexShaderInputBuilder { get; set; }
 
 		public void Process(IList<VertexShaderInput> outputs)
 		{
@@ -35,7 +35,7 @@ namespace Rasterizr.PipelineStages.InputAssembler
 		private IEnumerable<object> GetVertices()
 		{
 			if (Indices == null)
-				return (IEnumerable<object>)Vertices;
+				return Vertices.Cast<object>();
 			return GetIndexedVertices();
 		}
 
@@ -50,7 +50,7 @@ namespace Rasterizr.PipelineStages.InputAssembler
 			return new VertexAttribute
 			{
 				Name = inputElementDescription.Name,
-				InterpolationType = VertexAttributeInterpolationType.Linear,
+				InterpolationModifier = VertexAttributeInterpolationModifier.Linear,
 				Value = VertexAttributeValueUtility.ToValue(inputElementDescription.Name, inputElementDescription.Format, vertexInput)
 			};
 		}

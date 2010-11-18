@@ -1,36 +1,27 @@
 using System;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using System.Windows.Resources;
 using Nexus;
+using Nexus.Graphics;
 
 namespace Rasterizr.PipelineStages.ShaderStages.Core
 {
 	public class Texture2D
 	{
-		private readonly ITextureImage _textureSource;
+		private readonly ColorSurface _surface;
 		private TextureMipMapLevel[] _levels;
 		private readonly int _xBound;
 		private readonly int _yBound;
 
-		public Texture2D(string uriResource)
+		public Texture2D(string uri)
 		{
-#if SILVERLIGHT
-			StreamResourceInfo imageStream = Application.GetResourceStream(new Uri(uriResource, UriKind.Relative));
-			BitmapImage bitmapImage = new BitmapImage();
-			bitmapImage.SetSource(imageStream.Stream);
-#else
-			BitmapImage bitmapImage = new BitmapImage(new Uri(uriResource));
-#endif
+			_surface = ColorSurfaceLoader.LoadFromFile(uri);
 
-			BitmapTextureImage2D textureSource = new BitmapTextureImage2D(bitmapImage);
-			_textureSource = textureSource;
+			//if (textureSource.Dimensions != 2)
+			//	throw new ArgumentOutOfRangeException("uriResource", "Texture source for Texture2D must have 2 dimensions");
 
-			if (textureSource.Dimensions != 2)
-				throw new ArgumentOutOfRangeException("uriResource", "Texture source for Texture2D must have 2 dimensions");
-
-			_xBound = textureSource.GetBound(0);
-			_yBound = textureSource.GetBound(1);
+			//_xBound = textureSource.GetBound(0);
+			//_yBound = textureSource.GetBound(1);
+			_xBound = _surface.Width;
+			_yBound = _surface.Height;
 
 			CreateMipMaps();
 		}
@@ -68,7 +59,7 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 		private ColorF GetColor(int level, int x, int y)
 		{
 			if (level == 0)
-				return _textureSource.GetColor(x, y);
+				return _surface[x, y];
 			return _levels[level].Texels[x, y];
 		}
 

@@ -1,3 +1,7 @@
+using System;
+using Nexus;
+using Rasterizr.PipelineStages.Rasterizer;
+
 namespace Rasterizr.VertexAttributes
 {
 	public struct FloatVertexAttributeValue : IVertexAttributeValue

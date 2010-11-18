@@ -1,3 +1,4 @@
+using Rasterizr.PipelineStages.Rasterizer;
 using Rasterizr.PipelineStages.TriangleSetup;
 
 namespace Rasterizr.PipelineStages.ShaderStages.PixelShader

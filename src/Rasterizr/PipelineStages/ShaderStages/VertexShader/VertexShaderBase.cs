@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Reflection;
-using Rasterizr.PipelineStages.ShaderStages.Core;
 using Rasterizr.VertexAttributes;
 
 namespace Rasterizr.PipelineStages.ShaderStages.VertexShader
@@ -51,7 +49,7 @@ namespace Rasterizr.PipelineStages.ShaderStages.VertexShader
 					attributes.Add(new VertexAttribute
 					{
 						Name = field.Name,
-						InterpolationType = VertexAttributeInterpolationType.Perspective,
+						InterpolationModifier = VertexAttributeInterpolationModifier.Linear,
 						Value = VertexAttributeValueUtility.ToValue(field.Name, field.FieldType, vertexShaderOutput)
 					});
 				}

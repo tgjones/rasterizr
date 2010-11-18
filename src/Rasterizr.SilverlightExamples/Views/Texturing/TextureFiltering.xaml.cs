@@ -7,9 +7,9 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Nexus;
 using Rasterizr.PipelineStages.OutputMerger;
-using Rasterizr.PipelineStages.PerspectiveDivide;
 using Rasterizr.PipelineStages.Rasterizer;
 using Rasterizr.PipelineStages.ShaderStages.Core;
+using Rasterizr.PipelineStages.ShaderStages.GeometryShader;
 using Rasterizr.PipelineStages.ShaderStages.PixelShader;
 using Rasterizr.PipelineStages.ShaderStages.VertexShader;
 using Rasterizr.PipelineStages.TriangleSetup;
@@ -19,7 +19,7 @@ using Colors = System.Windows.Media.Colors;
 
 namespace Rasterizr.SilverlightExamples.Views.Texturing
 {
-	public partial class TextureFiltering : Page, IRenderTarget
+	public partial class TextureFiltering : Page
 	{
 		private Rectangle _draggedVertexMarker;
 		private int _draggedVertexIndex;
@@ -158,7 +158,7 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 					new VertexAttribute
 					{
 						Name = "TexCoords",
-						InterpolationType = VertexAttributeInterpolationType.Perspective,
+						InterpolationModifier = VertexAttributeInterpolationModifier.Linear,
 						Value = new Point2DVertexAttributeValue
 						{
 							Value = new Point2D(u, v)
@@ -192,15 +192,6 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 				CreateVertexShaderOutput(viewport, view, projection, wvp, v4, -30, 1, 1, out actualPoints[2])
 			};
 
-			PerspectiveDivideStage perspectiveDivideStage = new PerspectiveDivideStage(new Viewport3D())
-			{
-				ScreenWidth = ScreenGrid1.NumColumns,
-				ScreenHeight = ScreenGrid1.NumRows
-			};
-
-			List<ScreenSpaceVertex> screenSpaceVertices = new List<ScreenSpaceVertex>();
-			perspectiveDivideStage.Process(vertexShaderOutputs, screenSpaceVertices);
-
 			VertexLocations.Text = string.Format("V1 = {1}, {2}, {3}{0}V2 = {4}, {5}, {6}{0}V3 = {7}, {8}, {9}",
 				Environment.NewLine,
 				actualPoints[0].X, actualPoints[0].Y, actualPoints[0].Z,
@@ -208,11 +199,16 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 				actualPoints[2].X, actualPoints[2].Y, actualPoints[2].Z);
 
 			// Triangle setup
-			TriangleSetupStage triangleSetupStage = new TriangleSetupStage();
-			List<Triangle> triangles = new List<Triangle>();
-			triangleSetupStage.Process(screenSpaceVertices, triangles);
+			GeometryShaderStage geometryShaderStage = new GeometryShaderStage();
+			List<TrianglePrimitive> triangles = new List<TrianglePrimitive>();
+			geometryShaderStage.Process(vertexShaderOutputs, triangles);
 
-			RasterizerStage rasterizerStage = new RasterizerStage(new Viewport3D());
+			OutputMergerStage outputMergerStage = new OutputMergerStage
+			{
+				//RenderTarget = this
+			};
+
+			RasterizerStage rasterizerStage = new RasterizerStage(new Viewport3D(), outputMergerStage);
 			List<Fragment> fragments = new List<Fragment>();
 			rasterizerStage.Process(triangles, fragments);
 
@@ -235,10 +231,7 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 			List<Pixel> pixels = new List<Pixel>();
 			pixelShaderStage.Process(fragments, pixels);
 
-			OutputMergerStage outputMergerStage = new OutputMergerStage
-			{
-				RenderTarget = this
-			};
+			
 			outputMergerStage.Process(pixels);
 		}
 
@@ -272,7 +265,7 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 			//ScreenGrid1._renderTarget.InnerBitmap.Invalidate();
 		}
 
-		int IRenderTarget.Width
+		/*int IRenderTarget.Width
 		{
 			get { return (int) ScreenGrid1.ActualWidth; }
 		}
@@ -280,7 +273,7 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 		int IRenderTarget.Height
 		{
 			get { return (int) ScreenGrid1.ActualHeight; }
-		}
+		}*/
 
 		#endregion
 

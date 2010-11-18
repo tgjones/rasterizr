@@ -31,11 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nexus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Nexus\Nexus.dll</HintPath>
+    </Reference>
+    <Reference Include="Nexus.Wpf">
+      <HintPath>..\..\lib\Nexus\Nexus.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,26 +54,35 @@
     <Compile Include="ComparisonFunc.cs" />
     <Compile Include="PipelineStages\InputAssembler\InputElementUsage.cs" />
     <Compile Include="PipelineStages\OutputMerger\BlendState.cs" />
-    <Compile Include="PipelineStages\OutputMerger\DepthBuffer.cs" />
+    <Compile Include="PipelineStages\OutputMerger\DepthBufferView.cs" />
     <Compile Include="PipelineStages\OutputMerger\DepthStencilState.cs" />
+    <Compile Include="PipelineStages\OutputMerger\RenderTargetView.cs" />
+    <Compile Include="PipelineStages\Rasterizer\CullingUtility.cs" />
     <Compile Include="PipelineStages\Rasterizer\CullMode.cs" />
+    <Compile Include="PipelineStages\Rasterizer\FillMode.cs" />
+    <Compile Include="PipelineStages\Rasterizer\Interpolator.cs" />
+    <Compile Include="PipelineStages\Rasterizer\InterpolatorUtility.cs" />
+    <Compile Include="PipelineStages\Rasterizer\MultiSamplingUtility.cs" />
+    <Compile Include="PipelineStages\Rasterizer\Sample.cs" />
+    <Compile Include="PipelineStages\Rasterizer\SampleCollection.cs" />
+    <Compile Include="PipelineStages\Rasterizer\ScreenSpaceTrianglePrimitive.cs" />
+    <Compile Include="PipelineStages\Rasterizer\TriangleSetupInfo.cs" />
+    <Compile Include="PipelineStages\ShaderStages\Core\DepthEffect.cs" />
     <Compile Include="PipelineStages\ShaderStages\Core\DirectionalLight.cs" />
+    <Compile Include="PipelineStages\ShaderStages\Core\ITextureLoader.cs" />
+    <Compile Include="PipelineStages\ShaderStages\GeometryShader\TrianglePrimitive.cs" />
+    <Compile Include="SwapChain.cs" />
     <Compile Include="Util\BlendUtility.cs" />
     <Compile Include="Util\ComparisonUtility.cs" />
     <Compile Include="VertexAttributes\VertexAttributeCollection.cs" />
     <Compile Include="VertexPositionTexture.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelMesh.cs" />
-    <Compile Include="PipelineStages\Clipping\ClippingStage.cs" />
-    <Compile Include="PipelineStages\Clipping\ClipRegions.cs" />
     <Compile Include="PipelineStages\InputAssembler\PrimitiveTopology.cs" />
-    <Compile Include="PipelineStages\OutputMerger\WriteableBitmapRenderTarget.cs" />
-    <Compile Include="PipelineStages\PrimitiveAssembly\PrimitiveAssemblyStage.cs" />
-    <Compile Include="PipelineStages\PrimitiveAssembly\TrianglePrimitive.cs" />
     <Compile Include="PipelineStages\ShaderStages\GeometryShader\GeometryShaderStage.cs" />
     <Compile Include="PipelineStages\ShaderStages\GeometryShader\IGeometryShader.cs" />
     <Compile Include="PipelineStages\ShaderStages\GeometryShader\TriangleStream.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\InterpolatedVertexAttributeCollection.cs" />
+    <Compile Include="PipelineStages\Rasterizer\InterpolatedVertexAttributeCollection.cs" />
     <Compile Include="Util\PartiallyActiveCollection.cs" />
     <Compile Include="VertexPositionColor.cs" />
     <Compile Include="VertexPositionColorTexture.cs" />
@@ -80,14 +94,10 @@
     <Compile Include="PipelineStages\InputAssembler\InputElementDescription.cs" />
     <Compile Include="PipelineStages\InputAssembler\InputLayout.cs" />
     <Compile Include="PipelineStages\InputAssembler\IVertexShaderInputBuilder.cs" />
-    <Compile Include="PipelineStages\OutputMerger\IRenderTarget.cs" />
     <Compile Include="PipelineStages\OutputMerger\OutputMergerStage.cs" />
-    <Compile Include="PipelineStages\PerspectiveDivide\PerspectiveDivideStage.cs" />
-    <Compile Include="PipelineStages\PerspectiveDivide\ScreenSpaceVertex.cs" />
     <Compile Include="PipelineStages\PipelineStageBase.cs" />
     <Compile Include="PipelineStages\Rasterizer\Fragment.cs" />
     <Compile Include="PipelineStages\Rasterizer\RasterizerStage.cs" />
-    <Compile Include="PipelineStages\ShaderStages\Core\BitmapTextureImage2D.cs" />
     <Compile Include="PipelineStages\ShaderStages\Core\ITextureImage.cs" />
     <Compile Include="PipelineStages\ShaderStages\Core\SamplerState.cs" />
     <Compile Include="PipelineStages\ShaderStages\Core\Semantic.cs" />
@@ -112,43 +122,25 @@
     <Compile Include="PipelineStages\ShaderStages\VertexShader\VertexShaderInput.cs" />
     <Compile Include="PipelineStages\ShaderStages\VertexShader\VertexShaderOutput.cs" />
     <Compile Include="PipelineStages\ShaderStages\VertexShader\VertexShaderStage.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\Edge.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\IFillConvention.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\InterpolatedVertexAttribute.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\InterpolatedVertexAttributes.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\Scanline.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\TopLeftFillConvention.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\Triangle.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\TriangleGradients.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\TriangleSetupInfo.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\TriangleSetupStage.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\VertexAttributeStepValue.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\VertexAttributeStepValues.cs" />
-    <Compile Include="PipelineStages\TriangleSetup\VertexGradients.cs" />
+    <Compile Include="PipelineStages\Rasterizer\IFillConvention.cs" />
+    <Compile Include="PipelineStages\Rasterizer\InterpolatedVertexAttribute.cs" />
+    <Compile Include="PipelineStages\Rasterizer\TopLeftFillConvention.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderPipeline.cs" />
     <Compile Include="RasterizrDevice.cs" />
-    <Compile Include="Util\WriteableBitmapWrapper.cs" />
     <Compile Include="VertexAttributes\ColorFVertexAttributeValue.cs" />
     <Compile Include="VertexAttributes\Vector3DVertexAttributeValue.cs" />
     <Compile Include="VertexAttributes\FloatVertexAttributeValue.cs" />
-    <Compile Include="VertexAttributes\IVertexAttributeBuilder.cs" />
     <Compile Include="VertexAttributes\IVertexAttributeValue.cs" />
     <Compile Include="VertexAttributes\Point2DVertexAttributeValue.cs" />
     <Compile Include="VertexAttributes\Point3DVertexAttributeValue.cs" />
     <Compile Include="VertexAttributes\Point4DVertexAttributeValue.cs" />
     <Compile Include="VertexAttributes\VertexAttribute.cs" />
-    <Compile Include="VertexAttributes\VertexAttributeInterpolationType.cs" />
+    <Compile Include="VertexAttributes\VertexAttributeInterpolationModifier.cs" />
     <Compile Include="VertexAttributes\VertexAttributeValueFormat.cs" />
     <Compile Include="VertexAttributes\VertexAttributeValueUtility.cs" />
     <Compile Include="VertexPositionNormalTexture.cs" />
     <Compile Include="Viewport3D.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Nexus\src\Nexus\Nexus.csproj">
-      <Project>{0E5E31FF-D903-40BD-A787-7DA4E1D30138}</Project>
-      <Name>Nexus</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

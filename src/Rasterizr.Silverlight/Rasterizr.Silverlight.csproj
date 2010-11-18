@@ -47,6 +47,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
+    <Reference Include="Nexus.Silverlight">
+      <HintPath>..\..\lib\Nexus\Nexus.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -85,41 +88,71 @@
     <Compile Include="..\Rasterizr\PipelineStages\OutputMerger\BlendState.cs">
       <Link>PipelineStages\OutputMerger\BlendState.cs</Link>
     </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\OutputMerger\DepthBuffer.cs">
-      <Link>PipelineStages\OutputMerger\DepthBuffer.cs</Link>
+    <Compile Include="..\Rasterizr\PipelineStages\OutputMerger\DepthBufferView.cs">
+      <Link>PipelineStages\OutputMerger\DepthBufferView.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\OutputMerger\DepthStencilState.cs">
       <Link>PipelineStages\OutputMerger\DepthStencilState.cs</Link>
     </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\OutputMerger\IRenderTarget.cs">
-      <Link>PipelineStages\OutputMerger\IRenderTarget.cs</Link>
-    </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\OutputMerger\OutputMergerStage.cs">
       <Link>PipelineStages\OutputMerger\OutputMergerStage.cs</Link>
     </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\OutputMerger\WriteableBitmapRenderTarget.cs">
-      <Link>PipelineStages\OutputMerger\WriteableBitmapRenderTarget.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\PerspectiveDivide\PerspectiveDivideStage.cs">
-      <Link>PipelineStages\PerspectiveDivide\PerspectiveDivideStage.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\PerspectiveDivide\ScreenSpaceVertex.cs">
-      <Link>PipelineStages\PerspectiveDivide\ScreenSpaceVertex.cs</Link>
+    <Compile Include="..\Rasterizr\PipelineStages\OutputMerger\RenderTargetView.cs">
+      <Link>PipelineStages\OutputMerger\RenderTargetView.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\PipelineStageBase.cs">
       <Link>PipelineStages\PipelineStageBase.cs</Link>
     </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\CullingUtility.cs">
+      <Link>PipelineStages\Rasterizer\CullingUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\CullMode.cs">
+      <Link>PipelineStages\Rasterizer\CullMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\FillMode.cs">
+      <Link>PipelineStages\Rasterizer\FillMode.cs</Link>
+    </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\Fragment.cs">
       <Link>PipelineStages\Rasterizer\Fragment.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\IFillConvention.cs">
+      <Link>PipelineStages\Rasterizer\IFillConvention.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\InterpolatedVertexAttribute.cs">
+      <Link>PipelineStages\Rasterizer\InterpolatedVertexAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\InterpolatedVertexAttributeCollection.cs">
+      <Link>PipelineStages\Rasterizer\InterpolatedVertexAttributeCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\Interpolator.cs">
+      <Link>PipelineStages\Rasterizer\Interpolator.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\InterpolatorUtility.cs">
+      <Link>PipelineStages\Rasterizer\InterpolatorUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\MultiSamplingUtility.cs">
+      <Link>PipelineStages\Rasterizer\MultiSamplingUtility.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\RasterizerStage.cs">
       <Link>PipelineStages\Rasterizer\RasterizerStage.cs</Link>
     </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\Sample.cs">
+      <Link>PipelineStages\Rasterizer\Sample.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\SampleCollection.cs">
+      <Link>PipelineStages\Rasterizer\SampleCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\ScreenSpaceTrianglePrimitive.cs">
+      <Link>PipelineStages\Rasterizer\ScreenSpaceTrianglePrimitive.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\TopLeftFillConvention.cs">
+      <Link>PipelineStages\Rasterizer\TopLeftFillConvention.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\Rasterizer\TriangleSetupInfo.cs">
+      <Link>PipelineStages\Rasterizer\TriangleSetupInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\BasicEffect.cs">
       <Link>PipelineStages\ShaderStages\Core\BasicEffect.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\BitmapTextureImage2D.cs">
-      <Link>PipelineStages\ShaderStages\Core\BitmapTextureImage2D.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\DirectionalLight.cs">
       <Link>PipelineStages\ShaderStages\Core\DirectionalLight.cs</Link>
@@ -135,6 +168,9 @@
     </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\ITextureImage.cs">
       <Link>PipelineStages\ShaderStages\Core\ITextureImage.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\ITextureLoader.cs">
+      <Link>PipelineStages\ShaderStages\Core\ITextureLoader.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\SamplerState.cs">
       <Link>PipelineStages\ShaderStages\Core\SamplerState.cs</Link>
@@ -166,8 +202,20 @@
     <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\Core\TextureMipMapLevel.cs">
       <Link>PipelineStages\ShaderStages\Core\TextureMipMapLevel.cs</Link>
     </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\GeometryShader\GeometryShaderStage.cs">
+      <Link>PipelineStages\ShaderStages\GeometryShader\GeometryShaderStage.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\GeometryShader\IGeometryShader.cs">
+      <Link>PipelineStages\ShaderStages\GeometryShader\IGeometryShader.cs</Link>
+    </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\GeometryShader\Triangle.cs">
       <Link>PipelineStages\ShaderStages\GeometryShader\Triangle.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\GeometryShader\TrianglePrimitive.cs">
+      <Link>PipelineStages\ShaderStages\GeometryShader\TrianglePrimitive.cs</Link>
+    </Compile>
+    <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\GeometryShader\TriangleStream.cs">
+      <Link>PipelineStages\ShaderStages\GeometryShader\TriangleStream.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\PixelShader\IPixelShader.cs">
       <Link>PipelineStages\ShaderStages\PixelShader\IPixelShader.cs</Link>
@@ -205,48 +253,6 @@
     <Compile Include="..\Rasterizr\PipelineStages\ShaderStages\VertexShader\VertexShaderStage.cs">
       <Link>PipelineStages\ShaderStages\VertexShader\VertexShaderStage.cs</Link>
     </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\Edge.cs">
-      <Link>PipelineStages\TriangleSetup\Edge.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\IFillConvention.cs">
-      <Link>PipelineStages\TriangleSetup\IFillConvention.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\InterpolatedVertexAttribute.cs">
-      <Link>PipelineStages\TriangleSetup\InterpolatedVertexAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\InterpolatedVertexAttributeCollection.cs">
-      <Link>PipelineStages\TriangleSetup\InterpolatedVertexAttributeCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\InterpolatedVertexAttributes.cs">
-      <Link>PipelineStages\TriangleSetup\InterpolatedVertexAttributes.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\Scanline.cs">
-      <Link>PipelineStages\TriangleSetup\Scanline.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\TopLeftFillConvention.cs">
-      <Link>PipelineStages\TriangleSetup\TopLeftFillConvention.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\Triangle.cs">
-      <Link>PipelineStages\TriangleSetup\Triangle.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\TriangleGradients.cs">
-      <Link>PipelineStages\TriangleSetup\TriangleGradients.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\TriangleSetupInfo.cs">
-      <Link>PipelineStages\TriangleSetup\TriangleSetupInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\TriangleSetupStage.cs">
-      <Link>PipelineStages\TriangleSetup\TriangleSetupStage.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\VertexAttributeStepValue.cs">
-      <Link>PipelineStages\TriangleSetup\VertexAttributeStepValue.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\VertexAttributeStepValues.cs">
-      <Link>PipelineStages\TriangleSetup\VertexAttributeStepValues.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\PipelineStages\TriangleSetup\VertexGradients.cs">
-      <Link>PipelineStages\TriangleSetup\VertexGradients.cs</Link>
-    </Compile>
     <Compile Include="..\Rasterizr\RasterizrDevice.cs">
       <Link>RasterizrDevice.cs</Link>
     </Compile>
@@ -262,17 +268,11 @@
     <Compile Include="..\Rasterizr\Util\PartiallyActiveCollection.cs">
       <Link>Util\PartiallyActiveCollection.cs</Link>
     </Compile>
-    <Compile Include="..\Rasterizr\Util\WriteableBitmapWrapper.cs">
-      <Link>Util\WriteableBitmapWrapper.cs</Link>
-    </Compile>
     <Compile Include="..\Rasterizr\VertexAttributes\ColorFVertexAttributeValue.cs">
       <Link>VertexAttributes\ColorFVertexAttributeValue.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\VertexAttributes\FloatVertexAttributeValue.cs">
       <Link>VertexAttributes\FloatVertexAttributeValue.cs</Link>
-    </Compile>
-    <Compile Include="..\Rasterizr\VertexAttributes\IVertexAttributeBuilder.cs">
-      <Link>VertexAttributes\IVertexAttributeBuilder.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\VertexAttributes\IVertexAttributeValue.cs">
       <Link>VertexAttributes\IVertexAttributeValue.cs</Link>
@@ -295,8 +295,8 @@
     <Compile Include="..\Rasterizr\VertexAttributes\VertexAttributeCollection.cs">
       <Link>VertexAttributes\VertexAttributeCollection.cs</Link>
     </Compile>
-    <Compile Include="..\Rasterizr\VertexAttributes\VertexAttributeInterpolationType.cs">
-      <Link>VertexAttributes\VertexAttributeInterpolationType.cs</Link>
+    <Compile Include="..\Rasterizr\VertexAttributes\VertexAttributeInterpolationModifier.cs">
+      <Link>VertexAttributes\VertexAttributeInterpolationModifier.cs</Link>
     </Compile>
     <Compile Include="..\Rasterizr\VertexAttributes\VertexAttributeValueFormat.cs">
       <Link>VertexAttributes\VertexAttributeValueFormat.cs</Link>
@@ -317,12 +317,6 @@
       <Link>Viewport3D.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Nexus\src\Nexus.Silverlight\Nexus.Silverlight.csproj">
-      <Project>{6345C30B-B140-4F73-B037-227F73B44BDD}</Project>
-      <Name>Nexus.Silverlight</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

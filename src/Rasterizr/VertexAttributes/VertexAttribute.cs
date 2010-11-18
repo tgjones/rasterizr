@@ -4,7 +4,7 @@ namespace Rasterizr.VertexAttributes
 	{
 		public string Name;
 		public string Semantic;
-		public VertexAttributeInterpolationType InterpolationType;
+		public VertexAttributeInterpolationModifier InterpolationModifier;
 		public IVertexAttributeValue Value;
 	}
 }

@@ -6,10 +6,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Nexus;
-using Rasterizr.PipelineStages.PerspectiveDivide;
 using Rasterizr.PipelineStages.Rasterizer;
 using Rasterizr.PipelineStages.ShaderStages.PixelShader;
-using Rasterizr.PipelineStages.TriangleSetup;
 using Rasterizr.VertexAttributes;
 using Color = Nexus.Color;
 using Colors = System.Windows.Media.Colors;
@@ -18,7 +16,7 @@ namespace Rasterizr.SilverlightExamples.Views
 {
 	public partial class TriangleRasterization : Page
 	{
-		private static readonly SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
+		/*private static readonly SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
 		private static readonly SolidColorBrush GreenBrush = new SolidColorBrush(Colors.Green);
 
 		private Rectangle _draggedVertexMarker;
@@ -100,16 +98,16 @@ namespace Rasterizr.SilverlightExamples.Views
 					break;
 				}
 		}
-
+		*/
 		private void GridCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			_draggedVertexMarker = null;
-			_draggedVertexIndex = -1;
+			//_draggedVertexMarker = null;
+			//_draggedVertexIndex = -1;
 		}
 
 		private void GridCanvas_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (_draggedVertexMarker != null)
+			/*if (_draggedVertexMarker != null)
 			{
 				Point newPoint = e.GetPosition(GridCanvas);
 				newPoint.X = Math.Min(Math.Max(newPoint.X, 0), GridCanvas.Width);
@@ -118,10 +116,10 @@ namespace Rasterizr.SilverlightExamples.Views
 				Canvas.SetTop(_draggedVertexMarker, newPoint.Y - 4);
 				_vertices[_draggedVertexIndex] = newPoint;
 				RefreshTriangle();
-			}
+			}*/
 		}
 
-		private void RefreshTriangle()
+		/*private void RefreshTriangle()
 		{
 			_rawTriangleFigure.StartPoint = _vertices[0];
 			((LineSegment) _rawTriangleFigure.Segments[0]).Point = _vertices[1];
@@ -159,10 +157,6 @@ namespace Rasterizr.SilverlightExamples.Views
 			IList<Triangle> triangles = new List<Triangle>();
 			triangleSetupStage.Process(vertices, triangles);
 
-			/*foreach (Triangle triangle in triangles)
-				for (int i = 0; i < triangle.Scanlines.Length; ++i)
-					DrawScanline(triangle.Scanlines[i]);*/
-
 			// Rasterizer
 
 			RasterizerStage rasterizerStage = new RasterizerStage(new Viewport3D());
@@ -187,28 +181,10 @@ namespace Rasterizr.SilverlightExamples.Views
 			}
 		}
 
-		private void DrawScanline(Scanline scanline)
-		{
-			ScreenGrid.SetPixel(scanline.XStart, scanline.Y, BlueBrush);
-			for (int x = scanline.XStart + 1; x < scanline.XStart + scanline.Width; ++x)
-				ScreenGrid.SetPixel(x, scanline.Y, GreenBrush);
-			ScreenGrid.SetPixel(scanline.XStart + scanline.Width, scanline.Y, BlueBrush);
-		}
-
 		// http://msdn.microsoft.com/en-us/library/bb205123%28v=VS.85%29.aspx
 		// http://msdn.microsoft.com/en-us/library/bb219690%28VS.85%29.aspx
 		// http://msdn.microsoft.com/en-us/library/cc627092%28VS.85%29.aspx
 		// http://msdn.microsoft.com/en-us/library/cc308049%28v=VS.85%29.aspx
-
-		/*public struct VertexShaderOutputTest : IVertexShaderOutput
-		{
-			public Point4D Position { get; set; }
-			public ColorF Color;
-			public float U; // Perspective
-			public float V; // Perspective
-			public float T; // Linear
-			public int I; // Constant
-		}*/
 
 		public class PixelShaderInputTestShader : PixelShaderBase<PixelShaderInputTest>
 		{
@@ -224,6 +200,6 @@ namespace Rasterizr.SilverlightExamples.Views
 			public ColorF Color;
 			//public float U;
 			//public float V;
-		}
+		}*/
 	}
 }

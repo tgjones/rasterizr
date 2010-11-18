@@ -1,0 +1,23 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Views/Shared/Site.Master" %>
+
+<asp:Content ContentPlaceHolderID="TitleContent" runat="server">
+	<asp:ContentPlaceHolder runat="server" ID="TitleContent" />
+</asp:Content>
+<asp:Content ContentPlaceHolderID="MainContent" runat="server">
+	<div id="block_content">
+		<div id="content_area" class="block">
+			<div class="block_inside">
+				<asp:ContentPlaceHolder runat="server" ID="LeftBodyContent" />
+			</div>
+		</div>
+		<div id="sidebar">
+			<img src="/content/images/ribbon_navigation.png" class="ribbon" alt="Featured Project" />
+			<div class="block_inside">
+				<asp:ContentPlaceHolder runat="server" ID="RightBodyContent" />
+			</div>
+		</div>
+		<!-- a Clearing DIV to clear the DIV's because overflow:auto doesn't work here -->
+		<div style="clear: both">
+		</div>
+	</div>
+</asp:Content>

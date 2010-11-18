@@ -6,10 +6,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Nexus;
-using Rasterizr.PipelineStages.PerspectiveDivide;
 using Rasterizr.PipelineStages.Rasterizer;
 using Rasterizr.PipelineStages.ShaderStages.VertexShader;
-using Rasterizr.PipelineStages.TriangleSetup;
 using Rasterizr.VertexAttributes;
 using Color = Nexus.Color;
 using Colors = System.Windows.Media.Colors;
@@ -18,7 +16,7 @@ namespace Rasterizr.SilverlightExamples.Views
 {
 	public partial class Scanlines : Page
 	{
-		private static readonly SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
+		/*private static readonly SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
 		private static readonly SolidColorBrush GreenBrush = new SolidColorBrush(Colors.Green);
 
 		private Rectangle _draggedVertexMarker;
@@ -100,16 +98,16 @@ namespace Rasterizr.SilverlightExamples.Views
 					break;
 				}
 		}
-
+		*/
 		private void GridCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			_draggedVertexMarker = null;
-			_draggedVertexIndex = -1;
+			//_draggedVertexMarker = null;
+			//_draggedVertexIndex = -1;
 		}
 
 		private void GridCanvas_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (_draggedVertexMarker != null)
+			/*if (_draggedVertexMarker != null)
 			{
 				Point newPoint = e.GetPosition(GridCanvas1);
 				newPoint.X = Math.Min(Math.Max(newPoint.X, 0), GridCanvas1.Width);
@@ -118,9 +116,9 @@ namespace Rasterizr.SilverlightExamples.Views
 				Canvas.SetTop(_draggedVertexMarker, newPoint.Y - 4);
 				_vertices[_draggedVertexIndex] = newPoint;
 				RefreshTriangle();
-			}
+			}*/
 		}
-
+		/*
 		private void RefreshTriangle()
 		{
 			_rawTriangleFigure.StartPoint = _vertices[0];
@@ -187,14 +185,6 @@ namespace Rasterizr.SilverlightExamples.Views
 
 			List<ScreenSpaceVertex> screenSpaceVertices = new List<ScreenSpaceVertex>();
 			perspectiveDivideStage.Process(vertexShaderOutputs, screenSpaceVertices);
-
-			/*for (int i = 0; i < screenSpaceVertices.Count; ++i)
-				screenSpaceVertices[i] = new ScreenSpaceVertex
-				{
-					Position = new Point3D(ScreenGrid.TransformToScreen(screenSpaceVertices[i].Position.X), ScreenGrid.TransformToScreen(screenSpaceVertices[i].Position.Y), screenSpaceVertices[i].Position.Z),
-					Attributes = screenSpaceVertices[i].Attributes,
-					W = screenSpaceVertices[i].W
-				};*/
 
 			VertexLocations.Text = string.Format("V1 = {1}, {2}, {3}{0}V2 = {4}, {5}, {6}{0}V3 = {7}, {8}, {9}",
 				Environment.NewLine,
@@ -263,6 +253,6 @@ namespace Rasterizr.SilverlightExamples.Views
 		{
 			Color fragmentColor = (Color) color;
 			return new SolidColorBrush(System.Windows.Media.Color.FromArgb(fragmentColor.A, fragmentColor.R, fragmentColor.G, fragmentColor.B));
-		}
+		}*/
 	}
 }

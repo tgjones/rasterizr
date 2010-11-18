@@ -1,4 +1,5 @@
 using Nexus;
+using Rasterizr.PipelineStages.Rasterizer;
 
 namespace Rasterizr.PipelineStages.ShaderStages.PixelShader
 {
@@ -8,11 +9,13 @@ namespace Rasterizr.PipelineStages.ShaderStages.PixelShader
 		public int Y;
 		public ColorF Color;
 		public float Depth;
+		public SampleCollection Samples;
 
 		public Pixel(int x, int y)
 		{
 			X = x;
 			Y = y;
+			Samples = new SampleCollection();
 		}
 	}
 }

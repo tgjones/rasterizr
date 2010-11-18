@@ -1,3 +1,6 @@
+using Nexus;
+using Rasterizr.PipelineStages.Rasterizer;
+
 namespace Rasterizr.VertexAttributes
 {
 	public interface IVertexAttributeValue

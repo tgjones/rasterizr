@@ -61,6 +61,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
+    <Reference Include="Nexus.Silverlight">
+      <HintPath>..\..\lib\Nexus\Nexus.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -147,10 +150,6 @@
     <Resource Include="Assets\TinyCheckerboard.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Nexus\src\Nexus.Silverlight\Nexus.Silverlight.csproj">
-      <Project>{6345C30B-B140-4F73-B037-227F73B44BDD}</Project>
-      <Name>Nexus.Silverlight</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Rasterizr.Silverlight\Rasterizr.Silverlight.csproj">
       <Project>{7AC5E69A-BD82-4EF9-A062-D6693F4BCBE1}</Project>
       <Name>Rasterizr.Silverlight</Name>

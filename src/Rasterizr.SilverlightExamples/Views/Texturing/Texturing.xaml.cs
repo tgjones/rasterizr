@@ -11,9 +11,9 @@ using Color = System.Windows.Media.Color;
 
 namespace Rasterizr.SilverlightExamples.Views.Texturing
 {
-	public partial class Texturing : Page, IRenderTarget
+	public partial class Texturing : Page
 	{
-		private VertexPositionColor[] _vertices = new VertexPositionColor[3];
+		/*private VertexPositionColor[] _vertices = new VertexPositionColor[3];
 		private RasterizrDevice _device;
 		private BasicEffect _basicEffect;
 
@@ -27,9 +27,9 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 			InitializeComponent();
 		}
 
-		private void Page_Loaded(object sender, RoutedEventArgs e)
+		*/private void Page_Loaded(object sender, RoutedEventArgs e)
 		{
-			WriteableBitmap renderTarget1 = new WriteableBitmap((int)ImageViewport1.Width, (int)ImageViewport1.Height);
+			/*WriteableBitmap renderTarget1 = new WriteableBitmap((int)ImageViewport1.Width, (int)ImageViewport1.Height);
 			_renderTarget1 = new WriteableBitmapWrapper(renderTarget1);
 			ImageViewport1.Source = renderTarget1;
 
@@ -44,18 +44,18 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 			CreateRenderPipeline();
 			RefreshTriangle();
 
-			CompositionTarget.Rendering += CompositionTarget_Rendering;
+			CompositionTarget.Rendering += CompositionTarget_Rendering;*/
 		}
 
-		void CompositionTarget_Rendering(object sender, System.EventArgs e)
+		/*void CompositionTarget_Rendering(object sender, System.EventArgs e)
 		{
-			_angle += 0.01f;
-			RefreshTriangle();
+			//_angle += 0.01f;
+			//RefreshTriangle();
 		}
 
 		private void CreateRenderPipeline()
 		{
-			_device = new RasterizrDevice(0, 0);
+			_device = new RasterizrDevice((int)ImageViewport1.Width, (int)ImageViewport1.Height);
 
 			//_device.RenderPipeline.InputAssembler.InputLayout = VertexPositionNormalTexture.InputLayout;
 			_device.RenderPipeline.InputAssembler.InputLayout = VertexPositionColor.InputLayout;
@@ -70,15 +70,15 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 		{
 			_vertices = new[]
 			{
-				/*// Triangle 1
-				new VertexPositionNormalTexture(new Point3D(-150, 50, -50), Vector3D.Zero, new Point2D(0, 0)),
-				new VertexPositionNormalTexture(new Point3D(100, 50, -30), Vector3D.Zero, new Point2D(1, 0)),
-				new VertexPositionNormalTexture(new Point3D(-150, -50, -50), Vector3D.Zero, new Point2D(0, 1)),
+				// Triangle 1
+				//new VertexPositionNormalTexture(new Point3D(-150, 50, -50), Vector3D.Zero, new Point2D(0, 0)),
+				//new VertexPositionNormalTexture(new Point3D(100, 50, -30), Vector3D.Zero, new Point2D(1, 0)),
+				//new VertexPositionNormalTexture(new Point3D(-150, -50, -50), Vector3D.Zero, new Point2D(0, 1)),
 
 				// Triangle 2
-				new VertexPositionNormalTexture(new Point3D(100, 50, -30), Vector3D.Zero, new Point2D(1, 0)),
-				new VertexPositionNormalTexture(new Point3D(-150, -50, -50), Vector3D.Zero, new Point2D(0, 1)),
-				new VertexPositionNormalTexture(new Point3D(100, -50, -30), Vector3D.Zero, new Point2D(1, 1))*/
+				//new VertexPositionNormalTexture(new Point3D(100, 50, -30), Vector3D.Zero, new Point2D(1, 0)),
+				//new VertexPositionNormalTexture(new Point3D(-150, -50, -50), Vector3D.Zero, new Point2D(0, 1)),
+				//new VertexPositionNormalTexture(new Point3D(100, -50, -30), Vector3D.Zero, new Point2D(1, 1))
 				// Triangle 1
 				new VertexPositionColor(new Point3D(-150, 50, -50), ColorsF.Red),
 				new VertexPositionColor(new Point3D(100, 50, -30), ColorsF.Blue),
@@ -150,6 +150,6 @@ namespace Rasterizr.SilverlightExamples.Views.Texturing
 		public void EndFrame()
 		{
 			_renderTarget1.Invalidate();
-		}
+		}*/
 	}
 }

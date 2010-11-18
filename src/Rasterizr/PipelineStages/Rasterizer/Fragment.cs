@@ -10,7 +10,7 @@ namespace Rasterizr.PipelineStages.Rasterizer
 	{
 		public int X;
 		public int Y;
-		public float W; // Debugging only
+		public SampleCollection Samples;
 
 		public InterpolatedVertexAttributeCollection Attributes;
 
@@ -21,11 +21,12 @@ namespace Rasterizr.PipelineStages.Rasterizer
 			Attributes = new InterpolatedVertexAttributeCollection(RenderPipeline.MaxVertexAttributes);
 			for (int i = 0; i < RenderPipeline.MaxVertexAttributes; ++i)
 				Attributes.Add(new InterpolatedVertexAttribute());
+			Samples = new SampleCollection();
 		}
 
 		public override string ToString()
 		{
-			string result = string.Format("FRAGMENT DETAILS{0}W = {1}{0}", Environment.NewLine, W);
+			string result = string.Format("FRAGMENT DETAILS{0}", Environment.NewLine);
 			foreach (InterpolatedVertexAttribute vertexAttribute in Attributes)
 			{
 				result += string.Format("{1} = {2}; d/dx = {3}; d/dy = {4}{0}", Environment.NewLine, vertexAttribute.Name,

@@ -1,3 +1,5 @@
+using Nexus;
+
 namespace Rasterizr
 {
 	public class RasterizrDevice
@@ -19,19 +21,19 @@ namespace Rasterizr
 
 		#endregion
 
-		public void BeginFrame()
+		public void ClearDepthBuffer(float depth)
 		{
-			RenderPipeline.Clear();
+			RenderPipeline.OutputMerger.DepthBuffer.Clear(depth);
+		}
+
+		public void ClearRenderTarget(ColorF color)
+		{
+			RenderPipeline.OutputMerger.RenderTarget.Clear(color);
 		}
 
 		public void Draw()
 		{
 			RenderPipeline.Draw();
-		}
-
-		public void Present()
-		{
-			RenderPipeline.Present();
 		}
 	}
 }

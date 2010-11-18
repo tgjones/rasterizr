@@ -21,14 +21,17 @@ namespace Rasterizr.PipelineStages.ShaderStages.PixelShader
 
 		public override void Process(IList<Fragment> inputs, IList<Pixel> outputs)
 		{
-			for (int i = 0, length = inputs.Count; i < length; ++i)
+			for (int i = 0; i < inputs.Count; ++i)
 			{
 				ColorF color = PixelShader.Execute(inputs[i]);
 				Pixel pixel = _pixels[inputs[i].X, inputs[i].Y];
 				pixel.Color = color;
 
 				// Extract system-value attributes.
-				pixel.Depth = (float) inputs[i].Attributes.GetBySemantic(Semantics.SV_Depth).Value.Value;
+				pixel.Depth = (float)inputs[i].Attributes.GetBySemantic(Semantics.SV_Depth).Value.Value;
+
+				// Copy sample data.
+				pixel.Samples = inputs[i].Samples;
 
 				outputs.Add(pixel);
 			}

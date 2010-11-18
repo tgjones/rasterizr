@@ -69,6 +69,15 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 					Texture = Texture
 				};
 			}
+			else if (inputLayout.ContainsUsage(InputElementUsage.Color))
+			{
+				_effectPass.VertexShader = new VertexShaderPc();
+				_effectPass.PixelShader = new PixelShaderC(this);
+			}
+			else
+			{
+				throw new System.NotImplementedException();
+			}
 
 			EnableDefaultLighting();
 		}
@@ -113,15 +122,28 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 
 		#region Vertex shader
 
-		internal interface IWvpVertexShader : IVertexShader
+		internal interface IWvpVertexShader
 		{
 			Matrix3D WorldViewProjection { get; set; }
 		}
 
-		internal class VertexShaderPnt : VertexShaderBase<VertexPositionNormalTexture, VertexShaderOutputPnt>, IWvpVertexShader
+		internal abstract class BasicEffectVertexShader<TVertexShaderInput, TVertexShaderOutput> : VertexShaderBase<TVertexShaderInput, TVertexShaderOutput>, IWvpVertexShader
+			where TVertexShaderInput : new()
+			where TVertexShaderOutput : IVertexShaderOutput, new()
 		{
 			public Matrix3D WorldViewProjection { get; set; }
+		}
 
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct VertexShaderOutputPnt : IVertexShaderOutput
+		{
+			public Point4D Position { get; set; }
+			public Vector3D Normal;
+			public Point2D TextureCoordinate;
+		}
+
+		internal class VertexShaderPnt : BasicEffectVertexShader<VertexPositionNormalTexture, VertexShaderOutputPnt>
+		{
 			public override VertexShaderOutputPnt Execute(VertexPositionNormalTexture vertexShaderInput)
 			{
 				Point4D position = WorldViewProjection.Transform(vertexShaderInput.Position.ToHomogeneousPoint3D());
@@ -135,11 +157,23 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct VertexShaderOutputPnt : IVertexShaderOutput
+		internal struct VertexShaderOutputPc : IVertexShaderOutput
 		{
 			public Point4D Position { get; set; }
-			public Vector3D Normal;
-			public Point2D TextureCoordinate;
+			public ColorF Color;
+		}
+
+		internal class VertexShaderPc : BasicEffectVertexShader<VertexPositionColor, VertexShaderOutputPc>
+		{
+			public override VertexShaderOutputPc Execute(VertexPositionColor vertexShaderInput)
+			{
+				Point4D position = WorldViewProjection.Transform(vertexShaderInput.Position.ToHomogeneousPoint3D());
+				return new VertexShaderOutputPc
+				{
+					Position = position,
+					Color = vertexShaderInput.Color
+				};
+			}
 		}
 
 		#endregion
@@ -207,8 +241,6 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 		{
 			public Vector3D Normal;
 
-			public ColorF Diffuse;
-
 			[Semantic(Semantics.TexCoord, 0)]
 			public Point2D TextureCoordinate;
 		}
@@ -236,6 +268,27 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 				                 * new ColorF(lightResult.Diffuse, Effect.Alpha);
 				ColorF color = diffuse + new ColorF(lightResult.Specular, 0);
 				return color;
+			}
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct PixelShaderInputC
+		{
+			public Vector3D Normal;
+			public ColorF Color;
+		}
+
+		internal class PixelShaderC : BasicEffectPixelShader<PixelShaderInputC>
+		{
+			public PixelShaderC(BasicEffect effect)
+				: base(effect)
+			{
+				
+			}
+
+			public override ColorF Execute(PixelShaderInputC pin)
+			{
+				return pin.Color;
 			}
 		}
 
