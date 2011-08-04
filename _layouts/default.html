@@ -1,8 +1,28 @@
 <html>
 <head>
 	<title>{{ page.title }}</title>
+	
+	<link href="/css/reset.css" media="screen, projection" rel="stylesheet" type="text/css" /> 
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> 
 </head>
 <body>
-	{{ content }}
+	<header>
+		<div class="wrapper">
+			<h1 id="title">Rasterizr</h1>
+		</div>
+	</header>
+	
+	<section id="intro">
+		<div class="wrapper">
+			<h2>{{ page.title }}</h2>
+			<p>{{ page.intro }}</p>
+		</div>
+	</section>
+	
+	<section>
+		<div class="wrapper">
+			{{ content }}
+		</div>
+	</section>
 </body>
 </html>
