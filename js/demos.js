@@ -15,9 +15,13 @@ $(document).ready(function() {
 	for (var x = 0; x <= gridSize.width; x += cellSize) {
 		drawLineFunc("M" + (x + 0.5) + " 0L" + (x + 0.5) + " " + gridSize.height);
 	}
-		
 	for (var y = 0; y <= gridSize.height; y += cellSize) {
 		drawLineFunc("M0 " + (y + 0.5) + "L" + gridSize.width + " " + (y + 0.5));
 	}
 	
+	// Now colour in some cells.
+	paper.rect(1, 1, cellSize - 1, cellSize - 1).attr({
+		"stroke-width": 0,
+		"fill": "red"
+	});
 });
