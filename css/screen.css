@@ -1,6 +1,7 @@
 body {
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	margin-top: 10px;
+	background-color: #EDEDED;
 }
 
 header .wrapper, section .wrapper {
@@ -38,4 +39,11 @@ section#intro {
 
 p {
 	margin-bottom: 5px;
+}
+
+.box {
+	background-color: white;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	padding: 10px;
 }
