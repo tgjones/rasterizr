@@ -36,6 +36,10 @@ RasterizrDemos.Grid = function(element, width, height, cellSize) {
 		}
 	}
 	
+	this.getCellColor = function(x, y) {
+		return cells[x][y].attr().fill;
+	}
+	
 	this.setCellColor = function(x, y, color) {
 		cells[x][y].attr({
 			"fill": color
@@ -52,33 +56,67 @@ RasterizrDemos.Grid = function(element, width, height, cellSize) {
 	return this;
 };
 
-$(document).ready(function() {
-	var cellSize = 20;
+function blend(source1, source2, blendOperation)
+{
+	switch (blendOperation) {
+		case 1 : // add
+			return source1 + source2;
+		case 2 : // subtract
+			return source2 - source1;
+		case 3 : // reverse subtract
+			return source1 - source2;
+		case 4: // min
+			return Math.min(source1, source2);
+		case 5: // max
+			return Math.max(source1, source2);
+	}
+}
+
+function blendRGB(source1, source2)
+{
+	var source1RGB = Raphael.getRGB(source1);
+	var source2RGB = Raphael.getRGB(source2);
+	var blendOperation = parseInt($("#blend_operation_rgb").val());
 	
-	var grid1 = new RasterizrDemos.Grid("demo1", 300, 200, cellSize);
+	return "rgb(" + blend(source1RGB.r, source2RGB.r, blendOperation) 
+		+ ", " + blend(source1RGB.g, source2RGB.g, blendOperation) 
+		+ ", " + blend(source1RGB.b, source2RGB.b, blendOperation) + ")";
+}
+
+function refreshGrids() {
 	var renderTargetPixels = new Array();
 	for (x = 3; x < 8; x++) {
 		for (y = 1; y < 8; y++) {
-			renderTargetPixels.push({ x: x, y: y, color: "red" });
+			renderTargetPixels.push({ x: x, y: y, color: "rgba(255, 0, 0)" });
 		}
 	}
 	grid1.setCellColors(renderTargetPixels);
 	
-	var grid2 = new RasterizrDemos.Grid("demo2", 300, 200, cellSize);
 	var pixels = new Array();
 	for (x = 1; x < 14; x++) {
 		for (y = 3; y < 6; y++) {
-			pixels.push({ x: x, y: y, color: "green" });
+			pixels.push({ x: x, y: y, color: "rgba(0, 255, 0)" });
 		}
 	}
 	grid2.setCellColors(pixels);
 	
 	// Now apply some logic to calculate the result colours.
-	var grid3 = new RasterizrDemos.Grid("demo3", 300, 200, cellSize);
 	grid3.setCellColors(renderTargetPixels);
 	for (var i = 0; i < pixels.length; i++) {
 		var pixel = pixels[i];
-		grid3.setCellColor(pixel.x, pixel.y, pixel.color);
+		var destColor = grid1.getCellColor(pixel.x, pixel.y);
+		var result = blendRGB(pixel.color, destColor);
+		grid3.setCellColor(pixel.x, pixel.y, result);
 	}
+}
+
+$(document).ready(function() {
+	var cellSize = 20;
 	
+	window.grid1 = new RasterizrDemos.Grid("demo1", 300, 200, cellSize);
+	window.grid2 = new RasterizrDemos.Grid("demo2", 300, 200, cellSize);
+	window.grid3 = new RasterizrDemos.Grid("demo3", 300, 200, cellSize);
+	
+	$("#blend_operation_rgb").change(refreshGrids);
+	refreshGrids();
 });
