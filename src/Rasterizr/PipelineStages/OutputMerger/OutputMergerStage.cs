@@ -28,7 +28,7 @@ namespace Rasterizr.PipelineStages.OutputMerger
 		public OutputMergerStage()
 		{
 			DepthStencilState = new DepthStencilState();
-			BlendState = new BlendState();
+			BlendState = BlendState.Opaque;
 		}
 
 		public void Process(IList<Pixel> inputs)
@@ -44,12 +44,9 @@ namespace Rasterizr.PipelineStages.OutputMerger
 						continue;
 
 					// Use blend state to calculate final color.
-					ColorF finalColor;
-					if (BlendState.BlendEnable)
-						finalColor = BlendUtility.DoColorBlend(BlendState, pixel.Color,
-							RenderTarget[pixel.X, pixel.Y, sampleIndex]);
-					else
-						finalColor = pixel.Color;
+					ColorF finalColor = (BlendState.BlendEnable)
+						? BlendState.DoBlend(pixel.Color, RenderTarget[pixel.X, pixel.Y, sampleIndex]) 
+						: pixel.Color;
 
 					RenderTarget[pixel.X, pixel.Y, sampleIndex] = finalColor;
 

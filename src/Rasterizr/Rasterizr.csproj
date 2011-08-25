@@ -49,8 +49,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blend.cs" />
-    <Compile Include="BlendFunction.cs" />
+    <Compile Include="PipelineStages\OutputMerger\Blend.cs" />
+    <Compile Include="PipelineStages\OutputMerger\BlendFunction.cs" />
     <Compile Include="ComparisonFunc.cs" />
     <Compile Include="PipelineStages\InputAssembler\InputElementUsage.cs" />
     <Compile Include="PipelineStages\OutputMerger\BlendState.cs" />
@@ -72,7 +72,6 @@
     <Compile Include="PipelineStages\ShaderStages\Core\ITextureLoader.cs" />
     <Compile Include="PipelineStages\ShaderStages\GeometryShader\TrianglePrimitive.cs" />
     <Compile Include="SwapChain.cs" />
-    <Compile Include="Util\BlendUtility.cs" />
     <Compile Include="Util\ComparisonUtility.cs" />
     <Compile Include="VertexAttributes\VertexAttributeCollection.cs" />
     <Compile Include="VertexPositionTexture.cs" />
