@@ -1,37 +1,68 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!DOCTYPE html> 
+<html lang="en"> 
+  <head> 
+    <meta charset="utf-8">
 	
 	<title>{{ page.title }}</title>
 	
-	<link href="css/reset.css" media="screen, projection" rel="stylesheet" type="text/css" /> 
-	<link href="css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet/less" href="css/bootstrap.less">
+	<script type="text/javascript" src="js/vendor/less-1.1.3.min.js"></script>
 	
-	<script type="text/javascript" src="js/jquery-1.2.2.min.js"></script>
-	<script type="text/javascript" src="js/raphael-min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery-1.2.2.min.js"></script>
+	<script type="text/javascript" src="js/vendor/raphael-min.js"></script>
+	<script type="text/javascript" src="js/application.js"></script>
+	<script type="text/javascript" src="js/nexus/nexus.js"></script>
+	<script type="text/javascript" src="js/rasterizr/output_merger/blend.js"></script>
+	<script type="text/javascript" src="js/rasterizr/output_merger/blend_function.js"></script>
+	<script type="text/javascript" src="js/rasterizr/output_merger/blend_state.js"></script>
+	<script type="text/javascript" src="js/demo_framework/grid.js"></script>
 	<script type="text/javascript" src="js/demos.js"></script>
 </head>
 <body>
-	<header>
-		<div class="wrapper">
-			<h1 id="title">Rasterizr</h1>
-		</div>
-	</header>
+	<!-- Topbar
+	================================================== --> 
+    <div class="topbar"> 
+		<div class="fill"> 
+        	<div class="container"> 
+          		<h3><a href="#">Rasterizr</a></h3> 
+          		<ul> 
+		            <li class="active"><a href="#masthead">Overview</a></li> 
+		            <li><a href="#about">Rasterizr.js</a></li> 
+		            <li><a href="#grid-system">Source</a></li> 
+		            <li><a href="#layouts">Software rasterization</a></li> 
+         		</ul> 
+			</div> 
+		</div> 
+	</div>
 	
-	<section id="intro">
-		<div class="wrapper">
-			<h2>{{ page.title }}</h2>
-			<p>{{ page.intro }}</p>
+	<!-- Masthead (blueprinty thing)
+	================================================== -->
+	<div id="masthead">
+		<div class="inner">
+			<div class="container">
+				<h1>Rasterizr, from Formosatek</h1>
+				<p class="lead">
+					Rasterizr is a 3D software renderer, optimised for code clarity.
+				</p>
+				<p>
+					<strong>Warning:</strong> Rasterizr is <strong>slow</strong>.
+				</p>
+			</div><!-- /container -->
 		</div>
-	</section>
+	</div>
+
 	
-	<section>
-		<div class="wrapper">
-			{{ content }}
-		</div>
-	</section>
+	<div class="container"> 
+		<!-- Main Content
+		================================================== --> 
+		<section id="about"> 
+			<div class="page-header"> 
+				<h1>{{ page.title }} <small>{{ page.intro }}</small></h1> 
+			</div>
+			<div class="row"> 
+				{{ content }}
+			</div>
+		</section>
+	</div>
 </body>
 </html>
