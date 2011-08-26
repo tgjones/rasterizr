@@ -84,7 +84,7 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 		#region Pixel shader
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct DepthEffectPixelShaderInput
+		internal struct DepthEffectPixelShaderInput : IPixelShaderInput
 		{
 			public float Depth;
 		}

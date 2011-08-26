@@ -1,12 +1,12 @@
 using System.Runtime.InteropServices;
 using Nexus;
 using Rasterizr.PipelineStages.InputAssembler;
-using Rasterizr.VertexAttributes;
+using Rasterizr.PipelineStages.ShaderStages.Core;
 
 namespace Rasterizr
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public struct VertexPositionNormalTexture
+	public struct VertexPositionNormalTexture : IVertex
 	{
 		public Point3D Position;
 		public Vector3D Normal;
@@ -27,9 +27,9 @@ namespace Rasterizr
 				{
 					Elements = new[]
 					{
-						new InputElementDescription("Position", VertexAttributeValueFormat.Point3D, InputElementUsage.Position),
-						new InputElementDescription("Normal", VertexAttributeValueFormat.Vector3D, InputElementUsage.Normal),
-						new InputElementDescription("TextureCoordinate", VertexAttributeValueFormat.Point2D, InputElementUsage.TextureCoordinate)
+						new InputElementDescription(Semantics.Position, 0),
+						new InputElementDescription(Semantics.Normal, 0),
+						new InputElementDescription(Semantics.TexCoord, 0)
 					}
 				};
 			}

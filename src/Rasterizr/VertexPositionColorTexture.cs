@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using Nexus;
 using Rasterizr.PipelineStages.InputAssembler;
-using Rasterizr.VertexAttributes;
+using Rasterizr.PipelineStages.ShaderStages.Core;
 
 namespace Rasterizr
 {
@@ -27,9 +27,9 @@ namespace Rasterizr
 				{
 					Elements = new[]
 					{
-						new InputElementDescription("Position", VertexAttributeValueFormat.Point3D, InputElementUsage.Position),
-						new InputElementDescription("Color", VertexAttributeValueFormat.ColorF, InputElementUsage.Color),
-						new InputElementDescription("TextureCoordinate", VertexAttributeValueFormat.Point2D, InputElementUsage.TextureCoordinate)
+						new InputElementDescription(Semantics.Position, 0),
+						new InputElementDescription(Semantics.Color, 0),
+						new InputElementDescription(Semantics.TexCoord, 0)
 					}
 				};
 			}

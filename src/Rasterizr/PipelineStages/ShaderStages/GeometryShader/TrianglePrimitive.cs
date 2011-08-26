@@ -5,18 +5,18 @@ namespace Rasterizr.PipelineStages.ShaderStages.GeometryShader
 {
 	public struct TrianglePrimitive
 	{
-		public VertexShaderOutput V1;
-		public VertexShaderOutput V2;
-		public VertexShaderOutput V3;
+		public IVertexShaderOutput V1;
+		public IVertexShaderOutput V2;
+		public IVertexShaderOutput V3;
 
-		public TrianglePrimitive(VertexShaderOutput v1, VertexShaderOutput v2, VertexShaderOutput v3)
+		public TrianglePrimitive(IVertexShaderOutput v1, IVertexShaderOutput v2, IVertexShaderOutput v3)
 		{
 			V1 = v1;
 			V2 = v2;
 			V3 = v3;
 		}
 
-		public IEnumerable<VertexShaderOutput> Vertices
+		public IEnumerable<IVertexShaderOutput> Vertices
 		{
 			get
 			{

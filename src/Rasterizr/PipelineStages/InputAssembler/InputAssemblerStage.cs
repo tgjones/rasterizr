@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Nexus;
-using Rasterizr.PipelineStages.ShaderStages.VertexShader;
-using Rasterizr.VertexAttributes;
 
 namespace Rasterizr.PipelineStages.InputAssembler
 {
@@ -15,44 +12,22 @@ namespace Rasterizr.PipelineStages.InputAssembler
 		public IList Vertices { get; set; }
 		public Int32Collection Indices { get; set; }
 
-		public void Process(IList<VertexShaderInput> outputs)
+		public void Process(IList outputs)
 		{
-			foreach (object input in GetVertices())
-			{
-				VertexShaderInput vertexShaderInput = new VertexShaderInput
-				{
-					Attributes = new VertexAttribute[InputLayout.Elements.Length]
-				};
-				for (int i = 0; i < InputLayout.Elements.Length; i++)
-				{
-					InputElementDescription inputElement = InputLayout.Elements[i];
-					vertexShaderInput.Attributes[i] = CreateVertexAttribute(inputElement, input);
-				}
-				outputs.Add(vertexShaderInput);
-			}
+			foreach (var input in GetVertices())
+				outputs.Add(input);
 		}
 
-		private IEnumerable<object> GetVertices()
+		private IEnumerable GetVertices()
 		{
 			if (Indices == null)
-				return Vertices.Cast<object>();
+				return Vertices;
 			return GetIndexedVertices();
 		}
 
-		private IEnumerable<object> GetIndexedVertices()
+		private IEnumerable GetIndexedVertices()
 		{
-			for (int i = 0; i < Indices.Count; ++i)
-				yield return Vertices[Indices[i]];
-		}
-
-		private static VertexAttribute CreateVertexAttribute(InputElementDescription inputElementDescription, object vertexInput)
-		{
-			return new VertexAttribute
-			{
-				Name = inputElementDescription.Name,
-				InterpolationModifier = VertexAttributeInterpolationModifier.Linear,
-				Value = VertexAttributeValueUtility.ToValue(inputElementDescription.Name, inputElementDescription.Format, vertexInput)
-			};
+			return Indices.Select(t => Vertices[t]);
 		}
 	}
 }

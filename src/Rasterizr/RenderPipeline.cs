@@ -17,10 +17,10 @@ namespace Rasterizr
 
 		#region Fields
 
-		private readonly List<VertexShaderInput> _vertexShaderInputs;
-		private readonly List<VertexShaderOutput> _vertexShaderOutputs;
+		private readonly List<IVertex> _vertexShaderInputs;
+		private readonly List<IVertexShaderOutput> _vertexShaderOutputs;
 		private readonly List<TrianglePrimitive> _primitiveAssemblyOutputs;
-		private readonly List<TrianglePrimitive> _geometryShaderOutputs;
+		private readonly List<IVertexShaderOutput> _geometryShaderOutputs;
 		private readonly List<Fragment> _fragments;
 		private readonly List<Pixel> _pixels;
 
@@ -42,12 +42,12 @@ namespace Rasterizr
 			PixelShader = new PixelShaderStage(viewport);
 			OutputMerger = new OutputMergerStage();
 
-			Rasterizer = new RasterizerStage(viewport, OutputMerger);
+			Rasterizer = new RasterizerStage(viewport, PixelShader, OutputMerger);
 
-			_vertexShaderInputs = new List<VertexShaderInput>();
-			_vertexShaderOutputs = new List<VertexShaderOutput>();
+			_vertexShaderInputs = new List<IVertex>();
+			_vertexShaderOutputs = new List<IVertexShaderOutput>();
 			_primitiveAssemblyOutputs = new List<TrianglePrimitive>();
-			_geometryShaderOutputs = new List<TrianglePrimitive>();
+			_geometryShaderOutputs = new List<IVertexShaderOutput>();
 			_fragments = new List<Fragment>(viewport.Width * viewport.Height);
 			_pixels = new List<Pixel>(viewport.Width * viewport.Height);
 		}

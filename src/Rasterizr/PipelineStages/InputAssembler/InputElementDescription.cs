@@ -1,19 +1,14 @@
-using Rasterizr.VertexAttributes;
-
 namespace Rasterizr.PipelineStages.InputAssembler
 {
 	public class InputElementDescription
 	{
-		public string Name { get; set; }
-		public VertexAttributeValueFormat Format { get; set; }
-		public InputElementUsage Usage { get; set; }
+		public string SemanticName { get; set; }
+		public int SemanticIndex { get; set; }
 
-		public InputElementDescription(string name, VertexAttributeValueFormat format,
-			InputElementUsage usage)
+		public InputElementDescription(string semanticName, int semanticIndex)
 		{
-			Name = name;
-			Format = format;
-			Usage = usage;
+			SemanticName = semanticName;
+			SemanticIndex = semanticIndex;
 		}
 	}
 }

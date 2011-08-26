@@ -54,14 +54,14 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 			SpecularColor = ColorsRgbF.White;
 			World = Matrix3D.Identity;
 
-			if (inputLayout.ContainsUsage(InputElementUsage.Normal)
-				&& inputLayout.ContainsUsage(InputElementUsage.TextureCoordinate)
-				&& inputLayout.ContainsUsage(InputElementUsage.Color))
+			if (inputLayout.ContainsSemantic(Semantics.Normal, 0)
+				&& inputLayout.ContainsSemantic(Semantics.TexCoord, 0)
+				&& inputLayout.ContainsSemantic(Semantics.Color, 0))
 			{
 				throw new System.NotImplementedException();
 			}
-			else if (inputLayout.ContainsUsage(InputElementUsage.Normal)
-				&& inputLayout.ContainsUsage(InputElementUsage.TextureCoordinate))
+			else if (inputLayout.ContainsSemantic(Semantics.Normal, 0)
+				&& inputLayout.ContainsSemantic(Semantics.TexCoord, 0))
 			{
 				_effectPass.VertexShader = new VertexShaderPnt();
 				_effectPass.PixelShader = new PixelShaderNt(this)
@@ -69,7 +69,7 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 					Texture = Texture
 				};
 			}
-			else if (inputLayout.ContainsUsage(InputElementUsage.Color))
+			else if (inputLayout.ContainsSemantic(Semantics.Color, 0))
 			{
 				_effectPass.VertexShader = new VertexShaderPc();
 				_effectPass.PixelShader = new PixelShaderC(this);
@@ -187,7 +187,7 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 		}
 
 		internal abstract class BasicEffectPixelShader<TPixelShaderInput> : PixelShaderBase<TPixelShaderInput>
-			where TPixelShaderInput : new()
+			where TPixelShaderInput : IPixelShaderInput, new()
 		{
 			private readonly BasicEffect _effect;
 
@@ -237,8 +237,9 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct PixelShaderInputNt
+		internal struct PixelShaderInputNt : IPixelShaderInput
 		{
+			[Semantic(Semantics.Normal)]
 			public Vector3D Normal;
 
 			[Semantic(Semantics.TexCoord, 0)]
@@ -272,7 +273,7 @@ namespace Rasterizr.PipelineStages.ShaderStages.Core
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct PixelShaderInputC
+		internal struct PixelShaderInputC : IPixelShaderInput
 		{
 			public Vector3D Normal;
 			public ColorF Color;

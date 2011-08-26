@@ -3,8 +3,7 @@ using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Nexus;
 using Rasterizr.PipelineStages.InputAssembler;
-using Rasterizr.PipelineStages.ShaderStages.VertexShader;
-using Rasterizr.VertexAttributes;
+using Rasterizr.PipelineStages.ShaderStages.Core;
 
 namespace Rasterizr.Tests.PipelineStages.InputAssembler
 {
@@ -30,10 +29,10 @@ namespace Rasterizr.Tests.PipelineStages.InputAssembler
 					return new InputLayout
 					{
 						Elements = new[]
-					{
-						new InputElementDescription("Position", VertexAttributeValueFormat.Point3D, InputElementUsage.Position),
-						new InputElementDescription("Color", VertexAttributeValueFormat.ColorF, InputElementUsage.Color)
-					}
+						{
+							new InputElementDescription(Semantics.Position, 0),
+							new InputElementDescription(Semantics.Color, 0)
+						}
 					};
 				}
 			}
@@ -54,7 +53,7 @@ namespace Rasterizr.Tests.PipelineStages.InputAssembler
 					new TestVertexPositionColor(new Point3D(0, 0, 1), ColorsF.Red)
 				}
 			};
-			var result = new List<VertexShaderInput>();
+			var result = new List<TestVertexPositionColor>();
 
 			// Act.
 			inputAssemblerStage.Process(result);

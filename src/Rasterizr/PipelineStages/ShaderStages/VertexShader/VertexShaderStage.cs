@@ -8,16 +8,16 @@ namespace Rasterizr.PipelineStages.ShaderStages.VertexShader
 	/// positions and returns these as outputs to be used by the clipper
 	/// and rasterizer.
 	/// </summary>
-	public class VertexShaderStage : PipelineStageBase<VertexShaderInput, VertexShaderOutput>
+	public class VertexShaderStage : PipelineStageBase<IVertex, IVertexShaderOutput>
 	{
 		public IVertexShader VertexShader { get; set; }
 
-		public override void Process(IList<VertexShaderInput> inputs, IList<VertexShaderOutput> outputs)
+		public override void Process(IList<IVertex> inputs, IList<IVertexShaderOutput> outputs)
 		{
-			foreach (VertexShaderInput input in inputs)
+			foreach (IVertex input in inputs)
 			{
 				// Apply vertex shader.
-				VertexShaderOutput vertexShaderOutput = VertexShader.Execute(input);
+				IVertexShaderOutput vertexShaderOutput = VertexShader.Execute(input);
 				outputs.Add(vertexShaderOutput);
 			}
 		}

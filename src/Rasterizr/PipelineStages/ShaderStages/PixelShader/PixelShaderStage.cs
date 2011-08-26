@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Nexus;
 using Rasterizr.PipelineStages.Rasterizer;
 using Rasterizr.PipelineStages.ShaderStages.Core;
+using Rasterizr.PipelineStages.ShaderStages.VertexShader;
 
 namespace Rasterizr.PipelineStages.ShaderStages.PixelShader
 {
@@ -21,20 +22,25 @@ namespace Rasterizr.PipelineStages.ShaderStages.PixelShader
 
 		public override void Process(IList<Fragment> inputs, IList<Pixel> outputs)
 		{
-			for (int i = 0; i < inputs.Count; ++i)
+			foreach (var fragment in inputs)
 			{
-				ColorF color = PixelShader.Execute(inputs[i]);
-				Pixel pixel = _pixels[inputs[i].X, inputs[i].Y];
+				ColorF color = PixelShader.Execute(fragment);
+				Pixel pixel = _pixels[fragment.X, fragment.Y];
 				pixel.Color = color;
 
 				// Extract system-value attributes.
-				pixel.Depth = (float)inputs[i].Attributes.GetBySemantic(Semantics.SV_Depth).Value.Value;
+				pixel.Depth = fragment.Depth;
 
 				// Copy sample data.
-				pixel.Samples = inputs[i].Samples;
+				pixel.Samples = fragment.Samples;
 
 				outputs.Add(pixel);
 			}
+		}
+
+		public IPixelShaderInput BuildPixelShaderInput()
+		{
+			return PixelShader.BuildPixelShaderInput();
 		}
 	}
 }

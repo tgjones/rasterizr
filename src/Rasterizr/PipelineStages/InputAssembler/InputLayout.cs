@@ -6,9 +6,9 @@ namespace Rasterizr.PipelineStages.InputAssembler
 	{
 		public InputElementDescription[] Elements { get; set; }
 
-		public bool ContainsUsage(InputElementUsage usage)
+		public bool ContainsSemantic(string name, int index)
 		{
-			return Elements.Any(e => e.Usage == usage);
+			return Elements.Any(e => e.SemanticName == name && e.SemanticIndex == index);
 		}
 	}
 }
