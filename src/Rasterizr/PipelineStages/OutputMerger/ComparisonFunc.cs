@@ -1,4 +1,4 @@
-namespace Rasterizr
+namespace Rasterizr.PipelineStages.OutputMerger
 {
 	public enum ComparisonFunc
 	{

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Linq;
 using Nexus;
 
@@ -12,10 +13,11 @@ namespace Rasterizr.PipelineStages.InputAssembler
 		public IList Vertices { get; set; }
 		public Int32Collection Indices { get; set; }
 
-		public void Process(IList outputs)
+		public void Run(BlockingCollection<object> outputs)
 		{
 			foreach (var input in GetVertices())
 				outputs.Add(input);
+			outputs.CompleteAdding();
 		}
 
 		private IEnumerable GetVertices()

@@ -130,7 +130,7 @@ namespace Rasterizr.WpfExamples
 				//DepthEffect effect = new DepthEffect(_device);
 				//mesh.Effect = effect;
 				effect.View = camera.GetViewMatrix();
-				effect.Projection = camera.GetProjectionMatrix(_device.Viewport.AspectRatio);
+				effect.Projection = camera.GetProjectionMatrix(_device.RenderPipeline.Rasterizer.Viewport.AspectRatio);
 			}
 			_model.Draw();
 

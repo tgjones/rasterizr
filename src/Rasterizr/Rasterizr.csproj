@@ -55,12 +55,13 @@
     <Compile Include="IVertex.cs" />
     <Compile Include="PipelineStages\OutputMerger\Blend.cs" />
     <Compile Include="PipelineStages\OutputMerger\BlendFunction.cs" />
-    <Compile Include="ComparisonFunc.cs" />
+    <Compile Include="PipelineStages\OutputMerger\ComparisonFunc.cs" />
     <Compile Include="PipelineStages\OutputMerger\BlendState.cs" />
     <Compile Include="PipelineStages\OutputMerger\DepthBufferView.cs" />
     <Compile Include="PipelineStages\OutputMerger\DepthStencilState.cs" />
     <Compile Include="PipelineStages\OutputMerger\RenderTargetView.cs" />
-    <Compile Include="PipelineStages\Rasterizer\CullingUtility.cs" />
+    <Compile Include="PipelineStages\Rasterizer\ClipperSubStage.cs" />
+    <Compile Include="PipelineStages\Rasterizer\CullerSubStage.cs" />
     <Compile Include="PipelineStages\Rasterizer\CullMode.cs" />
     <Compile Include="PipelineStages\Rasterizer\FillMode.cs" />
     <Compile Include="PipelineStages\Rasterizer\Interpolation\ColorFInterpolator.cs" />
@@ -73,7 +74,9 @@
     <Compile Include="PipelineStages\Rasterizer\Interpolation\Point4DInterpolator.cs" />
     <Compile Include="PipelineStages\Rasterizer\Interpolation\Vector3DInterpolator.cs" />
     <Compile Include="PipelineStages\Rasterizer\MultiSamplingUtility.cs" />
+    <Compile Include="PipelineStages\Rasterizer\PerspectiveDividerSubStage.cs" />
     <Compile Include="PipelineStages\Rasterizer\QuadFragment.cs" />
+    <Compile Include="PipelineStages\Rasterizer\RasterizerSubStageBase.cs" />
     <Compile Include="PipelineStages\Rasterizer\Sample.cs" />
     <Compile Include="PipelineStages\Rasterizer\SampleCollection.cs" />
     <Compile Include="PipelineStages\ShaderStages\Core\DepthEffect.cs" />
@@ -83,7 +86,7 @@
     <Compile Include="PipelineStages\ShaderStages\GeometryShader\TrianglePrimitive.cs" />
     <Compile Include="PipelineStages\ShaderStages\PixelShader\IPixelShaderInput.cs" />
     <Compile Include="SwapChain.cs" />
-    <Compile Include="Util\ComparisonUtility.cs" />
+    <Compile Include="PipelineStages\OutputMerger\ComparisonUtility.cs" />
     <Compile Include="VertexPositionTexture.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelMesh.cs" />
@@ -91,7 +94,6 @@
     <Compile Include="PipelineStages\ShaderStages\GeometryShader\GeometryShaderStage.cs" />
     <Compile Include="PipelineStages\ShaderStages\GeometryShader\IGeometryShader.cs" />
     <Compile Include="PipelineStages\ShaderStages\GeometryShader\TriangleStream.cs" />
-    <Compile Include="Util\PartiallyActiveCollection.cs" />
     <Compile Include="VertexPositionColor.cs" />
     <Compile Include="VertexPositionColorTexture.cs" />
     <Compile Include="PipelineStages\ShaderStages\Core\BasicEffect.cs" />
@@ -137,6 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Util\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

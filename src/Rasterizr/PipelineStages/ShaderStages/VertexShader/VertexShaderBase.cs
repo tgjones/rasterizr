@@ -5,7 +5,7 @@ namespace Rasterizr.PipelineStages.ShaderStages.VertexShader
 	{
 		public abstract TVertexShaderOutput Execute(TVertexShaderInput vertexShaderInput);
 
-		public IVertexShaderOutput Execute(IVertex vertexShaderInput)
+		public IVertexShaderOutput Execute(object vertexShaderInput)
 		{
 			// Cast VertexShaderInput to TVertexShaderInput.
 			var input = (TVertexShaderInput) vertexShaderInput;

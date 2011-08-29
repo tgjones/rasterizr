@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Nexus;
 using Rasterizr.PipelineStages.OutputMerger;
 using Rasterizr.PipelineStages.Rasterizer.Interpolation;
@@ -12,42 +12,53 @@ namespace Rasterizr.PipelineStages.Rasterizer
 {
 	public class RasterizerStage : PipelineStageBase<IVertexShaderOutput, Fragment>
 	{
-		private readonly Viewport3D _viewport;
 		private readonly PixelShaderStage _pixelShaderStage;
 		private readonly OutputMergerStage _outputMerger;
-		private readonly Fragment[,] _fragments;
 
 		public CullMode CullMode { get; set; }
 		public FillMode FillMode { get; set; }
 		public bool MultiSampleAntiAlias { get; set; }
+		public Viewport3D Viewport { get; set; }
 
-		public RasterizerStage(Viewport3D viewport, PixelShaderStage pixelShaderStage, OutputMergerStage outputMerger)
+		public RasterizerStage(PixelShaderStage pixelShaderStage, OutputMergerStage outputMerger)
 		{
-			_viewport = viewport;
 			_pixelShaderStage = pixelShaderStage;
 			_outputMerger = outputMerger;
-
-			_fragments = new Fragment[viewport.Width, viewport.Height];
-			for (int y = 0; y < viewport.Height; ++y)
-				for (int x = 0; x < viewport.Width; ++x)
-					_fragments[x, y] = new Fragment(x, y);
 
 			CullMode = CullMode.CullCounterClockwiseFace;
 			FillMode = FillMode.Solid;
 		}
 
-		public override void Process(IList<IVertexShaderOutput> inputs, IList<Fragment> outputs)
+		public override void Run(BlockingCollection<IVertexShaderOutput> inputs, BlockingCollection<Fragment> outputs)
 		{
-			// TODO: Clipping and backface culling.
+			var perspectiveDividerOutputs = new BlockingCollection<IVertexShaderOutput>();
+			var perspectiveDivider = new PerspectiveDividerSubStage();
+			perspectiveDivider.Run(inputs, perspectiveDividerOutputs);
 
-			// Transform to screen space.
-			for (int i = 0; i < inputs.Count; i++)
-				inputs[i].Position = ToScreenCoordinates(inputs[i].Position);
+			var clipperOutputs = new BlockingCollection<IVertexShaderOutput>();
+			var clipper = new ClipperSubStage();
+			clipper.Run(perspectiveDividerOutputs, clipperOutputs);
+
+			var cullerOutputs = new BlockingCollection<IVertexShaderOutput>();
+			var culler = new CullerSubStage { CullMode = CullMode };
+			culler.Run(clipperOutputs, cullerOutputs);
 
 			// Rasterize.
-			for (int i = 0; i < inputs.Count; i += 3)
+			var inputsEnumerator = inputs.GetConsumingEnumerable().GetEnumerator();
+			while (inputsEnumerator.MoveNext())
 			{
-				var triangle = new TrianglePrimitive(inputs[i + 0], inputs[i + 1], inputs[i + 2]);
+				IVertexShaderOutput v1 = inputsEnumerator.Current;
+				inputsEnumerator.MoveNext();
+				IVertexShaderOutput v2 = inputsEnumerator.Current;
+				inputsEnumerator.MoveNext();
+				IVertexShaderOutput v3 = inputsEnumerator.Current;
+
+				// Transform to screen space.
+				v1.Position = ToScreenCoordinates(v1.Position);
+				v2.Position = ToScreenCoordinates(v2.Position);
+				v3.Position = ToScreenCoordinates(v3.Position);
+
+				var triangle = new TrianglePrimitive(v1, v2, v3);
 
 				// Determine screen bounds of triangle so we know which pixels to test.
 				Box2D screenBounds = GetScreenBounds(triangle);
@@ -56,6 +67,7 @@ namespace Rasterizr.PipelineStages.Rasterizer
 				// If they are, calculate the coverage.
 				ScanSamples(screenBounds, outputs, triangle);
 			}
+			outputs.CompleteAdding();
 		}
 
 		private Point4D ToScreenCoordinates(Point4D position)
@@ -77,8 +89,8 @@ namespace Rasterizr.PipelineStages.Rasterizer
 			}
 
 			// pra coordenadas de tela
-			position.X *= (_viewport.Width - 1);
-			position.Y *= (_viewport.Height - 1);
+			position.X *= (Viewport.Width - 1);
+			position.Y *= (Viewport.Height - 1);
 			return position;
 		}
 
@@ -113,7 +125,7 @@ namespace Rasterizr.PipelineStages.Rasterizer
 				x, y, sampleIndex);
 		}
 
-		private void ScanSamples(Box2D screenBounds, IList<Fragment> outputs, TrianglePrimitive triangle)
+		private void ScanSamples(Box2D screenBounds, BlockingCollection<Fragment> outputs, TrianglePrimitive triangle)
 		{
 			Point4D p0 = triangle.V1.Position;
 			Point4D p1 = triangle.V2.Position;

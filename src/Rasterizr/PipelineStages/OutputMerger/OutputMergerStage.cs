@@ -1,8 +1,8 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Nexus;
 using Nexus.Graphics;
 using Rasterizr.PipelineStages.ShaderStages.PixelShader;
-using Rasterizr.Util;
 
 namespace Rasterizr.PipelineStages.OutputMerger
 {
@@ -31,9 +31,9 @@ namespace Rasterizr.PipelineStages.OutputMerger
 			BlendState = BlendState.Opaque;
 		}
 
-		public void Process(IList<Pixel> inputs)
+		public void Run(BlockingCollection<Pixel> inputs)
 		{
-			foreach (Pixel pixel in inputs)
+			foreach (Pixel pixel in inputs.GetConsumingEnumerable())
 			{
 				for (int sampleIndex = 0; sampleIndex < pixel.Samples.Count; ++sampleIndex)
 				{

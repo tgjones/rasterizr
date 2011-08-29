@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Nexus;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using Rasterizr.PipelineStages.InputAssembler;
 using Rasterizr.PipelineStages.OutputMerger;
 using Rasterizr.PipelineStages.Rasterizer;
@@ -13,19 +11,6 @@ namespace Rasterizr
 {
 	public class RenderPipeline
 	{
-		public const int MaxVertexAttributes = 16;
-
-		#region Fields
-
-		private readonly List<IVertex> _vertexShaderInputs;
-		private readonly List<IVertexShaderOutput> _vertexShaderOutputs;
-		private readonly List<TrianglePrimitive> _primitiveAssemblyOutputs;
-		private readonly List<IVertexShaderOutput> _geometryShaderOutputs;
-		private readonly List<Fragment> _fragments;
-		private readonly List<Pixel> _pixels;
-
-		#endregion
-
 		public InputAssemblerStage InputAssembler { get; private set; }
 		public VertexShaderStage VertexShader { get; private set; }
 		public GeometryShaderStage GeometryShader { get; private set; }
@@ -33,66 +18,34 @@ namespace Rasterizr
 		public PixelShaderStage PixelShader { get; private set; }
 		public OutputMergerStage OutputMerger { get; set; }
 
-		public RenderPipeline(Viewport3D viewport)
+		public RenderPipeline()
 		{
 			InputAssembler = new InputAssemblerStage();
 			VertexShader = new VertexShaderStage();
 			GeometryShader = new GeometryShaderStage();
 			
-			PixelShader = new PixelShaderStage(viewport);
+			PixelShader = new PixelShaderStage();
 			OutputMerger = new OutputMergerStage();
 
-			Rasterizer = new RasterizerStage(viewport, PixelShader, OutputMerger);
-
-			_vertexShaderInputs = new List<IVertex>();
-			_vertexShaderOutputs = new List<IVertexShaderOutput>();
-			_primitiveAssemblyOutputs = new List<TrianglePrimitive>();
-			_geometryShaderOutputs = new List<IVertexShaderOutput>();
-			_fragments = new List<Fragment>(viewport.Width * viewport.Height);
-			_pixels = new List<Pixel>(viewport.Width * viewport.Height);
+			Rasterizer = new RasterizerStage(PixelShader, OutputMerger);
 		}
 
 		public void Draw()
 		{
-			_vertexShaderInputs.Clear();
-			_vertexShaderOutputs.Clear();
-			_primitiveAssemblyOutputs.Clear();
-			_geometryShaderOutputs.Clear();
-			_fragments.Clear();
-			_pixels.Clear();
+			var inputAssemblerOutputs = new BlockingCollection<object>();
+			var vertexShaderOutputs = new BlockingCollection<IVertexShaderOutput>();
+			var geometryShaderOutputs = new BlockingCollection<IVertexShaderOutput>();
+			var rasterizerOutputs = new BlockingCollection<Fragment>();
+			var pixelShaderOutputs = new BlockingCollection<Pixel>();
 
-			InputAssembler.Process(_vertexShaderInputs);
-			Log(_vertexShaderInputs, "Input assembler");
-
-			VertexShader.Process(_vertexShaderInputs, _vertexShaderOutputs);
-			Log(_vertexShaderOutputs, "Vertex shader");
-
-			GeometryShader.Process(_vertexShaderOutputs, _geometryShaderOutputs);
-			Log(_geometryShaderOutputs, "Geometry shader");
-
-			// New rasterizer: We are supplied the triangle coordinates in
-			// screen space. Calculate bounding rect, and walk through every
-			// sample, using edge equations to determine coverage.
-			// Once coverage is determined, interpolate vertex attributes for each
-			// pixel, using either pixel centre or centroid sampling as required.
-			// Do this for 2x2 pixels at a time so that derivatives can be
-			// calculated.
-
-			Rasterizer.Process(_geometryShaderOutputs, _fragments);
-			Log(_fragments, "Rasterizer");
-
-			PixelShader.Process(_fragments, _pixels);
-			Log(_pixels, "Pixel shader");
-
-			OutputMerger.Process(_pixels);
-			Log(_pixels, "Output merger");
-		}
-
-		private void Log(ICollection collection, string title)
-		{
-#if !SILVERLIGHT
-			Trace.WriteLine("Outputs from " + title + ": " + collection.Count);
-#endif
+			var taskFactory = Task.Factory;
+			Task.WaitAll(
+				taskFactory.StartNew(() => InputAssembler.Run(inputAssemblerOutputs)),
+				taskFactory.StartNew(() => VertexShader.Run(inputAssemblerOutputs, vertexShaderOutputs)),
+				taskFactory.StartNew(() => GeometryShader.Run(vertexShaderOutputs, geometryShaderOutputs)),
+				taskFactory.StartNew(() => Rasterizer.Run(geometryShaderOutputs, rasterizerOutputs)),
+				taskFactory.StartNew(() => PixelShader.Run(rasterizerOutputs, pixelShaderOutputs)),
+				taskFactory.StartNew(() => OutputMerger.Run(pixelShaderOutputs)));
 		}
 	}
 }

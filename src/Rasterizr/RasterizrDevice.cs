@@ -7,7 +7,6 @@ namespace Rasterizr
 		#region Properties
 
 		public RenderPipeline RenderPipeline { get; private set; }
-		public Viewport3D Viewport { get; set; }
 
 		#endregion
 
@@ -15,8 +14,14 @@ namespace Rasterizr
 
 		public RasterizrDevice(int width, int height)
 		{
-			Viewport = new Viewport3D { X = 0, Y = 0, Width = width, Height = height };
-			RenderPipeline = new RenderPipeline(Viewport);
+			RenderPipeline = new RenderPipeline();
+			RenderPipeline.Rasterizer.Viewport = new Viewport3D
+			{
+				X = 0, 
+				Y = 0, 
+				Width = width,
+				Height = height
+			};
 		}
 
 		#endregion

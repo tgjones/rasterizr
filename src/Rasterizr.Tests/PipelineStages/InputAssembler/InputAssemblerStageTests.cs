@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Nexus;
@@ -53,10 +54,10 @@ namespace Rasterizr.Tests.PipelineStages.InputAssembler
 					new TestVertexPositionColor(new Point3D(0, 0, 1), ColorsF.Red)
 				}
 			};
-			var result = new List<TestVertexPositionColor>();
+			var result = new BlockingCollection<object>();
 
 			// Act.
-			inputAssemblerStage.Process(result);
+			inputAssemblerStage.Run(result);
 		}
 	}
 }
