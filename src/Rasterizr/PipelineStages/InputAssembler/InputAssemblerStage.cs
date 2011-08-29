@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -15,21 +16,43 @@ namespace Rasterizr.PipelineStages.InputAssembler
 
 		public void Run(BlockingCollection<object> outputs)
 		{
-			foreach (var input in GetVertices())
-				outputs.Add(input);
+			switch (PrimitiveTopology)
+			{
+				case PrimitiveTopology.TriangleList:
+					foreach (var vertex in GetVertices())
+						outputs.Add(vertex);
+					break;
+				case PrimitiveTopology.TriangleStrip:
+					var vertices = GetVertices();
+					bool even = true;
+					for (int i = 0; i <= vertices.Count - 3; i++)
+					{
+						if (even)
+						{
+							outputs.Add(Vertices[i + 0]);
+							outputs.Add(Vertices[i + 1]);
+							outputs.Add(Vertices[i + 2]);
+						}
+						else
+						{
+							outputs.Add(Vertices[i + 0]);
+							outputs.Add(Vertices[i + 2]);
+							outputs.Add(Vertices[i + 1]);
+						}
+						even = !even;
+					}
+					break;
+				default:
+					throw new NotSupportedException();
+			}
 			outputs.CompleteAdding();
 		}
 
-		private IEnumerable GetVertices()
+		private IList GetVertices()
 		{
-			if (Indices == null)
-				return Vertices;
-			return GetIndexedVertices();
-		}
-
-		private IEnumerable GetIndexedVertices()
-		{
-			return Indices.Select(t => Vertices[t]);
+			if (Indices != null)
+				return Indices.Select(t => Vertices[t]).ToList();
+			return Vertices;
 		}
 	}
 }

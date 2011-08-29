@@ -52,7 +52,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IVertex.cs" />
     <Compile Include="PipelineStages\OutputMerger\Blend.cs" />
     <Compile Include="PipelineStages\OutputMerger\BlendFunction.cs" />
     <Compile Include="PipelineStages\OutputMerger\ComparisonFunc.cs" />
@@ -61,6 +60,7 @@
     <Compile Include="PipelineStages\OutputMerger\DepthStencilState.cs" />
     <Compile Include="PipelineStages\OutputMerger\RenderTargetView.cs" />
     <Compile Include="PipelineStages\Rasterizer\ClipperSubStage.cs" />
+    <Compile Include="PipelineStages\Rasterizer\ScreenMapperSubStage.cs" />
     <Compile Include="PipelineStages\Rasterizer\CullerSubStage.cs" />
     <Compile Include="PipelineStages\Rasterizer\CullMode.cs" />
     <Compile Include="PipelineStages\Rasterizer\FillMode.cs" />
@@ -140,9 +140,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Util\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

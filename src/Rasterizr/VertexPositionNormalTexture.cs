@@ -6,7 +6,7 @@ using Rasterizr.PipelineStages.ShaderStages.Core;
 namespace Rasterizr
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public struct VertexPositionNormalTexture : IVertex
+	public struct VertexPositionNormalTexture
 	{
 		public Point3D Position;
 		public Vector3D Normal;

@@ -14,7 +14,7 @@ namespace Rasterizr.PipelineStages.ShaderStages.VertexShader
 
 		public override void Run(BlockingCollection<object> inputs, BlockingCollection<IVertexShaderOutput> outputs)
 		{
-			foreach (IVertex input in inputs.GetConsumingEnumerable())
+			foreach (object input in inputs.GetConsumingEnumerable())
 			{
 				// Apply vertex shader.
 				IVertexShaderOutput vertexShaderOutput = VertexShader.Execute(input);

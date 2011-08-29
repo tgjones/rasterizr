@@ -43,8 +43,12 @@ namespace Rasterizr.PipelineStages.Rasterizer
 			var culler = new CullerSubStage { CullMode = CullMode };
 			culler.Run(clipperOutputs, cullerOutputs);
 
+			var screenMapperOutputs = new BlockingCollection<IVertexShaderOutput>();
+			var screenMapper = new ScreenMapperSubStage { Viewport = Viewport };
+			screenMapper.Run(cullerOutputs, screenMapperOutputs);
+
 			// Rasterize.
-			var inputsEnumerator = inputs.GetConsumingEnumerable().GetEnumerator();
+			var inputsEnumerator = screenMapperOutputs.GetConsumingEnumerable().GetEnumerator();
 			while (inputsEnumerator.MoveNext())
 			{
 				IVertexShaderOutput v1 = inputsEnumerator.Current;
@@ -52,11 +56,6 @@ namespace Rasterizr.PipelineStages.Rasterizer
 				IVertexShaderOutput v2 = inputsEnumerator.Current;
 				inputsEnumerator.MoveNext();
 				IVertexShaderOutput v3 = inputsEnumerator.Current;
-
-				// Transform to screen space.
-				v1.Position = ToScreenCoordinates(v1.Position);
-				v2.Position = ToScreenCoordinates(v2.Position);
-				v3.Position = ToScreenCoordinates(v3.Position);
 
 				var triangle = new TrianglePrimitive(v1, v2, v3);
 
@@ -68,30 +67,6 @@ namespace Rasterizr.PipelineStages.Rasterizer
 				ScanSamples(screenBounds, outputs, triangle);
 			}
 			outputs.CompleteAdding();
-		}
-
-		private Point4D ToScreenCoordinates(Point4D position)
-		{
-			// pra [0,1]
-			position.X = (position.X + 1f) / 2.0f;
-			position.Y = (position.Y + 1f) / 2.0f;
-
-			if (position.X > 1 || position.Y > 1 || position.X < 0 || position.Y < 0)
-			{
-				// we got a situation
-				throw new Exception("BLA");
-			}
-
-			if (position.Z < 0)
-			{
-				// we got a situation also
-				throw new Exception("BLA");
-			}
-
-			// pra coordenadas de tela
-			position.X *= (Viewport.Width - 1);
-			position.Y *= (Viewport.Height - 1);
-			return position;
 		}
 
 		private static Box2D GetScreenBounds(TrianglePrimitive triangle)
