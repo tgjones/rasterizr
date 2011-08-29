@@ -7,8 +7,8 @@ using Nexus.Graphics.Cameras;
 //using Oriel;
 //using Oriel.WarpRenderer;
 using Rasterizr.Meshellator;
-using Rasterizr.PipelineStages.OutputMerger;
-using Rasterizr.PipelineStages.ShaderStages.Core;
+using Rasterizr.OutputMerger;
+using Rasterizr.ShaderStages.Core;
 
 namespace Rasterizr.WpfExamples
 {

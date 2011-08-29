@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Nexus;
-using Rasterizr.PipelineStages.ShaderStages.Core;
+using Rasterizr.ShaderStages.Core;
 
 namespace Rasterizr
 {

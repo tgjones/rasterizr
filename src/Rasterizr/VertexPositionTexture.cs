@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using Nexus;
-using Rasterizr.PipelineStages.InputAssembler;
-using Rasterizr.PipelineStages.ShaderStages.Core;
+using Rasterizr.InputAssembler;
+using Rasterizr.ShaderStages.Core;
 
 namespace Rasterizr
 {

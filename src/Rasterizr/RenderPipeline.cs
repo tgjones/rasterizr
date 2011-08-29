@@ -1,11 +1,11 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Rasterizr.PipelineStages.InputAssembler;
-using Rasterizr.PipelineStages.OutputMerger;
-using Rasterizr.PipelineStages.Rasterizer;
-using Rasterizr.PipelineStages.ShaderStages.GeometryShader;
-using Rasterizr.PipelineStages.ShaderStages.PixelShader;
-using Rasterizr.PipelineStages.ShaderStages.VertexShader;
+using Rasterizr.InputAssembler;
+using Rasterizr.OutputMerger;
+using Rasterizr.Rasterizer;
+using Rasterizr.ShaderStages.GeometryShader;
+using Rasterizr.ShaderStages.PixelShader;
+using Rasterizr.ShaderStages.VertexShader;
 
 namespace Rasterizr
 {

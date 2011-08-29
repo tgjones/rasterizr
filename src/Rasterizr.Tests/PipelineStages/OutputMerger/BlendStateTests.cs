@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using Nexus;
-using Rasterizr.PipelineStages.OutputMerger;
+using Rasterizr.OutputMerger;
 
 namespace Rasterizr.Tests.PipelineStages.OutputMerger
 {

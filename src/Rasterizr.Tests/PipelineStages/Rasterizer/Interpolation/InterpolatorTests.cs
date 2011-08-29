@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using Nexus;
-using Rasterizr.PipelineStages.Rasterizer.Interpolation;
+using Rasterizr.Rasterizer.Interpolation;
 
 namespace Rasterizr.Tests.PipelineStages.Rasterizer.Interpolation
 {

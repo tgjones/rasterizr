@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using NUnit.Framework;
 using Nexus;
-using Rasterizr.PipelineStages.ShaderStages.VertexShader;
+using Rasterizr.ShaderStages.VertexShader;
 
 namespace Rasterizr.Tests.PipelineStages.ShaderStages.VertexShader
 {

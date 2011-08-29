@@ -2,7 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Nexus;
-using Rasterizr.PipelineStages.InputAssembler;
+using Rasterizr.InputAssembler;
 
 namespace Rasterizr.Tests.PipelineStages.InputAssembler
 {
