@@ -2,10 +2,16 @@ namespace Rasterizr.PipelineStages.Rasterizer.Interpolation
 {
 	public class FloatInterpolator : ValueInterpolator<float>
 	{
-		public override float Linear(float alpha, float beta, float gamma,
+		public static float InterpolateLinear(float alpha, float beta, float gamma,
 			float p1, float p2, float p3)
 		{
 			return p1 * alpha + p2 * beta + p3 * gamma;
+		}
+
+		public override float Linear(float alpha, float beta, float gamma,
+			float p1, float p2, float p3)
+		{
+			return InterpolateLinear(alpha, beta, gamma, p1, p2, p3);
 		}
 
 		public override float Perspective(float alpha, float beta, float gamma,
