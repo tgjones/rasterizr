@@ -55,7 +55,9 @@
     <Compile Include="PipelineStages\InputAssembler\InputAssemblerStageTests.cs" />
     <Compile Include="PipelineStages\OutputMerger\BlendStateTests.cs" />
     <Compile Include="PipelineStages\Rasterizer\Interpolation\InterpolatorTests.cs" />
+    <Compile Include="PipelineStages\ShaderStages\VertexShader\VertexShaderStageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestVertexPositionColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

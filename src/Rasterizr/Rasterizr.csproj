@@ -103,7 +103,6 @@
     <Compile Include="PipelineStages\InputAssembler\InputAssemblerStage.cs" />
     <Compile Include="PipelineStages\InputAssembler\InputElementDescription.cs" />
     <Compile Include="PipelineStages\InputAssembler\InputLayout.cs" />
-    <Compile Include="PipelineStages\InputAssembler\IVertexShaderInputBuilder.cs" />
     <Compile Include="PipelineStages\OutputMerger\OutputMergerStage.cs" />
     <Compile Include="PipelineStages\PipelineStageBase.cs" />
     <Compile Include="PipelineStages\Rasterizer\Fragment.cs" />
