@@ -1,6 +1,6 @@
 using System;
 
-namespace Rasterizr.Util
+namespace Rasterizr.PipelineStages.OutputMerger
 {
 	public static class ComparisonUtility
 	{
