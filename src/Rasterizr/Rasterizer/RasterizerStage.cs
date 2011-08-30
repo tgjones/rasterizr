@@ -17,7 +17,11 @@ namespace Rasterizr.Rasterizer
 
 		public CullMode CullMode { get; set; }
 		public FillMode FillMode { get; set; }
+
+		// TODO: Hook ths property up. Should only affect line rasterization
+		// (from http://msdn.microsoft.com/en-us/library/bb694530(v=vs.85).aspx)
 		public bool MultiSampleAntiAlias { get; set; }
+
 		public Viewport3D Viewport { get; set; }
 
 		public RasterizerStage(PixelShaderStage pixelShaderStage, OutputMergerStage outputMerger)
@@ -112,7 +116,7 @@ namespace Rasterizr.Rasterizer
 				for (int y = screenBounds.Min.Y - 1; y <= screenBounds.Max.Y + 1; y++)
 				{
 					// Check all samples to determine whether they are inside the triangle.
-					SampleCollection samples = new SampleCollection();
+					var samples = new SampleCollection();
 					bool anyCoveredSamples = false;
 					for (int sampleIndex = 0; sampleIndex < _outputMerger.RenderTarget.MultiSampleCount; ++sampleIndex)
 					{
@@ -162,6 +166,9 @@ namespace Rasterizr.Rasterizer
 							// Set value onto pixel shader input.
 							pixelShaderInputDescription.SetValue(pixelShaderInput, property.Semantic, interpolatedValue);
 						}
+
+						fragment.PixelShaderInput = pixelShaderInput;
+						fragment.Samples = samples;
 
 						// TODO: Is this needed? We already have the depths for each sample.
 						fragment.Depth = FloatInterpolator.InterpolateLinear(alpha, beta, gamma, p0.Z, p1.Z, p2.Z);

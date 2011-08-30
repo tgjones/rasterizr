@@ -4,7 +4,7 @@
 	/// Stores 2x2 pixels. Used by the rasterizer to process quads of fragments, instead
 	/// of individual fragments, so that the pixel shader can access partial derivatives.
 	/// </summary>
-	public class QuadFragment
+	public class PixelQuad
 	{
 		public Fragment F1 { get; set; }
 		public Fragment F2 { get; set; }

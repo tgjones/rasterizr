@@ -75,7 +75,7 @@
     <Compile Include="Rasterizer\Interpolation\Vector3DInterpolator.cs" />
     <Compile Include="Rasterizer\MultiSamplingUtility.cs" />
     <Compile Include="Rasterizer\PerspectiveDividerSubStage.cs" />
-    <Compile Include="Rasterizer\QuadFragment.cs" />
+    <Compile Include="Rasterizer\PixelQuad.cs" />
     <Compile Include="Rasterizer\RasterizerSubStageBase.cs" />
     <Compile Include="Rasterizer\Sample.cs" />
     <Compile Include="Rasterizer\SampleCollection.cs" />
