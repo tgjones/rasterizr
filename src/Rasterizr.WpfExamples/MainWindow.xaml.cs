@@ -107,8 +107,8 @@ namespace Rasterizr.WpfExamples
 
 		private void RefreshTriangle()
 		{
-			//_device.ClearDepthBuffer(1);
-			//_device.ClearRenderTarget(ColorsF.Green);
+			_device.ClearDepthBuffer(1);
+			_device.ClearRenderTarget(ColorsF.Green);
 			DrawTriangle();
 		}
 
