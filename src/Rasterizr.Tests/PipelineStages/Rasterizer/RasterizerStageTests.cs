@@ -13,7 +13,7 @@ namespace Rasterizr.Tests.PipelineStages.Rasterizer
 	[TestFixture]
 	public class RasterizerStageTests
 	{
-		private struct TestVertexColor : IVertexShaderOutput, IPixelShaderInput
+		private struct TestVertexColor : IVertexShaderOutput
 		{
 			public Point4D Position { get; set; }
 			public ColorF Color;

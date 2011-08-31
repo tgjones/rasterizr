@@ -56,6 +56,7 @@
     <Compile Include="PipelineStages\OutputMerger\BlendStateTests.cs" />
     <Compile Include="PipelineStages\Rasterizer\Interpolation\InterpolatorTests.cs" />
     <Compile Include="PipelineStages\Rasterizer\RasterizerStageTests.cs" />
+    <Compile Include="PipelineStages\ShaderStages\Core\ShaderInputOutputDescriptionTests.cs" />
     <Compile Include="PipelineStages\ShaderStages\GeometryShader\GeometryShaderStageTests.cs" />
     <Compile Include="PipelineStages\ShaderStages\VertexShader\VertexShaderStageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

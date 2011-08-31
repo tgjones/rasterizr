@@ -30,7 +30,7 @@ namespace Rasterizr
 			Rasterizer = new RasterizerStage(PixelShader, OutputMerger);
 		}
 
-		public void Draw()
+		internal void Draw()
 		{
 			var inputAssemblerOutputs = new BlockingCollection<object>();
 			var vertexShaderOutputs = new BlockingCollection<IVertexShaderOutput>();

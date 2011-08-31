@@ -187,7 +187,7 @@ namespace Rasterizr.ShaderStages.Core
 		}
 
 		internal abstract class BasicEffectPixelShader<TPixelShaderInput> : PixelShaderBase<TPixelShaderInput>
-			where TPixelShaderInput : IPixelShaderInput, new()
+			where TPixelShaderInput : new()
 		{
 			private readonly BasicEffect _effect;
 
@@ -237,7 +237,7 @@ namespace Rasterizr.ShaderStages.Core
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct PixelShaderInputNt : IPixelShaderInput
+		internal struct PixelShaderInputNt
 		{
 			[Semantic(Semantics.Normal)]
 			public Vector3D Normal;
@@ -273,7 +273,7 @@ namespace Rasterizr.ShaderStages.Core
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct PixelShaderInputC : IPixelShaderInput
+		internal struct PixelShaderInputC
 		{
 			public Vector3D Normal;
 			public ColorF Color;

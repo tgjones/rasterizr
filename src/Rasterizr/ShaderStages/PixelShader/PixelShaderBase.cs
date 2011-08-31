@@ -7,7 +7,7 @@ using Rasterizr.ShaderStages.Core;
 namespace Rasterizr.ShaderStages.PixelShader
 {
 	public abstract class PixelShaderBase<TPixelShaderInput> : ShaderBase, IPixelShader
-		where TPixelShaderInput : IPixelShaderInput, new()
+		where TPixelShaderInput : new()
 	{
 		/// <summary>
 		/// The presence of this field means the PixelShaderBase class is not thread-safe.
@@ -16,7 +16,7 @@ namespace Rasterizr.ShaderStages.PixelShader
 
 		public abstract ColorF Execute(TPixelShaderInput pixelShaderInput);
 
-		public IPixelShaderInput BuildPixelShaderInput()
+		public object BuildPixelShaderInput()
 		{
 			return new TPixelShaderInput();
 		}

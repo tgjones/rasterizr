@@ -84,7 +84,6 @@
     <Compile Include="ShaderStages\Core\ITextureLoader.cs" />
     <Compile Include="ShaderStages\Core\ShaderInputOutputDescription.cs" />
     <Compile Include="ShaderStages\GeometryShader\TrianglePrimitive.cs" />
-    <Compile Include="ShaderStages\PixelShader\IPixelShaderInput.cs" />
     <Compile Include="SwapChain.cs" />
     <Compile Include="OutputMerger\ComparisonUtility.cs" />
     <Compile Include="VertexPositionTexture.cs" />

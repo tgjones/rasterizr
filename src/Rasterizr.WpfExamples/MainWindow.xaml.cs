@@ -1,14 +1,15 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Meshellator;
 using Nexus;
 using Nexus.Graphics.Cameras;
-//using Oriel;
-//using Oriel.WarpRenderer;
 using Rasterizr.Meshellator;
 using Rasterizr.OutputMerger;
 using Rasterizr.ShaderStages.Core;
+using Rasterizr.ShaderStages.PixelShader;
+using Rasterizr.ShaderStages.VertexShader;
 
 namespace Rasterizr.WpfExamples
 {
@@ -17,15 +18,6 @@ namespace Rasterizr.WpfExamples
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private Model _model;
-		private RasterizrDevice _device;
-		//private WarpDevice _warpDevice;
-		//private BasicEffect _basicEffect;
-
-		private SwapChain _imageRenderer;
-
-		private float _angle;
-
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -33,122 +25,97 @@ namespace Rasterizr.WpfExamples
 
 		private void Page_Loaded(object sender, RoutedEventArgs e)
 		{
-			WriteableBitmap outputImage = new WriteableBitmap((int)ImageViewport.Width, (int)ImageViewport.Height,
+			var outputImage = new WriteableBitmap((int)ImageViewport.Width, (int)ImageViewport.Height,
 				96, 96, PixelFormats.Bgra32, null);
 
-			_device = new RasterizrDevice((int)ImageViewport.Width, (int)ImageViewport.Height);
-			//_warpDevice = new WarpDevice((int) ImageViewport.Width, (int) ImageViewport.Height);
-			_imageRenderer = new SwapChain(outputImage, (int)ImageViewport.Width, (int)ImageViewport.Height, 1);
-			//_imageRenderer = new ImageRenderer(_warpDevice, outputImage, (int)ImageViewport.Width, (int)ImageViewport.Height, 1);
-
-			//_warpDevice.SetRenderTarget(_imageRenderer.GetBuffer());
+			var device = new RasterizrDevice((int)ImageViewport.Width, (int)ImageViewport.Height);
+			var imageRenderer = new SwapChain(outputImage, (int)ImageViewport.Width, (int)ImageViewport.Height, 1);
 
 			ImageViewport.Source = outputImage;
 
-			CreateRenderPipeline();
-			CreateVertices();
-			RefreshTriangle();
+			device.RenderPipeline.OutputMerger.RenderTarget = new RenderTargetView(imageRenderer.GetBuffer());
 
-			//CompositionTarget.Rendering += CompositionTarget_Rendering;
-		}
+			//Scene scene = MeshellatorLoader.ImportFromFile(@"Assets\85-nissan-fairlady.3ds");
+			//var model = ModelLoader.FromScene(device, scene);
 
-		void CompositionTarget_Rendering(object sender, System.EventArgs e)
-		{
-			_angle += 0.01f;
-			RefreshTriangle();
-		}
+			//device.ClearDepthBuffer(1);
+			//device.ClearRenderTarget(ColorsF.Green);
 
-		private void CreateRenderPipeline()
-		{
-			
+			//Camera camera = PerspectiveCamera.CreateFromBounds(scene.Bounds, MathUtility.PI_OVER_4);
+			//foreach (ModelMesh mesh in model.Meshes)
+			//{
+			//    var effect = (BasicEffect) mesh.Effect;
+			//    effect.View = camera.GetViewMatrix();
+			//    effect.Projection = camera.GetProjectionMatrix(device.RenderPipeline.Rasterizer.Viewport.AspectRatio);
+			//}
+			//model.Draw();
 
-			//_device.RenderPipeline.InputAssembler.InputLayout = VertexPositionNormalTexture.InputLayout;
-			//_device.RenderPipeline.InputAssembler.InputLayout = VertexPositionColor.InputLayout;
-			//_device.RenderPipeline.InputAssembler.Vertices = _vertices;
+			device.ClearDepthBuffer(1);
+			device.ClearRenderTarget(ColorsF.White);
 
-			//_device.RenderPipeline.Rasterizer.FillMode = PipelineStages.Rasterizer.FillMode.Wireframe;
-
-			_device.RenderPipeline.OutputMerger.RenderTarget = new RenderTargetView(_imageRenderer.GetBuffer());
-			//_device.RenderPipeline.OutputMerger.BlendState = BlendState.AlphaBlend;
-
-			//_basicEffect = new BasicEffect(_device);
-		}
-
-		private AxisAlignedBoundingBox _bounds;
-		private void CreateVertices()
-		{
-			Scene scene = MeshellatorLoader.ImportFromFile(@"Assets\85-nissan-fairlady.3ds");
-			//Scene scene = MeshellatorLoader.ImportFromFile(@"Assets\jeep1.3ds");
-			_bounds = scene.Bounds;
-			_model = ModelLoader.FromScene(_device, scene);
-
-			/*List<ModelMesh> meshes = new List<ModelMesh>();
-			List<VertexPositionNormalTexture> vertices = new List<VertexPositionNormalTexture>
+			device.RenderPipeline.InputAssembler.PrimitiveTopology = InputAssembler.PrimitiveTopology.TriangleList;
+			device.RenderPipeline.InputAssembler.Vertices = new[]
 			{
-				// Triangle 1
-				new VertexPositionNormalTexture(new Point3D(-150, 50, -50), Vector3D.Zero, new Point2D(0, 0)),
-				new VertexPositionNormalTexture(new Point3D(100, 50, -30), Vector3D.Zero, new Point2D(1, 0)),
-				new VertexPositionNormalTexture(new Point3D(-150, -50, -50), Vector3D.Zero, new Point2D(0, 1)),
-
-				// Triangle 2
-				new VertexPositionNormalTexture(new Point3D(100, 50, -30), Vector3D.Zero, new Point2D(1, 0)),
-				new VertexPositionNormalTexture(new Point3D(-150, -50, -50), Vector3D.Zero, new Point2D(0, 1)),
-				new VertexPositionNormalTexture(new Point3D(100, -50, -30), Vector3D.Zero, new Point2D(1, 1))
+				new VertexPositionColor
+				{
+					Position = new Point3D(-1, 0, 0),
+					Color = ColorsF.Red
+				},
+				new VertexPositionColor
+				{
+					Position = new Point3D(1, 0, 0),
+					Color = ColorsF.Red
+				},
+				new VertexPositionColor
+				{
+					Position = new Point3D(0, 1, 0),
+					Color = ColorsF.Red
+				}
 			};
-			meshes.Add(new ModelMesh(_device)
+
+			device.RenderPipeline.VertexShader.VertexShader = new TestVertexShader
 			{
-				Effect = new BasicEffect(_device, VertexPositionNormalTexture.InputLayout),
-				Indices = new Nexus.Int32Collection(new[] { 0, 1, 2, 3, 4, 5 }),
-				Vertices = vertices
-			});
-			_model = new Model(meshes);
-			_bounds = new AxisAlignedBoundingBox(vertices.Select(v => v.Position));*/
+				Projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_4, 
+					device.RenderPipeline.Rasterizer.Viewport.AspectRatio, 1.0f, 10.0f),
+				View = Matrix3D.CreateLookAt(new Point3D(0, 0, 5), 
+					Vector3D.Forward, Vector3D.Up)
+			};
+			device.RenderPipeline.PixelShader.PixelShader = new TestPixelShader();
+
+			device.Draw();
+
+			imageRenderer.Present();
 		}
 
-		private void RefreshTriangle()
+		private struct TestVertexColor : IVertexShaderOutput
 		{
-			_device.ClearDepthBuffer(1);
-			_device.ClearRenderTarget(ColorsF.Green);
-			DrawTriangle();
+			public Point4D Position { get; set; }
+
+			[Semantic(Semantics.Color)]
+			public ColorF Color;
 		}
 
-		private void DrawTriangle()
+		private class TestVertexShader : VertexShaderBase<VertexPositionColor, TestVertexColor>
 		{
-			Camera camera = PerspectiveCamera.CreateFromBounds(_bounds, MathUtility.PI_OVER_4);
-			/*Camera camera = new PerspectiveCamera
+			public Matrix3D Projection { get; set; }
+			public Matrix3D View { get; set; }
+
+			public override TestVertexColor Execute(VertexPositionColor vertexShaderInput)
 			{
-				FieldOfView = MathUtility.PI_OVER_4,
-				FarPlaneDistance = 1000.0f,
-				NearPlaneDistance = 1.0f,
-				UpDirection = Vector3D.Up,
-				LookDirection = Vector3D.Normalize(new Vector3D(-0.3f, 0.0f, -1.0f)),
-				Position = new Point3D(100, 0, 400)
-			};*/
-			foreach (ModelMesh mesh in _model.Meshes)
-			{
-				BasicEffect effect = (BasicEffect) mesh.Effect;
-				//DepthEffect effect = new DepthEffect(_device);
-				//mesh.Effect = effect;
-				effect.View = camera.GetViewMatrix();
-				effect.Projection = camera.GetProjectionMatrix(_device.RenderPipeline.Rasterizer.Viewport.AspectRatio);
+				return new TestVertexColor
+				{
+					Position = (View * Projection).Transform(vertexShaderInput.Position.ToHomogeneousPoint3D()),
+					Color = vertexShaderInput.Color
+				};
 			}
-			_model.Draw();
+		}
 
-			/*_basicEffect.World = Matrix3D.CreateRotationY(_angle);
-			_basicEffect.View = Matrix3D.CreateLookAt(Point3D.Zero, Vector3D.Forward, Vector3D.Up);
-			_basicEffect.Projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_2 + MathUtility.PI_OVER_4,
-				_renderTarget.Width / (float) _renderTarget.Height,
-				1, 200);
-			_basicEffect.Texture = _texture;
-			//_basicEffect.VertexColorEnabled = true;
-			_basicEffect.TextureColorEnabled = true;
-
-			_basicEffect.CurrentTechnique.Passes[0].Apply();
-
-			_device.Draw();*/
-
-			//_warpDevice.EndScene();
-			_imageRenderer.Present();
+		private class TestPixelShader : PixelShaderBase<TestVertexColor>
+		{
+			public override ColorF Execute(TestVertexColor pixelShaderInput)
+			{
+				return pixelShaderInput.Color;
+			}
 		}
 	}
 }

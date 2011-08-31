@@ -5,7 +5,7 @@ namespace Rasterizr.ShaderStages.PixelShader
 {
 	public interface IPixelShader
 	{
-		IPixelShaderInput BuildPixelShaderInput();
+		object BuildPixelShaderInput();
 		ColorF Execute(Fragment fragment);
 	}
 }

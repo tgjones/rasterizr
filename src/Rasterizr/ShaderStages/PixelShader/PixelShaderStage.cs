@@ -24,7 +24,7 @@ namespace Rasterizr.ShaderStages.PixelShader
 			outputs.CompleteAdding();
 		}
 
-		public IPixelShaderInput BuildPixelShaderInput()
+		public object BuildPixelShaderInput()
 		{
 			return PixelShader.BuildPixelShaderInput();
 		}

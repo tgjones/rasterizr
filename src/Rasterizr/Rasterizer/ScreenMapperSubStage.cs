@@ -23,7 +23,7 @@ namespace Rasterizr.Rasterizer
 		{
 			// Move to range [0,1]
 			position.X = (position.X + 1f) / 2.0f;
-			position.Y = (position.Y + 1f) / 2.0f;
+			position.Y = ((position.Y * -1) + 1f) / 2.0f;
 
 			// Sanity check.
 			if (position.X > 1 || position.Y > 1 || position.X < 0 || position.Y < 0)

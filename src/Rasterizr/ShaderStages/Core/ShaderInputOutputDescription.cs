@@ -12,7 +12,6 @@ namespace Rasterizr.ShaderStages.Core
 	/// </summary>
 	public class ShaderInputOutputDescription
 	{
-		private readonly Type _type;
 		private readonly IEnumerable<ShaderInputOutputProperty> _properties;
 
 		public IEnumerable<ShaderInputOutputProperty> Properties
@@ -22,29 +21,29 @@ namespace Rasterizr.ShaderStages.Core
 
 		public ShaderInputOutputDescription(Type type)
 		{
-			_type = type;
-
-			_properties = type.Properties(Flags.Instance | Flags.Public)
-				.Where(pi => pi.HasAttribute<SemanticAttribute>())
-				.Select(pi =>
+			_properties = type.FieldsAndProperties(Flags.Instance | Flags.Public)
+				.Where(mi => mi.HasAttribute<SemanticAttribute>())
+				.Select(mi =>
 				{
-					var semanticAttribute = pi.Attribute<SemanticAttribute>();
+					var semanticAttribute = mi.Attribute<SemanticAttribute>();
 					return new ShaderInputOutputProperty
 					{
 						Semantic = new Semantic(semanticAttribute.Name, semanticAttribute.Index),
-						PropertyInfo = pi
+						MemberInfo = mi
 					};
 				});
 		}
 
 		public object GetValue(object instance, Semantic semantic)
 		{
-			return FindProperty(semantic).PropertyInfo.Get(instance);
+			return FindProperty(semantic).MemberInfo.Get(instance.WrapIfValueType());
 		}
 
-		public void SetValue(object instance, Semantic semantic, object value)
+		public void SetValue(ref object instance, Semantic semantic, object value)
 		{
-			FindProperty(semantic).PropertyInfo.Set(instance, value);
+			var wrapped = instance.WrapIfValueType();
+			FindProperty(semantic).MemberInfo.Set(wrapped, value);
+			instance = wrapped.UnwrapIfWrapped();
 		}
 
 		private ShaderInputOutputProperty FindProperty(Semantic semantic)
@@ -58,7 +57,7 @@ namespace Rasterizr.ShaderStages.Core
 
 	public class ShaderInputOutputProperty
 	{
-		public PropertyInfo PropertyInfo { get; set; }
+		public MemberInfo MemberInfo { get; set; }
 		public ShaderInputOutputPropertyType PropertyType { get; set; }
 		public Semantic Semantic { get; set; }
 	}

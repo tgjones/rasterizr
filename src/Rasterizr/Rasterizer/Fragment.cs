@@ -10,7 +10,7 @@ namespace Rasterizr.Rasterizer
 		public int X;
 		public int Y;
 		public SampleCollection Samples;
-		public IPixelShaderInput PixelShaderInput;
+		public object PixelShaderInput;
 		public float Depth { get; set; }
 
 		public Fragment(int x, int y)
