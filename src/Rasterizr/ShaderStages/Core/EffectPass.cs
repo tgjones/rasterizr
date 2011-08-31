@@ -19,8 +19,8 @@ namespace Rasterizr.ShaderStages.Core
 		{
 			_parentTechnique.ParentEffect.OnApply();
 
-			_parentTechnique.ParentEffect.Device.RenderPipeline.VertexShader.VertexShader = VertexShader;
-			_parentTechnique.ParentEffect.Device.RenderPipeline.PixelShader.PixelShader = PixelShader;
+			_parentTechnique.ParentEffect.Device.VertexShader.VertexShader = VertexShader;
+			_parentTechnique.ParentEffect.Device.PixelShader.PixelShader = PixelShader;
 		}
 	}
 }

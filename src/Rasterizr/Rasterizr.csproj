@@ -130,7 +130,6 @@
     <Compile Include="Rasterizer\IFillConvention.cs" />
     <Compile Include="Rasterizer\TopLeftFillConvention.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RenderPipeline.cs" />
     <Compile Include="RasterizrDevice.cs" />
     <Compile Include="VertexPositionNormalTexture.cs" />
     <Compile Include="Viewport3D.cs" />

@@ -33,7 +33,7 @@ namespace Rasterizr.WpfExamples
 
 			ImageViewport.Source = outputImage;
 
-			device.RenderPipeline.OutputMerger.RenderTarget = new RenderTargetView(imageRenderer.GetBuffer());
+			device.OutputMerger.RenderTarget = new RenderTargetView(imageRenderer.GetBuffer());
 
 			//Scene scene = MeshellatorLoader.ImportFromFile(@"Assets\85-nissan-fairlady.3ds");
 			//var model = ModelLoader.FromScene(device, scene);
@@ -53,8 +53,8 @@ namespace Rasterizr.WpfExamples
 			device.ClearDepthBuffer(1);
 			device.ClearRenderTarget(ColorsF.White);
 
-			device.RenderPipeline.InputAssembler.PrimitiveTopology = InputAssembler.PrimitiveTopology.TriangleList;
-			device.RenderPipeline.InputAssembler.Vertices = new[]
+			device.InputAssembler.PrimitiveTopology = InputAssembler.PrimitiveTopology.TriangleList;
+			device.InputAssembler.Vertices = new[]
 			{
 				new VertexPositionColor
 				{
@@ -73,14 +73,14 @@ namespace Rasterizr.WpfExamples
 				}
 			};
 
-			device.RenderPipeline.VertexShader.VertexShader = new TestVertexShader
+			device.VertexShader.VertexShader = new TestVertexShader
 			{
 				Projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_4, 
-					device.RenderPipeline.Rasterizer.Viewport.AspectRatio, 1.0f, 10.0f),
+					device.Rasterizer.Viewport.AspectRatio, 1.0f, 10.0f),
 				View = Matrix3D.CreateLookAt(new Point3D(0, 0, 5), 
 					Vector3D.Forward, Vector3D.Up)
 			};
-			device.RenderPipeline.PixelShader.PixelShader = new TestPixelShader();
+			device.PixelShader.PixelShader = new TestPixelShader();
 
 			device.Draw();
 

@@ -20,9 +20,9 @@ namespace Rasterizr
 
 		public void Draw()
 		{
-			_device.RenderPipeline.InputAssembler.InputLayout = VertexPositionNormalTexture.InputLayout;
-			_device.RenderPipeline.InputAssembler.Vertices = Vertices;
-			_device.RenderPipeline.InputAssembler.Indices = Indices;
+			_device.InputAssembler.InputLayout = VertexPositionNormalTexture.InputLayout;
+			_device.InputAssembler.Vertices = Vertices;
+			_device.InputAssembler.Indices = Indices;
 
 			foreach (EffectPass pass in Effect.CurrentTechnique.Passes)
 			{
