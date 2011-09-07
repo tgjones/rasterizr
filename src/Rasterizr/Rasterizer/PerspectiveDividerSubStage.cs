@@ -7,7 +7,7 @@ namespace Rasterizr.Rasterizer
 	{
 		public override void Run(BlockingCollection<IVertexShaderOutput> inputs, BlockingCollection<IVertexShaderOutput> outputs)
 		{
-			foreach (var input in inputs)
+			foreach (var input in inputs.GetConsumingEnumerable())
 			{
 				var position = input.Position;
 				position.X /= position.W;
