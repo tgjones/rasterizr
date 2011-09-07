@@ -7,16 +7,22 @@ namespace Rasterizr.Rasterizer
 	{
 		public override void Run(BlockingCollection<IVertexShaderOutput> inputs, BlockingCollection<IVertexShaderOutput> outputs)
 		{
-			foreach (var input in inputs.GetConsumingEnumerable())
+			try
 			{
-				var position = input.Position;
-				position.X /= position.W;
-				position.Y /= position.W;
-				position.Z /= position.W;
-				input.Position = position;
-				outputs.Add(input);
+				foreach (var input in inputs.GetConsumingEnumerable())
+				{
+					var position = input.Position;
+					position.X /= position.W;
+					position.Y /= position.W;
+					position.Z /= position.W;
+					input.Position = position;
+					outputs.Add(input);
+				}
 			}
-			outputs.CompleteAdding();
+			finally
+			{
+				outputs.CompleteAdding();
+			}
 		}
 	}
 }

@@ -6,7 +6,7 @@ using Nexus;
 
 namespace Rasterizr.InputAssembler
 {
-	public class InputAssemblerStage
+	public class InputAssemblerStage : PipelineStageBase
 	{
 		public InputLayout InputLayout { get; set; }
 		public PrimitiveTopology PrimitiveTopology { get; set; }
@@ -16,36 +16,42 @@ namespace Rasterizr.InputAssembler
 
 		public void Run(BlockingCollection<object> outputs)
 		{
-			switch (PrimitiveTopology)
+			try
 			{
-				case PrimitiveTopology.TriangleList:
-					foreach (var vertex in GetVertices())
-						outputs.Add(vertex);
-					break;
-				case PrimitiveTopology.TriangleStrip:
-					var vertices = GetVertices();
-					bool even = true;
-					for (int i = 0; i <= vertices.Count - 3; i++)
-					{
-						if (even)
+				switch (PrimitiveTopology)
+				{
+					case PrimitiveTopology.TriangleList:
+						foreach (var vertex in GetVertices())
+							outputs.Add(vertex);
+						break;
+					case PrimitiveTopology.TriangleStrip:
+						var vertices = GetVertices();
+						bool even = true;
+						for (int i = 0; i <= vertices.Count - 3; i++)
 						{
-							outputs.Add(Vertices[i + 0]);
-							outputs.Add(Vertices[i + 1]);
-							outputs.Add(Vertices[i + 2]);
+							if (even)
+							{
+								outputs.Add(Vertices[i + 0]);
+								outputs.Add(Vertices[i + 1]);
+								outputs.Add(Vertices[i + 2]);
+							}
+							else
+							{
+								outputs.Add(Vertices[i + 0]);
+								outputs.Add(Vertices[i + 2]);
+								outputs.Add(Vertices[i + 1]);
+							}
+							even = !even;
 						}
-						else
-						{
-							outputs.Add(Vertices[i + 0]);
-							outputs.Add(Vertices[i + 2]);
-							outputs.Add(Vertices[i + 1]);
-						}
-						even = !even;
-					}
-					break;
-				default:
-					throw new NotSupportedException();
+						break;
+					default:
+						throw new NotSupportedException();
+				}
 			}
-			outputs.CompleteAdding();
+			finally
+			{
+				outputs.CompleteAdding();
+			}
 		}
 
 		private IList GetVertices()

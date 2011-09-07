@@ -11,30 +11,30 @@ namespace Rasterizr.Rasterizer
 
 		public override void Run(BlockingCollection<IVertexShaderOutput> inputs, BlockingCollection<IVertexShaderOutput> outputs)
 		{
-			foreach (var input in inputs)
+			try
 			{
-				input.Position = ToScreenCoordinates(input.Position);
-				outputs.Add(input);
+				foreach (var input in inputs)
+				{
+					input.Position = ToScreenCoordinates(input.Position);
+					outputs.Add(input);
+				}
 			}
-			outputs.CompleteAdding();
+			finally
+			{
+				outputs.CompleteAdding();
+			}
 		}
 
+		/// <summary>
+		/// Formulae from http://msdn.microsoft.com/en-us/library/bb205126(v=vs.85).aspx
+		/// </summary>
+		/// <param name="position"></param>
+		/// <returns></returns>
 		private Point4D ToScreenCoordinates(Point4D position)
 		{
-			// Move to range [0,1]
-			position.X = (position.X + 1f) / 2.0f;
-			position.Y = ((position.Y * -1) + 1f) / 2.0f;
-
-			// Sanity check.
-			if (position.X > 1 || position.Y > 1 || position.X < 0 || position.Y < 0)
-				throw new ArgumentException("Invalid position", "position");
-
-			if (position.Z < 0)
-				throw new ArgumentException("Invalid position", "position");
-
-			// pra coordenadas de tela
-			position.X *= (Viewport.Width - 1);
-			position.Y *= (Viewport.Height - 1);
+			position.X = (position.X + 1) * Viewport.Width * 0.5f + Viewport.X;
+			position.Y = (1 - position.Y) * Viewport.Height * 0.5f + Viewport.Y;
+			position.Z = Viewport.MinDepth + position.Z * (Viewport.MaxDepth - Viewport.MinDepth);
 			return position;
 		}
 	}

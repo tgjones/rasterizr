@@ -7,6 +7,7 @@ using Rasterizr.Rasterizer;
 using Rasterizr.ShaderStages.GeometryShader;
 using Rasterizr.ShaderStages.PixelShader;
 using Rasterizr.ShaderStages.VertexShader;
+using System;
 
 namespace Rasterizr
 {
@@ -19,13 +20,13 @@ namespace Rasterizr
 		public GeometryShaderStage GeometryShader { get; private set; }
 		public RasterizerStage Rasterizer { get; private set; }
 		public PixelShaderStage PixelShader { get; private set; }
-		public OutputMergerStage OutputMerger { get; set; }
+		public OutputMergerStage OutputMerger { get; private set; }
 
 		#endregion
 
 		#region Constructor
 
-		public RasterizrDevice(int width, int height)
+		public RasterizrDevice()
 		{
 			InputAssembler = new InputAssemblerStage();
 			VertexShader = new VertexShaderStage();
@@ -34,17 +35,7 @@ namespace Rasterizr
 			PixelShader = new PixelShaderStage();
 			OutputMerger = new OutputMergerStage();
 
-			Rasterizer = new RasterizerStage(PixelShader, OutputMerger)
-			{
-				Viewport = new Viewport3D
-				{
-					X = 0,
-					Y = 0,
-					Width = width,
-					Height = height
-				}
-			};
-
+			Rasterizer = new RasterizerStage(PixelShader, OutputMerger);
 		}
 
 		#endregion
@@ -67,14 +58,23 @@ namespace Rasterizr
 			var rasterizerOutputs = new BlockingCollection<Fragment>();
 			var pixelShaderOutputs = new BlockingCollection<Pixel>();
 
+			InputAssembler.Validate();
+
 			var taskFactory = Task.Factory;
-			Task.WaitAll(
-				taskFactory.StartNew(() => InputAssembler.Run(inputAssemblerOutputs)),
-				taskFactory.StartNew(() => VertexShader.Run(inputAssemblerOutputs, vertexShaderOutputs)),
-				taskFactory.StartNew(() => GeometryShader.Run(vertexShaderOutputs, geometryShaderOutputs)),
-				taskFactory.StartNew(() => Rasterizer.Run(geometryShaderOutputs, rasterizerOutputs)),
-				taskFactory.StartNew(() => PixelShader.Run(rasterizerOutputs, pixelShaderOutputs)),
-				taskFactory.StartNew(() => OutputMerger.Run(pixelShaderOutputs)));
+			try
+			{
+				Task.WaitAll(
+					taskFactory.StartNew(() => InputAssembler.Run(inputAssemblerOutputs)),
+					taskFactory.StartNew(() => VertexShader.Run(inputAssemblerOutputs, vertexShaderOutputs)),
+					taskFactory.StartNew(() => GeometryShader.Run(vertexShaderOutputs, geometryShaderOutputs)),
+					taskFactory.StartNew(() => Rasterizer.Run(geometryShaderOutputs, rasterizerOutputs)),
+					taskFactory.StartNew(() => PixelShader.Run(rasterizerOutputs, pixelShaderOutputs)),
+					taskFactory.StartNew(() => OutputMerger.Run(pixelShaderOutputs)));
+			}
+			catch (AggregateException ex)
+			{
+				throw new Exception(ex.InnerException.Message, ex);
+			}
 		}
 	}
 }

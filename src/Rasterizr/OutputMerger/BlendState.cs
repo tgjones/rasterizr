@@ -109,9 +109,9 @@ namespace Rasterizr.OutputMerger
 			switch (blend)
 			{
 				case Blend.Zero:
-					return ColorsF.Black;
+					return new ColorF(0, 0, 0, 0);
 				case Blend.One:
-					return ColorsF.White;
+					return new ColorF(1, 1, 1, 1);
 				case Blend.SourceColor:
 					return source;
 				case Blend.InverseSourceColor:

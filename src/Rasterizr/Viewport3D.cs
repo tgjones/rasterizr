@@ -17,6 +17,28 @@ namespace Rasterizr
 
 		public float MaxDepth { get; set; }
 
+		public Viewport3D(int x, int y, int width, int height, float minDepth, float maxDepth)
+			: this()
+		{
+			X = x;
+			Y = y;
+			Width = width;
+			Height = height;
+			MinDepth = minDepth;
+			MaxDepth = maxDepth;
+		}
+
+		public Viewport3D(int x, int y, int width, int height)
+			: this()
+		{
+			X = x;
+			Y = y;
+			Width = width;
+			Height = height;
+			MinDepth = 0;
+			MaxDepth = 1;
+		}
+
 		public override string ToString()
 		{
 			return string.Format(CultureInfo.CurrentCulture, "{{X:{0} Y:{1} Width:{2} Height:{3} MinDepth:{4} MaxDepth:{5}}}", new object[] { this.X, this.Y, this.Width, this.Height, this.MinDepth, this.MaxDepth });

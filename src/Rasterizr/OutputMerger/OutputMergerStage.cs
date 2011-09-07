@@ -43,9 +43,8 @@ namespace Rasterizr.OutputMerger
 						continue;
 
 					// Use blend state to calculate final color.
-					ColorF finalColor = (BlendState.BlendEnable)
-						? BlendState.DoBlend(pixel.Color, RenderTarget[pixel.X, pixel.Y, sampleIndex]) 
-						: pixel.Color;
+					ColorF finalColor = BlendState.DoBlend(pixel.Color,
+						RenderTarget[pixel.X, pixel.Y, sampleIndex]);
 
 					RenderTarget[pixel.X, pixel.Y, sampleIndex] = finalColor;
 

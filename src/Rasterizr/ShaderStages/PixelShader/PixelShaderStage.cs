@@ -10,18 +10,24 @@ namespace Rasterizr.ShaderStages.PixelShader
 
 		public override void Run(BlockingCollection<Fragment> inputs, BlockingCollection<Pixel> outputs)
 		{
-			foreach (var fragment in inputs.GetConsumingEnumerable())
+			try
 			{
-				ColorF color = PixelShader.Execute(fragment);
-				var pixel = new Pixel(fragment.X, fragment.Y)
+				foreach (var fragment in inputs.GetConsumingEnumerable())
 				{
-					Color = color,
-					Depth = fragment.Depth,
-					Samples = fragment.Samples
-				};
-				outputs.Add(pixel);
+					ColorF color = PixelShader.Execute(fragment);
+					var pixel = new Pixel(fragment.X, fragment.Y)
+					{
+						Color = color,
+						Depth = fragment.Depth,
+						Samples = fragment.Samples
+					};
+					outputs.Add(pixel);
+				}
 			}
-			outputs.CompleteAdding();
+			finally
+			{
+				outputs.CompleteAdding();
+			}
 		}
 
 		public object BuildPixelShaderInput()

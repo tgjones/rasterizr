@@ -8,26 +8,31 @@ namespace Rasterizr.Rasterizer
 	{
 		public override void Run(BlockingCollection<IVertexShaderOutput> inputs, BlockingCollection<IVertexShaderOutput> outputs)
 		{
-			var inputsEnumerator = inputs.GetConsumingEnumerable().GetEnumerator();
-			while (inputsEnumerator.MoveNext())
+			try
 			{
-				IVertexShaderOutput v1 = inputsEnumerator.Current;
-				inputsEnumerator.MoveNext();
-				IVertexShaderOutput v2 = inputsEnumerator.Current;
-				inputsEnumerator.MoveNext();
-				IVertexShaderOutput v3 = inputsEnumerator.Current;
-
-				// TODO: This clipping isn't accurate at all - it just throws away triangles if they're
-				// partially or wholly outside. Need to improve it.
-				if (!IsPartiallyOrWhollyOutsideViewport(v1.Position, v2.Position, v3.Position))
+				var inputsEnumerator = inputs.GetConsumingEnumerable().GetEnumerator();
+				while (inputsEnumerator.MoveNext())
 				{
-					outputs.Add(v1);
-					outputs.Add(v2);
-					outputs.Add(v3);
+					IVertexShaderOutput v1 = inputsEnumerator.Current;
+					inputsEnumerator.MoveNext();
+					IVertexShaderOutput v2 = inputsEnumerator.Current;
+					inputsEnumerator.MoveNext();
+					IVertexShaderOutput v3 = inputsEnumerator.Current;
+
+					// TODO: This clipping isn't accurate at all - it just throws away triangles if they're
+					// partially or wholly outside. Need to improve it.
+					if (!IsPartiallyOrWhollyOutsideViewport(v1.Position, v2.Position, v3.Position))
+					{
+						outputs.Add(v1);
+						outputs.Add(v2);
+						outputs.Add(v3);
+					}
 				}
 			}
-
-			outputs.CompleteAdding();
+			finally
+			{
+				outputs.CompleteAdding();
+			}
 		}
 
 		private bool IsPartiallyOrWhollyOutsideViewport(Point4D vv0, Point4D vv1, Point4D vv2)

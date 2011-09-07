@@ -14,15 +14,27 @@ namespace Rasterizr.ShaderStages.VertexShader
 
 		public override void Run(BlockingCollection<object> inputs, BlockingCollection<IVertexShaderOutput> outputs)
 		{
-			foreach (object input in inputs.GetConsumingEnumerable())
+			try
 			{
-				// Apply vertex shader.
-				IVertexShaderOutput vertexShaderOutput = VertexShader.Execute(input);
-				outputs.Add(vertexShaderOutput);
+				foreach (object input in inputs.GetConsumingEnumerable())
+				{
+					// Apply vertex shader.
+					IVertexShaderOutput vertexShaderOutput = VertexShader.Execute(input);
+					outputs.Add(vertexShaderOutput);
+				}
 			}
-			outputs.CompleteAdding();
+			finally
+			{
+				outputs.CompleteAdding();
+			}
 		}
 
 		// TODO: Implement cache for recently shaded vertices.
+
+		public override void Validate()
+		{
+			if (VertexShader == null)
+				throw new RasterizrException("VertexShader must be set");
+		}
 	}
 }

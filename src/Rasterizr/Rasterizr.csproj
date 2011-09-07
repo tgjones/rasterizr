@@ -79,6 +79,7 @@
     <Compile Include="Rasterizer\RasterizerSubStageBase.cs" />
     <Compile Include="Rasterizer\Sample.cs" />
     <Compile Include="Rasterizer\SampleCollection.cs" />
+    <Compile Include="RasterizrException.cs" />
     <Compile Include="ShaderStages\Core\DepthEffect.cs" />
     <Compile Include="ShaderStages\Core\DirectionalLight.cs" />
     <Compile Include="ShaderStages\Core\ITextureLoader.cs" />

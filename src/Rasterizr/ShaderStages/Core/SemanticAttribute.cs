@@ -2,7 +2,7 @@ using System;
 
 namespace Rasterizr.ShaderStages.Core
 {
-	[AttributeUsage(AttributeTargets.Field)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public class SemanticAttribute : Attribute
 	{
 		public string Name { get; set; }

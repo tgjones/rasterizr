@@ -137,8 +137,13 @@ namespace Rasterizr.ShaderStages.Core
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct VertexShaderOutputPnt : IVertexShaderOutput
 		{
+			[Semantic(Semantics.Position)]
 			public Point4D Position { get; set; }
+
+			[Semantic(Semantics.Normal)]
 			public Vector3D Normal;
+
+			[Semantic(Semantics.TexCoord)]
 			public Point2D TextureCoordinate;
 		}
 
@@ -159,7 +164,10 @@ namespace Rasterizr.ShaderStages.Core
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct VertexShaderOutputPc : IVertexShaderOutput
 		{
+			[Semantic(Semantics.Position)]
 			public Point4D Position { get; set; }
+
+			[Semantic(Semantics.Color)]
 			public ColorF Color;
 		}
 
@@ -242,7 +250,7 @@ namespace Rasterizr.ShaderStages.Core
 			[Semantic(Semantics.Normal)]
 			public Vector3D Normal;
 
-			[Semantic(Semantics.TexCoord, 0)]
+			[Semantic(Semantics.TexCoord)]
 			public Point2D TextureCoordinate;
 		}
 
@@ -275,7 +283,10 @@ namespace Rasterizr.ShaderStages.Core
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct PixelShaderInputC
 		{
+			[Semantic(Semantics.Normal)]
 			public Vector3D Normal;
+
+			[Semantic(Semantics.Color)]
 			public ColorF Color;
 		}
 
