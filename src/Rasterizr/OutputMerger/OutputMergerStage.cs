@@ -26,7 +26,7 @@ namespace Rasterizr.OutputMerger
 
 		public OutputMergerStage()
 		{
-			DepthStencilState = new DepthStencilState();
+			DepthStencilState = DepthStencilState.Default;
 			BlendState = BlendState.Opaque;
 		}
 
@@ -39,7 +39,8 @@ namespace Rasterizr.OutputMerger
 					if (!pixel.Samples[sampleIndex].Covered)
 						continue;
 
-					if (!DepthTestPasses(pixel, sampleIndex))
+					float newDepth = pixel.Samples[sampleIndex].Depth;
+					if (!DepthStencilState.DepthTestPasses(newDepth, DepthBuffer[pixel.X, pixel.Y, sampleIndex]))
 						continue;
 
 					// Use blend state to calculate final color.
@@ -48,19 +49,10 @@ namespace Rasterizr.OutputMerger
 
 					RenderTarget[pixel.X, pixel.Y, sampleIndex] = finalColor;
 
-					if (DepthStencilState.DepthEnable)
-						DepthBuffer[pixel.X, pixel.Y, sampleIndex] = pixel.Samples[sampleIndex].Depth;
+					if (DepthStencilState.DepthWriteEnable)
+						DepthBuffer[pixel.X, pixel.Y, sampleIndex] = newDepth;
 				}
 			}
-		}
-
-		private bool DepthTestPasses(Pixel pixel, int sampleIndex)
-		{
-			if (!DepthStencilState.DepthEnable)
-				return true;
-
-			return ComparisonUtility.DoComparison(DepthStencilState.DepthFunc,
-				pixel.Samples[sampleIndex].Depth, DepthBuffer[pixel.X, pixel.Y, sampleIndex]);
 		}
 	}
 }
