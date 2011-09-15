@@ -52,13 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PipelineStages\InputAssembler\InputAssemblerStageTests.cs" />
-    <Compile Include="PipelineStages\OutputMerger\BlendStateTests.cs" />
-    <Compile Include="PipelineStages\Rasterizer\Interpolation\InterpolatorTests.cs" />
-    <Compile Include="PipelineStages\Rasterizer\RasterizerStageTests.cs" />
-    <Compile Include="PipelineStages\ShaderStages\Core\ShaderInputOutputDescriptionTests.cs" />
-    <Compile Include="PipelineStages\ShaderStages\GeometryShader\GeometryShaderStageTests.cs" />
-    <Compile Include="PipelineStages\ShaderStages\VertexShader\VertexShaderStageTests.cs" />
+    <Compile Include="InputAssembler\InputAssemblerStageTests.cs" />
+    <Compile Include="OutputMerger\BlendStateTests.cs" />
+    <Compile Include="Rasterizer\Interpolation\InterpolatorTests.cs" />
+    <Compile Include="Rasterizer\RasterizerStageTests.cs" />
+    <Compile Include="ShaderStages\Core\ShaderInputOutputDescriptionTests.cs" />
+    <Compile Include="ShaderStages\GeometryShader\GeometryShaderStageTests.cs" />
+    <Compile Include="ShaderStages\VertexShader\VertexShaderStageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestVertexPositionColor.cs" />
   </ItemGroup>
