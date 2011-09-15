@@ -2,7 +2,7 @@
 using Nexus;
 using Rasterizr.OutputMerger;
 
-namespace Rasterizr.Tests.PipelineStages.OutputMerger
+namespace Rasterizr.Tests.OutputMerger
 {
 	[TestFixture]
 	public class BlendStateTests

@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="InputAssembler\InputAssemblerStageTests.cs" />
     <Compile Include="OutputMerger\BlendStateTests.cs" />
+    <Compile Include="OutputMerger\DepthStencilStateTests.cs" />
     <Compile Include="Rasterizer\Interpolation\InterpolatorTests.cs" />
     <Compile Include="Rasterizer\RasterizerStageTests.cs" />
     <Compile Include="ShaderStages\Core\ShaderInputOutputDescriptionTests.cs" />
