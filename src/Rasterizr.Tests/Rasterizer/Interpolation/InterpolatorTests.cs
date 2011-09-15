@@ -2,7 +2,7 @@
 using Nexus;
 using Rasterizr.Rasterizer.Interpolation;
 
-namespace Rasterizr.Tests.PipelineStages.Rasterizer.Interpolation
+namespace Rasterizr.Tests.Rasterizer.Interpolation
 {
 	[TestFixture]
 	public class InterpolatorTests

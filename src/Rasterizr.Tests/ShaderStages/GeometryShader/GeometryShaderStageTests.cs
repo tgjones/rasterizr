@@ -4,7 +4,7 @@ using Nexus;
 using Rasterizr.ShaderStages.GeometryShader;
 using Rasterizr.ShaderStages.VertexShader;
 
-namespace Rasterizr.Tests.PipelineStages.ShaderStages.GeometryShader
+namespace Rasterizr.Tests.ShaderStages.GeometryShader
 {
 	[TestFixture]
 	public class GeometryShaderStageTests

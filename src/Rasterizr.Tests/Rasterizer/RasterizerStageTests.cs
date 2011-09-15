@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using Nexus;
 using Nexus.Graphics;
@@ -7,9 +6,8 @@ using Rasterizr.OutputMerger;
 using Rasterizr.Rasterizer;
 using Rasterizr.ShaderStages.PixelShader;
 using Rasterizr.ShaderStages.VertexShader;
-using Rasterizr.Tests.PipelineStages.ShaderStages.GeometryShader;
 
-namespace Rasterizr.Tests.PipelineStages.Rasterizer
+namespace Rasterizr.Tests.Rasterizer
 {
 	[TestFixture]
 	public class RasterizerStageTests

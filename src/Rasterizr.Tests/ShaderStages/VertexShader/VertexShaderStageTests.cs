@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Nexus;
 using Rasterizr.ShaderStages.VertexShader;
 
-namespace Rasterizr.Tests.PipelineStages.ShaderStages.VertexShader
+namespace Rasterizr.Tests.ShaderStages.VertexShader
 {
 	[TestFixture]
 	public class VertexShaderStageTests

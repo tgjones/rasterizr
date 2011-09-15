@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Nexus;
 using Rasterizr.ShaderStages.Core;
 
-namespace Rasterizr.Tests.PipelineStages.ShaderStages.Core
+namespace Rasterizr.Tests.ShaderStages.Core
 {
 	[TestFixture]
 	public class ShaderInputOutputDescriptionTests

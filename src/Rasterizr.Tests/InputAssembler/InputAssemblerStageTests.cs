@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Nexus;
 using Rasterizr.InputAssembler;
 
-namespace Rasterizr.Tests.PipelineStages.InputAssembler
+namespace Rasterizr.Tests.InputAssembler
 {
 	[TestFixture]
 	public class InputAssemblerStageTests
