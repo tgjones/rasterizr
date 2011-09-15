@@ -1,28 +1,17 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Generic;
 using Nexus;
 using Rasterizr.ShaderStages.VertexShader;
 
 namespace Rasterizr.Rasterizer
 {
-	public class ScreenMapperSubStage : RasterizerSubStageBase<IVertexShaderOutput, IVertexShaderOutput>
+	public class ScreenMapperSubStage : RasterizerSubStageBase
 	{
 		public Viewport3D Viewport { get; set; }
 
-		public override void Run(BlockingCollection<IVertexShaderOutput> inputs, BlockingCollection<IVertexShaderOutput> outputs)
+		public void Process(List<IVertexShaderOutput> vertices)
 		{
-			try
-			{
-				foreach (var input in inputs)
-				{
-					input.Position = ToScreenCoordinates(input.Position);
-					outputs.Add(input);
-				}
-			}
-			finally
-			{
-				outputs.CompleteAdding();
-			}
+			for (int i = 0; i < vertices.Count; i++)
+				vertices[i].Position = ToScreenCoordinates(vertices[i].Position);
 		}
 
 		/// <summary>

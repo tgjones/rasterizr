@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using Nexus;
 
@@ -14,43 +15,36 @@ namespace Rasterizr.InputAssembler
 		public IList Vertices { get; set; }
 		public Int32Collection Indices { get; set; }
 
-		public void Run(BlockingCollection<object> outputs)
+		public void Run(List<object> outputs)
 		{
-			try
+			switch (PrimitiveTopology)
 			{
-				switch (PrimitiveTopology)
-				{
-					case PrimitiveTopology.TriangleList:
-						foreach (var vertex in GetVertices())
-							outputs.Add(vertex);
-						break;
-					case PrimitiveTopology.TriangleStrip:
-						var vertices = GetVertices();
-						bool even = true;
-						for (int i = 0; i <= vertices.Count - 3; i++)
+				case PrimitiveTopology.TriangleList:
+					foreach (var vertex in GetVertices())
+						outputs.Add(vertex);
+					break;
+				case PrimitiveTopology.TriangleStrip:
+					var vertices = GetVertices();
+					bool even = true;
+					for (int i = 0; i <= vertices.Count - 3; i++)
+					{
+						if (even)
 						{
-							if (even)
-							{
-								outputs.Add(Vertices[i + 0]);
-								outputs.Add(Vertices[i + 1]);
-								outputs.Add(Vertices[i + 2]);
-							}
-							else
-							{
-								outputs.Add(Vertices[i + 0]);
-								outputs.Add(Vertices[i + 2]);
-								outputs.Add(Vertices[i + 1]);
-							}
-							even = !even;
+							outputs.Add(Vertices[i + 0]);
+							outputs.Add(Vertices[i + 1]);
+							outputs.Add(Vertices[i + 2]);
 						}
-						break;
-					default:
-						throw new NotSupportedException();
-				}
-			}
-			finally
-			{
-				outputs.CompleteAdding();
+						else
+						{
+							outputs.Add(Vertices[i + 0]);
+							outputs.Add(Vertices[i + 2]);
+							outputs.Add(Vertices[i + 1]);
+						}
+						even = !even;
+					}
+					break;
+				default:
+					throw new NotSupportedException();
 			}
 		}
 

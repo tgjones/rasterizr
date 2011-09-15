@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Nexus;
 using Rasterizr.OutputMerger;
 using Rasterizr.Rasterizer.Interpolation;
@@ -15,67 +15,93 @@ namespace Rasterizr.Rasterizer
 		private readonly PixelShaderStage _pixelShaderStage;
 		private readonly OutputMergerStage _outputMerger;
 
-		public CullMode CullMode { get; set; }
+		private readonly PerspectiveDividerSubStage _perspectiveDivider;
+		private readonly ClipperSubStage _clipper;
+		private readonly CullerSubStage _culler;
+		private readonly ScreenMapperSubStage _screenMapper;
+
+		private readonly List<IVertexShaderOutput> _clipperOutputs;
+		private readonly List<IVertexShaderOutput> _cullerOutputs;
+
+		private CullMode _cullMode;
+		private Viewport3D _viewport;
+
+		public CullMode CullMode
+		{
+			get { return _cullMode; }
+			set
+			{
+				_cullMode = value;
+				_culler.CullMode = value;
+			}
+		}
+
 		public FillMode FillMode { get; set; }
 
 		// TODO: Hook ths property up. Should only affect line rasterization
 		// (from http://msdn.microsoft.com/en-us/library/bb694530(v=vs.85).aspx)
 		public bool MultiSampleAntiAlias { get; set; }
 
-		public Viewport3D Viewport { get; set; }
+		public Viewport3D Viewport
+		{
+			get { return _viewport; }
+			set
+			{
+				_viewport = value;
+				_screenMapper.Viewport = value;
+			}
+		}
 
 		public RasterizerStage(PixelShaderStage pixelShaderStage, OutputMergerStage outputMerger)
 		{
 			_pixelShaderStage = pixelShaderStage;
 			_outputMerger = outputMerger;
 
+			_perspectiveDivider = new PerspectiveDividerSubStage();
+			_clipper = new ClipperSubStage();
+			_culler = new CullerSubStage();
+			_screenMapper = new ScreenMapperSubStage();
+
+			_clipperOutputs = new List<IVertexShaderOutput>();
+			_cullerOutputs = new List<IVertexShaderOutput>();
+
 			CullMode = CullMode.CullCounterClockwiseFace;
 			FillMode = FillMode.Solid;
 		}
 
-		public override void Run(BlockingCollection<IVertexShaderOutput> inputs, BlockingCollection<Fragment> outputs)
+		public override void Run(List<IVertexShaderOutput> inputs, List<Fragment> outputs)
 		{
-			try
+			_clipperOutputs.Clear();
+			_cullerOutputs.Clear();
+
+			// Do perspective divide.
+			_perspectiveDivider.Process(inputs);
+
+			// Clip to viewport.
+			_clipper.Process(inputs, _clipperOutputs);
+
+			// Cull backward facing triangles.
+			_culler.Process(_clipperOutputs, _cullerOutputs);
+
+			// Map to screen coordinates.
+			_screenMapper.Process(_cullerOutputs);
+			inputs = _cullerOutputs;
+
+			// Rasterize.
+			for (int i = 0; i < inputs.Count; i += 3)
 			{
-				var perspectiveDividerOutputs = new BlockingCollection<IVertexShaderOutput>();
-				var perspectiveDivider = new PerspectiveDividerSubStage();
-				perspectiveDivider.Run(inputs, perspectiveDividerOutputs);
+				IVertexShaderOutput v1 = inputs[i + 0];
+				IVertexShaderOutput v2 = inputs[i + 1];
+				IVertexShaderOutput v3 = inputs[i + 2];
 
-				var clipperOutputs = new BlockingCollection<IVertexShaderOutput>();
-				var clipper = new ClipperSubStage();
-				clipper.Run(perspectiveDividerOutputs, clipperOutputs);
+				var triangle = new TrianglePrimitive(v1, v2, v3);
 
-				var cullerOutputs = new BlockingCollection<IVertexShaderOutput>();
-				var culler = new CullerSubStage { CullMode = CullMode };
-				culler.Run(clipperOutputs, cullerOutputs);
+				// Determine screen bounds of triangle so we know which pixels to test.
+				Box2D screenBounds = GetScreenBounds(triangle);
 
-				var screenMapperOutputs = new BlockingCollection<IVertexShaderOutput>();
-				var screenMapper = new ScreenMapperSubStage { Viewport = Viewport };
-				screenMapper.Run(cullerOutputs, screenMapperOutputs);
-
-				// Rasterize.
-				var inputsEnumerator = screenMapperOutputs.GetConsumingEnumerable().GetEnumerator();
-				while (inputsEnumerator.MoveNext())
-				{
-					IVertexShaderOutput v1 = inputsEnumerator.Current;
-					inputsEnumerator.MoveNext();
-					IVertexShaderOutput v2 = inputsEnumerator.Current;
-					inputsEnumerator.MoveNext();
-					IVertexShaderOutput v3 = inputsEnumerator.Current;
-
-					var triangle = new TrianglePrimitive(v1, v2, v3);
-
-					// Determine screen bounds of triangle so we know which pixels to test.
-					Box2D screenBounds = GetScreenBounds(triangle);
-
-					// Scan pixels in target area, checking if they are inside the triangle.
-					// If they are, calculate the coverage.
-					ScanSamples(screenBounds, outputs, triangle);
-				}
-			}
-			finally
-			{
-				outputs.CompleteAdding();
+				// Scan pixels in target area, checking if they are inside the triangle.
+				// If they are, calculate the coverage.
+				ScanSamples(screenBounds, outputs, triangle);
 			}
 		}
 
@@ -110,7 +136,7 @@ namespace Rasterizr.Rasterizer
 				x, y, sampleIndex);
 		}
 
-		private void ScanSamples(Box2D screenBounds, BlockingCollection<Fragment> outputs, TrianglePrimitive triangle)
+		private void ScanSamples(Box2D screenBounds, List<Fragment> outputs, TrianglePrimitive triangle)
 		{
 			Point4D p0 = triangle.V1.Position;
 			Point4D p1 = triangle.V2.Position;

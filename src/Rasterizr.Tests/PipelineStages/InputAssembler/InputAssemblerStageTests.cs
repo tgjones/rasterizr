@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Nexus;
@@ -24,7 +24,7 @@ namespace Rasterizr.Tests.PipelineStages.InputAssembler
 					new TestVertexPositionColor(new Point3D(0, 0, 1), ColorsF.Red)
 				}
 			};
-			var result = new BlockingCollection<object>();
+			var result = new List<object>();
 
 			// Act.
 			inputAssemblerStage.Run(result);
@@ -49,7 +49,7 @@ namespace Rasterizr.Tests.PipelineStages.InputAssembler
 				},
 				Indices = new Int32Collection(new[] { 0, 1, 2 })
 			};
-			var result = new BlockingCollection<object>();
+			var result = new List<object>();
 
 			// Act.
 			inputAssemblerStage.Run(result);
@@ -74,7 +74,7 @@ namespace Rasterizr.Tests.PipelineStages.InputAssembler
 					new TestVertexPositionColor(new Point3D(1, 1, 1), ColorsF.Red)
 				}
 			};
-			var result = new BlockingCollection<object>();
+			var result = new List<object>();
 
 			// Act.
 			inputAssemblerStage.Run(result);
@@ -100,13 +100,12 @@ namespace Rasterizr.Tests.PipelineStages.InputAssembler
 				},
 				Indices = new Int32Collection(new[] { 0, 1, 2, 3 })
 			};
-			var result = new BlockingCollection<object>();
+			var result = new List<object>();
 
 			// Act.
 			inputAssemblerStage.Run(result);
 
 			// Assert.
-			Assert.That(result.IsAddingCompleted, Is.True);
 			Assert.That(result, Has.Count.EqualTo(6));
 			Assert.That(result, Has.All.InstanceOf<TestVertexPositionColor>());
 			var resultArray = result.Cast<TestVertexPositionColor>().ToArray();

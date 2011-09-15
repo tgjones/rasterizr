@@ -1,17 +1,14 @@
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Rasterizr
 {
 	public abstract class PipelineStageBase
 	{
-		public virtual void Validate()
-		{
-
-		}
+		
 	}
 
 	public abstract class PipelineStageBase<TInput, TOutput> : PipelineStageBase
 	{
-		public abstract void Run(BlockingCollection<TInput> inputs, BlockingCollection<TOutput> outputs);
+		public abstract void Run(List<TInput> inputs, List<TOutput> outputs);
 	}
 }

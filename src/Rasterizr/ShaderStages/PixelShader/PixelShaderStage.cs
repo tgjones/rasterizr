@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Nexus;
 using Rasterizr.Rasterizer;
 
@@ -8,25 +8,18 @@ namespace Rasterizr.ShaderStages.PixelShader
 	{
 		public IPixelShader PixelShader { get; set; }
 
-		public override void Run(BlockingCollection<Fragment> inputs, BlockingCollection<Pixel> outputs)
+		public override void Run(List<Fragment> inputs, List<Pixel> outputs)
 		{
-			try
+			foreach (var fragment in inputs)
 			{
-				foreach (var fragment in inputs.GetConsumingEnumerable())
+				ColorF color = PixelShader.Execute(fragment);
+				var pixel = new Pixel(fragment.X, fragment.Y)
 				{
-					ColorF color = PixelShader.Execute(fragment);
-					var pixel = new Pixel(fragment.X, fragment.Y)
-					{
-						Color = color,
-						Depth = fragment.Depth,
-						Samples = fragment.Samples
-					};
-					outputs.Add(pixel);
-				}
-			}
-			finally
-			{
-				outputs.CompleteAdding();
+					Color = color,
+					Depth = fragment.Depth,
+					Samples = fragment.Samples
+				};
+				outputs.Add(pixel);
 			}
 		}
 

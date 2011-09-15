@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Rasterizr.ShaderStages.VertexShader
 {
@@ -12,29 +12,19 @@ namespace Rasterizr.ShaderStages.VertexShader
 	{
 		public IVertexShader VertexShader { get; set; }
 
-		public override void Run(BlockingCollection<object> inputs, BlockingCollection<IVertexShaderOutput> outputs)
-		{
-			try
-			{
-				foreach (object input in inputs.GetConsumingEnumerable())
-				{
-					// Apply vertex shader.
-					IVertexShaderOutput vertexShaderOutput = VertexShader.Execute(input);
-					outputs.Add(vertexShaderOutput);
-				}
-			}
-			finally
-			{
-				outputs.CompleteAdding();
-			}
-		}
-
-		// TODO: Implement cache for recently shaded vertices.
-
-		public override void Validate()
+		public override void Run(List<object> inputs, List<IVertexShaderOutput> outputs)
 		{
 			if (VertexShader == null)
 				throw new RasterizrException("VertexShader must be set");
+
+			foreach (object input in inputs)
+			{
+				// Apply vertex shader.
+				IVertexShaderOutput vertexShaderOutput = VertexShader.Execute(input);
+				outputs.Add(vertexShaderOutput);
+			}
 		}
 	}
+
+	// TODO: Implement cache for recently shaded vertices.
 }

@@ -1,38 +1,28 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Nexus;
 using Rasterizr.ShaderStages.VertexShader;
 
 namespace Rasterizr.Rasterizer
 {
-	public class CullerSubStage : RasterizerSubStageBase<IVertexShaderOutput, IVertexShaderOutput>
+	public class CullerSubStage : RasterizerSubStageBase
 	{
 		public CullMode CullMode { get; set; }
 
-		public override void Run(BlockingCollection<IVertexShaderOutput> inputs, BlockingCollection<IVertexShaderOutput> outputs)
+		public void Process(List<IVertexShaderOutput> inputs, List<IVertexShaderOutput> outputs)
 		{
-			try
+			for (int i = 0; i < inputs.Count; i += 3)
 			{
-				var inputsEnumerator = inputs.GetConsumingEnumerable().GetEnumerator();
-				while (inputsEnumerator.MoveNext())
-				{
-					IVertexShaderOutput v1 = inputsEnumerator.Current;
-					inputsEnumerator.MoveNext();
-					IVertexShaderOutput v2 = inputsEnumerator.Current;
-					inputsEnumerator.MoveNext();
-					IVertexShaderOutput v3 = inputsEnumerator.Current;
+				IVertexShaderOutput v1 = inputs[i + 0];
+				IVertexShaderOutput v2 = inputs[i + 1];
+				IVertexShaderOutput v3 = inputs[i + 2];
 
-					if (!ShouldCull(v1.Position, v2.Position, v3.Position))
-					{
-						outputs.Add(v1);
-						outputs.Add(v2);
-						outputs.Add(v3);
-					}
+				if (!ShouldCull(v1.Position, v2.Position, v3.Position))
+				{
+					outputs.Add(v1);
+					outputs.Add(v2);
+					outputs.Add(v3);
 				}
-			}
-			finally
-			{
-				outputs.CompleteAdding();
 			}
 		}
 

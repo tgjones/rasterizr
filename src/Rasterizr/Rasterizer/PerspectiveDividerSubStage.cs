@@ -1,27 +1,20 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections.Generic;
 using Rasterizr.ShaderStages.VertexShader;
 
 namespace Rasterizr.Rasterizer
 {
-	public class PerspectiveDividerSubStage : RasterizerSubStageBase<IVertexShaderOutput, IVertexShaderOutput>
+	public class PerspectiveDividerSubStage : RasterizerSubStageBase
 	{
-		public override void Run(BlockingCollection<IVertexShaderOutput> inputs, BlockingCollection<IVertexShaderOutput> outputs)
+		public void Process(List<IVertexShaderOutput> vertices)
 		{
-			try
+			for (int i = 0; i < vertices.Count; i++)
 			{
-				foreach (var input in inputs.GetConsumingEnumerable())
-				{
-					var position = input.Position;
-					position.X /= position.W;
-					position.Y /= position.W;
-					position.Z /= position.W;
-					input.Position = position;
-					outputs.Add(input);
-				}
-			}
-			finally
-			{
-				outputs.CompleteAdding();
+				var input = vertices[i];
+				var position = input.Position;
+				position.X /= position.W;
+				position.Y /= position.W;
+				position.Z /= position.W;
+				vertices[i].Position = position;
 			}
 		}
 	}

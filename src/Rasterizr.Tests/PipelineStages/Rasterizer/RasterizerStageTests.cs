@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Nexus;
 using Nexus.Graphics;
@@ -44,22 +45,20 @@ namespace Rasterizr.Tests.PipelineStages.Rasterizer
 				Viewport = new Viewport3D { Width = 400, Height = 300, MinDepth = 0, MaxDepth = 1 }
 			};
 
-			var rasterizerInputs = new BlockingCollection<IVertexShaderOutput>
+			var rasterizerInputs = new List<IVertexShaderOutput>
 			{
 				new TestVertexColor { Position = new Point4D(-1, -1, 0, 1), Color = ColorsF.Red },
 				new TestVertexColor { Position = new Point4D(1, -1, 0, 1), Color = ColorsF.Red },
 				new TestVertexColor { Position = new Point4D(-1, 1, 0, 1), Color = ColorsF.Red }
 			};
-			rasterizerInputs.CompleteAdding();
 
-			var rasterizerOutputs = new BlockingCollection<Fragment>();
+			var rasterizerOutputs = new List<Fragment>();
 
 			// Act.
 			rasterizerStage.Run(rasterizerInputs, rasterizerOutputs);
 
 			// Assert.
-			Assert.That(rasterizerOutputs.IsAddingCompleted, Is.True);
-			Assert.That(rasterizerOutputs, Has.Count.EqualTo(59651));
+			Assert.That(rasterizerOutputs, Has.Count.EqualTo(60000));
 			foreach (var fragment in rasterizerOutputs)
 			{
 				Assert.That(fragment.PixelShaderInput, Is.Not.Null);
