@@ -103,7 +103,7 @@ namespace Rasterizr.Rasterizer
 
 				// Scan pixels in target area, checking if they are inside the triangle.
 				// If they are, calculate the coverage.
-				ScanSamples(screenBounds, outputs, triangle);
+				RasterizeTriangle(screenBounds, outputs, triangle);
 			}
 		}
 
@@ -138,7 +138,7 @@ namespace Rasterizr.Rasterizer
 				x, y, sampleIndex);
 		}
 
-		private void ScanSamples(Box2D screenBounds, List<Fragment> outputs, TrianglePrimitive triangle)
+		private void RasterizeTriangle(Box2D screenBounds, List<Fragment> outputs, TrianglePrimitive triangle)
 		{
 			Point4D p0 = triangle.V1.Position;
 			Point4D p1 = triangle.V2.Position;
@@ -151,68 +151,78 @@ namespace Rasterizr.Rasterizer
 				{
 					// Check all samples to determine whether they are inside the triangle.
 					var samples = new SampleCollection();
-					bool anyCoveredSamples = false;
-					for (int sampleIndex = 0; sampleIndex < _outputMerger.RenderTarget.MultiSampleCount; ++sampleIndex)
-					{
-					    // Is this pixel inside triangle?
-					    Point2D samplePosition = GetSamplePosition(x, y, sampleIndex);
+					var anyCoveredSamples = CalculateSampleCoverage(x, y, p0, p2, p1, samples);
 
-						float depth;
-					    bool covered = IsSampleInsideTriangle(p0, p1, p2, samplePosition, out depth);
-					    samples.Add(new Sample
-					    {
-					        Covered = covered,
-					        Depth = depth
-					    });
-					    if (covered)
-					        anyCoveredSamples = true;
-					}
+					if (!anyCoveredSamples) 
+						continue;
 
-					if (anyCoveredSamples)
-					{
-						Point2D pixelCenter = new Point2D(x + 0.5f, y + 0.5f);
+					Point2D pixelCenter = new Point2D(x + 0.5f, y + 0.5f);
 
-						// Calculate alpha, beta, gamma for pixel center.
-						float alpha = ComputeFunction(pixelCenter.X, pixelCenter.Y, p1, p2) / ComputeFunction(p0.X, p0.Y, p1, p2);
-						float beta = ComputeFunction(pixelCenter.X, pixelCenter.Y, p2, p0) / ComputeFunction(p1.X, p1.Y, p2, p0);
-						float gamma = ComputeFunction(pixelCenter.X, pixelCenter.Y, p0, p1) / ComputeFunction(p2.X, p2.Y, p0, p1);
+					// Calculate alpha, beta, gamma for pixel center.
+					float alpha = ComputeFunction(pixelCenter.X, pixelCenter.Y, p1, p2) / ComputeFunction(p0.X, p0.Y, p1, p2);
+					float beta = ComputeFunction(pixelCenter.X, pixelCenter.Y, p2, p0) / ComputeFunction(p1.X, p1.Y, p2, p0);
+					float gamma = ComputeFunction(pixelCenter.X, pixelCenter.Y, p0, p1) / ComputeFunction(p2.X, p2.Y, p0, p1);
 
-						// Create output fragment.
-						Fragment fragment = new Fragment(x, y);
-						var pixelShaderInput = _pixelShaderStage.BuildPixelShaderInput();
+					// Create output fragment.
+					var fragment = new Fragment(x, y);
+					fragment.PixelShaderInput = CreatePixelShaderInput(triangle, beta, alpha, gamma);
+					fragment.Samples = samples;
 
-						// TODO: Use Cache API
-						// Calculate interpolated attribute values for this fragment.
-						var vertexShaderDescription = ShaderDescriptionCache.GetDescription(_vertexShaderStage.VertexShader);
-						var pixelShaderDescription = ShaderDescriptionCache.GetDescription(_pixelShaderStage.PixelShader);
-						foreach (var property in pixelShaderDescription.InputParameters)
-						{
-							// Grab values from vertex shader outputs.
-							var outputProperty = vertexShaderDescription.GetOutputParameterBySemantic(property.Semantic);
-							object v1Value = outputProperty.GetValue(triangle.V1);
-							object v2Value = outputProperty.GetValue(triangle.V2);
-							object v3Value = outputProperty.GetValue(triangle.V3);
+					// TODO: Is this needed? We already have the depths for each sample.
+					fragment.Depth = FloatInterpolator.InterpolateLinear(alpha, beta, gamma, p0.Z, p1.Z, p2.Z);
 
-							// Interpolate values.
-							// TODO: Use attribute to indicate whether perspective or linear interpolation is required.
-							object interpolatedValue = Interpolator.Perspective(alpha, beta, gamma, v1Value, v2Value, v3Value,
-								triangle.V1.Position.W, triangle.V2.Position.W, triangle.V3.Position.W);
+					outputs.Add(fragment);
+				}
+		}
 
-							// Set value onto pixel shader input.
-							property.SetValue(ref pixelShaderInput, interpolatedValue);
+		private object CreatePixelShaderInput(TrianglePrimitive triangle, float beta, float alpha, float gamma)
+		{
+			var pixelShaderInput = _pixelShaderStage.BuildPixelShaderInput();
 
-							// TODO: Do something different if input parameter is a system value.
-						}
+			// TODO: Use Cache API
+			// Calculate interpolated attribute values for this fragment.
+			var vertexShaderDescription = ShaderDescriptionCache.GetDescription(_vertexShaderStage.VertexShader);
+			var pixelShaderDescription = ShaderDescriptionCache.GetDescription(_pixelShaderStage.PixelShader);
+			foreach (var property in pixelShaderDescription.InputParameters)
+			{
+				// Grab values from vertex shader outputs.
+				var outputProperty = vertexShaderDescription.GetOutputParameterBySemantic(property.Semantic);
+				object v1Value = outputProperty.GetValue(triangle.V1);
+				object v2Value = outputProperty.GetValue(triangle.V2);
+				object v3Value = outputProperty.GetValue(triangle.V3);
 
-						fragment.PixelShaderInput = pixelShaderInput;
-						fragment.Samples = samples;
+				// Interpolate values.
+				// TODO: Use attribute to indicate whether perspective or linear interpolation is required.
+				object interpolatedValue = Interpolator.Perspective(alpha, beta, gamma, v1Value, v2Value, v3Value,
+					triangle.V1.Position.W, triangle.V2.Position.W, triangle.V3.Position.W);
 
-						// TODO: Is this needed? We already have the depths for each sample.
-						fragment.Depth = FloatInterpolator.InterpolateLinear(alpha, beta, gamma, p0.Z, p1.Z, p2.Z);
+				// Set value onto pixel shader input.
+				property.SetValue(ref pixelShaderInput, interpolatedValue);
 
-						outputs.Add(fragment);
-					}
+				// TODO: Do something different if input parameter is a system value.
 			}
+			return pixelShaderInput;
+		}
+
+		private bool CalculateSampleCoverage(int x, int y, Point4D p0, Point4D p2, Point4D p1, SampleCollection samples)
+		{
+			bool anyCoveredSamples = false;
+			for (int sampleIndex = 0; sampleIndex < _outputMerger.RenderTarget.MultiSampleCount; ++sampleIndex)
+			{
+				// Is this pixel inside triangle?
+				Point2D samplePosition = GetSamplePosition(x, y, sampleIndex);
+
+				float depth;
+				bool covered = IsSampleInsideTriangle(p0, p1, p2, samplePosition, out depth);
+				samples.Add(new Sample
+				{
+					Covered = covered,
+					Depth = depth
+				});
+				if (covered)
+					anyCoveredSamples = true;
+			}
+			return anyCoveredSamples;
 		}
 
 		private static float ComputeFunction(float x, float y, Point4D pa, Point4D pb)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Fasterflect;
 
 namespace Rasterizr.ShaderCore
@@ -31,7 +32,12 @@ namespace Rasterizr.ShaderCore
 					return new SignatureParameterDescription
 					{
 						Semantic = new Semantic(semanticAttribute.Name, semanticAttribute.Index),
-						MemberInfo = mi
+						Getter = (mi.MemberType == MemberTypes.Property)
+							? ((PropertyInfo) mi).DelegateForGetPropertyValue()
+							: ((FieldInfo) mi).DelegateForGetFieldValue(),
+						Setter = (mi.MemberType == MemberTypes.Property)
+							? ((PropertyInfo) mi).DelegateForSetPropertyValue()
+							: ((FieldInfo) mi).DelegateForSetFieldValue()
 					};
 				}).ToArray();
 		}

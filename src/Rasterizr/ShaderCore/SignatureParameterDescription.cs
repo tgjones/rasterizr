@@ -7,17 +7,18 @@ namespace Rasterizr.ShaderCore
 	{
 		public Semantic Semantic { get; set; }
 		public SystemValueType SystemValueType { get; set; }
-		public MemberInfo MemberInfo { get; set; }
+		public MemberGetter Getter { get; set; }
+		public MemberSetter Setter { get; set; }
 
 		public object GetValue(object instance)
 		{
-			return MemberInfo.Get(instance.WrapIfValueType());
+			return Getter(instance.WrapIfValueType());
 		}
 
 		public void SetValue(ref object instance, object value)
 		{
 			var wrapped = instance.WrapIfValueType();
-			MemberInfo.Set(wrapped, value);
+			Setter(wrapped, value);
 			instance = wrapped.UnwrapIfWrapped();
 		}
 	}
