@@ -82,9 +82,11 @@
     <Compile Include="RasterizrException.cs" />
     <Compile Include="ShaderCore\DepthEffect.cs" />
     <Compile Include="ShaderCore\DirectionalLight.cs" />
-    <Compile Include="ShaderCore\ShaderAttribute.cs" />
     <Compile Include="ShaderCore\ShaderDescription.cs" />
-    <Compile Include="ShaderCore\ShaderInputOutputDescription.cs" />
+    <Compile Include="ShaderCore\ShaderDescriptionCache.cs" />
+    <Compile Include="ShaderCore\ShaderMapper.cs" />
+    <Compile Include="ShaderCore\ShaderValidator.cs" />
+    <Compile Include="ShaderCore\SignatureParameterDescription.cs" />
     <Compile Include="ShaderCore\SystemValueType.cs" />
     <Compile Include="ShaderCore\GeometryShader\TrianglePrimitive.cs" />
     <Compile Include="ShaderCore\IShader.cs" />

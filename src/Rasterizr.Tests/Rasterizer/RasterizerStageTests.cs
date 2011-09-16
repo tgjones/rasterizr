@@ -18,6 +18,14 @@ namespace Rasterizr.Tests.Rasterizer
 			public ColorF Color;
 		}
 
+		private class TestVertexShader : VertexShaderBase<TestVertexColor, TestVertexColor>
+		{
+			public override TestVertexColor Execute(TestVertexColor input)
+			{
+				return input;
+			}
+		}
+
 		private class TestPixelShader : PixelShaderBase<TestVertexColor>
 		{
 			public override ColorF Execute(TestVertexColor pixelShaderInput)
@@ -30,6 +38,10 @@ namespace Rasterizr.Tests.Rasterizer
 		public void CanRasterizerWithMultiSamplingDisabled()
 		{
 			// Arrange.
+			var vertexShaderStage = new VertexShaderStage
+			{
+				VertexShader = new TestVertexShader()
+			};
 			var pixelShaderStage = new PixelShaderStage
 			{
 				PixelShader = new TestPixelShader()
@@ -38,7 +50,7 @@ namespace Rasterizr.Tests.Rasterizer
 			{
 				RenderTarget = new RenderTargetView(new ColorSurface(400, 300, 1))
 			};
-			var rasterizerStage = new RasterizerStage(pixelShaderStage, outputMergerStage)
+			var rasterizerStage = new RasterizerStage(vertexShaderStage, pixelShaderStage, outputMergerStage)
 			{
 				Viewport = new Viewport3D { Width = 400, Height = 300, MinDepth = 0, MaxDepth = 1 }
 			};

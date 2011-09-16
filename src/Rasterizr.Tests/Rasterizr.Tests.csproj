@@ -58,7 +58,6 @@
     <Compile Include="Rasterizer\Interpolation\InterpolatorTests.cs" />
     <Compile Include="Rasterizer\RasterizerStageTests.cs" />
     <Compile Include="ShaderCore\ShaderDescriptionTests.cs" />
-    <Compile Include="ShaderCore\ShaderInputOutputDescriptionTests.cs" />
     <Compile Include="ShaderCore\GeometryShader\GeometryShaderStageTests.cs" />
     <Compile Include="ShaderCore\VertexShader\VertexShaderStageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -12,6 +12,7 @@ namespace Rasterizr.Rasterizer
 {
 	public class RasterizerStage : PipelineStageBase<IVertexShaderOutput, Fragment>
 	{
+		private readonly VertexShaderStage _vertexShaderStage;
 		private readonly PixelShaderStage _pixelShaderStage;
 		private readonly OutputMergerStage _outputMerger;
 
@@ -52,8 +53,9 @@ namespace Rasterizr.Rasterizer
 			}
 		}
 
-		public RasterizerStage(PixelShaderStage pixelShaderStage, OutputMergerStage outputMerger)
+		public RasterizerStage(VertexShaderStage vertexShaderStage, PixelShaderStage pixelShaderStage, OutputMergerStage outputMerger)
 		{
+			_vertexShaderStage = vertexShaderStage;
 			_pixelShaderStage = pixelShaderStage;
 			_outputMerger = outputMerger;
 
@@ -181,14 +183,14 @@ namespace Rasterizr.Rasterizer
 
 						// TODO: Use Cache API
 						// Calculate interpolated attribute values for this fragment.
-						var vertexShaderOutputDescription = new ShaderInputOutputDescription(triangle.V1.GetType());
-						var pixelShaderInputDescription = new ShaderInputOutputDescription(pixelShaderInput.GetType());
-						foreach (var property in pixelShaderInputDescription.Properties)
+						var vertexShaderDescription = ShaderDescriptionCache.GetDescription(_vertexShaderStage.VertexShader);
+						var pixelShaderDescription = ShaderDescriptionCache.GetDescription(_pixelShaderStage.PixelShader);
+						foreach (var property in pixelShaderDescription.InputParameters)
 						{
 							// Grab values from vertex shader outputs.
-							object v1Value = vertexShaderOutputDescription.GetValue(triangle.V1, property.Semantic);
-							object v2Value = vertexShaderOutputDescription.GetValue(triangle.V2, property.Semantic);
-							object v3Value = vertexShaderOutputDescription.GetValue(triangle.V3, property.Semantic);
+							object v1Value = property.GetValue(triangle.V1);
+							object v2Value = property.GetValue(triangle.V2);
+							object v3Value = property.GetValue(triangle.V3);
 
 							// Interpolate values.
 							// TODO: Use attribute to indicate whether perspective or linear interpolation is required.
@@ -196,7 +198,9 @@ namespace Rasterizr.Rasterizer
 								triangle.V1.Position.W, triangle.V2.Position.W, triangle.V3.Position.W);
 
 							// Set value onto pixel shader input.
-							pixelShaderInputDescription.SetValue(ref pixelShaderInput, property.Semantic, interpolatedValue);
+							property.SetValue(ref pixelShaderInput, interpolatedValue);
+
+							// TODO: Do something different if input parameter is a system value.
 						}
 
 						fragment.PixelShaderInput = pixelShaderInput;

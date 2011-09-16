@@ -52,7 +52,7 @@ namespace Rasterizr
 			PixelShader = new PixelShaderStage();
 			OutputMerger = new OutputMergerStage();
 
-			Rasterizer = new RasterizerStage(PixelShader, OutputMerger);
+			Rasterizer = new RasterizerStage(VertexShader, PixelShader, OutputMerger);
 		}
 
 		#endregion

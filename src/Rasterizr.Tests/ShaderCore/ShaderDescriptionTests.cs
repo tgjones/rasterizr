@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Nexus;
 using Rasterizr.ShaderCore;
 
@@ -22,10 +23,27 @@ namespace Rasterizr.Tests.ShaderCore
 			public ColorF Color;
 		}
 
-		[Shader(typeof(TestPixelShaderInput), typeof(TestPixelShaderOutput))]
-		private class TestShader
+		private class TestShader : IShader
 		{
-			
+			public Type InputType
+			{
+				get { return typeof(TestPixelShaderInput); }
+			}
+
+			public Type OutputType
+			{
+				get { return typeof(TestPixelShaderOutput); }
+			}
+
+			public object BuildShaderInput()
+			{
+				throw new NotImplementedException();
+			}
+
+			public object Execute(object shaderInput)
+			{
+				throw new NotImplementedException();
+			}
 		}
 
 		[Test]
@@ -34,7 +52,7 @@ namespace Rasterizr.Tests.ShaderCore
 			// Arrange.
 
 			// Act.
-			var shaderDescription = new ShaderDescription(typeof(TestShader));
+			var shaderDescription = new ShaderDescription(new TestShader());
 
 			// Assert.
 			Assert.That(shaderDescription.InputParameters, Has.Length.EqualTo(2));
