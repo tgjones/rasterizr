@@ -7,6 +7,7 @@ namespace Rasterizr.ShaderStages
 		Type InputType { get; }
 		Type OutputType { get; }
 
+		object BuildShaderInput();
 		object Execute(object shaderInput);
 	}
 }

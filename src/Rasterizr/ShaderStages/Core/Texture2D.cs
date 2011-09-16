@@ -63,22 +63,28 @@ namespace Rasterizr.ShaderStages.Core
 			return _levels[level].Texels[x, y];
 		}
 
-		internal ColorF Sample(SamplerState samplerState, float u, float v, TextureCoordinatePartialDifferentials pd)
+		public ColorF Sample(SamplerState samplerState, Point2D location)
 		{
-			float texU = u * _xBound;
-			float texV = v * _yBound;
+			// Need to calculate partial differentials.
+			throw new NotImplementedException();
+		}
+
+		public ColorF SampleGrad(SamplerState samplerState, Point2D location, Vector2D ddx, Vector2D ddy)
+		{
+			float texU = location.X * _xBound;
+			float texV = location.Y * _yBound;
 
 			float xBound2 = _xBound * _xBound;
 			float yBound2 = _yBound * _yBound;
 
-			float dudx2 = pd.DuDx * pd.DuDx * xBound2;
-			float dvdx2 = pd.DvDx * pd.DvDx * yBound2;
-			float dudy2 = pd.DuDy * pd.DuDy * xBound2;
-			float dvdy2 = pd.DvDy * pd.DvDy * yBound2;
+			float dudx2 = ddx.X * ddx.X * xBound2;
+			float dvdx2 = ddx.Y * ddx.Y * yBound2;
+			float dudy2 = ddy.X * ddy.X * xBound2;
+			float dvdy2 = ddy.Y * ddy.Y * yBound2;
 			float pixelSizeTexelRatio2 = Math.Max(dudx2 + dvdx2, dudy2 + dvdy2); // Proportional to the amount of a texel on display in a single pixel
 			if (pixelSizeTexelRatio2 < 1) // TODO: Is this correct?
-				return GetFilteredColor(samplerState.MagFilter, 0, samplerState, u, v);
-			return GetMipMappedColor(samplerState, u, v, pixelSizeTexelRatio2);
+				return GetFilteredColor(samplerState.MagFilter, 0, samplerState, location.X, location.Y);
+			return GetMipMappedColor(samplerState, location.X, location.Y, pixelSizeTexelRatio2);
 		}
 
 		private ColorF GetMipMappedColor(SamplerState samplerState, float texU, float texV, float maxDifferentials2)

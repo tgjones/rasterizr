@@ -1,4 +1,3 @@
-using Rasterizr.ShaderStages.PixelShader;
 using Rasterizr.ShaderStages.VertexShader;
 
 namespace Rasterizr.ShaderStages.Core
@@ -7,8 +6,8 @@ namespace Rasterizr.ShaderStages.Core
 	{
 		private readonly EffectTechnique _parentTechnique;
 
-		public IVertexShader VertexShader { get; set; }
-		public IPixelShader PixelShader { get; set; }
+		public IShader VertexShader { get; set; }
+		public IShader PixelShader { get; set; }
 
 		public EffectPass(EffectTechnique parentTechnique)
 		{

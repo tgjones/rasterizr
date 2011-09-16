@@ -271,10 +271,10 @@ namespace Rasterizr.ShaderStages.Core
 				ColorPair lightResult = CalculateLighting(Eye, pin.Normal);
 
 				ColorF texture = (Texture != null)
-				                 	? SampleTexture2D(Texture, Sampler, pin.TextureCoordinate)
-				                 	: ColorsF.White;
+					? Texture.Sample(Sampler, pin.TextureCoordinate)
+					: ColorsF.White;
 				ColorF diffuse = texture
-				                 * new ColorF(lightResult.Diffuse, Effect.Alpha);
+					* new ColorF(lightResult.Diffuse, Effect.Alpha);
 				ColorF color = diffuse + new ColorF(lightResult.Specular, 0);
 				return color;
 			}

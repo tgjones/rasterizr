@@ -10,7 +10,7 @@ namespace Rasterizr.ShaderStages.VertexShader
 	/// </summary>
 	public class VertexShaderStage : PipelineStageBase<object, IVertexShaderOutput>
 	{
-		public IVertexShader VertexShader { get; set; }
+		public IShader VertexShader { get; set; }
 
 		public override void Run(List<object> inputs, List<IVertexShaderOutput> outputs)
 		{
@@ -20,7 +20,7 @@ namespace Rasterizr.ShaderStages.VertexShader
 			foreach (object input in inputs)
 			{
 				// Apply vertex shader.
-				IVertexShaderOutput vertexShaderOutput = VertexShader.Execute(input);
+				var vertexShaderOutput = (IVertexShaderOutput) VertexShader.Execute(input);
 				outputs.Add(vertexShaderOutput);
 			}
 		}

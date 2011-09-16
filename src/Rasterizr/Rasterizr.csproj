@@ -119,17 +119,14 @@
     <Compile Include="ShaderStages\Core\Semantics.cs" />
     <Compile Include="ShaderStages\Core\Texture2D.cs" />
     <Compile Include="ShaderStages\Core\TextureAddressMode.cs" />
-    <Compile Include="ShaderStages\Core\TextureCoordinatePartialDifferentials.cs" />
     <Compile Include="ShaderStages\Core\TextureFilter.cs" />
     <Compile Include="ShaderStages\Core\TextureMipMapFilter.cs" />
     <Compile Include="ShaderStages\Core\TextureMipMapLevel.cs" />
     <Compile Include="ShaderStages\GeometryShader\Triangle.cs" />
-    <Compile Include="ShaderStages\PixelShader\IPixelShader.cs" />
     <Compile Include="ShaderStages\PixelShader\Pixel.cs" />
     <Compile Include="ShaderStages\PixelShader\PixelShaderBase.cs" />
     <Compile Include="ShaderStages\PixelShader\PixelShaderStage.cs" />
     <Compile Include="ShaderStages\ShaderBase.cs" />
-    <Compile Include="ShaderStages\VertexShader\IVertexShader.cs" />
     <Compile Include="ShaderStages\VertexShader\IVertexShaderOutput.cs" />
     <Compile Include="ShaderStages\VertexShader\VertexShaderBase.cs" />
     <Compile Include="ShaderStages\VertexShader\VertexShaderStage.cs" />

@@ -6,13 +6,13 @@ namespace Rasterizr.ShaderStages.PixelShader
 {
 	public class PixelShaderStage : PipelineStageBase<Fragment, Pixel>
 	{
-		public IPixelShader PixelShader { get; set; }
+		public IShader PixelShader { get; set; }
 
 		public override void Run(List<Fragment> inputs, List<Pixel> outputs)
 		{
 			foreach (var fragment in inputs)
 			{
-				ColorF color = PixelShader.Execute(fragment);
+				ColorF color = (ColorF) PixelShader.Execute(fragment.PixelShaderInput);
 				var pixel = new Pixel(fragment.X, fragment.Y)
 				{
 					Color = color,
@@ -25,7 +25,7 @@ namespace Rasterizr.ShaderStages.PixelShader
 
 		public object BuildPixelShaderInput()
 		{
-			return PixelShader.BuildPixelShaderInput();
+			return PixelShader.BuildShaderInput();
 		}
 	}
 }
