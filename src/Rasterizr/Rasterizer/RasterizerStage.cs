@@ -188,9 +188,10 @@ namespace Rasterizr.Rasterizer
 						foreach (var property in pixelShaderDescription.InputParameters)
 						{
 							// Grab values from vertex shader outputs.
-							object v1Value = property.GetValue(triangle.V1);
-							object v2Value = property.GetValue(triangle.V2);
-							object v3Value = property.GetValue(triangle.V3);
+							var outputProperty = vertexShaderDescription.GetOutputParameterBySemantic(property.Semantic);
+							object v1Value = outputProperty.GetValue(triangle.V1);
+							object v2Value = outputProperty.GetValue(triangle.V2);
+							object v3Value = outputProperty.GetValue(triangle.V3);
 
 							// Interpolate values.
 							// TODO: Use attribute to indicate whether perspective or linear interpolation is required.
