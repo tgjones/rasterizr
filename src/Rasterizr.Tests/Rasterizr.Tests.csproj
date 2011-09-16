@@ -57,6 +57,7 @@
     <Compile Include="OutputMerger\DepthStencilStateTests.cs" />
     <Compile Include="Rasterizer\Interpolation\InterpolatorTests.cs" />
     <Compile Include="Rasterizer\RasterizerStageTests.cs" />
+    <Compile Include="ShaderStages\Core\ShaderDescriptionTests.cs" />
     <Compile Include="ShaderStages\Core\ShaderInputOutputDescriptionTests.cs" />
     <Compile Include="ShaderStages\GeometryShader\GeometryShaderStageTests.cs" />
     <Compile Include="ShaderStages\VertexShader\VertexShaderStageTests.cs" />

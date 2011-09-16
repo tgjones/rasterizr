@@ -1,11 +1,12 @@
 namespace Rasterizr.ShaderStages.Core
 {
-	public class Semantic
+	public struct Semantic
 	{
 		public string Name { get; private set; }
 		public int Index { get; private set; }
 
 		public Semantic(string name, int index)
+			: this()
 		{
 			Name = name;
 			Index = index;

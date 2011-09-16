@@ -12,9 +12,9 @@ namespace Rasterizr.ShaderStages.Core
 	/// </summary>
 	public class ShaderInputOutputDescription
 	{
-		private readonly IEnumerable<ShaderInputOutputProperty> _properties;
+		private readonly IEnumerable<SignatureParameterDescription> _properties;
 
-		public IEnumerable<ShaderInputOutputProperty> Properties
+		public IEnumerable<SignatureParameterDescription> Properties
 		{
 			get { return _properties; }
 		}
@@ -26,7 +26,7 @@ namespace Rasterizr.ShaderStages.Core
 				.Select(mi =>
 				{
 					var semanticAttribute = mi.Attribute<SemanticAttribute>();
-					return new ShaderInputOutputProperty
+					return new SignatureParameterDescription
 					{
 						Semantic = new Semantic(semanticAttribute.Name, semanticAttribute.Index),
 						MemberInfo = mi
@@ -46,7 +46,7 @@ namespace Rasterizr.ShaderStages.Core
 			instance = wrapped.UnwrapIfWrapped();
 		}
 
-		private ShaderInputOutputProperty FindProperty(Semantic semantic)
+		private SignatureParameterDescription FindProperty(Semantic semantic)
 		{
 			var property = _properties.SingleOrDefault(p => p.Semantic == semantic);
 			if (property == null)
@@ -55,20 +55,11 @@ namespace Rasterizr.ShaderStages.Core
 		}
 	}
 
-	public class ShaderInputOutputProperty
+	public class SignatureParameterDescription
 	{
-		public MemberInfo MemberInfo { get; set; }
-		public ShaderInputOutputPropertyType PropertyType { get; set; }
 		public Semantic Semantic { get; set; }
-	}
-
-	public enum ShaderInputOutputPropertyType
-	{
-		ColorF,
-		Float,
-		Point2D,
-		Point3D,
-		Point4D,
-		Vector3D
+		public SystemValueType SystemValueType { get; set; }
+		public MemberInfo MemberInfo { get; set; }
+		
 	}
 }

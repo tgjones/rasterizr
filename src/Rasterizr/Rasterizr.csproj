@@ -83,8 +83,13 @@
     <Compile Include="ShaderStages\Core\DepthEffect.cs" />
     <Compile Include="ShaderStages\Core\DirectionalLight.cs" />
     <Compile Include="ShaderStages\Core\ITextureLoader.cs" />
+    <Compile Include="ShaderStages\Core\ShaderAttribute.cs" />
+    <Compile Include="ShaderStages\Core\ShaderDescription.cs" />
     <Compile Include="ShaderStages\Core\ShaderInputOutputDescription.cs" />
+    <Compile Include="ShaderStages\Core\ShaderLinkage.cs" />
+    <Compile Include="ShaderStages\Core\SystemValueType.cs" />
     <Compile Include="ShaderStages\GeometryShader\TrianglePrimitive.cs" />
+    <Compile Include="ShaderStages\IShader.cs" />
     <Compile Include="SwapChain.cs" />
     <Compile Include="OutputMerger\ComparisonUtility.cs" />
     <Compile Include="VertexPositionTexture.cs" />
