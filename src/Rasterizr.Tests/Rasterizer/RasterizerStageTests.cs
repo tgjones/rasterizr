@@ -4,8 +4,8 @@ using Nexus;
 using Nexus.Graphics;
 using Rasterizr.OutputMerger;
 using Rasterizr.Rasterizer;
-using Rasterizr.ShaderStages.PixelShader;
-using Rasterizr.ShaderStages.VertexShader;
+using Rasterizr.ShaderCore.PixelShader;
+using Rasterizr.ShaderCore.VertexShader;
 
 namespace Rasterizr.Tests.Rasterizer
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Nexus;
 using Nexus.Graphics;
-using Rasterizr.ShaderStages.PixelShader;
+using Rasterizr.ShaderCore.PixelShader;
 
 namespace Rasterizr.OutputMerger
 {

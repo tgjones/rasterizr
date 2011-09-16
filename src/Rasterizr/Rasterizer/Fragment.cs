@@ -1,5 +1,3 @@
-using Rasterizr.ShaderStages.PixelShader;
-
 namespace Rasterizr.Rasterizer
 {
 	/// <summary>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Nexus;
-using Rasterizr.ShaderStages.VertexShader;
+using Rasterizr.ShaderCore.VertexShader;
 
 namespace Rasterizr.Rasterizer
 {

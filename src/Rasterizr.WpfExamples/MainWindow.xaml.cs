@@ -7,9 +7,9 @@ using Nexus;
 using Nexus.Graphics.Cameras;
 using Rasterizr.Meshellator;
 using Rasterizr.OutputMerger;
-using Rasterizr.ShaderStages.Core;
-using Rasterizr.ShaderStages.PixelShader;
-using Rasterizr.ShaderStages.VertexShader;
+using Rasterizr.ShaderCore;
+using Rasterizr.ShaderCore.PixelShader;
+using Rasterizr.ShaderCore.VertexShader;
 
 namespace Rasterizr.WpfExamples
 {

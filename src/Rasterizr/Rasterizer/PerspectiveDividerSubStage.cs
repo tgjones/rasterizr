@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Rasterizr.ShaderStages.VertexShader;
+using Rasterizr.ShaderCore.VertexShader;
 
 namespace Rasterizr.Rasterizer
 {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Nexus;
 using Rasterizr.OutputMerger;
 using Rasterizr.Rasterizer.Interpolation;
-using Rasterizr.ShaderStages.Core;
-using Rasterizr.ShaderStages.GeometryShader;
-using Rasterizr.ShaderStages.PixelShader;
-using Rasterizr.ShaderStages.VertexShader;
+using Rasterizr.ShaderCore;
+using Rasterizr.ShaderCore.GeometryShader;
+using Rasterizr.ShaderCore.PixelShader;
+using Rasterizr.ShaderCore.VertexShader;
 
 namespace Rasterizr.Rasterizer
 {

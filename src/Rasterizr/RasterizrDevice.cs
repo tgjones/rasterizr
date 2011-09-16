@@ -5,10 +5,10 @@ using Nexus;
 using Rasterizr.InputAssembler;
 using Rasterizr.OutputMerger;
 using Rasterizr.Rasterizer;
-using Rasterizr.ShaderStages.GeometryShader;
-using Rasterizr.ShaderStages.PixelShader;
-using Rasterizr.ShaderStages.VertexShader;
 using System;
+using Rasterizr.ShaderCore.GeometryShader;
+using Rasterizr.ShaderCore.PixelShader;
+using Rasterizr.ShaderCore.VertexShader;
 
 namespace Rasterizr
 {
