@@ -18,6 +18,10 @@ namespace Rasterizr.WpfExamples
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private RasterizrDevice _device;
+		private SwapChain _imageRenderer;
+		private float _angle;
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -28,80 +32,89 @@ namespace Rasterizr.WpfExamples
 			var outputImage = new WriteableBitmap((int)ImageViewport.Width, (int)ImageViewport.Height,
 				96, 96, PixelFormats.Bgra32, null);
 
-			var device = new RasterizrDevice();
-			var imageRenderer = new SwapChain(outputImage, (int)ImageViewport.Width, (int)ImageViewport.Height, 1);
+			_device = new RasterizrDevice();
+			_imageRenderer = new SwapChain(outputImage, (int)ImageViewport.Width, (int)ImageViewport.Height, 1);
 
 			ImageViewport.Source = outputImage;
 
-			device.Rasterizer.Viewport = new Viewport3D(0, 0, (int)ImageViewport.Width, (int)ImageViewport.Height);
-			device.OutputMerger.RenderTarget = new RenderTargetView(imageRenderer.GetBuffer());
+			_device.Rasterizer.Viewport = new Viewport3D(0, 0, (int)ImageViewport.Width, (int)ImageViewport.Height);
+			_device.OutputMerger.RenderTarget = new RenderTargetView(_imageRenderer.GetBuffer());
 
-			Scene scene = MeshellatorLoader.ImportFromFile(@"Assets\85-nissan-fairlady.3ds");
-			var model = ModelLoader.FromScene(device, scene);
-
-			device.ClearDepthBuffer(1);
-			device.ClearRenderTarget(ColorsF.Green);
-
-			Camera camera = PerspectiveCamera.CreateFromBounds(scene.Bounds, MathUtility.PI_OVER_4);
-			foreach (ModelMesh mesh in model.Meshes)
-			{
-				var effect = (BasicEffect)mesh.Effect;
-				effect.View = camera.GetViewMatrix();
-				effect.Projection = camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio);
-			}
-			model.Draw();
+			//Scene scene = MeshellatorLoader.ImportFromFile(@"Assets\85-nissan-fairlady.3ds");
+			//var model = ModelLoader.FromScene(device, scene);
 
 			//device.ClearDepthBuffer(1);
-			//device.ClearRenderTarget(ColorsF.White);
+			//device.ClearRenderTarget(ColorsF.Green);
 
-			//device.InputAssembler.PrimitiveTopology = InputAssembler.PrimitiveTopology.TriangleList;
-			//device.InputAssembler.Vertices = new[]
+			//Camera camera = PerspectiveCamera.CreateFromBounds(scene.Bounds, MathUtility.PI_OVER_4);
+			//foreach (ModelMesh mesh in model.Meshes)
 			//{
-			//    new VertexPositionColor
-			//    {
-			//        Position = new Point3D(-1, 0, 0),
-			//        Color = ColorsF.Red
-			//    },
-			//    new VertexPositionColor
-			//    {
-			//        Position = new Point3D(1, 0, 0),
-			//        Color = ColorsF.Red
-			//    },
-			//    new VertexPositionColor
-			//    {
-			//        Position = new Point3D(0, 1, 0),
-			//        Color = ColorsF.Red
-			//    },
+			//    var effect = (BasicEffect)mesh.Effect;
+			//    effect.View = camera.GetViewMatrix();
+			//    effect.Projection = camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio);
+			//}
+			//model.Draw();
 
-			//     new VertexPositionColor
-			//    {
-			//        Position = new Point3D(0, 0, -1),
-			//        Color = ColorsF.Blue
-			//    },
-			//    new VertexPositionColor
-			//    {
-			//        Position = new Point3D(2, 0, -1),
-			//        Color = ColorsF.Blue
-			//    },
-			//    new VertexPositionColor
-			//    {
-			//        Position = new Point3D(1, 1, -1),
-			//        Color = ColorsF.Blue
-			//    }
-			//};
+			_device.InputAssembler.PrimitiveTopology = InputAssembler.PrimitiveTopology.TriangleList;
+			_device.InputAssembler.Vertices = new[]
+			{
+				new VertexPositionColor
+				{
+					Position = new Point3D(-1, 0, 0),
+					Color = ColorsF.Red
+				},
+				new VertexPositionColor
+				{
+					Position = new Point3D(1, 0, 0),
+					Color = ColorsF.Red
+				},
+				new VertexPositionColor
+				{
+					Position = new Point3D(0, 1, 0),
+					Color = ColorsF.Red
+				},
+				new VertexPositionColor
+				{
+					Position = new Point3D(0, 0, -1),
+					Color = ColorsF.Blue
+				},
+				new VertexPositionColor
+				{
+					Position = new Point3D(2, 0, -1),
+					Color = ColorsF.Blue
+				},
+				new VertexPositionColor
+				{
+					Position = new Point3D(1, 1, -1),
+					Color = ColorsF.Blue
+				}
+			};
 
-			//device.VertexShader.VertexShader = new TestVertexShader
-			//{
-			//    Projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_4,
-			//        device.Rasterizer.Viewport.AspectRatio, 1.0f, 10.0f),
-			//    View = Matrix3D.CreateLookAt(new Point3D(0, 0, 5),
-			//        Vector3D.Forward, Vector3D.Up)
-			//};
-			//device.PixelShader.PixelShader = new TestPixelShader();
+			_device.VertexShader.VertexShader = new TestVertexShader
+			{
+				Projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_4,
+					_device.Rasterizer.Viewport.AspectRatio, 1.0f, 10.0f),
+				View = Matrix3D.CreateLookAt(new Point3D(0, 0, 5),
+					Vector3D.Forward, Vector3D.Up)
+			};
+			_device.PixelShader.PixelShader = new TestPixelShader();
 
-			//device.Draw();
+			CompositionTarget.Rendering += (sender2, e2) => Draw();
+		}
 
-			imageRenderer.Present();
+		private void Draw()
+		{
+			_device.ClearDepthBuffer(1);
+			_device.ClearRenderTarget(ColorsF.White);
+
+			_angle += 0.01f;
+			((TestVertexShader) _device.VertexShader.VertexShader).View = 
+				Matrix3D.CreateLookAt(new Point3D(0, 0, 5), Vector3D.Forward, Vector3D.Up) * 
+				Matrix3D.CreateRotationY(_angle);
+
+			_device.Draw();
+
+			_imageRenderer.Present();
 		}
 
 		private struct TestVertexColor : IVertexShaderOutput

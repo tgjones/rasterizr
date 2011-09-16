@@ -1,6 +1,5 @@
 using System.Windows.Media.Imaging;
 using Nexus.Graphics;
-using Nexus.Util;
 
 namespace Rasterizr
 {
