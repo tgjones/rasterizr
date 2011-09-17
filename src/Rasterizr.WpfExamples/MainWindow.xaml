@@ -1,9 +1,19 @@
 ﻿<Window x:Class="Rasterizr.WpfExamples.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Width="800" Height="600" 
-				Loaded="Page_Loaded">
+        Title="Rasterizr" Width="800" Height="600" 
+		Loaded="Page_Loaded">
 	<Grid>
-		<Image Name="ImageViewport" Width="750" Height="550" />
+		<Grid.RowDefinitions>
+			<RowDefinition Height="20" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Menu Grid.Row="0">
+			<MenuItem Header="File">
+				<MenuItem Name="mniOpen" Header="Open..." Click="mniOpen_Click" />
+				<MenuItem Name="mniExit" Header="Exit" Click="mniExit_Click" />
+			</MenuItem>
+		</Menu>
+		<Image Grid.Row="1" Name="ImageViewport" Width="750" Height="550" />
 	</Grid>
 </Window>

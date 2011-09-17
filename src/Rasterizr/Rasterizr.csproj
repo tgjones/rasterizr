@@ -133,7 +133,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RasterizrDevice.cs" />
     <Compile Include="VertexPositionNormalTexture.cs" />
-    <Compile Include="Viewport3D.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Nexus;
+using Nexus.Graphics;
 using Rasterizr.OutputMerger;
 using Rasterizr.Rasterizer.Interpolation;
 using Rasterizr.ShaderCore;

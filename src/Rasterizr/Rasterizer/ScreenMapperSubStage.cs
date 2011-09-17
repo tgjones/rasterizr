@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Nexus;
+using Nexus.Graphics;
 using Rasterizr.ShaderCore.VertexShader;
 
 namespace Rasterizr.Rasterizer
