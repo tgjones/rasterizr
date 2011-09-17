@@ -214,7 +214,7 @@ namespace Rasterizr.ShaderCore
 			{
 				Vector3D l = -light.Direction;
 				Vector3D h = Vector3D.Normalize(eye + l);
-				LightingCoefficients ret = Lit(Vector3D.Dot(normal, l), Vector3D.Dot(normal, h), _effect.SpecularPower);
+				LightingCoefficients ret = Lit(Vector3D.Dot(normal, l), Vector3D.Dot(normal, h), _effect.SpecularPower / 64.0f);
 
 				result.Diffuse += light.DiffuseColor * ret.Diffuse;
 				result.Specular += light.SpecularColor * ret.Specular;

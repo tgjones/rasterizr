@@ -13,6 +13,8 @@ namespace Rasterizr
 
 		public Effect Effect { get; set; }
 
+		public string Name { get; set; }
+
 		public ModelMesh(RasterizrDevice device)
 		{
 			_device = device;

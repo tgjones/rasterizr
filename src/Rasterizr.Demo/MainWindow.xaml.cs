@@ -1,14 +1,16 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Meshellator;
 using Microsoft.Win32;
 using Nexus;
-using Nexus.Graphics;
 using Nexus.Graphics.Cameras;
 using Rasterizr.Meshellator;
 using Rasterizr.OutputMerger;
 using Rasterizr.ShaderCore;
+using Viewport3D = Nexus.Graphics.Viewport3D;
 
 namespace Rasterizr.Demo
 {
@@ -19,6 +21,8 @@ namespace Rasterizr.Demo
 	{
 		private RasterizrDevice _device;
 		private SwapChain _swapChain;
+		private Scene _scene;
+		private Model _model;
 
 		public MainWindow()
 		{
@@ -51,28 +55,58 @@ namespace Rasterizr.Demo
 			// Show open file dialog box
 			if (dialog.ShowDialog() == true)
 			{
-				Scene scene = MeshellatorLoader.ImportFromFile(dialog.FileName);
-				var model = ModelLoader.FromScene(_device, scene);
+				_scene = MeshellatorLoader.ImportFromFile(dialog.FileName);
+				_model = ModelLoader.FromScene(_device, _scene);
 
-				_device.ClearDepthBuffer(1);
-				_device.ClearRenderTarget(ColorsF.Gray);
+				lsbMeshes.Items.Clear();
+				foreach (ModelMesh mesh in _model.Meshes)
+					lsbMeshes.Items.Add(mesh);
+				lsbMeshes.SelectAll();
 
-				Camera camera = PerspectiveCamera.CreateFromBounds(scene.Bounds, _device.Rasterizer.Viewport, MathUtility.PI_OVER_4);
-				foreach (ModelMesh mesh in model.Meshes)
-				{
-					var effect = (BasicEffect)mesh.Effect;
-					effect.View = camera.GetViewMatrix();
-					effect.Projection = camera.GetProjectionMatrix(_device.Rasterizer.Viewport.AspectRatio);
-				}
-				model.Draw();
-
-				_swapChain.Present();
+				Draw();
 			}
+		}
+
+		private void Draw()
+		{
+			_device.ClearDepthBuffer(1);
+			_device.ClearRenderTarget(ColorsF.Gray);
+
+			Camera camera = PerspectiveCamera.CreateFromBounds(_scene.Bounds, _device.Rasterizer.Viewport, MathUtility.PI_OVER_4,
+				MathUtility.PI_OVER_4, -MathUtility.PI_OVER_4 / 2.0f);
+			foreach (ModelMesh mesh in lsbMeshes.SelectedItems)
+			{
+				var effect = (BasicEffect)mesh.Effect;
+				effect.View = camera.GetViewMatrix();
+				effect.Projection = camera.GetProjectionMatrix(_device.Rasterizer.Viewport.AspectRatio);
+			}
+
+			foreach (ModelMesh mesh in lsbMeshes.SelectedItems)
+			{
+				var effect = (BasicEffect)mesh.Effect;
+				if (effect.Alpha < 1.0f)
+					continue;
+				mesh.Draw();
+			}
+			foreach (ModelMesh mesh in lsbMeshes.SelectedItems)
+			{
+				var effect = (BasicEffect)mesh.Effect;
+				if (effect.Alpha == 1.0f)
+					continue;
+				mesh.Draw();
+			}
+
+			_swapChain.Present();
 		}
 
 		private void mniExit_Click(object sender, RoutedEventArgs e)
 		{
 			Application.Current.Shutdown();
+		}
+
+		private void lsbMeshes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			Draw();
 		}
 	}
 }

@@ -17,6 +17,7 @@ namespace Rasterizr.Meshellator
 			foreach (Mesh mesh in sortedSceneMeshes)
 			{
 				ModelMesh modelMesh = new ModelMesh(device);
+				modelMesh.Name = mesh.Name;
 				modelMeshes.Add(modelMesh);
 
 				modelMesh.Indices = mesh.Indices;

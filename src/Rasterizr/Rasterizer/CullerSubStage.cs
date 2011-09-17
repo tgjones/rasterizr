@@ -28,6 +28,9 @@ namespace Rasterizr.Rasterizer
 
 		private bool ShouldCull(Point4D vv0, Point4D vv1, Point4D vv2)
 		{
+			if (CullMode == CullMode.None)
+				return false;
+
 			Vector4D newVariable = vv1 - vv0;
 			Vector3D l0 = Vector3D.Normalize(new Vector3D(newVariable.X, newVariable.Y, newVariable.Z));
 			Vector4D newVariable2 = vv2 - vv0;
@@ -36,8 +39,6 @@ namespace Rasterizr.Rasterizer
 
 			switch (CullMode)
 			{
-				case CullMode.None:
-					return false;
 				case CullMode.CullClockwiseFace:
 					return vector.Z > 0;
 				case CullMode.CullCounterClockwiseFace:
