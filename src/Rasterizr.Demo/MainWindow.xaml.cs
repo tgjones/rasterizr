@@ -10,7 +10,7 @@ using Rasterizr.Meshellator;
 using Rasterizr.OutputMerger;
 using Rasterizr.ShaderCore;
 
-namespace Rasterizr.WpfExamples
+namespace Rasterizr.Demo
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

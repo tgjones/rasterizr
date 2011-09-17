@@ -8,8 +8,8 @@
     <ProjectGuid>{E394A6B1-8918-48C2-95D9-307CE44AFE64}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rasterizr.WpfExamples</RootNamespace>
-    <AssemblyName>Rasterizr.WpfExamples</AssemblyName>
+    <RootNamespace>Rasterizr.Demo</RootNamespace>
+    <AssemblyName>Rasterizr.Demo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
