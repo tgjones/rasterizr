@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nexus;
-using Rasterizr.ShaderCore;
+using Rasterizr.Core;
+using Rasterizr.Effects;
 
 namespace Rasterizr
 {

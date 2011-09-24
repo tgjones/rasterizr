@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using Meshellator;
 using Nexus;
-using Rasterizr.ShaderCore;
+using Rasterizr.Core;
+using Rasterizr.Core.ShaderCore;
+using Rasterizr.Effects;
 
 namespace Rasterizr.Meshellator
 {
