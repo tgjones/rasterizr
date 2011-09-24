@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace Rasterizr.Demo.ViewModels
+namespace Rasterizr.Studio.Framework
 {
 	/// <summary>
 	/// Represents base command

@@ -68,6 +68,9 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AvalonDock">
+      <HintPath>..\..\lib\AvalonDock\AvalonDock.dll</HintPath>
+    </Reference>
     <Reference Include="Fluent">
       <HintPath>..\..\lib\FluentRibbon\Fluent.dll</HintPath>
     </Reference>
@@ -98,7 +101,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\MainWindowView.xaml">
+    <Page Include="Documents\ModelDocument\ModelDocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Documents\PresetSceneDocument\PresetSceneDocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Framework\AvalonDockHost.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Framework\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -107,9 +122,28 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\WriteableBitmapImage.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\RelayCommand.cs" />
-    <Compile Include="Views\MainWindowView.xaml.cs">
+    <Compile Include="Documents\ModelDocument\ModelDocumentView.xaml.cs">
+      <DependentUpon>ModelDocumentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Documents\ModelDocument\ModelDocumentViewModel.cs" />
+    <Compile Include="Documents\PresetSceneDocument\PresetSceneDocumentView.xaml.cs">
+      <DependentUpon>PresetSceneDocumentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Documents\PresetSceneDocument\PresetSceneDocumentViewModel.cs" />
+    <Compile Include="Documents\RenderedDocumentBase.cs" />
+    <Compile Include="Framework\AvalonDockHost.xaml.cs">
+      <DependentUpon>AvalonDockHost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\DataTemplateUtils.cs" />
+    <Compile Include="Framework\DocumentClosingEventArgs.cs" />
+    <Compile Include="Framework\DocumentViewModelBase.cs" />
+    <Compile Include="Framework\PaneViewModelBase.cs" />
+    <Compile Include="Framework\ViewModelBase.cs" />
+    <Compile Include="Documents\PresetSceneDocument\Scenes\PresetSceneBase.cs" />
+    <Compile Include="Documents\PresetSceneDocument\Scenes\SimpleTriangleScene.cs" />
+    <Compile Include="Framework\MainWindowViewModel.cs" />
+    <Compile Include="Framework\RelayCommand.cs" />
+    <Compile Include="Framework\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -148,6 +182,9 @@
       <Project>{DEB98B3D-FCDD-4936-B242-CE9301D95BF1}</Project>
       <Name>Rasterizr</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Panes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

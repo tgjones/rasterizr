@@ -1,6 +1,6 @@
 ﻿using Fluent;
 
-namespace Rasterizr.Demo.Views
+namespace Rasterizr.Studio.Framework
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

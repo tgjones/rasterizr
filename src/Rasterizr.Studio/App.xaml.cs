@@ -1,8 +1,7 @@
 ﻿using System.Windows;
-using Rasterizr.Demo.ViewModels;
-using Rasterizr.Demo.Views;
+using Rasterizr.Studio.Framework;
 
-namespace Rasterizr.Demo
+namespace Rasterizr.Studio
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

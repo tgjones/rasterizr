@@ -1,0 +1,33 @@
+﻿<fluent:RibbonWindow x:Class="Rasterizr.Studio.Framework.MainWindowView"
+					 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+					 xmlns:fluent="clr-namespace:Fluent;assembly=Fluent" 
+					 xmlns:f="clr-namespace:Rasterizr.Studio.Framework" 
+					 xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+                     Title="Rasterizr Studio" Width="800" Height="600">
+	<DockPanel LastChildFill="True">
+		<fluent:Ribbon DockPanel.Dock="Top">
+			<!--Backstage Items-->
+			<fluent:Ribbon.Menu>
+				<fluent:Backstage>
+					<fluent:BackstageTabControl>
+						<fluent:BackstageTabItem Header="Preset Scene">
+							<StackPanel>
+								<Button Content="Simple Triangle" Command="{Binding OpenPresetSceneCommand}" 
+										CommandParameter="Rasterizr.Studio.Documents.PresetSceneDocument.Scenes.SimpleTriangleScene" />
+							</StackPanel>
+						</fluent:BackstageTabItem>
+						<fluent:Button Header="Open" Command="{Binding OpenCommand}" />
+						<fluent:Button Header="Exit" Command="{Binding ExitCommand}" />
+					</fluent:BackstageTabControl>
+				</fluent:Backstage>
+			</fluent:Ribbon.Menu>
+		</fluent:Ribbon>
+		<f:AvalonDockHost x:Name="avalonDockHost" Panes="{Binding Panes}" Documents="{Binding Documents}"
+						  ActiveDocument="{Binding ActiveDocument}" ActivePane="{Binding ActivePane}">
+			<f:AvalonDockHost.DefaultLayout>
+				<ad:DocumentPane />
+			</f:AvalonDockHost.DefaultLayout>
+		</f:AvalonDockHost>
+	</DockPanel>
+</fluent:RibbonWindow>
