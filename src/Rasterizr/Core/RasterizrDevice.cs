@@ -3,6 +3,7 @@ using Nexus;
 using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.OutputMerger;
 using Rasterizr.Core.Rasterizer;
+using Rasterizr.Core.ShaderCore;
 using Rasterizr.Core.ShaderCore.GeometryShader;
 using Rasterizr.Core.ShaderCore.PixelShader;
 using Rasterizr.Core.ShaderCore.VertexShader;
@@ -66,6 +67,8 @@ namespace Rasterizr.Core
 
 		public void Draw()
 		{
+			new ShaderValidator().CheckCompatibility(VertexShader.VertexShader, PixelShader.PixelShader);
+
 			_inputAssemblerOutputs.Clear();
 			_vertexShaderOutputs.Clear();
 			_geometryShaderOutputs.Clear();

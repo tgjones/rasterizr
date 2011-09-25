@@ -285,9 +285,6 @@ namespace Rasterizr.Effects
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct PixelShaderInputC
 		{
-			[Semantic(Semantics.Normal)]
-			public Vector3D Normal;
-
 			[Semantic(Semantics.Color)]
 			public ColorF Color;
 		}

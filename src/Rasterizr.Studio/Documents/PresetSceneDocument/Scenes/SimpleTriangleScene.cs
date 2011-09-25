@@ -17,7 +17,7 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 				FieldOfView = MathUtility.PI_OVER_4,
 				FarPlaneDistance = 100.0f,
 				NearPlaneDistance = 1.0f,
-				Position = new Point3D(0, 0, 10),
+				Position = new Point3D(0, 1, 4),
 				LookDirection = Vector3D.Forward
 			};
 

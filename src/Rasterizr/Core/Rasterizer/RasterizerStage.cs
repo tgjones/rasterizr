@@ -68,7 +68,7 @@ namespace Rasterizr.Core.Rasterizer
 			_clipperOutputs = new List<IVertexShaderOutput>();
 			_cullerOutputs = new List<IVertexShaderOutput>();
 
-			CullMode = CullMode.CullClockwiseFace;
+			CullMode = CullMode.CullCounterClockwiseFace;
 			FillMode = FillMode.Solid;
 		}
 

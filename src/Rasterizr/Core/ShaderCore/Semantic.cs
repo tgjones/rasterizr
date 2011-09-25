@@ -41,5 +41,10 @@ namespace Rasterizr.Core.ShaderCore
 				return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ Index;
 			}
 		}
+
+		public override string ToString()
+		{
+			return Name + Index;
+		}
 	}
 }
