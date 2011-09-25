@@ -121,13 +121,11 @@ namespace Rasterizr.Effects
 				PixelShaderNt pixelShader = (PixelShaderNt)_effectPass.PixelShader;
 				pixelShader.Eye = Matrix3D.Invert(View).Translation;
 				pixelShader.Texture = Texture;
-				pixelShader.Sampler = SamplerState.LinearWrap;
 			}
 			else if (_effectPass.PixelShader is PixelShaderCt)
 			{
 				PixelShaderCt pixelShader = (PixelShaderCt)_effectPass.PixelShader;
 				pixelShader.Texture = Texture;
-				pixelShader.Sampler = SamplerState.LinearWrap;
 			}
 		}
 
@@ -296,9 +294,9 @@ namespace Rasterizr.Effects
 
 		internal class PixelShaderNt : BasicEffectPixelShader<PixelShaderInputNt>
 		{
-			public SamplerState Sampler { get; set; }
 			public Texture2D Texture { get; set; }
 			public Vector3D Eye { get; set; }
+			private SamplerState Sampler { get; set; }
 
 			public PixelShaderNt(BasicEffect effect)
 				: base(effect)
@@ -332,13 +330,13 @@ namespace Rasterizr.Effects
 
 		internal class PixelShaderCt : BasicEffectPixelShader<PixelShaderInputCt>
 		{
-			public SamplerState Sampler { get; set; }
 			public Texture2D Texture { get; set; }
+			private SamplerState Sampler { get; set; }
 
 			public PixelShaderCt(BasicEffect effect)
 				: base(effect)
 			{
-
+				Sampler = SamplerState.LinearWrap;
 			}
 
 			public override ColorF Execute(PixelShaderInputCt pin)
