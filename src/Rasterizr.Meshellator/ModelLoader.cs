@@ -38,7 +38,7 @@ namespace Rasterizr.Meshellator
 
 				if (!string.IsNullOrEmpty(mesh.Material.DiffuseTextureName))
 				{
-					effect.Texture = new Texture2D(mesh.Material.DiffuseTextureName);
+					effect.Texture = Texture2D.FromFile(mesh.Material.DiffuseTextureName);
 					effect.TextureEnabled = true;
 				}
 

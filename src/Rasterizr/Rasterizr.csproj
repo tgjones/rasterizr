@@ -118,8 +118,6 @@
     <Compile Include="Core\ShaderCore\Texture2D.cs" />
     <Compile Include="Core\ShaderCore\TextureAddressMode.cs" />
     <Compile Include="Core\ShaderCore\TextureFilter.cs" />
-    <Compile Include="Core\ShaderCore\TextureMipMapFilter.cs" />
-    <Compile Include="Core\ShaderCore\TextureMipMapLevel.cs" />
     <Compile Include="Core\ShaderCore\GeometryShader\Triangle.cs" />
     <Compile Include="Core\ShaderCore\PixelShader\Pixel.cs" />
     <Compile Include="Core\ShaderCore\PixelShader\PixelShaderBase.cs" />

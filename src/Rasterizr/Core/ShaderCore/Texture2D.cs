@@ -4,38 +4,81 @@ using Nexus.Graphics;
 
 namespace Rasterizr.Core.ShaderCore
 {
+	// Filtering in this class is mainly thanks to "Essential Mathematics for Games & Interactive Applications"
 	public class Texture2D
 	{
-		private readonly ColorSurface _surface;
-		private TextureMipMapLevel[] _levels;
-		private readonly int _xBound;
-		private readonly int _yBound;
+		#region Static stuff
 
-		public Texture2D(string uri)
+		public static Texture2D FromFile(string uri)
 		{
-			_surface = ColorSurfaceLoader.LoadFromFile(uri);
-
-			//if (textureSource.Dimensions != 2)
-			//	throw new ArgumentOutOfRangeException("uriResource", "Texture source for Texture2D must have 2 dimensions");
-
-			//_xBound = textureSource.GetBound(0);
-			//_yBound = textureSource.GetBound(1);
-			_xBound = _surface.Width;
-			_yBound = _surface.Height;
-
-			CreateMipMaps();
+			var surface = ColorSurfaceLoader.LoadFromFile(uri);
+			var texture = new Texture2D(surface.Width, surface.Height, true);
+			var data = new ColorF[surface.Width, surface.Height];
+			for (int y = 0; y < surface.Height; y++)
+				for (int x = 0; x < surface.Width; x++)
+					data[x, y] = surface[x, y];
+			texture.SetData(data);
+			return texture;
 		}
 
-		private void CreateMipMaps()
+		#endregion
+
+		private TextureMipMapLevel[] _levels;
+
+		public Texture2D(int width, int height, bool mipMap)
 		{
-			int numLevels = (int) MathUtility.Log2(Math.Max(_xBound, _yBound)) + 1;
+			CreateMipMaps(width, height, mipMap);
+		}
+
+		public void SetData(ColorF[,] data)
+		{
+			if (data.GetLength(0) != _levels[0].Width)
+				throw new RasterizrException("Incorrect width");
+			if (data.GetLength(1) != _levels[0].Height)
+				throw new RasterizrException("Incorrect height");
+			_levels[0].Texels = data;
+			PopulateMipMaps();
+		}
+
+		#region Mipmaps
+
+		private class TextureMipMapLevel
+		{
+			public ColorF[,] Texels { get; set; }
+
+			public int Level { get; private set; }
+			public int Width { get; private set; }
+			public int Height { get; private set; }
+
+			public TextureMipMapLevel(int level, int width, int height)
+			{
+				Level = level;
+				Width = width;
+				Height = height;
+
+				Texels = new ColorF[width, height];
+			}
+		}
+
+		private void CreateMipMaps(int width, int height, bool mipMap)
+		{
+			int numLevels = (mipMap) ? (int) MathUtility.Log2(Math.Max(width, height)) + 1 : 1;
 			_levels = new TextureMipMapLevel[numLevels];
 
-			int width = _xBound / 2;
-			int height = _yBound / 2;
-			for (int level = 1; level < numLevels; ++level)
+			for (int level = 0; level < numLevels; ++level)
 			{
 				_levels[level] = new TextureMipMapLevel(level, width, height);
+				width /= 2;
+				height /= 2;
+			}
+		}
+
+		private void PopulateMipMaps()
+		{
+			for (int level = 1; level < _levels.Length; ++level)
+			{
+				int width = _levels[level].Width;
+				int height = _levels[level].Height;
 				for (int y = 0; y < height; ++y)
 				{
 					for (int x = 0; x < width; ++x)
@@ -50,106 +93,151 @@ namespace Rasterizr.Core.ShaderCore
 						_levels[level].Texels[x, y] = interpolatedColor;
 					}
 				}
-
-				width /= 2;
-				height /= 2;
 			}
 		}
 
-		private ColorF GetColor(int level, int x, int y)
+		#endregion
+		
+		public float CalculateLevelOfDetail(SamplerState samplerState)
 		{
-			if (level == 0)
-				return _surface[x, y];
-			return _levels[level].Texels[x, y];
+			Vector2D ddx, ddy;
+			CalculatePartialDifferentials(out ddx, out ddy);
+			return CalculateLevelOfDetail(ddx, ddy);
+		}
+
+		public void GetDimensions(int mipLevel, out int width, out int height, out int numberOfLevels)
+		{
+			GetDimensions(mipLevel, out width, out height);
+			numberOfLevels = _levels.Length;
+		}
+
+		public void GetDimensions(int mipLevel, out int width, out int height)
+		{
+			width = _levels[mipLevel].Width;
+			height = _levels[mipLevel].Height;
+		}
+
+		public void GetDimensions(out int width, out int height)
+		{
+			GetDimensions(0, out width, out height);
 		}
 
 		public ColorF Sample(SamplerState samplerState, Point2D location)
 		{
-			// TODO: Need to calculate partial differentials.
-			return SampleGrad(samplerState, location, Vector2D.Zero, Vector2D.Zero);
+			Vector2D ddx, ddy;
+			CalculatePartialDifferentials(out ddx, out ddy);
+			return SampleGrad(samplerState, location, ddx, ddy);
 		}
 
 		public ColorF SampleGrad(SamplerState samplerState, Point2D location, Vector2D ddx, Vector2D ddy)
 		{
-			float texU = location.X * _xBound;
-			float texV = location.Y * _yBound;
+			return SampleLevel(samplerState, location, CalculateLevelOfDetail(ddx, ddy));
+		}
 
-			float xBound2 = _xBound * _xBound;
-			float yBound2 = _yBound * _yBound;
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="samplerState"></param>
+		/// <param name="location"></param>
+		/// <param name="lod">A number that specifies the mipmap level. If the value is &lt;=0, the zero'th (biggest map)
+		/// is used. The fractional value (if supplied) is used to interpolate between two mipmap levels.</param>
+		/// <returns></returns>
+		public ColorF SampleLevel(SamplerState samplerState, Point2D location, float lod)
+		{
+			switch (samplerState.Filter)
+			{
+				case TextureFilter.MinLinearMagMipPoint:
+				case TextureFilter.MinMagLinearMipPoint:
+				case TextureFilter.MinMagMipPoint:
+					{
+						// Calculate nearest mipmap level.
+						int nearestLevel = MathUtility.Round(lod);
+						return GetFilteredColor(samplerState.Filter, true, nearestLevel, samplerState, location.X, location.Y);
+					}
+				case TextureFilter.MinLinearMagPointMipLinear:
+				case TextureFilter.MinMagMipLinear:
+				case TextureFilter.MinMagPointMipLinear:
+				case TextureFilter.MinPointMagMipLinear:
+					{
+						// Calculate nearest two levels and linearly filter between them.
+						int nearestLevelInt = (int)lod;
+						float d = lod - nearestLevelInt;
+						ColorF c1 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt, samplerState, location.X, location.Y);
+						ColorF c2 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt + 1, samplerState, location.X, location.Y);
+						return (c1 * (1 - d)) + (c2 * d);
+					}
+				default:
+					throw new NotSupportedException();
+			}
+		}
+
+		private void CalculatePartialDifferentials(out Vector2D ddx, out Vector2D ddy)
+		{
+			throw new NotImplementedException();
+		}
+
+		private float CalculateLevelOfDetail(Vector2D ddx, Vector2D ddy)
+		{
+			int width, height;
+			GetDimensions(out width, out height);
+			float xBound2 = width * width;
+			float yBound2 = height * height;
 
 			float dudx2 = ddx.X * ddx.X * xBound2;
 			float dvdx2 = ddx.Y * ddx.Y * yBound2;
 			float dudy2 = ddy.X * ddy.X * xBound2;
 			float dvdy2 = ddy.Y * ddy.Y * yBound2;
-			float pixelSizeTexelRatio2 = Math.Max(dudx2 + dvdx2, dudy2 + dvdy2); // Proportional to the amount of a texel on display in a single pixel
-			if (pixelSizeTexelRatio2 < 1) // TODO: Is this correct?
-				return GetFilteredColor(samplerState.MagFilter, 0, samplerState, location.X, location.Y);
-			return GetMipMappedColor(samplerState, location.X, location.Y, pixelSizeTexelRatio2);
+
+			// Proportional to the amount of a texel on display in a single pixel
+			float pixelSizeTexelRatio2 = Math.Max(dudx2 + dvdx2, dudy2 + dvdy2);
+
+			// Uses formula for p410 of Essential Mathematics for Games and Interactive Applications
+			return 0.5f * MathUtility.Log2(pixelSizeTexelRatio2);
 		}
 
-		private ColorF GetMipMappedColor(SamplerState samplerState, float texU, float texV, float maxDifferentials2)
+		private ColorF GetColor(int level, int x, int y)
 		{
-			switch (samplerState.MipFilter)
-			{
-				case TextureMipMapFilter.Nearest:
-				{
-					// Calculate nearest mipmap level.
-					int nearestLevel = MathUtility.Round(CalculateLevel(maxDifferentials2));
-					return GetFilteredColor(samplerState.MinFilter, nearestLevel, samplerState, texU, texV);
-				}
-				case TextureMipMapFilter.Linear:
-				{
-					// Calculate nearest two levels and linearly filter between them.
-					float nearestLevel = CalculateLevel(maxDifferentials2);
-					int nearestLevelInt = (int) nearestLevel;
-					float d = nearestLevel - nearestLevelInt;
-					ColorF c1 = GetFilteredColor(samplerState.MinFilter, nearestLevelInt, samplerState, texU, texV);
-					ColorF c2 = GetFilteredColor(samplerState.MinFilter, nearestLevelInt + 1, samplerState, texU, texV);
-					return (c1 * (1 - d)) + (c2 * d);
-				}
-				case TextureMipMapFilter.None:
-					return GetFilteredColor(samplerState.MinFilter, 0, samplerState, texU, texV);
-				default :
-					throw new NotSupportedException();
-			}
+			return _levels[level].Texels[x, y];
 		}
 
-		/// <summary>
-		/// Uses formula for p410 of Essential Mathematics for Games and Interactive Applications
-		/// </summary>
-		/// <returns></returns>
-		private static float CalculateLevel(float maxDifferentials2)
-		{
-			return 0.5f * MathUtility.Log2(maxDifferentials2);
-		}
-
-		private int GetWidth(int level)
-		{
-			if (level == 0)
-				return _xBound;
-			return _levels[level].Width;
-		}
-
-		private int GetHeight(int level)
-		{
-			if (level == 0)
-				return _yBound;
-			return _levels[level].Height;
-		}
-
-		private ColorF GetFilteredColor(TextureFilter filter, int level, SamplerState samplerState, float x, float y)
+		private ColorF GetFilteredColor(TextureFilter filter, bool minifying, int level, SamplerState samplerState, float u, float v)
 		{
 			level = MathUtility.Clamp(level, 0, _levels.Length - 1);
 
-			x *= GetWidth(level);
-			y *= GetHeight(level);
+			int width, height;
+			GetDimensions(level, out width, out height);
+			u *= width;
+			v *= height;
 
+			// Minifying
+			if (minifying)
+				switch (filter)
+				{
+					case TextureFilter.MinMagMipPoint:
+					case TextureFilter.MinMagPointMipLinear:
+					case TextureFilter.MinPointMagMipLinear:
+						return GetNearestNeighbor(samplerState, level, u, v);
+					case TextureFilter.MinLinearMagMipPoint:
+					case TextureFilter.MinLinearMagPointMipLinear:
+					case TextureFilter.MinMagLinearMipPoint:
+					case TextureFilter.MinMagMipLinear:
+						return GetLinear(samplerState, level, u, v);
+					default:
+						throw new NotSupportedException();
+				}
+
+			// Magnifying
 			switch (filter)
 			{
-				case TextureFilter.Nearest:
-					return GetNearestNeighbor(samplerState, level, x, y);
-				case TextureFilter.Bilinear:
-					return GetLinear(samplerState, level, x, y);
+				case TextureFilter.MinLinearMagMipPoint:
+				case TextureFilter.MinLinearMagPointMipLinear:
+				case TextureFilter.MinMagMipPoint:
+				case TextureFilter.MinMagPointMipLinear:
+					return GetNearestNeighbor(samplerState, level, u, v);
+				case TextureFilter.MinMagLinearMipPoint:
+				case TextureFilter.MinMagMipLinear:
+				case TextureFilter.MinPointMagMipLinear:
+					return GetLinear(samplerState, level, u, v);
 				default:
 					throw new NotSupportedException();
 			}
@@ -157,8 +245,10 @@ namespace Rasterizr.Core.ShaderCore
 
 		private ColorF GetColor(SamplerState samplerState, int level, int texU, int texV)
 		{
-			int? modifiedTexelU = GetTextureAddress(texU, GetWidth(level), samplerState.AddressU);
-			int? modifiedTexelV = GetTextureAddress(texV, GetHeight(level), samplerState.AddressV);
+			int width, height;
+			GetDimensions(level, out width, out height);
+			int? modifiedTexelU = GetTextureAddress(texU, width, samplerState.AddressU);
+			int? modifiedTexelV = GetTextureAddress(texV, height, samplerState.AddressV);
 
 			if (modifiedTexelU == null || modifiedTexelV == null)
 				return samplerState.BorderColor;

@@ -2,7 +2,13 @@ namespace Rasterizr.Core.ShaderCore
 {
 	public enum TextureFilter
 	{
-		Nearest,
-		Bilinear
+		MinMagMipPoint,
+		MinMagPointMipLinear,
+		MinPointMagMipLinear,
+		MinLinearMagMipPoint,
+		MinLinearMagPointMipLinear,
+		MinMagLinearMipPoint,
+		MinMagMipLinear,
+		//MinMagMipAnisotropic TODO
 	}
 }

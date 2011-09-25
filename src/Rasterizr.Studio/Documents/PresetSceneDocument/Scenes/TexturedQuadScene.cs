@@ -38,7 +38,7 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 			{
 				Projection = camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio),
 				View = camera.GetViewMatrix(),
-				Texture = new Texture2D("pack://application:,,,/Assets/Textures/Checkerboard.png")
+				Texture = Texture2D.FromFile("pack://application:,,,/Assets/Textures/Checkerboard.png")
 			};
 
 			foreach (EffectPass pass in effect.CurrentTechnique.Passes)
