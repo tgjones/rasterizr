@@ -196,6 +196,7 @@ namespace Rasterizr.Core.Rasterizer
 				// TODO: Use attribute to indicate whether perspective or linear interpolation is required.
 				object interpolatedValue = Interpolator.Perspective(alpha, beta, gamma, v1Value, v2Value, v3Value,
 					triangle.V1.Position.W, triangle.V2.Position.W, triangle.V3.Position.W);
+				//object interpolatedValue = Interpolator.Linear(alpha, beta, gamma, v1Value, v2Value, v3Value);
 
 				// Set value onto pixel shader input.
 				property.SetValue(ref pixelShaderInput, interpolatedValue);

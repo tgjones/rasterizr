@@ -336,7 +336,7 @@ namespace Rasterizr.Effects
 			public PixelShaderCt(BasicEffect effect)
 				: base(effect)
 			{
-				Sampler = SamplerState.LinearWrap;
+				Sampler = SamplerState.PointWrap;
 			}
 
 			public override ColorF Execute(PixelShaderInputCt pin)

@@ -7,6 +7,7 @@ namespace Rasterizr.Core.ShaderCore
 		#region Static stuff
 
 		public static readonly SamplerState LinearWrap;
+		public static readonly SamplerState PointWrap;
 
 		static SamplerState()
 		{
@@ -15,6 +16,12 @@ namespace Rasterizr.Core.ShaderCore
 				AddressU = TextureAddressMode.Wrap,
 				AddressV = TextureAddressMode.Wrap,
 				Filter = TextureFilter.MinMagMipLinear,
+			};
+			PointWrap = new SamplerState
+			{
+				AddressU = TextureAddressMode.Wrap,
+				AddressV = TextureAddressMode.Wrap,
+				Filter = TextureFilter.MinMagMipPoint,
 			};
 		}
 

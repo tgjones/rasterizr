@@ -21,6 +21,24 @@ namespace Rasterizr.Core.ShaderCore
 			return texture;
 		}
 
+		public static Texture2D CreateCheckerboard(int width, int height)
+		{
+			var texture = new Texture2D(width, height, true);
+			var data = new ColorF[width,height];
+			bool black = false;
+			for (int y = 0; y < height; y++)
+			{
+				for (int x = 0; x < width; x++)
+				{
+					data[x, y] = (black) ? ColorsF.Black : ColorsF.White;
+					black = !black;
+				}
+				black = !black;
+			}
+			texture.SetData(data);
+			return texture;
+		}
+
 		#endregion
 
 		private TextureMipMapLevel[] _levels;
@@ -173,7 +191,9 @@ namespace Rasterizr.Core.ShaderCore
 
 		private void CalculatePartialDifferentials(out Vector2D ddx, out Vector2D ddy)
 		{
-			throw new NotImplementedException();
+			// TODO
+			ddx = new Vector2D(0.01f, 0.01f);
+			ddy = new Vector2D(0.01f, 0.01f);
 		}
 
 		private float CalculateLevelOfDetail(Vector2D ddx, Vector2D ddy)
@@ -193,11 +213,6 @@ namespace Rasterizr.Core.ShaderCore
 
 			// Uses formula for p410 of Essential Mathematics for Games and Interactive Applications
 			return 0.5f * MathUtility.Log2(pixelSizeTexelRatio2);
-		}
-
-		private ColorF GetColor(int level, int x, int y)
-		{
-			return _levels[level].Texels[x, y];
 		}
 
 		private ColorF GetFilteredColor(TextureFilter filter, bool minifying, int level, SamplerState samplerState, float u, float v)
@@ -243,23 +258,10 @@ namespace Rasterizr.Core.ShaderCore
 			}
 		}
 
-		private ColorF GetColor(SamplerState samplerState, int level, int texU, int texV)
-		{
-			int width, height;
-			GetDimensions(level, out width, out height);
-			int? modifiedTexelU = GetTextureAddress(texU, width, samplerState.AddressU);
-			int? modifiedTexelV = GetTextureAddress(texV, height, samplerState.AddressV);
-
-			if (modifiedTexelU == null || modifiedTexelV == null)
-				return samplerState.BorderColor;
-
-			return GetColor(level, (int) modifiedTexelU, (int) modifiedTexelV);
-		}
-
 		private ColorF GetLinear(SamplerState samplerState, int level, float texelX, float texelY)
 		{
-			int intTexelX = (int) texelX;
-			int intTexelY = (int) texelY;
+			int intTexelX = (int)texelX;
+			int intTexelY = (int)texelY;
 
 			float fracX = texelX - intTexelX;
 			float fracY = texelY - intTexelY;
@@ -281,6 +283,19 @@ namespace Rasterizr.Core.ShaderCore
 			return GetColor(samplerState, level, MathUtility.Floor(texU), MathUtility.Floor(texV));
 		}
 
+		private ColorF GetColor(SamplerState samplerState, int level, int texU, int texV)
+		{
+			int width, height;
+			GetDimensions(level, out width, out height);
+			int? modifiedTexelU = GetTextureAddress(texU, width, samplerState.AddressU);
+			int? modifiedTexelV = GetTextureAddress(texV, height, samplerState.AddressV);
+
+			if (modifiedTexelU == null || modifiedTexelV == null)
+				return samplerState.BorderColor;
+
+			return GetColor(level, (int) modifiedTexelU, (int) modifiedTexelV);
+		}
+
 		private static int? GetTextureAddress(int value, int maxValue, TextureAddressMode textureAddressMode)
 		{
 			// If value is in the valid texture address range, return it straight away.
@@ -290,27 +305,32 @@ namespace Rasterizr.Core.ShaderCore
 			// Otherwise, we need to use the specified addressing mode.
 			switch (textureAddressMode)
 			{
-				case TextureAddressMode.Border :
+				case TextureAddressMode.Border:
 					return null;
-				case TextureAddressMode.Clamp :
+				case TextureAddressMode.Clamp:
 					return (value < 0) ? 0 : maxValue - 1;
 				case TextureAddressMode.Mirror:
-				{
-					int temp = value % (2 * maxValue);
-					if (temp < 0)
-						temp += (2 * maxValue);
-					return (temp > maxValue) ? (2 * maxValue) - temp : temp;
-				}
+					{
+						int temp = value % (2 * maxValue);
+						if (temp < 0)
+							temp += (2 * maxValue);
+						return (temp > maxValue) ? (2 * maxValue) - temp : temp;
+					}
 				case TextureAddressMode.Wrap:
-				{
-					int temp = value % maxValue;
-					if (temp < 0)
-						temp += maxValue;
-					return temp;
-				}
-				default :
+					{
+						int temp = value % maxValue;
+						if (temp < 0)
+							temp += maxValue;
+						return temp;
+					}
+				default:
 					throw new NotSupportedException();
 			}
+		}
+
+		private ColorF GetColor(int level, int x, int y)
+		{
+			return _levels[level].Texels[x, y];
 		}
 	}
 }

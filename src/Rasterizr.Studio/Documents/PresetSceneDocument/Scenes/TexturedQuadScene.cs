@@ -12,15 +12,15 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 		public override void Draw(RasterizrDevice device)
 		{
 			device.ClearDepthBuffer(1);
-			device.ClearRenderTarget(ColorsF.Gray);
+			device.ClearRenderTarget(new ColorF(0.8f, 0, 0));
 
 			Camera camera = new PerspectiveCamera
 			{
 				FieldOfView = MathUtility.PI_OVER_4,
-				FarPlaneDistance = 100.0f,
-				NearPlaneDistance = 1.0f,
-				Position = new Point3D(1, 0, 2),
-				LookDirection = Vector3D.Normalize(new Vector3D(-0.4f, 0.2f, -0.8f))
+				FarPlaneDistance = 10.0f,
+				NearPlaneDistance = 0.1f,
+				Position = new Point3D(2, 0, 1.5f),
+				LookDirection = Vector3D.Normalize(new Vector3D(-1.2f, 0.4f, -1f))
 			};
 
 			device.InputAssembler.InputLayout = VertexPositionColorTexture.InputLayout;
@@ -28,8 +28,8 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 			{
 				new VertexPositionColorTexture(new Point3D(-1, 0, 0), ColorsF.White, new Point2D(0, 0)),
 				new VertexPositionColorTexture(new Point3D(1, 0, 0), ColorsF.White, new Point2D(0, 1)),
-				new VertexPositionColorTexture(new Point3D(-1, 1, -1), ColorsF.White, new Point2D(1, 0)),
-				new VertexPositionColorTexture(new Point3D(1, 1, -1), ColorsF.White, new Point2D(1, 1))
+				new VertexPositionColorTexture(new Point3D(-1, 1, -1f), ColorsF.White, new Point2D(1, 0)),
+				new VertexPositionColorTexture(new Point3D(1, 1, -0.5f), ColorsF.White, new Point2D(1, 1))
 			};
 			device.InputAssembler.Indices = new Int32Collection(new[] {0, 1, 2, 3});
 			device.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
@@ -38,7 +38,7 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 			{
 				Projection = camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio),
 				View = camera.GetViewMatrix(),
-				Texture = Texture2D.FromFile("pack://application:,,,/Assets/Textures/Checkerboard.png")
+				Texture = Texture2D.CreateCheckerboard(8, 8)
 			};
 
 			foreach (EffectPass pass in effect.CurrentTechnique.Passes)
