@@ -71,8 +71,8 @@
     <Reference Include="AvalonDock">
       <HintPath>..\..\lib\AvalonDock\AvalonDock.dll</HintPath>
     </Reference>
-    <Reference Include="Fluent">
-      <HintPath>..\..\lib\FluentRibbon\Fluent.dll</HintPath>
+    <Reference Include="AvalonDock.Themes">
+      <HintPath>..\..\lib\AvalonDock\AvalonDock.Themes.dll</HintPath>
     </Reference>
     <Reference Include="Meshellator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

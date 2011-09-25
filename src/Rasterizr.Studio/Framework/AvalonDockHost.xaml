@@ -5,5 +5,8 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
 			 mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<ResourceDictionary Source="/AvalonDock.Themes;Component/Themes/Dev2010.xaml"/>
+	</UserControl.Resources>
 	<ad:DockingManager x:Name="dockingManager" Loaded="AvalonDock_Loaded" />
 </UserControl>
