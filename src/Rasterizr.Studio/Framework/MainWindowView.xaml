@@ -10,6 +10,8 @@
 				<MenuItem Header="Preset Scene">
 					<MenuItem Header="Simple Triangle" Command="{Binding OpenPresetSceneCommand}" 
 							  CommandParameter="Rasterizr.Studio.Documents.PresetSceneDocument.Scenes.SimpleTriangleScene" />
+					<MenuItem Header="Textured Quad" Command="{Binding OpenPresetSceneCommand}" 
+							  CommandParameter="Rasterizr.Studio.Documents.PresetSceneDocument.Scenes.TexturedQuadScene" />
 				</MenuItem>
 				<MenuItem Header="Open" Command="{Binding OpenCommand}" />
 				<MenuItem Header="Exit" Command="{Binding ExitCommand}" />

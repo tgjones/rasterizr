@@ -4,6 +4,24 @@ namespace Rasterizr.Core.ShaderCore
 {
 	public class SamplerState
 	{
+		#region Static stuff
+
+		public static readonly SamplerState LinearWrap;
+
+		static SamplerState()
+		{
+			LinearWrap = new SamplerState
+			{
+				AddressU = TextureAddressMode.Wrap,
+				AddressV = TextureAddressMode.Wrap,
+				MagFilter = TextureFilter.Bilinear,
+				MinFilter = TextureFilter.Bilinear,
+				MipFilter = TextureMipMapFilter.Linear
+			};
+		}
+
+		#endregion
+
 		public TextureAddressMode AddressU { get; set; }
 		public TextureAddressMode AddressV { get; set; }
 

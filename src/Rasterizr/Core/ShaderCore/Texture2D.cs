@@ -65,8 +65,8 @@ namespace Rasterizr.Core.ShaderCore
 
 		public ColorF Sample(SamplerState samplerState, Point2D location)
 		{
-			// Need to calculate partial differentials.
-			throw new NotImplementedException();
+			// TODO: Need to calculate partial differentials.
+			return SampleGrad(samplerState, location, Vector2D.Zero, Vector2D.Zero);
 		}
 
 		public ColorF SampleGrad(SamplerState samplerState, Point2D location, Vector2D ddx, Vector2D ddy)

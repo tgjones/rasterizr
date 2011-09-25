@@ -66,10 +66,13 @@ namespace Rasterizr.Effects
 				&& inputLayout.ContainsSemantic(Semantics.TexCoord, 0))
 			{
 				_effectPass.VertexShader = new VertexShaderPnt();
-				_effectPass.PixelShader = new PixelShaderNt(this)
-				{
-					Texture = Texture
-				};
+				_effectPass.PixelShader = new PixelShaderNt(this);
+			}
+			else if (inputLayout.ContainsSemantic(Semantics.Color, 0)
+				&& inputLayout.ContainsSemantic(Semantics.TexCoord, 0))
+			{
+				_effectPass.VertexShader = new VertexShaderPct();
+				_effectPass.PixelShader = new PixelShaderCt(this);
 			}
 			else if (inputLayout.ContainsSemantic(Semantics.Color, 0))
 			{
@@ -117,6 +120,14 @@ namespace Rasterizr.Effects
 			{
 				PixelShaderNt pixelShader = (PixelShaderNt)_effectPass.PixelShader;
 				pixelShader.Eye = Matrix3D.Invert(View).Translation;
+				pixelShader.Texture = Texture;
+				pixelShader.Sampler = SamplerState.LinearWrap;
+			}
+			else if (_effectPass.PixelShader is PixelShaderCt)
+			{
+				PixelShaderCt pixelShader = (PixelShaderCt)_effectPass.PixelShader;
+				pixelShader.Texture = Texture;
+				pixelShader.Sampler = SamplerState.LinearWrap;
 			}
 		}
 
@@ -159,6 +170,33 @@ namespace Rasterizr.Effects
 					Position = position,
 					Normal = vertexShaderInput.Normal,
 					TextureCoordinate = vertexShaderInput.TextureCoordinate,
+				};
+			}
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct VertexShaderOutputPct : IVertexShaderOutput
+		{
+			[Semantic(Semantics.Position)]
+			public Point4D Position { get; set; }
+
+			[Semantic(Semantics.Color)]
+			public ColorF Color;
+
+			[Semantic(Semantics.TexCoord)]
+			public Point2D TextureCoordinate;
+		}
+
+		internal class VertexShaderPct : BasicEffectVertexShader<VertexPositionColorTexture, VertexShaderOutputPct>
+		{
+			public override VertexShaderOutputPct Execute(VertexPositionColorTexture vertexShaderInput)
+			{
+				Point4D position = WorldViewProjection.Transform(vertexShaderInput.Position.ToHomogeneousPoint3D());
+				return new VertexShaderOutputPct
+				{
+					Position = position,
+					Color = vertexShaderInput.Color,
+					TextureCoordinate = vertexShaderInput.TextureCoordinate
 				};
 			}
 		}
@@ -279,6 +317,36 @@ namespace Rasterizr.Effects
 					* new ColorF(lightResult.Diffuse, Effect.Alpha);
 				ColorF color = diffuse + new ColorF(lightResult.Specular, 0);
 				return color;
+			}
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct PixelShaderInputCt
+		{
+			[Semantic(Semantics.Color)]
+			public ColorF Color;
+
+			[Semantic(Semantics.TexCoord)]
+			public Point2D TextureCoordinate;
+		}
+
+		internal class PixelShaderCt : BasicEffectPixelShader<PixelShaderInputCt>
+		{
+			public SamplerState Sampler { get; set; }
+			public Texture2D Texture { get; set; }
+
+			public PixelShaderCt(BasicEffect effect)
+				: base(effect)
+			{
+
+			}
+
+			public override ColorF Execute(PixelShaderInputCt pin)
+			{
+				ColorF texture = (Texture != null)
+					? Texture.Sample(Sampler, pin.TextureCoordinate)
+					: ColorsF.White;
+				return texture * pin.Color;
 			}
 		}
 

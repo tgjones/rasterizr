@@ -130,6 +130,7 @@
       <DependentUpon>PresetSceneDocumentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Documents\PresetSceneDocument\PresetSceneDocumentViewModel.cs" />
+    <Compile Include="Documents\PresetSceneDocument\Scenes\TexturedQuadScene.cs" />
     <Compile Include="Documents\RenderedDocumentBase.cs" />
     <Compile Include="Framework\AvalonDockHost.xaml.cs">
       <DependentUpon>AvalonDockHost.xaml</DependentUpon>
@@ -185,6 +186,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Panes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Textures\Checkerboard.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
