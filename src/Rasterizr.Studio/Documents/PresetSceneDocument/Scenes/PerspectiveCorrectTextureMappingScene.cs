@@ -9,7 +9,7 @@ using Rasterizr.Core.ShaderCore.VertexShader;
 
 namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 {
-	public class AffineTextureMappingScene : PresetSceneBase
+	public class PerspectiveCorrectTextureMappingScene : PresetSceneBase
 	{
 		public override void Draw(RasterizrDevice device)
 		{
@@ -78,7 +78,6 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 		private struct PixelShaderInput
 		{
 			[Semantic(Semantics.TexCoord)]
-			[InterpolationModifier(InterpolationModifier.NotPerspectiveCorrect)]
 			public Point2D TextureCoordinate;
 		}
 
