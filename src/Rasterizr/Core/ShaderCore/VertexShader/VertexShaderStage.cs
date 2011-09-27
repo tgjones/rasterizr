@@ -12,25 +12,33 @@ namespace Rasterizr.Core.ShaderCore.VertexShader
 	/// </summary>
 	public class VertexShaderStage : PipelineStageBase<object, TransformedVertex>
 	{
-		public IShader VertexShader { get; set; }
+		private IShader _vertexShader;
+		private SignatureParameterDescription _positionOutputParameter;
+
+		public IShader VertexShader
+		{
+			get { return _vertexShader; }
+			set
+			{
+				_vertexShader = value;
+				var vertexShaderDescription = ShaderDescriptionCache.GetDescription(VertexShader);
+				_positionOutputParameter = vertexShaderDescription.GetOutputParameterBySemantic(new Semantic(SystemValueType.Position));
+				if (_positionOutputParameter == null)
+					throw new RasterizrException("VertexShader output must include a field with the Position system value semantic");
+				if (_positionOutputParameter.ParameterType != typeof(Point4D))
+					throw new RasterizrException("VertexShader output position must be of type Nexus.Point4D");
+			}
+		}
 
 		public override IEnumerable<TransformedVertex> Run(IEnumerable<object> inputs)
 		{
 			if (VertexShader == null)
 				throw new RasterizrException("VertexShader must be set");
 
-			var vertexShaderDescription = ShaderDescriptionCache.GetDescription(VertexShader);
-			var positionOutputParameter =
-				vertexShaderDescription.GetOutputParameterBySemantic(new Semantic(SystemValueType.Position));
-			if (positionOutputParameter == null)
-				throw new RasterizrException("VertexShader output must include a field with the Position system value semantic");
-			if (positionOutputParameter.ParameterType != typeof(Point4D))
-				throw new RasterizrException("VertexShader output position must be of type Nexus.Point4D");
-
 			return inputs.Select(input =>
 			{
 				var shaderOutput = VertexShader.Execute(input);
-				return new TransformedVertex(shaderOutput, (Point4D) positionOutputParameter.GetValue(shaderOutput));
+				return new TransformedVertex(shaderOutput, (Point4D) _positionOutputParameter.GetValue(shaderOutput));
 			});
 		}
 	}

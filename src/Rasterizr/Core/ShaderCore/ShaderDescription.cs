@@ -9,6 +9,7 @@ namespace Rasterizr.Core.ShaderCore
 	public class ShaderDescription
 	{
 		private readonly Dictionary<Semantic, SignatureParameterDescription> _outputParametersDictionary;
+		private readonly MemberGetter[] _textureGetters;
 
 		public SignatureParameterDescription[] InputParameters { get; private set; }
 		public SignatureParameterDescription[] OutputParameters { get; private set; }
@@ -20,6 +21,16 @@ namespace Rasterizr.Core.ShaderCore
 			OutputParameters = FindParameters(shader.OutputType);
 
 			_outputParametersDictionary = OutputParameters.ToDictionary(spd => spd.Semantic);
+
+			_textureGetters = FindTextureGetters(shader);
+		}
+
+		private static MemberGetter[] FindTextureGetters(IShader shader)
+		{
+			return shader.GetType().Properties()
+				.Where(pi => pi.PropertyType == typeof (Texture2D))
+				.Select(pi => pi.DelegateForGetPropertyValue())
+				.ToArray();
 		}
 
 		private SignatureParameterDescription[] FindParameters(Type type)
@@ -55,6 +66,13 @@ namespace Rasterizr.Core.ShaderCore
 			SignatureParameterDescription result;
 			_outputParametersDictionary.TryGetValue(semantic, out result);
 			return result;
+		}
+
+		public IList<Texture2D> GetTextureParameters(IShader shader)
+		{
+			return _textureGetters
+				.Select(mg => (Texture2D) mg(shader))
+				.ToList();
 		}
 	}
 }

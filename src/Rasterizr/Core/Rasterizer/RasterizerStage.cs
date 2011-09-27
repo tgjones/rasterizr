@@ -11,7 +11,7 @@ using Rasterizr.Core.ShaderCore.VertexShader;
 
 namespace Rasterizr.Core.Rasterizer
 {
-	public class RasterizerStage : PipelineStageBase<TransformedVertex, Fragment>
+	public class RasterizerStage : PipelineStageBase<TransformedVertex, FragmentQuad>
 	{
 		private readonly VertexShaderStage _vertexShaderStage;
 		private readonly PixelShaderStage _pixelShaderStage;
@@ -66,7 +66,7 @@ namespace Rasterizr.Core.Rasterizer
 			FillMode = FillMode.Solid;
 		}
 
-		public override IEnumerable<Fragment> Run(IEnumerable<TransformedVertex> inputs)
+		public override IEnumerable<FragmentQuad> Run(IEnumerable<TransformedVertex> inputs)
 		{
 			// Do perspective divide.
 			var perspectiveDividerOutputs = _perspectiveDivider.Process(inputs);
@@ -97,8 +97,8 @@ namespace Rasterizr.Core.Rasterizer
 
 				// Scan pixels in target area, checking if they are inside the triangle.
 				// If they are, calculate the coverage.
-				foreach (var fragment in RasterizeTriangle(screenBounds, triangle))
-					yield return fragment;
+				foreach (var fragmentQuad in RasterizeTriangle(screenBounds, triangle))
+					yield return fragmentQuad;
 			}
 		}
 
@@ -133,40 +133,61 @@ namespace Rasterizr.Core.Rasterizer
 				x, y, sampleIndex);
 		}
 
-		private IEnumerable<Fragment> RasterizeTriangle(Box2D screenBounds, TrianglePrimitive triangle)
+		private IEnumerable<FragmentQuad> RasterizeTriangle(Box2D screenBounds, TrianglePrimitive triangle)
 		{
 			Point4D p0 = triangle.V1.Position;
 			Point4D p1 = triangle.V2.Position;
 			Point4D p2 = triangle.V3.Position;
 
 			// TODO: Parallelize this?
-			// TODO: Do I really need to pad the screen bounds by 1 on each side?
-			for (int x = screenBounds.Min.X - 1; x <= screenBounds.Max.X + 1; x++)
-				for (int y = screenBounds.Min.Y - 1; y <= screenBounds.Max.Y + 1; y++)
+			// TODO: Ensure that we have an even number of fragments in each direction.
+			for (int y = screenBounds.Min.Y; y <= screenBounds.Max.Y; y += 2)
+				for (int x = screenBounds.Min.X; x <= screenBounds.Max.X; x += 2)
 				{
-					// Check all samples to determine whether they are inside the triangle.
-					var samples = new SampleCollection();
-					var anyCoveredSamples = CalculateSampleCoverage(x, y, p0, p2, p1, samples);
+					// First check whether any fragments in this quad are covered. If not, we don't
+					// need to any (expensive) interpolation of attributes.
+					var fragmentQuad = new FragmentQuad();
+					var anyCoveredSamples = false;
+					var fragmentQuadLocation = (FragmentQuadLocation) 0;
+					for (int fragmentY = y; fragmentY <= y + 1; fragmentY++)
+						for (int fragmentX = x; fragmentX <= x + 1; fragmentX++)
+						{
+							// Check all samples to determine whether they are inside the triangle.
+							var samples = new SampleCollection();
+							var anyCoveredSamplesForThisFragment = CalculateSampleCoverage(fragmentX, fragmentY, p0, p2, p1, samples);
+							anyCoveredSamples = anyCoveredSamples || anyCoveredSamplesForThisFragment;
 
-					if (!anyCoveredSamples) 
+							// Create output fragment.
+							var fragment = new Fragment(fragmentX, fragmentY, fragmentQuadLocation++);
+							fragment.Samples = samples;
+
+							fragmentQuad[fragment.QuadLocation] = fragment;
+						}
+					if (!anyCoveredSamples)
 						continue;
 
-					Point2D pixelCenter = new Point2D(x + 0.5f, y + 0.5f);
+					// Otherwise, we do have at least one fragment with covered samples, so continue
+					// with interpolation.
+					fragmentQuadLocation = 0;
+					for (int fragmentY = y; fragmentY <= y + 1; fragmentY++)
+						for (int fragmentX = x; fragmentX <= x + 1; fragmentX++)
+						{
+							var pixelCenter = new Point2D(fragmentX + 0.5f, fragmentY + 0.5f);
 
-					// Calculate alpha, beta, gamma for pixel center.
-					float alpha = ComputeFunction(pixelCenter.X, pixelCenter.Y, p1, p2) / ComputeFunction(p0.X, p0.Y, p1, p2);
-					float beta = ComputeFunction(pixelCenter.X, pixelCenter.Y, p2, p0) / ComputeFunction(p1.X, p1.Y, p2, p0);
-					float gamma = ComputeFunction(pixelCenter.X, pixelCenter.Y, p0, p1) / ComputeFunction(p2.X, p2.Y, p0, p1);
+							// Calculate alpha, beta, gamma for pixel center.
+							float alpha = ComputeFunction(pixelCenter.X, pixelCenter.Y, p1, p2) / ComputeFunction(p0.X, p0.Y, p1, p2);
+							float beta = ComputeFunction(pixelCenter.X, pixelCenter.Y, p2, p0) / ComputeFunction(p1.X, p1.Y, p2, p0);
+							float gamma = ComputeFunction(pixelCenter.X, pixelCenter.Y, p0, p1) / ComputeFunction(p2.X, p2.Y, p0, p1);
 
-					// Create output fragment.
-					var fragment = new Fragment(x, y);
-					fragment.PixelShaderInput = CreatePixelShaderInput(triangle, beta, alpha, gamma);
-					fragment.Samples = samples;
+							// Create output fragment.
+							var fragment = fragmentQuad[fragmentQuadLocation++];
+							fragment.PixelShaderInput = CreatePixelShaderInput(triangle, beta, alpha, gamma);
 
-					// TODO: Is this needed? We already have the depths for each sample.
-					fragment.Depth = FloatInterpolator.InterpolateLinear(alpha, beta, gamma, p0.Z, p1.Z, p2.Z);
+							// TODO: Is this needed? We already have the depths for each sample.
+							fragment.Depth = FloatInterpolator.InterpolateLinear(alpha, beta, gamma, p0.Z, p1.Z, p2.Z);
+						}
 
-					yield return fragment;
+					yield return fragmentQuad;
 				}
 		}
 

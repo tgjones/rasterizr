@@ -131,6 +131,7 @@
     </Compile>
     <Compile Include="Documents\PresetSceneDocument\PresetSceneDocumentViewModel.cs" />
     <Compile Include="Documents\PresetSceneDocument\Scenes\AffineTextureMappingScene.cs" />
+    <Compile Include="Documents\PresetSceneDocument\Scenes\TextureMipMappingScene.cs" />
     <Compile Include="Documents\PresetSceneDocument\Scenes\PerspectiveCorrectTextureMappingScene.cs" />
     <Compile Include="Documents\PresetSceneDocument\Scenes\TexturedQuadScene.cs" />
     <Compile Include="Documents\RenderedDocumentBase.cs" />

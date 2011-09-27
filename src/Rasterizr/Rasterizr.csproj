@@ -60,6 +60,9 @@
     <Compile Include="Core\OutputMerger\DepthStencilState.cs" />
     <Compile Include="Core\OutputMerger\RenderTargetView.cs" />
     <Compile Include="Core\Rasterizer\ClipperSubStage.cs" />
+    <Compile Include="Core\Rasterizer\Derivatives\DerivativeValues.cs" />
+    <Compile Include="Core\Rasterizer\Derivatives\Point2DDerivativeValues.cs" />
+    <Compile Include="Core\Rasterizer\FragmentQuadLocation.cs" />
     <Compile Include="Core\Rasterizer\PerspectiveDividerSubStage.cs" />
     <Compile Include="Core\Rasterizer\ScreenMapperSubStage.cs" />
     <Compile Include="Core\Rasterizer\CullerSubStage.cs" />
@@ -75,13 +78,15 @@
     <Compile Include="Core\Rasterizer\Interpolation\Point4DInterpolator.cs" />
     <Compile Include="Core\Rasterizer\Interpolation\Vector3DInterpolator.cs" />
     <Compile Include="Core\Rasterizer\MultiSamplingUtility.cs" />
-    <Compile Include="Core\Rasterizer\PixelQuad.cs" />
+    <Compile Include="Core\Rasterizer\FragmentQuad.cs" />
     <Compile Include="Core\Rasterizer\RasterizerSubStageBase.cs" />
     <Compile Include="Core\Rasterizer\Sample.cs" />
     <Compile Include="Core\Rasterizer\SampleCollection.cs" />
     <Compile Include="Core\RasterizrException.cs" />
     <Compile Include="Core\ShaderCore\InterpolationModifier.cs" />
     <Compile Include="Core\ShaderCore\InterpolationModifierAttribute.cs" />
+    <Compile Include="Core\ShaderCore\PixelShader\IPixelShader.cs" />
+    <Compile Include="Core\ShaderCore\PixelShader\PixelShaderThreadedExecutor.cs" />
     <Compile Include="Core\ShaderCore\TransformedVertex.cs" />
     <Compile Include="Effects\DepthEffect.cs" />
     <Compile Include="Effects\DirectionalLight.cs" />

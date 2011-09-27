@@ -1,4 +1,5 @@
 using Rasterizr.Core.ShaderCore;
+using Rasterizr.Core.ShaderCore.PixelShader;
 
 namespace Rasterizr.Effects
 {
@@ -7,7 +8,7 @@ namespace Rasterizr.Effects
 		private readonly EffectTechnique _parentTechnique;
 
 		public IShader VertexShader { get; set; }
-		public IShader PixelShader { get; set; }
+		public IPixelShader PixelShader { get; set; }
 
 		public EffectPass(EffectTechnique parentTechnique)
 		{

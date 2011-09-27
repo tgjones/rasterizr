@@ -1,26 +1,45 @@
 using System.Collections.Generic;
-using Nexus;
 using Rasterizr.Core.Rasterizer;
 
 namespace Rasterizr.Core.ShaderCore.PixelShader
 {
-	public class PixelShaderStage : PipelineStageBase<Fragment, Pixel>
+	public class PixelShaderStage : PipelineStageBase<FragmentQuad, Pixel>
 	{
-		public IShader PixelShader { get; set; }
+		private readonly PixelShaderThreadedExecutor _threadedExecutor;
+		private IPixelShader _pixelShader;
+		private ShaderDescription _pixelShaderDescription;
 
-		public override IEnumerable<Pixel> Run(IEnumerable<Fragment> inputs)
+		public IPixelShader PixelShader
 		{
-			foreach (var fragment in inputs)
+			get { return _pixelShader; }
+			set
 			{
-				ColorF color = (ColorF) PixelShader.Execute(fragment.PixelShaderInput);
-				var pixel = new Pixel(fragment.X, fragment.Y)
-				{
-					Color = color,
-					Depth = fragment.Depth,
-					Samples = fragment.Samples
-				};
-				yield return pixel;
+				_pixelShader = value;
+				_pixelShaderDescription = ShaderDescriptionCache.GetDescription(_pixelShader);
 			}
+		}
+
+		public PixelShaderStage()
+		{
+			_threadedExecutor = new PixelShaderThreadedExecutor();
+		}
+
+		public override IEnumerable<Pixel> Run(IEnumerable<FragmentQuad> inputs)
+		{
+			var textures = _pixelShaderDescription.GetTextureParameters(_pixelShader);
+			foreach (var texture in textures)
+				texture.BeginPixelShader(PixelShader);
+
+			// Process groups of four fragments together.
+			foreach (var fragmentQuad in inputs)
+			{
+				var pixels = _threadedExecutor.Execute(PixelShader, fragmentQuad);
+				foreach (var pixel in pixels)
+					yield return pixel;
+			}
+
+			foreach (var texture in textures)
+				texture.EndPixelShader();
 		}
 
 		public object BuildPixelShaderInput()

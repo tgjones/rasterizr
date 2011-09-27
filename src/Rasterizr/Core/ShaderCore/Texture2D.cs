@@ -1,6 +1,7 @@
 using System;
 using Nexus;
 using Nexus.Graphics;
+using Rasterizr.Core.ShaderCore.PixelShader;
 
 namespace Rasterizr.Core.ShaderCore
 {
@@ -42,6 +43,7 @@ namespace Rasterizr.Core.ShaderCore
 		#endregion
 
 		private TextureMipMapLevel[] _levels;
+		private IPixelShader _pixelShader;
 
 		public Texture2D(int width, int height, bool mipMap)
 		{
@@ -115,11 +117,27 @@ namespace Rasterizr.Core.ShaderCore
 		}
 
 		#endregion
-		
-		public float CalculateLevelOfDetail(SamplerState samplerState)
+
+		#region Pixel shader interaction
+
+		public void BeginPixelShader(IPixelShader pixelShader)
+		{
+			if (_pixelShader != null)
+				throw new RasterizrException("Texture is already being used by a pixel shader");
+			_pixelShader = pixelShader;
+		}
+
+		public void EndPixelShader()
+		{
+			_pixelShader = null;
+		}
+
+		#endregion
+
+		public float CalculateLevelOfDetail(SamplerState samplerState, Point2D location)
 		{
 			Vector2D ddx, ddy;
-			CalculatePartialDifferentials(out ddx, out ddy);
+			CalculatePartialDifferentials(location, out ddx, out ddy);
 			return CalculateLevelOfDetail(ddx, ddy);
 		}
 
@@ -143,7 +161,7 @@ namespace Rasterizr.Core.ShaderCore
 		public ColorF Sample(SamplerState samplerState, Point2D location)
 		{
 			Vector2D ddx, ddy;
-			CalculatePartialDifferentials(out ddx, out ddy);
+			CalculatePartialDifferentials(location, out ddx, out ddy);
 			return SampleGrad(samplerState, location, ddx, ddy);
 		}
 
@@ -189,11 +207,10 @@ namespace Rasterizr.Core.ShaderCore
 			}
 		}
 
-		private void CalculatePartialDifferentials(out Vector2D ddx, out Vector2D ddy)
+		private void CalculatePartialDifferentials(Point2D location, out Vector2D ddx, out Vector2D ddy)
 		{
-			// TODO
-			ddx = new Vector2D(0.01f, 0.01f);
-			ddy = new Vector2D(0.01f, 0.01f);
+			ddx = _pixelShader.Ddx(location);
+			ddy = _pixelShader.Ddy(location);
 		}
 
 		private float CalculateLevelOfDetail(Vector2D ddx, Vector2D ddy)

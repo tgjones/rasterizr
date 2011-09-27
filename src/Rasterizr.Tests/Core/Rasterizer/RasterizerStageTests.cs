@@ -16,7 +16,9 @@ namespace Rasterizr.Tests.Core.Rasterizer
 	{
 		private struct TestVertexColor
 		{
+			[Semantic(SystemValueType.Position)]
 			public Point4D Position;
+
 			public ColorF Color;
 		}
 
@@ -67,11 +69,15 @@ namespace Rasterizr.Tests.Core.Rasterizer
 			var result = rasterizerStage.Run(rasterizerInputs).ToList();
 
 			// Assert.
-			Assert.That(result, Has.Count.EqualTo(60000));
-			foreach (var fragment in result)
+			Assert.That(result, Has.Count.EqualTo(15100));
+			foreach (var fragmentQuad in result)
 			{
-				Assert.That(fragment.PixelShaderInput, Is.Not.Null);
-				Assert.That(fragment.Samples, Is.Not.Null);
+				Assert.That(fragmentQuad.Fragments, Has.Length.EqualTo(4));
+				foreach (var fragment in fragmentQuad.Fragments)
+				{
+					Assert.That(fragment.PixelShaderInput, Is.Not.Null);
+					Assert.That(fragment.Samples, Is.Not.Null);
+				}
 			}
 		}
 	}
