@@ -86,6 +86,22 @@ namespace Rasterizr.Studio.Framework
 			}
 		}
 
+		private string _statusText;
+		public string StatusText
+		{
+			get
+			{
+				return _statusText;
+			}
+			set
+			{
+				if (_statusText == value)
+					return;
+				_statusText = value;
+				OnPropertyChanged("StatusText");
+			}
+		}
+
 		#endregion
 
 		#region Commands

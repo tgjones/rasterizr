@@ -5,7 +5,7 @@ using Rasterizr.Core.ShaderCore.PixelShader;
 
 namespace Rasterizr.Core.OutputMerger
 {
-	public class OutputMergerStage
+	public class OutputMergerStage : PipelineStageBase
 	{
 		private RenderTargetView _renderTarget;
 
@@ -30,7 +30,7 @@ namespace Rasterizr.Core.OutputMerger
 			BlendState = BlendState.Opaque;
 		}
 
-		public void Run(List<Pixel> inputs)
+		public void Run(IEnumerable<Pixel> inputs)
 		{
 			foreach (Pixel pixel in inputs)
 			{

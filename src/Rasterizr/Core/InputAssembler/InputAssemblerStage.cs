@@ -14,13 +14,13 @@ namespace Rasterizr.Core.InputAssembler
 		public IList Vertices { get; set; }
 		public Int32Collection Indices { get; set; }
 
-		public void Run(List<object> outputs)
+		public IEnumerable<object> Run()
 		{
 			switch (PrimitiveTopology)
 			{
 				case PrimitiveTopology.TriangleList:
 					foreach (var vertex in GetVertices())
-						outputs.Add(vertex);
+						yield return vertex;
 					break;
 				case PrimitiveTopology.TriangleStrip:
 					var vertices = GetVertices();
@@ -29,15 +29,15 @@ namespace Rasterizr.Core.InputAssembler
 					{
 						if (even)
 						{
-							outputs.Add(Vertices[i + 0]);
-							outputs.Add(Vertices[i + 1]);
-							outputs.Add(Vertices[i + 2]);
+							yield return Vertices[i + 0];
+							yield return Vertices[i + 1];
+							yield return Vertices[i + 2];
 						}
 						else
 						{
-							outputs.Add(Vertices[i + 0]);
-							outputs.Add(Vertices[i + 2]);
-							outputs.Add(Vertices[i + 1]);
+							yield return Vertices[i + 0];
+							yield return Vertices[i + 2];
+							yield return Vertices[i + 1];
 						}
 						even = !even;
 					}

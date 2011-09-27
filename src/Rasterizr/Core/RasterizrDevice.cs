@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Nexus;
 using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.OutputMerger;
@@ -12,16 +11,6 @@ namespace Rasterizr.Core
 {
 	public class RasterizrDevice
 	{
-		#region Fields
-
-		private readonly List<object> _inputAssemblerOutputs;
-		private readonly List<IVertexShaderOutput> _vertexShaderOutputs;
-		private readonly List<IVertexShaderOutput> _geometryShaderOutputs;
-		private readonly List<Fragment> _rasterizerOutputs;
-		private readonly List<Pixel> _pixelShaderOutputs;
-
-		#endregion
-
 		#region Properties
 
 		public InputAssemblerStage InputAssembler { get; private set; }
@@ -37,12 +26,6 @@ namespace Rasterizr.Core
 
 		public RasterizrDevice()
 		{
-			_inputAssemblerOutputs = new List<object>();
-			_vertexShaderOutputs = new List<IVertexShaderOutput>();
-			_geometryShaderOutputs = new List<IVertexShaderOutput>();
-			_rasterizerOutputs = new List<Fragment>();
-			_pixelShaderOutputs = new List<Pixel>();
-
 			InputAssembler = new InputAssemblerStage();
 			VertexShader = new VertexShaderStage();
 			GeometryShader = new GeometryShaderStage();
@@ -69,18 +52,12 @@ namespace Rasterizr.Core
 		{
 			new ShaderValidator().CheckCompatibility(VertexShader.VertexShader, PixelShader.PixelShader);
 
-			_inputAssemblerOutputs.Clear();
-			_vertexShaderOutputs.Clear();
-			_geometryShaderOutputs.Clear();
-			_rasterizerOutputs.Clear();
-			_pixelShaderOutputs.Clear();
-
-			InputAssembler.Run(_inputAssemblerOutputs);
-			VertexShader.Run(_inputAssemblerOutputs, _vertexShaderOutputs);
-			GeometryShader.Run(_vertexShaderOutputs, _geometryShaderOutputs);
-			Rasterizer.Run(_geometryShaderOutputs, _rasterizerOutputs);
-			PixelShader.Run(_rasterizerOutputs, _pixelShaderOutputs);
-			OutputMerger.Run(_pixelShaderOutputs);
+			var inputAssemblerOutputs = InputAssembler.Run();
+			var vertexShaderOutputs = VertexShader.Run(inputAssemblerOutputs);
+			var geometryShaderOutputs = GeometryShader.Run(vertexShaderOutputs);
+			var rasterizerOutputs = Rasterizer.Run(geometryShaderOutputs);
+			var pixelShaderOutputs = PixelShader.Run(rasterizerOutputs);
+			OutputMerger.Run(pixelShaderOutputs);
 		}
 	}
 }

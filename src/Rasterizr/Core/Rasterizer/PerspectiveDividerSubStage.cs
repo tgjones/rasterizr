@@ -5,16 +5,16 @@ namespace Rasterizr.Core.Rasterizer
 {
 	public class PerspectiveDividerSubStage : RasterizerSubStageBase
 	{
-		public void Process(List<IVertexShaderOutput> vertices)
+		public IEnumerable<IVertexShaderOutput> Process(IEnumerable<IVertexShaderOutput> inputs)
 		{
-			for (int i = 0; i < vertices.Count; i++)
+			foreach (var vertex in inputs)
 			{
-				var input = vertices[i];
-				var position = input.Position;
+				var position = vertex.Position;
 				position.X /= position.W;
 				position.Y /= position.W;
 				position.Z /= position.W;
-				vertices[i].Position = position;
+				vertex.Position = position;
+				yield return vertex;
 			}
 		}
 	}

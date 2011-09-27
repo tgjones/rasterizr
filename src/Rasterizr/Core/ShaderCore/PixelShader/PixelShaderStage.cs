@@ -8,7 +8,7 @@ namespace Rasterizr.Core.ShaderCore.PixelShader
 	{
 		public IShader PixelShader { get; set; }
 
-		public override void Run(List<Fragment> inputs, List<Pixel> outputs)
+		public override IEnumerable<Pixel> Run(IEnumerable<Fragment> inputs)
 		{
 			foreach (var fragment in inputs)
 			{
@@ -19,7 +19,7 @@ namespace Rasterizr.Core.ShaderCore.PixelShader
 					Depth = fragment.Depth,
 					Samples = fragment.Samples
 				};
-				outputs.Add(pixel);
+				yield return pixel;
 			}
 		}
 

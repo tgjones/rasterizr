@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using Nexus;
 using Rasterizr.Core.InputAssembler;
@@ -24,10 +23,9 @@ namespace Rasterizr.Tests.Core.InputAssembler
 					new TestVertexPositionColor(new Point3D(0, 0, 1), ColorsF.Red)
 				}
 			};
-			var result = new List<object>();
 
 			// Act.
-			inputAssemblerStage.Run(result);
+			var result = inputAssemblerStage.Run().ToList();
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(3));
@@ -49,10 +47,9 @@ namespace Rasterizr.Tests.Core.InputAssembler
 				},
 				Indices = new Int32Collection(new[] { 0, 1, 2 })
 			};
-			var result = new List<object>();
 
 			// Act.
-			inputAssemblerStage.Run(result);
+			var result = inputAssemblerStage.Run().ToList();
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(3));
@@ -74,10 +71,9 @@ namespace Rasterizr.Tests.Core.InputAssembler
 					new TestVertexPositionColor(new Point3D(1, 1, 1), ColorsF.Red)
 				}
 			};
-			var result = new List<object>();
 
 			// Act.
-			inputAssemblerStage.Run(result);
+			var result = inputAssemblerStage.Run().ToList();
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(6));
@@ -100,10 +96,9 @@ namespace Rasterizr.Tests.Core.InputAssembler
 				},
 				Indices = new Int32Collection(new[] { 0, 1, 2, 3 })
 			};
-			var result = new List<object>();
 
 			// Act.
-			inputAssemblerStage.Run(result);
+			var result = inputAssemblerStage.Run().ToList();
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(6));

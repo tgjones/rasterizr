@@ -9,10 +9,13 @@ namespace Rasterizr.Core.Rasterizer
 	{
 		public Viewport3D Viewport { get; set; }
 
-		public void Process(List<IVertexShaderOutput> vertices)
+		public IEnumerable<IVertexShaderOutput> Process(IEnumerable<IVertexShaderOutput> inputs)
 		{
-			for (int i = 0; i < vertices.Count; i++)
-				vertices[i].Position = ToScreenCoordinates(vertices[i].Position);
+			foreach (var vertex in inputs)
+			{
+				vertex.Position = ToScreenCoordinates(vertex.Position);
+				yield return vertex;
+			}
 		}
 
 		/// <summary>

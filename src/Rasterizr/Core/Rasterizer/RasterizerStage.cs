@@ -22,9 +22,6 @@ namespace Rasterizr.Core.Rasterizer
 		private readonly CullerSubStage _culler;
 		private readonly ScreenMapperSubStage _screenMapper;
 
-		private readonly List<IVertexShaderOutput> _clipperOutputs;
-		private readonly List<IVertexShaderOutput> _cullerOutputs;
-
 		private CullMode _cullMode;
 		private Viewport3D _viewport;
 
@@ -65,37 +62,33 @@ namespace Rasterizr.Core.Rasterizer
 			_culler = new CullerSubStage();
 			_screenMapper = new ScreenMapperSubStage();
 
-			_clipperOutputs = new List<IVertexShaderOutput>();
-			_cullerOutputs = new List<IVertexShaderOutput>();
-
 			CullMode = CullMode.CullCounterClockwiseFace;
 			FillMode = FillMode.Solid;
 		}
 
-		public override void Run(List<IVertexShaderOutput> inputs, List<Fragment> outputs)
+		public override IEnumerable<Fragment> Run(IEnumerable<IVertexShaderOutput> inputs)
 		{
-			_clipperOutputs.Clear();
-			_cullerOutputs.Clear();
-
 			// Do perspective divide.
-			_perspectiveDivider.Process(inputs);
+			var perspectiveDividerOutputs = _perspectiveDivider.Process(inputs);
 
 			// Clip to viewport.
-			_clipper.Process(inputs, _clipperOutputs);
+			var clipperOutputs = _clipper.Process(perspectiveDividerOutputs);
 
 			// Cull backward facing triangles.
-			_culler.Process(_clipperOutputs, _cullerOutputs);
+			var cullerOutputs = _culler.Process(clipperOutputs);
 
 			// Map to screen coordinates.
-			_screenMapper.Process(_cullerOutputs);
-			inputs = _cullerOutputs;
+			var screenMapperOutputs = _screenMapper.Process(cullerOutputs);
 
 			// Rasterize.
-			for (int i = 0; i < inputs.Count; i += 3)
+			var enumerator = screenMapperOutputs.GetEnumerator();
+			while (enumerator.MoveNext())
 			{
-				IVertexShaderOutput v1 = inputs[i + 0];
-				IVertexShaderOutput v2 = inputs[i + 1];
-				IVertexShaderOutput v3 = inputs[i + 2];
+				IVertexShaderOutput v1 = enumerator.Current;
+				enumerator.MoveNext();
+				IVertexShaderOutput v2 = enumerator.Current;
+				enumerator.MoveNext();
+				IVertexShaderOutput v3 = enumerator.Current;
 
 				var triangle = new TrianglePrimitive(v1, v2, v3);
 
@@ -104,7 +97,8 @@ namespace Rasterizr.Core.Rasterizer
 
 				// Scan pixels in target area, checking if they are inside the triangle.
 				// If they are, calculate the coverage.
-				RasterizeTriangle(screenBounds, outputs, triangle);
+				foreach (var fragment in RasterizeTriangle(screenBounds, triangle))
+					yield return fragment;
 			}
 		}
 
@@ -139,7 +133,7 @@ namespace Rasterizr.Core.Rasterizer
 				x, y, sampleIndex);
 		}
 
-		private void RasterizeTriangle(Box2D screenBounds, List<Fragment> outputs, TrianglePrimitive triangle)
+		private IEnumerable<Fragment> RasterizeTriangle(Box2D screenBounds, TrianglePrimitive triangle)
 		{
 			Point4D p0 = triangle.V1.Position;
 			Point4D p1 = triangle.V2.Position;
@@ -172,7 +166,7 @@ namespace Rasterizr.Core.Rasterizer
 					// TODO: Is this needed? We already have the depths for each sample.
 					fragment.Depth = FloatInterpolator.InterpolateLinear(alpha, beta, gamma, p0.Z, p1.Z, p2.Z);
 
-					outputs.Add(fragment);
+					yield return fragment;
 				}
 		}
 

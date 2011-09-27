@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Nexus;
 using Nexus.Graphics;
@@ -54,7 +55,6 @@ namespace Rasterizr.Tests.Core.Rasterizer
 			{
 				Viewport = new Viewport3D { Width = 400, Height = 300, MinDepth = 0, MaxDepth = 1 }
 			};
-
 			var rasterizerInputs = new List<IVertexShaderOutput>
 			{
 				new TestVertexColor { Position = new Point4D(-1, -1, 0, 1), Color = ColorsF.Red },
@@ -62,14 +62,12 @@ namespace Rasterizr.Tests.Core.Rasterizer
 				new TestVertexColor { Position = new Point4D(-1, 1, 0, 1), Color = ColorsF.Red }
 			};
 
-			var rasterizerOutputs = new List<Fragment>();
-
 			// Act.
-			rasterizerStage.Run(rasterizerInputs, rasterizerOutputs);
+			var result = rasterizerStage.Run(rasterizerInputs).ToList();
 
 			// Assert.
-			Assert.That(rasterizerOutputs, Has.Count.EqualTo(60000));
-			foreach (var fragment in rasterizerOutputs)
+			Assert.That(result, Has.Count.EqualTo(60000));
+			foreach (var fragment in result)
 			{
 				Assert.That(fragment.PixelShaderInput, Is.Not.Null);
 				Assert.That(fragment.Samples, Is.Not.Null);

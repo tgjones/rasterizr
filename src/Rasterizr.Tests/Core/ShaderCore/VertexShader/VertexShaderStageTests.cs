@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Nexus;
 using Rasterizr.Core.ShaderCore.VertexShader;
@@ -31,7 +32,6 @@ namespace Rasterizr.Tests.Core.ShaderCore.VertexShader
 		{
 			// Arrange.
 			var vertexShaderStage = new VertexShaderStage { VertexShader = new TestVertexShader() };
-
 			var vertexShaderInputs = new List<object>
 			{
 				new TestVertexPositionColor(new Point3D(1, 0, 0), ColorsF.Red), 
@@ -39,14 +39,12 @@ namespace Rasterizr.Tests.Core.ShaderCore.VertexShader
 				new TestVertexPositionColor(new Point3D(0, 0, 1), ColorsF.Red)
 			};
 
-			var vertexShaderOutputs = new List<IVertexShaderOutput>();
-
 			// Act.
-			vertexShaderStage.Run(vertexShaderInputs, vertexShaderOutputs);
+			var result = vertexShaderStage.Run(vertexShaderInputs).ToList();
 
 			// Assert.
-			Assert.That(vertexShaderOutputs, Has.Count.EqualTo(3));
-			Assert.That(vertexShaderOutputs, Has.All.InstanceOf<TestVertexColor>());
+			Assert.That(result, Has.Count.EqualTo(3));
+			Assert.That(result, Has.All.InstanceOf<TestVertexColor>());
 		}
 	}
 }

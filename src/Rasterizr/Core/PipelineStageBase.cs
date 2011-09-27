@@ -9,6 +9,6 @@ namespace Rasterizr.Core
 
 	public abstract class PipelineStageBase<TInput, TOutput> : PipelineStageBase
 	{
-		public abstract void Run(List<TInput> inputs, List<TOutput> outputs);
+		public abstract IEnumerable<TOutput> Run(IEnumerable<TInput> inputs);
 	}
 }

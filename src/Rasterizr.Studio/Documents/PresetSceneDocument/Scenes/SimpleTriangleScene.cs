@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Nexus;
 using Nexus.Graphics.Cameras;
 using Rasterizr.Core;
@@ -9,6 +10,9 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 	{
 		public override void Draw(RasterizrDevice device)
 		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+
 			device.ClearDepthBuffer(1);
 			device.ClearRenderTarget(ColorsF.Gray);
 
@@ -40,6 +44,9 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 				pass.Apply();
 				device.Draw();
 			}
+
+			stopwatch.Stop();
+			Debug.WriteLine("Frame time: " + stopwatch.Elapsed);
 		}
 	}
 }

@@ -17,6 +17,9 @@
 				<MenuItem Header="Exit" Command="{Binding ExitCommand}" />
 			</MenuItem>
 		</Menu>
+		<StatusBar DockPanel.Dock="Bottom">
+			<StatusBarItem Content="{Binding StatusText}" />
+		</StatusBar>
 		<f:AvalonDockHost x:Name="avalonDockHost" Panes="{Binding Panes}" Documents="{Binding Documents}"
 						  ActiveDocument="{Binding ActiveDocument}" ActivePane="{Binding ActivePane}">
 			<f:AvalonDockHost.DefaultLayout>

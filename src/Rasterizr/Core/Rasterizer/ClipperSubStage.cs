@@ -6,21 +6,24 @@ namespace Rasterizr.Core.Rasterizer
 {
 	public class ClipperSubStage : RasterizerSubStageBase
 	{
-		public void Process(List<IVertexShaderOutput> inputs, List<IVertexShaderOutput> outputs)
+		public IEnumerable<IVertexShaderOutput> Process(IEnumerable<IVertexShaderOutput> inputs)
 		{
-			for (int i = 0; i < inputs.Count; i += 3)
+			var enumerator = inputs.GetEnumerator();
+			while (enumerator.MoveNext())
 			{
-				IVertexShaderOutput v1 = inputs[i + 0];
-				IVertexShaderOutput v2 = inputs[i + 1];
-				IVertexShaderOutput v3 = inputs[i + 2];
+				IVertexShaderOutput v1 = enumerator.Current;
+				enumerator.MoveNext();
+				IVertexShaderOutput v2 = enumerator.Current;
+				enumerator.MoveNext();
+				IVertexShaderOutput v3 = enumerator.Current;
 
 				// TODO: This clipping isn't accurate at all - it just throws away triangles if they're
 				// partially or wholly outside. Need to improve it.
 				if (!IsPartiallyOrWhollyOutsideViewport(v1.Position, v2.Position, v3.Position))
 				{
-					outputs.Add(v1);
-					outputs.Add(v2);
-					outputs.Add(v3);
+					yield return v1;
+					yield return v2;
+					yield return v3;
 				}
 			}
 		}

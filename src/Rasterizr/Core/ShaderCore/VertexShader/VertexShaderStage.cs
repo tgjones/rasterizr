@@ -12,7 +12,7 @@ namespace Rasterizr.Core.ShaderCore.VertexShader
 	{
 		public IShader VertexShader { get; set; }
 
-		public override void Run(List<object> inputs, List<IVertexShaderOutput> outputs)
+		public override IEnumerable<IVertexShaderOutput> Run(IEnumerable<object> inputs)
 		{
 			if (VertexShader == null)
 				throw new RasterizrException("VertexShader must be set");
@@ -21,7 +21,7 @@ namespace Rasterizr.Core.ShaderCore.VertexShader
 			{
 				// Apply vertex shader.
 				var vertexShaderOutput = (IVertexShaderOutput) VertexShader.Execute(input);
-				outputs.Add(vertexShaderOutput);
+				yield return vertexShaderOutput;
 			}
 		}
 	}
