@@ -133,6 +133,11 @@ namespace Rasterizr.Core.Rasterizer
 				x, y, sampleIndex);
 		}
 
+		private static int NearestEvenNumber(int value)
+		{
+			return (value%2 == 0) ? value : value - 1;
+		}
+
 		private IEnumerable<FragmentQuad> RasterizeTriangle(Box2D screenBounds, TrianglePrimitive triangle)
 		{
 			Point4D p0 = triangle.V1.Position;
@@ -141,8 +146,14 @@ namespace Rasterizr.Core.Rasterizer
 
 			// TODO: Parallelize this?
 			// TODO: Ensure that we have an even number of fragments in each direction.
-			for (int y = screenBounds.Min.Y; y <= screenBounds.Max.Y; y += 2)
-				for (int x = screenBounds.Min.X; x <= screenBounds.Max.X; x += 2)
+
+			// Calculate start and end positions. Because of the need to calculate derivatives
+			// in the pixel shader, we require that fragment quads always have even numbered
+			// coordinates (both x and y) for the top-left fragment.
+			int startY = NearestEvenNumber(screenBounds.Min.Y);
+			int startX = NearestEvenNumber(screenBounds.Min.X);
+			for (int y = startY; y <= screenBounds.Max.Y; y += 2)
+				for (int x = startX; x <= screenBounds.Max.X; x += 2)
 				{
 					// First check whether any fragments in this quad are covered. If not, we don't
 					// need to any (expensive) interpolation of attributes.
@@ -167,7 +178,9 @@ namespace Rasterizr.Core.Rasterizer
 						continue;
 
 					// Otherwise, we do have at least one fragment with covered samples, so continue
-					// with interpolation.
+					// with interpolation. We need to interpolate values for all fragments in this quad,
+					// even though they may not all be covered, because we need all four fragments in order
+					// to calculate derivatives correctly.
 					fragmentQuadLocation = 0;
 					for (int fragmentY = y; fragmentY <= y + 1; fragmentY++)
 						for (int fragmentX = x; fragmentX <= x + 1; fragmentX++)
