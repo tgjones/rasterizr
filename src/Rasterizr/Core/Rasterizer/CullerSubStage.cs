@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Nexus;
-using Rasterizr.Core.ShaderCore.VertexShader;
+using Rasterizr.Core.ShaderCore;
 
 namespace Rasterizr.Core.Rasterizer
 {
@@ -9,16 +9,16 @@ namespace Rasterizr.Core.Rasterizer
 	{
 		public CullMode CullMode { get; set; }
 
-		public IEnumerable<IVertexShaderOutput> Process(IEnumerable<IVertexShaderOutput> inputs)
+		public override IEnumerable<TransformedVertex> Process(IEnumerable<TransformedVertex> inputs)
 		{
 			var enumerator = inputs.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
-				IVertexShaderOutput v1 = enumerator.Current;
+				TransformedVertex v1 = enumerator.Current;
 				enumerator.MoveNext();
-				IVertexShaderOutput v2 = enumerator.Current;
+				TransformedVertex v2 = enumerator.Current;
 				enumerator.MoveNext();
-				IVertexShaderOutput v3 = enumerator.Current;
+				TransformedVertex v3 = enumerator.Current;
 
 				if (!ShouldCull(v1.Position, v2.Position, v3.Position))
 				{

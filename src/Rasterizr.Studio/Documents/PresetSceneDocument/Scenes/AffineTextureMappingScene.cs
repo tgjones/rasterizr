@@ -50,10 +50,10 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		private struct VertexShaderOutput : IVertexShaderOutput
+		private struct VertexShaderOutput
 		{
-			[Semantic(Semantics.Position)]
-			public Point4D Position { get; set; }
+			[Semantic(SystemValueType.Position)]
+			public Point4D Position;
 
 			[Semantic(Semantics.TexCoord)]
 			public Point2D TextureCoordinate;
@@ -77,8 +77,8 @@ namespace Rasterizr.Studio.Documents.PresetSceneDocument.Scenes
 		[StructLayout(LayoutKind.Sequential)]
 		private struct PixelShaderInput
 		{
-			[Semantic(Semantics.TexCoord),
-			InterpolationModifier(InterpolationModifier.NotPerspectiveCorrect)]
+			[Semantic(Semantics.TexCoord)]
+			[InterpolationModifier(InterpolationModifier.NotPerspectiveCorrect)]
 			public Point2D TextureCoordinate;
 		}
 

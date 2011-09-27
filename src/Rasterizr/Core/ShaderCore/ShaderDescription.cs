@@ -35,8 +35,11 @@ namespace Rasterizr.Core.ShaderCore
 						: InterpolationModifier.PerspectiveCorrect;
 					return new SignatureParameterDescription
 					{
-						Semantic = new Semantic(semanticAttribute.Name, semanticAttribute.Index),
+						Semantic = semanticAttribute.Semantic,
 						InterpolationModifier = interpolationModifier,
+						ParameterType = (mi.MemberType == MemberTypes.Property)
+							? ((PropertyInfo)mi).PropertyType
+							: ((FieldInfo)mi).FieldType,
 						Getter = (mi.MemberType == MemberTypes.Property)
 							? ((PropertyInfo) mi).DelegateForGetPropertyValue()
 							: ((FieldInfo) mi).DelegateForGetFieldValue(),
@@ -49,7 +52,9 @@ namespace Rasterizr.Core.ShaderCore
 
 		public SignatureParameterDescription GetOutputParameterBySemantic(Semantic semantic)
 		{
-			return _outputParametersDictionary[semantic];
+			SignatureParameterDescription result;
+			_outputParametersDictionary.TryGetValue(semantic, out result);
+			return result;
 		}
 	}
 }

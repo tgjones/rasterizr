@@ -1,3 +1,4 @@
+using System;
 using Fasterflect;
 
 namespace Rasterizr.Core.ShaderCore
@@ -7,6 +8,7 @@ namespace Rasterizr.Core.ShaderCore
 		public Semantic Semantic { get; set; }
 		public SystemValueType SystemValueType { get; set; }
 		public InterpolationModifier InterpolationModifier { get; set; }
+		public Type ParameterType { get; set; }
 		public MemberGetter Getter { get; set; }
 		public MemberSetter Setter { get; set; }
 

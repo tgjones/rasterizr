@@ -140,16 +140,15 @@ namespace Rasterizr.Effects
 
 		internal abstract class BasicEffectVertexShader<TVertexShaderInput, TVertexShaderOutput> : VertexShaderBase<TVertexShaderInput, TVertexShaderOutput>, IWvpVertexShader
 			where TVertexShaderInput : new()
-			where TVertexShaderOutput : IVertexShaderOutput, new()
 		{
 			public Matrix3D WorldViewProjection { get; set; }
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct VertexShaderOutputPnt : IVertexShaderOutput
+		internal struct VertexShaderOutputPnt
 		{
-			[Semantic(Semantics.Position)]
-			public Point4D Position { get; set; }
+			[Semantic(SystemValueType.Position)]
+			public Point4D Position;
 
 			[Semantic(Semantics.Normal)]
 			public Vector3D Normal;
@@ -173,10 +172,10 @@ namespace Rasterizr.Effects
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct VertexShaderOutputPct : IVertexShaderOutput
+		internal struct VertexShaderOutputPct
 		{
-			[Semantic(Semantics.Position)]
-			public Point4D Position { get; set; }
+			[Semantic(SystemValueType.Position)]
+			public Point4D Position;
 
 			[Semantic(Semantics.Color)]
 			public ColorF Color;
@@ -200,10 +199,10 @@ namespace Rasterizr.Effects
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct VertexShaderOutputPc : IVertexShaderOutput
+		internal struct VertexShaderOutputPc
 		{
-			[Semantic(Semantics.Position)]
-			public Point4D Position { get; set; }
+			[Semantic(SystemValueType.Position)]
+			public Point4D Position;
 
 			[Semantic(Semantics.Color)]
 			public ColorF Color;

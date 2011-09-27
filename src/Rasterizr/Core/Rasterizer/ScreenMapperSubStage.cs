@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Nexus;
 using Nexus.Graphics;
-using Rasterizr.Core.ShaderCore.VertexShader;
+using Rasterizr.Core.ShaderCore;
 
 namespace Rasterizr.Core.Rasterizer
 {
@@ -9,7 +9,7 @@ namespace Rasterizr.Core.Rasterizer
 	{
 		public Viewport3D Viewport { get; set; }
 
-		public IEnumerable<IVertexShaderOutput> Process(IEnumerable<IVertexShaderOutput> inputs)
+		public override IEnumerable<TransformedVertex> Process(IEnumerable<TransformedVertex> inputs)
 		{
 			foreach (var vertex in inputs)
 			{

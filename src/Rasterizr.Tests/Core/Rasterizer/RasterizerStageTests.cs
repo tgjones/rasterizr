@@ -5,6 +5,7 @@ using Nexus;
 using Nexus.Graphics;
 using Rasterizr.Core.OutputMerger;
 using Rasterizr.Core.Rasterizer;
+using Rasterizr.Core.ShaderCore;
 using Rasterizr.Core.ShaderCore.PixelShader;
 using Rasterizr.Core.ShaderCore.VertexShader;
 
@@ -13,9 +14,9 @@ namespace Rasterizr.Tests.Core.Rasterizer
 	[TestFixture]
 	public class RasterizerStageTests
 	{
-		private struct TestVertexColor : IVertexShaderOutput
+		private struct TestVertexColor
 		{
-			public Point4D Position { get; set; }
+			public Point4D Position;
 			public ColorF Color;
 		}
 
@@ -55,11 +56,11 @@ namespace Rasterizr.Tests.Core.Rasterizer
 			{
 				Viewport = new Viewport3D { Width = 400, Height = 300, MinDepth = 0, MaxDepth = 1 }
 			};
-			var rasterizerInputs = new List<IVertexShaderOutput>
+			var rasterizerInputs = new List<TransformedVertex>
 			{
-				new TestVertexColor { Position = new Point4D(-1, -1, 0, 1), Color = ColorsF.Red },
-				new TestVertexColor { Position = new Point4D(1, -1, 0, 1), Color = ColorsF.Red },
-				new TestVertexColor { Position = new Point4D(-1, 1, 0, 1), Color = ColorsF.Red }
+				new TransformedVertex(new TestVertexColor { Position = new Point4D(-1, -1, 0, 1), Color = ColorsF.Red }, new Point4D(-1, -1, 0, 1)),
+				new TransformedVertex(new TestVertexColor { Position = new Point4D(1, -1, 0, 1), Color = ColorsF.Red }, new Point4D(1, -1, 0, 1)),
+				new TransformedVertex(new TestVertexColor { Position = new Point4D(-1, 1, 0, 1), Color = ColorsF.Red }, new Point4D(-1, 1, 0, 1))
 			};
 
 			// Act.

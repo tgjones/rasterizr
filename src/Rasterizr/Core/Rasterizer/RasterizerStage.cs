@@ -11,7 +11,7 @@ using Rasterizr.Core.ShaderCore.VertexShader;
 
 namespace Rasterizr.Core.Rasterizer
 {
-	public class RasterizerStage : PipelineStageBase<IVertexShaderOutput, Fragment>
+	public class RasterizerStage : PipelineStageBase<TransformedVertex, Fragment>
 	{
 		private readonly VertexShaderStage _vertexShaderStage;
 		private readonly PixelShaderStage _pixelShaderStage;
@@ -66,7 +66,7 @@ namespace Rasterizr.Core.Rasterizer
 			FillMode = FillMode.Solid;
 		}
 
-		public override IEnumerable<Fragment> Run(IEnumerable<IVertexShaderOutput> inputs)
+		public override IEnumerable<Fragment> Run(IEnumerable<TransformedVertex> inputs)
 		{
 			// Do perspective divide.
 			var perspectiveDividerOutputs = _perspectiveDivider.Process(inputs);
@@ -84,11 +84,11 @@ namespace Rasterizr.Core.Rasterizer
 			var enumerator = screenMapperOutputs.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
-				IVertexShaderOutput v1 = enumerator.Current;
+				TransformedVertex v1 = enumerator.Current;
 				enumerator.MoveNext();
-				IVertexShaderOutput v2 = enumerator.Current;
+				TransformedVertex v2 = enumerator.Current;
 				enumerator.MoveNext();
-				IVertexShaderOutput v3 = enumerator.Current;
+				TransformedVertex v3 = enumerator.Current;
 
 				var triangle = new TrianglePrimitive(v1, v2, v3);
 
@@ -182,9 +182,9 @@ namespace Rasterizr.Core.Rasterizer
 			{
 				// Grab values from vertex shader outputs.
 				var outputProperty = vertexShaderDescription.GetOutputParameterBySemantic(property.Semantic);
-				object v1Value = outputProperty.GetValue(triangle.V1);
-				object v2Value = outputProperty.GetValue(triangle.V2);
-				object v3Value = outputProperty.GetValue(triangle.V3);
+				object v1Value = outputProperty.GetValue(triangle.V1.ShaderOutput);
+				object v2Value = outputProperty.GetValue(triangle.V2.ShaderOutput);
+				object v3Value = outputProperty.GetValue(triangle.V3.ShaderOutput);
 
 				// Interpolate values.
 				object interpolatedValue = (property.InterpolationModifier == InterpolationModifier.PerspectiveCorrect)

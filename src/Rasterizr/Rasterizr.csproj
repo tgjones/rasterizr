@@ -82,6 +82,7 @@
     <Compile Include="Core\RasterizrException.cs" />
     <Compile Include="Core\ShaderCore\InterpolationModifier.cs" />
     <Compile Include="Core\ShaderCore\InterpolationModifierAttribute.cs" />
+    <Compile Include="Core\ShaderCore\TransformedVertex.cs" />
     <Compile Include="Effects\DepthEffect.cs" />
     <Compile Include="Effects\DirectionalLight.cs" />
     <Compile Include="Core\ShaderCore\ShaderDescription.cs" />
@@ -125,7 +126,6 @@
     <Compile Include="Core\ShaderCore\PixelShader\PixelShaderBase.cs" />
     <Compile Include="Core\ShaderCore\PixelShader\PixelShaderStage.cs" />
     <Compile Include="Core\ShaderCore\ShaderBase.cs" />
-    <Compile Include="Core\ShaderCore\VertexShader\IVertexShaderOutput.cs" />
     <Compile Include="Core\ShaderCore\VertexShader\VertexShaderBase.cs" />
     <Compile Include="Core\ShaderCore\VertexShader\VertexShaderStage.cs" />
     <Compile Include="Core\Rasterizer\IFillConvention.cs" />

@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Nexus;
+using Rasterizr.Core.ShaderCore;
 using Rasterizr.Core.ShaderCore.VertexShader;
 
 namespace Rasterizr.Tests.Core.ShaderCore.VertexShader
@@ -9,9 +10,11 @@ namespace Rasterizr.Tests.Core.ShaderCore.VertexShader
 	[TestFixture]
 	public class VertexShaderStageTests
 	{
-		private struct TestVertexColor : IVertexShaderOutput
+		private struct TestVertexColor
 		{
-			public Point4D Position { get; set; }
+			[Semantic(SystemValueType.Position)]
+			public Point4D Position;
+
 			public ColorF Color;
 		}
 
@@ -44,7 +47,7 @@ namespace Rasterizr.Tests.Core.ShaderCore.VertexShader
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(3));
-			Assert.That(result, Has.All.InstanceOf<TestVertexColor>());
+			Assert.That(result, Has.All.Matches<TransformedVertex>(tv => tv.ShaderOutput is TestVertexColor));
 		}
 	}
 }

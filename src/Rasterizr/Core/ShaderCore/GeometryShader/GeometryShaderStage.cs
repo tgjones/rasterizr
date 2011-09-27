@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using Rasterizr.Core.ShaderCore.VertexShader;
 
 namespace Rasterizr.Core.ShaderCore.GeometryShader
 {
-	public class GeometryShaderStage : PipelineStageBase<IVertexShaderOutput, IVertexShaderOutput>
+	public class GeometryShaderStage : PipelineStageBase<TransformedVertex, TransformedVertex>
 	{
-		public override IEnumerable<IVertexShaderOutput> Run(IEnumerable<IVertexShaderOutput> inputs)
+		public override IEnumerable<TransformedVertex> Run(IEnumerable<TransformedVertex> inputs)
 		{
 			// TODO - implement programmable geometry shader.
 			// For now just pass vertices through.

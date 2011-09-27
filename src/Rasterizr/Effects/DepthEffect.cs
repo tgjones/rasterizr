@@ -58,9 +58,9 @@ namespace Rasterizr.Effects
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct DepthEffectVertexShaderOutput : IVertexShaderOutput
+		internal struct DepthEffectVertexShaderOutput
 		{
-			public Point4D Position { get; set; }
+			public Point4D Position;
 			public float Depth;
 		}
 

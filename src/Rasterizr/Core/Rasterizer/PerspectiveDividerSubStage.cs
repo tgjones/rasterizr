@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Rasterizr.Core.ShaderCore.VertexShader;
+using Rasterizr.Core.ShaderCore;
 
 namespace Rasterizr.Core.Rasterizer
 {
 	public class PerspectiveDividerSubStage : RasterizerSubStageBase
 	{
-		public IEnumerable<IVertexShaderOutput> Process(IEnumerable<IVertexShaderOutput> inputs)
+		public override IEnumerable<TransformedVertex> Process(IEnumerable<TransformedVertex> inputs)
 		{
 			foreach (var vertex in inputs)
 			{
