@@ -80,6 +80,8 @@
     <Compile Include="Core\Rasterizer\Sample.cs" />
     <Compile Include="Core\Rasterizer\SampleCollection.cs" />
     <Compile Include="Core\RasterizrException.cs" />
+    <Compile Include="Core\ShaderCore\InterpolationModifier.cs" />
+    <Compile Include="Core\ShaderCore\InterpolationModifierAttribute.cs" />
     <Compile Include="Effects\DepthEffect.cs" />
     <Compile Include="Effects\DirectionalLight.cs" />
     <Compile Include="Core\ShaderCore\ShaderDescription.cs" />

@@ -12,6 +12,8 @@
 							  CommandParameter="Rasterizr.Studio.Documents.PresetSceneDocument.Scenes.SimpleTriangleScene" />
 					<MenuItem Header="Textured Quad" Command="{Binding OpenPresetSceneCommand}" 
 							  CommandParameter="Rasterizr.Studio.Documents.PresetSceneDocument.Scenes.TexturedQuadScene" />
+					<MenuItem Header="Affine Texture Mapping" Command="{Binding OpenPresetSceneCommand}" 
+							  CommandParameter="Rasterizr.Studio.Documents.PresetSceneDocument.Scenes.AffineTextureMappingScene" />
 				</MenuItem>
 				<MenuItem Header="Open" Command="{Binding OpenCommand}" />
 				<MenuItem Header="Exit" Command="{Binding ExitCommand}" />

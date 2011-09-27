@@ -29,9 +29,14 @@ namespace Rasterizr.Core.ShaderCore
 				.Select(mi =>
 				{
 					var semanticAttribute = mi.Attribute<SemanticAttribute>();
+					var interpolationModifierAttribute = mi.Attribute<InterpolationModifierAttribute>();
+					var interpolationModifier = (interpolationModifierAttribute != null)
+						? interpolationModifierAttribute.InterpolationModifier
+						: InterpolationModifier.PerspectiveCorrect;
 					return new SignatureParameterDescription
 					{
 						Semantic = new Semantic(semanticAttribute.Name, semanticAttribute.Index),
+						InterpolationModifier = interpolationModifier,
 						Getter = (mi.MemberType == MemberTypes.Property)
 							? ((PropertyInfo) mi).DelegateForGetPropertyValue()
 							: ((FieldInfo) mi).DelegateForGetFieldValue(),
