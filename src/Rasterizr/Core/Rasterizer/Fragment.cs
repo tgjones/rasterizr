@@ -5,19 +5,19 @@ namespace Rasterizr.Core.Rasterizer
 	/// </summary>
 	public class Fragment
 	{
-		public int X;
-		public int Y;
-		public SampleCollection Samples;
-		public object PixelShaderInput;
-		public float Depth { get; set; }
+		public int X { get; private set; }
+		public int Y { get; private set; }
+		public SampleCollection Samples { get; private set; }
+		public object PixelShaderInput { get; set; }
 		public FragmentQuadLocation QuadLocation { get; private set; }
 
-		public Fragment(int x, int y, FragmentQuadLocation quadLocation)
+		public Fragment(int x, int y, FragmentQuadLocation quadLocation,
+			SampleCollection samples)
 		{
-			QuadLocation = quadLocation;
 			X = x;
 			Y = y;
-			Samples = new SampleCollection();
+			QuadLocation = quadLocation;
+			Samples = samples;
 		}
 	}
 }

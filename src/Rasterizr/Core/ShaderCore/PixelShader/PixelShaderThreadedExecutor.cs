@@ -27,7 +27,6 @@ namespace Rasterizr.Core.ShaderCore.PixelShader
 					pixels[index] = new Pixel(fragment.X, fragment.Y)
 					{
 						Color = color,
-						Depth = fragment.Depth,
 						Samples = fragment.Samples
 					};
 					_countdownEvent.Signal();

@@ -68,11 +68,19 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AvalonDock">
-      <HintPath>..\..\lib\AvalonDock\AvalonDock.dll</HintPath>
+    <Reference Include="AvalonDock, Version=1.3.3571.0, Culture=neutral, PublicKeyToken=85a1e0ada7ec13e4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Gemini\AvalonDock.dll</HintPath>
     </Reference>
-    <Reference Include="AvalonDock.Themes">
-      <HintPath>..\..\lib\AvalonDock\AvalonDock.Themes.dll</HintPath>
+    <Reference Include="AvalonDock.Themes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Gemini\AvalonDock.Themes.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\..\lib\Gemini\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Gemini">
+      <HintPath>..\..\lib\Gemini\Gemini.dll</HintPath>
     </Reference>
     <Reference Include="Meshellator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -83,6 +91,7 @@
       <HintPath>..\..\lib\Nexus\Nexus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -101,58 +110,38 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Documents\ModelDocument\ModelDocumentView.xaml">
+    <Page Include="Modules\ModelViewer\Views\ModelViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Documents\PresetSceneDocument\PresetSceneDocumentView.xaml">
+    <Page Include="Modules\DemoSceneViewer\Views\DemoSceneViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Framework\AvalonDockHost.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Framework\MainWindowView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\WriteableBitmapImage.cs" />
-    <Compile Include="Documents\ModelDocument\ModelDocumentView.xaml.cs">
-      <DependentUpon>ModelDocumentView.xaml</DependentUpon>
+    <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
+    <Compile Include="Modules\ModelViewer\Views\ModelViewerView.xaml.cs">
+      <DependentUpon>ModelViewerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Documents\ModelDocument\ModelDocumentViewModel.cs" />
-    <Compile Include="Documents\PresetSceneDocument\PresetSceneDocumentView.xaml.cs">
-      <DependentUpon>PresetSceneDocumentView.xaml</DependentUpon>
+    <Compile Include="Modules\ModelViewer\ViewModels\ModelViewerViewModel.cs" />
+    <Compile Include="Modules\DemoSceneViewer\Views\DemoSceneViewerView.xaml.cs">
+      <DependentUpon>DemoSceneViewerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Documents\PresetSceneDocument\PresetSceneDocumentViewModel.cs" />
-    <Compile Include="Documents\PresetSceneDocument\Scenes\AffineTextureMappingScene.cs" />
-    <Compile Include="Documents\PresetSceneDocument\Scenes\TextureMipMappingScene.cs" />
-    <Compile Include="Documents\PresetSceneDocument\Scenes\PerspectiveCorrectTextureMappingScene.cs" />
-    <Compile Include="Documents\PresetSceneDocument\Scenes\TexturedQuadScene.cs" />
-    <Compile Include="Documents\RenderedDocumentBase.cs" />
-    <Compile Include="Framework\AvalonDockHost.xaml.cs">
-      <DependentUpon>AvalonDockHost.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Framework\DataTemplateUtils.cs" />
-    <Compile Include="Framework\DocumentClosingEventArgs.cs" />
-    <Compile Include="Framework\DocumentViewModelBase.cs" />
-    <Compile Include="Framework\PaneViewModelBase.cs" />
-    <Compile Include="Framework\ViewModelBase.cs" />
-    <Compile Include="Documents\PresetSceneDocument\Scenes\PresetSceneBase.cs" />
-    <Compile Include="Documents\PresetSceneDocument\Scenes\SimpleTriangleScene.cs" />
-    <Compile Include="Framework\MainWindowViewModel.cs" />
-    <Compile Include="Framework\RelayCommand.cs" />
-    <Compile Include="Framework\MainWindowView.xaml.cs">
-      <DependentUpon>MainWindowView.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Modules\DemoSceneViewer\ViewModels\DemoSceneViewerViewModel.cs" />
+    <Compile Include="Modules\DemoSceneViewer\Scenes\AffineTextureMappingScene.cs" />
+    <Compile Include="Modules\DemoSceneViewer\Scenes\TextureMipMappingScene.cs" />
+    <Compile Include="Modules\DemoSceneViewer\Scenes\PerspectiveCorrectTextureMappingScene.cs" />
+    <Compile Include="Modules\DemoSceneViewer\Scenes\TexturedQuadScene.cs" />
+    <Compile Include="Framework\RenderedDocumentBase.cs" />
+    <Compile Include="Modules\DemoSceneViewer\Scenes\DemoSceneBase.cs" />
+    <Compile Include="Modules\DemoSceneViewer\Scenes\SimpleTriangleScene.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\DemoSceneViewer\Module.cs" />
+    <Compile Include="Modules\ModelViewer\EditorProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -187,9 +176,7 @@
       <Name>Rasterizr</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Panes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

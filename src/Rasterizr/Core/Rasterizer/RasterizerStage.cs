@@ -145,7 +145,6 @@ namespace Rasterizr.Core.Rasterizer
 			Point4D p2 = triangle.V3.Position;
 
 			// TODO: Parallelize this?
-			// TODO: Ensure that we have an even number of fragments in each direction.
 
 			// Calculate start and end positions. Because of the need to calculate derivatives
 			// in the pixel shader, we require that fragment quads always have even numbered
@@ -169,9 +168,7 @@ namespace Rasterizr.Core.Rasterizer
 							anyCoveredSamples = anyCoveredSamples || anyCoveredSamplesForThisFragment;
 
 							// Create output fragment.
-							var fragment = new Fragment(fragmentX, fragmentY, fragmentQuadLocation++);
-							fragment.Samples = samples;
-
+							var fragment = new Fragment(fragmentX, fragmentY, fragmentQuadLocation++, samples);
 							fragmentQuad[fragment.QuadLocation] = fragment;
 						}
 					if (!anyCoveredSamples)
@@ -181,24 +178,18 @@ namespace Rasterizr.Core.Rasterizer
 					// with interpolation. We need to interpolate values for all fragments in this quad,
 					// even though they may not all be covered, because we need all four fragments in order
 					// to calculate derivatives correctly.
-					fragmentQuadLocation = 0;
-					for (int fragmentY = y; fragmentY <= y + 1; fragmentY++)
-						for (int fragmentX = x; fragmentX <= x + 1; fragmentX++)
-						{
-							var pixelCenter = new Point2D(fragmentX + 0.5f, fragmentY + 0.5f);
+					foreach (var fragment in fragmentQuad.Fragments)
+					{
+						var pixelCenter = new Point2D(fragment.X + 0.5f, fragment.Y + 0.5f);
 
-							// Calculate alpha, beta, gamma for pixel center.
-							float alpha = ComputeFunction(pixelCenter.X, pixelCenter.Y, p1, p2) / ComputeFunction(p0.X, p0.Y, p1, p2);
-							float beta = ComputeFunction(pixelCenter.X, pixelCenter.Y, p2, p0) / ComputeFunction(p1.X, p1.Y, p2, p0);
-							float gamma = ComputeFunction(pixelCenter.X, pixelCenter.Y, p0, p1) / ComputeFunction(p2.X, p2.Y, p0, p1);
+						// Calculate alpha, beta, gamma for pixel center.
+						float alpha = ComputeFunction(pixelCenter.X, pixelCenter.Y, p1, p2) / ComputeFunction(p0.X, p0.Y, p1, p2);
+						float beta = ComputeFunction(pixelCenter.X, pixelCenter.Y, p2, p0) / ComputeFunction(p1.X, p1.Y, p2, p0);
+						float gamma = ComputeFunction(pixelCenter.X, pixelCenter.Y, p0, p1) / ComputeFunction(p2.X, p2.Y, p0, p1);
 
-							// Create output fragment.
-							var fragment = fragmentQuad[fragmentQuadLocation++];
-							fragment.PixelShaderInput = CreatePixelShaderInput(triangle, beta, alpha, gamma);
-
-							// TODO: Is this needed? We already have the depths for each sample.
-							fragment.Depth = FloatInterpolator.InterpolateLinear(alpha, beta, gamma, p0.Z, p1.Z, p2.Z);
-						}
+						// Create pixel shader input.
+						fragment.PixelShaderInput = CreatePixelShaderInput(triangle, beta, alpha, gamma);
+					}
 
 					yield return fragmentQuad;
 				}
@@ -208,7 +199,6 @@ namespace Rasterizr.Core.Rasterizer
 		{
 			var pixelShaderInput = _pixelShaderStage.BuildPixelShaderInput();
 
-			// TODO: Use Cache API
 			// Calculate interpolated attribute values for this fragment.
 			var vertexShaderDescription = ShaderDescriptionCache.GetDescription(_vertexShaderStage.VertexShader);
 			var pixelShaderDescription = ShaderDescriptionCache.GetDescription(_pixelShaderStage.PixelShader);
