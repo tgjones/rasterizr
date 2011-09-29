@@ -12,6 +12,7 @@ Bin
 *.csproj.user
 *ReSharper*
 *resharper*
+*.dotCover
 *.suo
 *.cache
 Thumbs.db
