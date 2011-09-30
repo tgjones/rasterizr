@@ -60,7 +60,7 @@ namespace Rasterizr.Core.InputAssembler
 		private IEnumerable<InputVertex> GetVertices(int vertexCount, int startVertexLocation)
 		{
 			for (int i = startVertexLocation; i < startVertexLocation + vertexCount; i++)
-				yield return new InputVertex(i, Vertices[i]);
+				yield return new InputVertex(i, (Vertices != null && Vertices.Count > i) ? Vertices[i] : null);
 		}
 
 		private IEnumerable<InputVertex> GetVerticesIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)

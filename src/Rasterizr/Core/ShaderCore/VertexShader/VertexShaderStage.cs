@@ -55,15 +55,24 @@ namespace Rasterizr.Core.ShaderCore.VertexShader
 			var vertexShaderInput = VertexShader.BuildShaderInput();
 
 			// Calculate interpolated attribute values for this fragment.
-			var inputLayoutDescription = InputLayoutDescriptionCache.GetDescription(_inputAssemblerStage.InputLayout,
-				input.Vertex.GetType());
+			var inputLayoutDescription = (input.Vertex != null)
+				? InputLayoutDescriptionCache.GetDescription(_inputAssemblerStage.InputLayout, input.Vertex.GetType())
+				: null;
 			var vertexShaderDescription = ShaderDescriptionCache.GetDescription(VertexShader);
 			foreach (var property in vertexShaderDescription.InputParameters)
 			{
-				var value = inputLayoutDescription.GetValue(input.Vertex, property.Semantic);
-
-				// Set value onto pixel shader input.
-				property.SetValue(ref vertexShaderInput, value);
+				switch (property.Semantic.SystemValue)
+				{
+					case SystemValueType.None:
+					{
+						var value = inputLayoutDescription.GetValue(input.Vertex, property.Semantic);
+						property.SetValue(ref vertexShaderInput, value);
+						break;
+					}
+					case SystemValueType.VertexID :
+						property.SetValue(ref vertexShaderInput, input.VertexID);
+						break;
+				}
 
 				// TODO: Do something different if input parameter is a system value.
 			}

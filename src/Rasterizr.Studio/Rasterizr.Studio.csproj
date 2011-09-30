@@ -143,6 +143,7 @@
   <ItemGroup>
     <Compile Include="Modules\DemoSceneViewer\Module.cs" />
     <Compile Include="Modules\ModelViewer\EditorProvider.cs" />
+    <Compile Include="Modules\Startup\Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
