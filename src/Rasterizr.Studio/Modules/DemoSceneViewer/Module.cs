@@ -27,7 +27,8 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer
 				new MenuItem("Textured Quad", OpenDemoScene<TexturedQuadScene>),
 				new MenuItem("Affine Texture Mapping", OpenDemoScene<AffineTextureMappingScene>),
 				new MenuItem("Perspective-Correct Texture Mapping", OpenDemoScene<PerspectiveCorrectTextureMappingScene>),
-				new MenuItem("Texture Mip-Mapping", OpenDemoScene<TextureMipMappingScene>));
+				new MenuItem("Texture Mip-Mapping", OpenDemoScene<TextureMipMappingScene>),
+				new MenuItem("No Buffers", OpenDemoScene<NoBuffersScene>));
 		}
 
 		private static IEnumerable<IResult> OpenDemoScene<TScene>()

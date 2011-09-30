@@ -10,9 +10,6 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 	{
 		public override void Draw(RasterizrDevice device)
 		{
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-
 			device.ClearDepthBuffer(1);
 			device.ClearRenderTarget(ColorsF.Gray);
 
@@ -42,11 +39,8 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 			foreach (EffectPass pass in effect.CurrentTechnique.Passes)
 			{
 				pass.Apply();
-				device.Draw();
+				device.Draw(3, 0);
 			}
-
-			stopwatch.Stop();
-			Debug.WriteLine("Frame time: " + stopwatch.Elapsed);
 		}
 	}
 }

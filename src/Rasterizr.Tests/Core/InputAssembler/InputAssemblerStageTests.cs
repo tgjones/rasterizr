@@ -25,7 +25,7 @@ namespace Rasterizr.Tests.Core.InputAssembler
 			};
 
 			// Act.
-			var result = inputAssemblerStage.Run().ToList();
+			var result = inputAssemblerStage.Run(3, 0).ToList();
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(3));
@@ -49,7 +49,7 @@ namespace Rasterizr.Tests.Core.InputAssembler
 			};
 
 			// Act.
-			var result = inputAssemblerStage.Run().ToList();
+			var result = inputAssemblerStage.RunIndexed(3, 0, 0).ToList();
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(3));
@@ -73,7 +73,7 @@ namespace Rasterizr.Tests.Core.InputAssembler
 			};
 
 			// Act.
-			var result = inputAssemblerStage.Run().ToList();
+			var result = inputAssemblerStage.Run(4, 0).ToList();
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(6));
@@ -98,7 +98,7 @@ namespace Rasterizr.Tests.Core.InputAssembler
 			};
 
 			// Act.
-			var result = inputAssemblerStage.Run().ToList();
+			var result = inputAssemblerStage.RunIndexed(4, 0, 0).ToList();
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(6));

@@ -30,7 +30,7 @@ namespace Rasterizr
 			foreach (EffectPass pass in Effect.CurrentTechnique.Passes)
 			{
 				pass.Apply();
-				_device.Draw();
+				_device.DrawIndexed(Indices.Count, 0, 0);
 			}
 		}
 	}

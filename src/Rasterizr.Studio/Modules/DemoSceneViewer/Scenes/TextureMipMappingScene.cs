@@ -46,7 +46,7 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 				Texture = Texture2D.CreateCheckerboard(64, 64)
 			};
 
-			device.Draw();
+			device.DrawIndexed(4, 0, 0);
 		}
 
 		[StructLayout(LayoutKind.Sequential)]

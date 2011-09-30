@@ -123,6 +123,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
+    <Compile Include="Modules\DemoSceneViewer\Scenes\NoBuffersScene.cs" />
     <Compile Include="Modules\ModelViewer\Views\ModelViewerView.xaml.cs">
       <DependentUpon>ModelViewerView.xaml</DependentUpon>
     </Compile>

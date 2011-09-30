@@ -44,7 +44,7 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 			foreach (EffectPass pass in effect.CurrentTechnique.Passes)
 			{
 				pass.Apply();
-				device.Draw();
+				device.DrawIndexed(4, 0, 0);
 			}
 		}
 	}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Nexus;
 using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.OutputMerger;
@@ -48,11 +49,27 @@ namespace Rasterizr.Core
 			OutputMerger.RenderTarget.Clear(color);
 		}
 
-		public void Draw()
+		public void Draw(int vertexCount, int startVertexLocation)
+		{
+			BeginDraw();
+			var inputAssemblerOutputs = InputAssembler.Run(vertexCount, startVertexLocation);
+			DrawInternal(inputAssemblerOutputs);
+		}
+
+		public void DrawIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
+		{
+			BeginDraw();
+			var inputAssemblerOutputs = InputAssembler.RunIndexed(indexCount, startIndexLocation, baseVertexLocation);
+			DrawInternal(inputAssemblerOutputs);
+		}
+
+		private void BeginDraw()
 		{
 			new ShaderValidator().CheckCompatibility(VertexShader.VertexShader, PixelShader.PixelShader);
+		}
 
-			var inputAssemblerOutputs = InputAssembler.Run();
+		private void DrawInternal(IEnumerable<object> inputAssemblerOutputs)
+		{
 			var vertexShaderOutputs = VertexShader.Run(inputAssemblerOutputs);
 			var geometryShaderOutputs = GeometryShader.Run(vertexShaderOutputs);
 			var rasterizerOutputs = Rasterizer.Run(geometryShaderOutputs);
