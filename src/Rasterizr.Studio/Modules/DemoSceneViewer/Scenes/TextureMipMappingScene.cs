@@ -50,6 +50,16 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
+		private struct VertexShaderInputPct
+		{
+			[Semantic(Semantics.Position)]
+			public Point3D Position;
+
+			[Semantic(Semantics.TexCoord)]
+			public Point2D TextureCoordinate;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
 		private struct VertexShaderOutput
 		{
 			[Semantic(SystemValueType.Position)]
@@ -59,11 +69,11 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 			public Point2D TextureCoordinate;
 		}
 
-		private class VertexShader : VertexShaderBase<VertexPositionColorTexture, VertexShaderOutput>
+		private class VertexShader : VertexShaderBase<VertexShaderInputPct, VertexShaderOutput>
 		{
 			public Matrix3D WorldViewProjection { get; set; }
 
-			public override VertexShaderOutput Execute(VertexPositionColorTexture vertexShaderInput)
+			public override VertexShaderOutput Execute(VertexShaderInputPct vertexShaderInput)
 			{
 				Point4D position = WorldViewProjection.Transform(vertexShaderInput.Position.ToHomogeneousPoint3D());
 				return new VertexShaderOutput

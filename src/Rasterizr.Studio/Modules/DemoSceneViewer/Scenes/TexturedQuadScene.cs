@@ -28,7 +28,8 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 				Projection = camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio),
 				View = camera.GetViewMatrix(),
 				Texture = Texture2D.CreateCheckerboard(8, 8),
-				LightingEnabled = false
+				LightingEnabled = false,
+				TextureEnabled = true
 			};
 
 			device.InputAssembler.InputLayout = new InputLayout(VertexPositionColorTexture.InputElements,
@@ -38,7 +39,7 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 				new VertexPositionColorTexture(new Point3D(-1, 0, 0), ColorsF.White, new Point2D(0, 0)),
 				new VertexPositionColorTexture(new Point3D(1, 0, 0), ColorsF.White, new Point2D(0, 1)),
 				new VertexPositionColorTexture(new Point3D(-1, 1, -1f), ColorsF.White, new Point2D(1, 0)),
-				new VertexPositionColorTexture(new Point3D(1, 1, -0.5f), ColorsF.White, new Point2D(1, 1))
+				new VertexPositionColorTexture(new Point3D(1, 1, -1f), ColorsF.White, new Point2D(1, 1))
 			};
 			device.InputAssembler.Indices = new Int32Collection(new[] {0, 1, 2, 3});
 			device.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
