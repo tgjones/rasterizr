@@ -32,7 +32,7 @@ namespace Rasterizr.Core.InputAssembler
 
 		public object GetValue(object inputVertex, Semantic semantic)
 		{
-			return _cachedGetters[semantic](inputVertex);
+			return _cachedGetters[semantic](inputVertex.WrapIfValueType());
 		} 
 	}
 }

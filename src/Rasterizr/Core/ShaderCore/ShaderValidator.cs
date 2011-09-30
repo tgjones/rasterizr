@@ -36,7 +36,7 @@ namespace Rasterizr.Core.ShaderCore
 			var downstreamDescription = ShaderDescriptionCache.GetDescription(downstream);
 
 			foreach (var downstreamInput in downstreamDescription.InputParameters)
-				if (!upstream.Elements.Any(spd => spd.SemanticName == downstreamInput.Semantic.Name && spd.SemanticIndex == downstreamInput.Semantic.Index))
+				if (!upstream.Elements.Any(ied => ied.SemanticName == downstreamInput.Semantic.Name && ied.SemanticIndex == downstreamInput.Semantic.Index))
 					throw new RasterizrException(
 						"Vertex shader of type '{0}' is not compatible with input layout because the vertex shader includes a property with semantic '{1}' that is not supplied by the input layout.",
 						downstream.GetType(), downstreamInput.Semantic);

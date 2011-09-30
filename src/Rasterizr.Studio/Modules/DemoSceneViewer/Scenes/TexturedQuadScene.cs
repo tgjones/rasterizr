@@ -27,7 +27,8 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 			{
 				Projection = camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio),
 				View = camera.GetViewMatrix(),
-				Texture = Texture2D.CreateCheckerboard(8, 8)
+				Texture = Texture2D.CreateCheckerboard(8, 8),
+				LightingEnabled = false
 			};
 
 			device.InputAssembler.InputLayout = new InputLayout(VertexPositionColorTexture.InputElements,

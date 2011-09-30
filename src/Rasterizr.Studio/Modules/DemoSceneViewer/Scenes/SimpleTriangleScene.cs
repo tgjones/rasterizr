@@ -25,7 +25,8 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 			var effect = new BasicEffect(device)
 			{
 				Projection = camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio),
-				View = camera.GetViewMatrix()
+				View = camera.GetViewMatrix(),
+				LightingEnabled = false
 			};
 
 			device.InputAssembler.InputLayout = new InputLayout(VertexPositionColor.InputElements,

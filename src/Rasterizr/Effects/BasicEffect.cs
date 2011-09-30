@@ -14,6 +14,8 @@ namespace Rasterizr.Effects
 		private readonly EffectPass _effectPass;
 		private readonly IShader[] _vertexShaders;
 		private readonly IPixelShader[] _pixelShaders;
+		private bool _textureEnabled;
+		private bool _lightingEnabled;
 
 		#endregion
 
@@ -24,11 +26,31 @@ namespace Rasterizr.Effects
 		public ColorRgbF SpecularColor { get; set; }
 		public float SpecularPower { get; set; }
 		public Texture2D Texture { get; set; }
-		public bool TextureEnabled { get; set; }
+
+		public bool TextureEnabled
+		{
+			get { return _textureEnabled; }
+			set
+			{
+				_textureEnabled = value;
+				UpdateActiveShaders();
+			}
+		}
+
 		public bool VertexColorEnabled { get; set; }
 
 		public ColorRgbF AmbientLightColor { get; set; }
-		public bool LightingEnabled { get; set; }
+
+		public bool LightingEnabled
+		{
+			get { return _lightingEnabled; }
+			set
+			{
+				_lightingEnabled = value;
+				UpdateActiveShaders();
+			}
+		}
+
 		public DirectionalLight DirectionalLight0 { get; private set; }
 		public DirectionalLight DirectionalLight1 { get; private set; }
 		public DirectionalLight DirectionalLight2 { get; private set; }
@@ -44,6 +66,20 @@ namespace Rasterizr.Effects
 		public BasicEffect(RasterizrDevice device)
 			: base(device)
 		{
+			_vertexShaders = new IShader[]
+			{
+				new VertexShaderPnt(),
+				new VertexShaderPct(),
+				new VertexShaderPc()
+			};
+
+			_pixelShaders = new IPixelShader[]
+			{
+				new PixelShaderNt(this),
+				new PixelShaderCt(this),
+				new PixelShaderC(this)
+			};
+
 			var technique = new EffectTechnique(this);
 			_effectPass = new EffectPass(technique);
 			technique.Passes.Add(_effectPass);
@@ -59,19 +95,7 @@ namespace Rasterizr.Effects
 
 			EnableDefaultLighting();
 
-			_vertexShaders = new IShader[]
-			{
-				new VertexShaderPnt(),
-				new VertexShaderPct(),
-				new VertexShaderPc()
-			};
-
-			_pixelShaders = new IPixelShader[]
-			{
-				new PixelShaderNt(this),
-				new PixelShaderCt(this),
-				new PixelShaderC(this)
-			};
+			UpdateActiveShaders();
 		}
 
 		#endregion
@@ -98,7 +122,7 @@ namespace Rasterizr.Effects
 			AmbientLightColor = new ColorRgbF(0.05333332f, 0.09882354f, 0.1819608f);
 		}
 
-		protected internal override void OnApply()
+		private void UpdateActiveShaders()
 		{
 			// Figure out which vertex and pixel shader we should use.
 			int shaderIndex;
@@ -106,11 +130,17 @@ namespace Rasterizr.Effects
 				shaderIndex = 0;
 			else
 			{
-				shaderIndex = TextureEnabled ? 1 : 2;
+				if (TextureEnabled)
+					shaderIndex = 1;
+				else
+					shaderIndex = 2;
 			}
 			_effectPass.VertexShader = _vertexShaders[shaderIndex];
 			_effectPass.PixelShader = _pixelShaders[shaderIndex];
+		}
 
+		protected internal override void OnApply()
+		{
 			var vertexShader = (IWvpVertexShader) _effectPass.VertexShader;
 			vertexShader.WorldViewProjection = World * View * Projection;
 
@@ -143,6 +173,19 @@ namespace Rasterizr.Effects
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
+		internal struct VertexShaderInputPnt
+		{
+			[Semantic(Semantics.Position)]
+			public Point3D Position;
+
+			[Semantic(Semantics.Normal)]
+			public Vector3D Normal;
+
+			[Semantic(Semantics.TexCoord)]
+			public Point2D TextureCoordinate;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
 		internal struct VertexShaderOutputPnt
 		{
 			[Semantic(SystemValueType.Position)]
@@ -155,9 +198,9 @@ namespace Rasterizr.Effects
 			public Point2D TextureCoordinate;
 		}
 
-		internal class VertexShaderPnt : BasicEffectVertexShader<VertexPositionNormalTexture, VertexShaderOutputPnt>
+		internal class VertexShaderPnt : BasicEffectVertexShader<VertexShaderInputPnt, VertexShaderOutputPnt>
 		{
-			public override VertexShaderOutputPnt Execute(VertexPositionNormalTexture vertexShaderInput)
+			public override VertexShaderOutputPnt Execute(VertexShaderInputPnt vertexShaderInput)
 			{
 				Point4D position = WorldViewProjection.Transform(vertexShaderInput.Position.ToHomogeneousPoint3D());
 				return new VertexShaderOutputPnt
@@ -167,6 +210,19 @@ namespace Rasterizr.Effects
 					TextureCoordinate = vertexShaderInput.TextureCoordinate,
 				};
 			}
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct VertexShaderInputPct
+		{
+			[Semantic(Semantics.Position)]
+			public Point3D Position;
+
+			[Semantic(Semantics.Color)]
+			public ColorF Color;
+
+			[Semantic(Semantics.TexCoord)]
+			public Point2D TextureCoordinate;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -182,9 +238,9 @@ namespace Rasterizr.Effects
 			public Point2D TextureCoordinate;
 		}
 
-		internal class VertexShaderPct : BasicEffectVertexShader<VertexPositionColorTexture, VertexShaderOutputPct>
+		internal class VertexShaderPct : BasicEffectVertexShader<VertexShaderInputPct, VertexShaderOutputPct>
 		{
-			public override VertexShaderOutputPct Execute(VertexPositionColorTexture vertexShaderInput)
+			public override VertexShaderOutputPct Execute(VertexShaderInputPct vertexShaderInput)
 			{
 				Point4D position = WorldViewProjection.Transform(vertexShaderInput.Position.ToHomogeneousPoint3D());
 				return new VertexShaderOutputPct
@@ -197,6 +253,16 @@ namespace Rasterizr.Effects
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
+		internal struct VertexShaderInputPc
+		{
+			[Semantic(Semantics.Position)]
+			public Point3D Position;
+
+			[Semantic(Semantics.Color)]
+			public ColorF Color;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
 		internal struct VertexShaderOutputPc
 		{
 			[Semantic(SystemValueType.Position)]
@@ -206,9 +272,9 @@ namespace Rasterizr.Effects
 			public ColorF Color;
 		}
 
-		internal class VertexShaderPc : BasicEffectVertexShader<VertexPositionColor, VertexShaderOutputPc>
+		internal class VertexShaderPc : BasicEffectVertexShader<VertexShaderInputPc, VertexShaderOutputPc>
 		{
-			public override VertexShaderOutputPc Execute(VertexPositionColor vertexShaderInput)
+			public override VertexShaderOutputPc Execute(VertexShaderInputPc vertexShaderInput)
 			{
 				Point4D position = WorldViewProjection.Transform(vertexShaderInput.Position.ToHomogeneousPoint3D());
 				return new VertexShaderOutputPc
