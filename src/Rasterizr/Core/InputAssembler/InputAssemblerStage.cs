@@ -14,23 +14,23 @@ namespace Rasterizr.Core.InputAssembler
 		public IList Vertices { get; set; }
 		public Int32Collection Indices { get; set; }
 
-		public IEnumerable<object> Run(int vertexCount, int startVertexLocation)
+		public IEnumerable<InputAssemblerOutput> Run(int vertexCount, int startVertexLocation)
 		{
 			return RunInternal(GetVertices(vertexCount, startVertexLocation));
 		}
 
-		public IEnumerable<object> RunIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
+		public IEnumerable<InputAssemblerOutput> RunIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
 		{
 			return RunInternal(GetVerticesIndexed(indexCount, startIndexLocation, baseVertexLocation));
 		}
 
-		private IEnumerable<object> RunInternal(IEnumerable<object> vertices)
+		private IEnumerable<InputAssemblerOutput> RunInternal(IEnumerable<InputVertex> vertices)
 		{
 			switch (PrimitiveTopology)
 			{
 				case PrimitiveTopology.TriangleList:
 					foreach (var vertex in vertices)
-						yield return vertex;
+						yield return new InputAssemblerOutput(vertex.VertexID, vertex.VertexID/3, vertex.Vertex);
 					break;
 				case PrimitiveTopology.TriangleStrip:
 					var verticesList = vertices.ToList();
@@ -39,15 +39,15 @@ namespace Rasterizr.Core.InputAssembler
 					{
 						if (even)
 						{
-							yield return verticesList[i + 0];
-							yield return verticesList[i + 1];
-							yield return verticesList[i + 2];
+							yield return new InputAssemblerOutput(verticesList[i + 0].VertexID, i, verticesList[i + 0].Vertex);
+							yield return new InputAssemblerOutput(verticesList[i + 1].VertexID, i, verticesList[i + 1].Vertex);
+							yield return new InputAssemblerOutput(verticesList[i + 2].VertexID, i, verticesList[i + 2].Vertex);
 						}
 						else
 						{
-							yield return verticesList[i + 0];
-							yield return verticesList[i + 2];
-							yield return verticesList[i + 1];
+							yield return new InputAssemblerOutput(verticesList[i + 0].VertexID, i, verticesList[i + 0].Vertex);
+							yield return new InputAssemblerOutput(verticesList[i + 2].VertexID, i, verticesList[i + 2].Vertex);
+							yield return new InputAssemblerOutput(verticesList[i + 1].VertexID, i, verticesList[i + 1].Vertex);
 						}
 						even = !even;
 					}
@@ -57,16 +57,32 @@ namespace Rasterizr.Core.InputAssembler
 			}
 		}
 
-		private IEnumerable<object> GetVertices(int vertexCount, int startVertexLocation)
+		private IEnumerable<InputVertex> GetVertices(int vertexCount, int startVertexLocation)
 		{
 			for (int i = startVertexLocation; i < startVertexLocation + vertexCount; i++)
-				yield return Vertices[i];
+				yield return new InputVertex(i, Vertices[i]);
 		}
 
-		private IEnumerable<object> GetVerticesIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
+		private IEnumerable<InputVertex> GetVerticesIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
 		{
 			for (int i = startIndexLocation; i < startIndexLocation + indexCount; i++)
-				yield return Vertices[Indices[i] + baseVertexLocation];
+			{
+				int indexValue = Indices[i];
+				yield return new InputVertex(indexValue, 
+					Vertices[Indices[i] + baseVertexLocation]);
+			}
+		}
+
+		private struct InputVertex
+		{
+			public readonly int VertexID;
+			public readonly object Vertex;
+
+			public InputVertex(int vertexID, object vertex)
+			{
+				VertexID = vertexID;
+				Vertex = vertex;
+			}
 		}
 	}
 }

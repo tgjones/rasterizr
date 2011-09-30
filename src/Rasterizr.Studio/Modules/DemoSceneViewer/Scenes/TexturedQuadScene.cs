@@ -23,7 +23,15 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 				LookDirection = Vector3D.Normalize(new Vector3D(-1.2f, 0.4f, -1f))
 			};
 
-			device.InputAssembler.InputLayout = VertexPositionColorTexture.InputLayout;
+			var effect = new BasicEffect(device)
+			{
+				Projection = camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio),
+				View = camera.GetViewMatrix(),
+				Texture = Texture2D.CreateCheckerboard(8, 8)
+			};
+
+			device.InputAssembler.InputLayout = new InputLayout(VertexPositionColorTexture.InputElements,
+				effect.CurrentTechnique.Passes[0].VertexShader);
 			device.InputAssembler.Vertices = new[]
 			{
 				new VertexPositionColorTexture(new Point3D(-1, 0, 0), ColorsF.White, new Point2D(0, 0)),
@@ -33,13 +41,6 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 			};
 			device.InputAssembler.Indices = new Int32Collection(new[] {0, 1, 2, 3});
 			device.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-
-			var effect = new BasicEffect(device, device.InputAssembler.InputLayout)
-			{
-				Projection = camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio),
-				View = camera.GetViewMatrix(),
-				Texture = Texture2D.CreateCheckerboard(8, 8)
-			};
 
 			foreach (EffectPass pass in effect.CurrentTechnique.Passes)
 			{

@@ -17,17 +17,14 @@ namespace Rasterizr
 			TextureCoordinate = textureCoordinate;
 		}
 
-		public static InputLayout InputLayout
+		public static InputElementDescription[] InputElements
 		{
 			get
 			{
-				return new InputLayout
+				return new[]
 				{
-					Elements = new[]
-					{
-						new InputElementDescription(Semantics.Position, 0),
-						new InputElementDescription(Semantics.TexCoord, 0)
-					}
+					new InputElementDescription(Semantics.Position, 0),
+					new InputElementDescription(Semantics.TexCoord, 0)
 				};
 			}
 		}

@@ -52,6 +52,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\InputAssembler\InputAssemblerOutput.cs" />
+    <Compile Include="Core\InputAssembler\InputLayoutDescriptionCache.cs" />
+    <Compile Include="Core\InputAssembler\InputLayoutDescription.cs" />
     <Compile Include="Core\OutputMerger\Blend.cs" />
     <Compile Include="Core\OutputMerger\BlendFunction.cs" />
     <Compile Include="Core\OutputMerger\ComparisonFunc.cs" />

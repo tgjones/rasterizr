@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Nexus;
+using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.ShaderCore;
 using Rasterizr.Core.ShaderCore.VertexShader;
 
@@ -34,12 +35,16 @@ namespace Rasterizr.Tests.Core.ShaderCore.VertexShader
 		public void CanUseVertexShader()
 		{
 			// Arrange.
-			var vertexShaderStage = new VertexShaderStage { VertexShader = new TestVertexShader() };
-			var vertexShaderInputs = new List<object>
+			var inputAssemblerStage = new InputAssemblerStage
 			{
-				new TestVertexPositionColor(new Point3D(1, 0, 0), ColorsF.Red), 
-				new TestVertexPositionColor(new Point3D(0, 1, 0), ColorsF.Red),
-				new TestVertexPositionColor(new Point3D(0, 0, 1), ColorsF.Red)
+				InputLayout = new InputLayout(TestVertexPositionColor.InputElements, new TestVertexShader()),
+			};
+			var vertexShaderStage = new VertexShaderStage(inputAssemblerStage) { VertexShader = new TestVertexShader() };
+			var vertexShaderInputs = new List<InputAssemblerOutput>
+			{
+				new InputAssemblerOutput(0, 0, new TestVertexPositionColor(new Point3D(1, 0, 0), ColorsF.Red)), 
+				new InputAssemblerOutput(1, 0, new TestVertexPositionColor(new Point3D(0, 1, 0), ColorsF.Red)),
+				new InputAssemblerOutput(2, 0, new TestVertexPositionColor(new Point3D(0, 0, 1), ColorsF.Red))
 			};
 
 			// Act.

@@ -25,7 +25,11 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 				LookDirection = new Vector3D(0, -0.1f, -1)
 			};
 
-			device.InputAssembler.InputLayout = VertexPositionColorTexture.InputLayout;
+			var vertexShader = new VertexShader
+			{
+				WorldViewProjection = camera.GetViewMatrix()*camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio)
+			};
+			device.InputAssembler.InputLayout = new InputLayout(VertexPositionColorTexture.InputElements, vertexShader);
 			device.InputAssembler.Vertices = new[]
 			{
 				new VertexPositionColorTexture(new Point3D(-1, 0, 0), ColorsF.White, new Point2D(0, 0)),
@@ -36,11 +40,7 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 			device.InputAssembler.Indices = new Int32Collection(new[] {0, 1, 2, 3});
 			device.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
 
-			device.VertexShader.VertexShader = new VertexShader
-			{
-				WorldViewProjection = camera.GetViewMatrix() * camera.GetProjectionMatrix(device.Rasterizer.Viewport.AspectRatio)
-			};
-
+			device.VertexShader.VertexShader = vertexShader;
 			device.PixelShader.PixelShader = new PixelShader
 			{
 				Texture = Texture2D.CreateCheckerboard(64, 64)

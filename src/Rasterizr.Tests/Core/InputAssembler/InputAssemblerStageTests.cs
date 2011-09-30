@@ -2,19 +2,41 @@
 using NUnit.Framework;
 using Nexus;
 using Rasterizr.Core.InputAssembler;
+using Rasterizr.Core.ShaderCore;
+using Rasterizr.Core.ShaderCore.VertexShader;
 
 namespace Rasterizr.Tests.Core.InputAssembler
 {
 	[TestFixture]
 	public class InputAssemblerStageTests
 	{
+		private struct TestVertexColor
+		{
+			[Semantic(SystemValueType.Position)]
+			public Point4D Position;
+
+			public ColorF Color;
+		}
+
+		private class TestVertexShader : VertexShaderBase<TestVertexPositionColor, TestVertexColor>
+		{
+			public override TestVertexColor Execute(TestVertexPositionColor vertexShaderInput)
+			{
+				return new TestVertexColor
+				{
+					Position = vertexShaderInput.Position.ToHomogeneousPoint3D(),
+					Color = vertexShaderInput.Color
+				};
+			}
+		}
+
 		[Test]
 		public void CanUseInputAssemblerWithTriangleListWithoutIndices()
 		{
 			// Arrange.
 			var inputAssemblerStage = new InputAssemblerStage
 			{
-				InputLayout = TestVertexPositionColor.InputLayout,
+				InputLayout = new InputLayout(TestVertexPositionColor.InputElements, new TestVertexShader()),
 				PrimitiveTopology = PrimitiveTopology.TriangleList,
 				Vertices = new[]
 				{
@@ -37,7 +59,7 @@ namespace Rasterizr.Tests.Core.InputAssembler
 			// Arrange.
 			var inputAssemblerStage = new InputAssemblerStage
 			{
-				InputLayout = TestVertexPositionColor.InputLayout,
+				InputLayout = new InputLayout(TestVertexPositionColor.InputElements, new TestVertexShader()),
 				PrimitiveTopology = PrimitiveTopology.TriangleList,
 				Vertices = new[]
 				{
@@ -61,7 +83,7 @@ namespace Rasterizr.Tests.Core.InputAssembler
 			// Arrange.
 			var inputAssemblerStage = new InputAssemblerStage
 			{
-				InputLayout = TestVertexPositionColor.InputLayout,
+				InputLayout = new InputLayout(TestVertexPositionColor.InputElements, new TestVertexShader()),
 				PrimitiveTopology = PrimitiveTopology.TriangleStrip,
 				Vertices = new[]
 				{
@@ -85,7 +107,7 @@ namespace Rasterizr.Tests.Core.InputAssembler
 			// Arrange.
 			var inputAssemblerStage = new InputAssemblerStage
 			{
-				InputLayout = TestVertexPositionColor.InputLayout,
+				InputLayout = new InputLayout(TestVertexPositionColor.InputElements, new TestVertexShader()),
 				PrimitiveTopology = PrimitiveTopology.TriangleStrip,
 				Vertices = new[]
 				{
@@ -102,8 +124,8 @@ namespace Rasterizr.Tests.Core.InputAssembler
 
 			// Assert.
 			Assert.That(result, Has.Count.EqualTo(6));
-			Assert.That(result, Has.All.InstanceOf<TestVertexPositionColor>());
-			var resultArray = result.Cast<TestVertexPositionColor>().ToArray();
+			Assert.That(result, Has.All.Matches<InputAssemblerOutput>(iao => iao.Vertex is TestVertexPositionColor));
+			var resultArray = result.Select(iao => iao.Vertex).Cast<TestVertexPositionColor>().ToArray();
 			Assert.That(resultArray[0].Position, Is.EqualTo(new Point3D(1, 0, 0)));
 			Assert.That(resultArray[1].Position, Is.EqualTo(new Point3D(0, 1, 0)));
 			Assert.That(resultArray[2].Position, Is.EqualTo(new Point3D(0, 0, 1)));

@@ -34,7 +34,7 @@ namespace Rasterizr.Meshellator
 						mesh.Positions[i], mesh.Normals[i], texCoord));
 				}
 
-				BasicEffect effect = new BasicEffect(device, VertexPositionNormalTexture.InputLayout);
+				var effect = new BasicEffect(device);
 
 				if (!string.IsNullOrEmpty(mesh.Material.DiffuseTextureName))
 				{

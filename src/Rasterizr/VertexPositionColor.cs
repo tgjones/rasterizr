@@ -17,17 +17,14 @@ namespace Rasterizr
 			Color = color;
 		}
 
-		public static InputLayout InputLayout
+		public static InputElementDescription[] InputElements
 		{
 			get
 			{
-				return new InputLayout
+				return new[]
 				{
-					Elements = new[]
-					{
-						new InputElementDescription(Semantics.Position, 0),
-						new InputElementDescription(Semantics.Color, 0)
-					}
+					new InputElementDescription(Semantics.Position, 0),
+					new InputElementDescription(Semantics.Color, 0)
 				};
 			}
 		}

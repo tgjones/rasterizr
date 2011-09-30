@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 using Nexus;
 using Rasterizr.Core;
-using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.ShaderCore;
 using Rasterizr.Core.ShaderCore.PixelShader;
 using Rasterizr.Core.ShaderCore.VertexShader;
@@ -13,6 +12,8 @@ namespace Rasterizr.Effects
 		#region Fields
 
 		private readonly EffectPass _effectPass;
+		private readonly IShader[] _vertexShaders;
+		private readonly IPixelShader[] _pixelShaders;
 
 		#endregion
 
@@ -40,10 +41,10 @@ namespace Rasterizr.Effects
 
 		#region Constructor
 
-		public BasicEffect(RasterizrDevice device, InputLayout inputLayout)
+		public BasicEffect(RasterizrDevice device)
 			: base(device)
 		{
-			EffectTechnique technique = new EffectTechnique(this);
+			var technique = new EffectTechnique(this);
 			_effectPass = new EffectPass(technique);
 			technique.Passes.Add(_effectPass);
 			Techniques.Add(technique);
@@ -56,35 +57,21 @@ namespace Rasterizr.Effects
 			SpecularColor = ColorsRgbF.White;
 			World = Matrix3D.Identity;
 
-			if (inputLayout.ContainsSemantic(Semantics.Normal, 0)
-				&& inputLayout.ContainsSemantic(Semantics.TexCoord, 0)
-				&& inputLayout.ContainsSemantic(Semantics.Color, 0))
-			{
-				throw new System.NotImplementedException();
-			}
-			else if (inputLayout.ContainsSemantic(Semantics.Normal, 0)
-				&& inputLayout.ContainsSemantic(Semantics.TexCoord, 0))
-			{
-				_effectPass.VertexShader = new VertexShaderPnt();
-				_effectPass.PixelShader = new PixelShaderNt(this);
-			}
-			else if (inputLayout.ContainsSemantic(Semantics.Color, 0)
-				&& inputLayout.ContainsSemantic(Semantics.TexCoord, 0))
-			{
-				_effectPass.VertexShader = new VertexShaderPct();
-				_effectPass.PixelShader = new PixelShaderCt(this);
-			}
-			else if (inputLayout.ContainsSemantic(Semantics.Color, 0))
-			{
-				_effectPass.VertexShader = new VertexShaderPc();
-				_effectPass.PixelShader = new PixelShaderC(this);
-			}
-			else
-			{
-				throw new System.NotImplementedException();
-			}
-
 			EnableDefaultLighting();
+
+			_vertexShaders = new IShader[]
+			{
+				new VertexShaderPnt(),
+				new VertexShaderPct(),
+				new VertexShaderPc()
+			};
+
+			_pixelShaders = new IPixelShader[]
+			{
+				new PixelShaderNt(this),
+				new PixelShaderCt(this),
+				new PixelShaderC(this)
+			};
 		}
 
 		#endregion
@@ -113,18 +100,29 @@ namespace Rasterizr.Effects
 
 		protected internal override void OnApply()
 		{
-			IWvpVertexShader vertexShader = (IWvpVertexShader) _effectPass.VertexShader;
+			// Figure out which vertex and pixel shader we should use.
+			int shaderIndex;
+			if (LightingEnabled)
+				shaderIndex = 0;
+			else
+			{
+				shaderIndex = TextureEnabled ? 1 : 2;
+			}
+			_effectPass.VertexShader = _vertexShaders[shaderIndex];
+			_effectPass.PixelShader = _pixelShaders[shaderIndex];
+
+			var vertexShader = (IWvpVertexShader) _effectPass.VertexShader;
 			vertexShader.WorldViewProjection = World * View * Projection;
 
 			if (_effectPass.PixelShader is PixelShaderNt)
 			{
-				PixelShaderNt pixelShader = (PixelShaderNt)_effectPass.PixelShader;
+				var pixelShader = (PixelShaderNt)_effectPass.PixelShader;
 				pixelShader.Eye = Matrix3D.Invert(View).Translation;
 				pixelShader.Texture = Texture;
 			}
 			else if (_effectPass.PixelShader is PixelShaderCt)
 			{
-				PixelShaderCt pixelShader = (PixelShaderCt)_effectPass.PixelShader;
+				var pixelShader = (PixelShaderCt)_effectPass.PixelShader;
 				pixelShader.Texture = Texture;
 			}
 		}

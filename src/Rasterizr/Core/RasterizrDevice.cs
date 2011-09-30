@@ -28,7 +28,7 @@ namespace Rasterizr.Core
 		public RasterizrDevice()
 		{
 			InputAssembler = new InputAssemblerStage();
-			VertexShader = new VertexShaderStage();
+			VertexShader = new VertexShaderStage(InputAssembler);
 			GeometryShader = new GeometryShaderStage();
 
 			PixelShader = new PixelShaderStage();
@@ -68,7 +68,7 @@ namespace Rasterizr.Core
 			new ShaderValidator().CheckCompatibility(VertexShader.VertexShader, PixelShader.PixelShader);
 		}
 
-		private void DrawInternal(IEnumerable<object> inputAssemblerOutputs)
+		private void DrawInternal(IEnumerable<InputAssemblerOutput> inputAssemblerOutputs)
 		{
 			var vertexShaderOutputs = VertexShader.Run(inputAssemblerOutputs);
 			var geometryShaderOutputs = GeometryShader.Run(vertexShaderOutputs);

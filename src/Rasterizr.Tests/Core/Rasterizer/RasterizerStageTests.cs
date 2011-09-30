@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using Nexus;
 using Nexus.Graphics;
+using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.OutputMerger;
 using Rasterizr.Core.Rasterizer;
 using Rasterizr.Core.ShaderCore;
@@ -42,7 +43,8 @@ namespace Rasterizr.Tests.Core.Rasterizer
 		public void CanRasterizerWithMultiSamplingDisabled()
 		{
 			// Arrange.
-			var vertexShaderStage = new VertexShaderStage
+			var inputAssemblerStage = new InputAssemblerStage();
+			var vertexShaderStage = new VertexShaderStage(inputAssemblerStage)
 			{
 				VertexShader = new TestVertexShader()
 			};
