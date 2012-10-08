@@ -1,13 +1,19 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System.ComponentModel.Composition;
+using System.Windows.Media.Imaging;
 using Caliburn.Micro;
+using Gemini.Modules.Output;
 using Nexus.Graphics;
 using Rasterizr.Core;
+using Rasterizr.Core.Diagnostics;
 using Rasterizr.Core.OutputMerger;
 
 namespace Rasterizr.Studio.Framework
 {
 	public abstract class RenderedDocumentBase : Screen
 	{
+		[Import]
+		private IOutput _output;
+
 		private readonly RasterizrDevice _device;
 		private SwapChain _swapChain;
 
@@ -39,11 +45,12 @@ namespace Rasterizr.Studio.Framework
 		protected RenderedDocumentBase()
  		{
 			_device = new RasterizrDevice();
+			//_device.Loggers.Add(new TextWriterGraphicsLogger(_output.Writer));
  		}
 
 		private void RecreateSwapChain()
 		{
-			_swapChain = new SwapChain(OutputBitmap, (int)OutputBitmap.Width, (int)OutputBitmap.Height, 1);
+			_swapChain = new SwapChain(_device, OutputBitmap, (int)OutputBitmap.Width, (int)OutputBitmap.Height, 1);
 			_device.Rasterizer.Viewport = new Viewport3D(0, 0, (int)OutputBitmap.Width, (int)OutputBitmap.Height);
 			_device.OutputMerger.RenderTarget = new RenderTargetView(_swapChain.GetBuffer());
 		}

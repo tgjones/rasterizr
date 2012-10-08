@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Nexus;
+using Rasterizr.Core.Diagnostics;
 using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.OutputMerger;
 using Rasterizr.Core.Rasterizer;
@@ -12,7 +13,14 @@ namespace Rasterizr.Core
 {
 	public class RasterizrDevice
 	{
+		private readonly GraphicsLoggerCollection _loggers;
+
 		#region Properties
+
+		public GraphicsLoggerCollection Loggers
+		{
+			get { return _loggers; }
+		}
 
 		public InputAssemblerStage InputAssembler { get; private set; }
 		public VertexShaderStage VertexShader { get; private set; }
@@ -27,6 +35,8 @@ namespace Rasterizr.Core
 
 		public RasterizrDevice()
 		{
+			_loggers = new GraphicsLoggerCollection();
+
 			InputAssembler = new InputAssemblerStage();
 			VertexShader = new VertexShaderStage(InputAssembler);
 			GeometryShader = new GeometryShaderStage();
