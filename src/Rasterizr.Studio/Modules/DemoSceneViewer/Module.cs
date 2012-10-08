@@ -34,7 +34,7 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer
 		private static IEnumerable<IResult> OpenDemoScene<TScene>()
 			where TScene : DemoSceneBase, new()
 		{
-			yield return Show.Document(new DemoSceneViewerViewModel(new TScene()));
+			yield return new OpenWindowResult(new DemoSceneViewerViewModel(new TScene()));
 		}
 	}
 }
