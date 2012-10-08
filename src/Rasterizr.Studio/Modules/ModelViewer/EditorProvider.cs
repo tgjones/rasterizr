@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using Caliburn.Micro;
+using Gemini.Framework;
 using Gemini.Framework.Services;
 using Meshellator;
 using Rasterizr.Studio.Modules.ModelViewer.ViewModels;
@@ -14,7 +15,7 @@ namespace Rasterizr.Studio.Modules.ModelViewer
 			return MeshellatorLoader.IsSupportedFormat(path);
 		}
 
-		public IScreen Create(string path)
+		public IDocument Create(string path)
 		{
 			return new ModelViewerViewModel(path);
 		}
