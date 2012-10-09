@@ -37,7 +37,7 @@ namespace Rasterizr.Core
 		{
 			_loggers = new GraphicsLoggerCollection();
 
-			InputAssembler = new InputAssemblerStage();
+			InputAssembler = new InputAssemblerStage(this);
 			VertexShader = new VertexShaderStage(InputAssembler);
 			GeometryShader = new GeometryShaderStage();
 

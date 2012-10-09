@@ -8,11 +8,47 @@ namespace Rasterizr.Core.InputAssembler
 {
 	public class InputAssemblerStage : PipelineStageBase
 	{
-		public InputLayout InputLayout { get; set; }
+		private readonly RasterizrDevice _device;
+		private InputLayout _inputLayout;
+		private IList _vertices;
+		private Int32Collection _indices;
+
+		public InputLayout InputLayout
+		{
+			get { return _inputLayout; }
+			set
+			{
+				_device.Loggers.BeginApiCall("set_InputLayout", value);
+				_inputLayout = value;
+			}
+		}
+
 		public PrimitiveTopology PrimitiveTopology { get; set; }
 
-		public IList Vertices { get; set; }
-		public Int32Collection Indices { get; set; }
+		public IList Vertices
+		{
+			get { return _vertices; }
+			set
+			{
+				_device.Loggers.BeginApiCall("set_Vertices", value);
+				_vertices = value;
+			}
+		}
+
+		public Int32Collection Indices
+		{
+			get { return _indices; }
+			set
+			{
+				_device.Loggers.BeginApiCall("set_Indices", value);
+				_indices = value;
+			}
+		}
+
+		public InputAssemblerStage(RasterizrDevice device)
+		{
+			_device = device;
+		}
 
 		public IEnumerable<InputAssemblerOutput> Run(int vertexCount, int startVertexLocation)
 		{

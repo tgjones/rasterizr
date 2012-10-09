@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NSubstitute;
 using NUnit.Framework;
 using Nexus;
 using Nexus.Graphics;
+using Rasterizr.Core;
 using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.OutputMerger;
 using Rasterizr.Core.Rasterizer;
@@ -43,7 +45,7 @@ namespace Rasterizr.Tests.Core.Rasterizer
 		public void CanRasterizerWithMultiSamplingDisabled()
 		{
 			// Arrange.
-			var inputAssemblerStage = new InputAssemblerStage();
+			var inputAssemblerStage = new InputAssemblerStage(Substitute.For<RasterizrDevice>());
 			var vertexShaderStage = new VertexShaderStage(inputAssemblerStage)
 			{
 				VertexShader = new TestVertexShader()

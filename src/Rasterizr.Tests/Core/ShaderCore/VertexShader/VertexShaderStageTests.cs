@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NSubstitute;
 using NUnit.Framework;
 using Nexus;
+using Rasterizr.Core;
 using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.ShaderCore;
 using Rasterizr.Core.ShaderCore.VertexShader;
@@ -35,7 +37,7 @@ namespace Rasterizr.Tests.Core.ShaderCore.VertexShader
 		public void CanUseVertexShader()
 		{
 			// Arrange.
-			var inputAssemblerStage = new InputAssemblerStage
+			var inputAssemblerStage = new InputAssemblerStage(Substitute.For<RasterizrDevice>())
 			{
 				InputLayout = new InputLayout(TestVertexPositionColor.InputElements, new TestVertexShader()),
 			};
