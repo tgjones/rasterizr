@@ -51,16 +51,19 @@ namespace Rasterizr.Core
 
 		public void ClearDepthBuffer(float depth)
 		{
+			_loggers.BeginApiCall("ClearDepthBuffer", depth);
 			OutputMerger.DepthBuffer.Clear(depth);
 		}
 
 		public void ClearRenderTarget(ColorF color)
 		{
+			_loggers.BeginApiCall("ClearRenderTarget", color);
 			OutputMerger.RenderTarget.Clear(color);
 		}
 
 		public void Draw(int vertexCount, int startVertexLocation)
 		{
+			_loggers.BeginApiCall("Draw", vertexCount, startVertexLocation);
 			BeginDraw();
 			var inputAssemblerOutputs = InputAssembler.Run(vertexCount, startVertexLocation);
 			DrawInternal(inputAssemblerOutputs);
@@ -68,6 +71,7 @@ namespace Rasterizr.Core
 
 		public void DrawIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
 		{
+			_loggers.BeginApiCall("DrawIndexed", indexCount, startIndexLocation, baseVertexLocation);
 			BeginDraw();
 			var inputAssemblerOutputs = InputAssembler.RunIndexed(indexCount, startIndexLocation, baseVertexLocation);
 			DrawInternal(inputAssemblerOutputs);
