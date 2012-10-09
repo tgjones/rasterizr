@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Media.Imaging;
+using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Modules.Output;
 using Nexus.Graphics;
@@ -11,9 +12,6 @@ namespace Rasterizr.Studio.Framework
 {
 	public abstract class RenderedDocumentBase : Document
 	{
-		[Import]
-		private IOutput _output;
-
 		private readonly RasterizrDevice _device;
 		private SwapChain _swapChain;
 
@@ -45,7 +43,7 @@ namespace Rasterizr.Studio.Framework
 		protected RenderedDocumentBase()
  		{
 			_device = new RasterizrDevice();
-			_device.Loggers.Add(new TextWriterGraphicsLogger(_output.Writer));
+			_device.Loggers.Add(new TextWriterGraphicsLogger(IoC.Get<IOutput>().Writer));
  		}
 
 		private void RecreateSwapChain()
