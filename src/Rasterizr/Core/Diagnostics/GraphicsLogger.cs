@@ -2,7 +2,6 @@ namespace Rasterizr.Core.Diagnostics
 {
 	public abstract class GraphicsLogger
 	{
-		protected internal abstract void BeginApiCall(string methodName, params object[] methodArguments);
-		protected internal abstract void EndFrame();
+		protected internal abstract void BeginOperation(OperationType type, params object[] methodArguments);
 	}
 }

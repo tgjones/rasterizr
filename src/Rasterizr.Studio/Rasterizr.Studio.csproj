@@ -134,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Modules\GraphicsEventList\Views\GraphicsEventListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\ModelViewer\Views\ModelViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -149,6 +153,13 @@
     <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
     <Compile Include="Modules\DemoSceneViewer\OpenWindowResult.cs" />
     <Compile Include="Modules\DemoSceneViewer\Scenes\NoBuffersScene.cs" />
+    <Compile Include="Modules\GraphicsDebugging\Module.cs" />
+    <Compile Include="Modules\GraphicsEventList\Module.cs" />
+    <Compile Include="Modules\GraphicsEventList\ViewModels\GraphicsEventListViewModel.cs" />
+    <Compile Include="Modules\GraphicsEventList\ViewModels\TracefileEventViewModel.cs" />
+    <Compile Include="Modules\GraphicsEventList\Views\GraphicsEventListView.xaml.cs">
+      <DependentUpon>GraphicsEventListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\ModelViewer\Views\ModelViewerView.xaml.cs">
       <DependentUpon>ModelViewerView.xaml</DependentUpon>
     </Compile>
@@ -164,11 +175,24 @@
     <Compile Include="Framework\RenderedDocumentBase.cs" />
     <Compile Include="Modules\DemoSceneViewer\Scenes\DemoSceneBase.cs" />
     <Compile Include="Modules\DemoSceneViewer\Scenes\SimpleTriangleScene.cs" />
+    <Page Include="Modules\TracefileViewer\Views\TracefileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modules\DemoSceneViewer\Module.cs" />
     <Compile Include="Modules\ModelViewer\EditorProvider.cs" />
     <Compile Include="Modules\Startup\Module.cs" />
+    <Compile Include="Modules\TracefileViewer\EditorProvider.cs" />
+    <Compile Include="Modules\TracefileViewer\ITracefileService.cs" />
+    <Compile Include="Modules\TracefileViewer\TracefileFrameChangedEventArgs.cs" />
+    <Compile Include="Modules\TracefileViewer\TracefileService.cs" />
+    <Compile Include="Modules\TracefileViewer\ViewModels\TracefileFrameViewModel.cs" />
+    <Compile Include="Modules\TracefileViewer\ViewModels\TracefileViewModel.cs" />
+    <Compile Include="Modules\TracefileViewer\Views\TracefileView.xaml.cs">
+      <DependentUpon>TracefileView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Nexus;
+using Rasterizr.Core.Diagnostics;
 
 namespace Rasterizr.Core.InputAssembler
 {
@@ -12,25 +13,34 @@ namespace Rasterizr.Core.InputAssembler
 		private InputLayout _inputLayout;
 		private IList _vertices;
 		private Int32Collection _indices;
+		private PrimitiveTopology _primitiveTopology;
 
 		public InputLayout InputLayout
 		{
 			get { return _inputLayout; }
 			set
 			{
-				_device.Loggers.BeginApiCall("set_InputLayout", value);
+				_device.Loggers.BeginOperation(OperationType.InputAssemblerSetInputLayout, value);
 				_inputLayout = value;
 			}
 		}
 
-		public PrimitiveTopology PrimitiveTopology { get; set; }
+		public PrimitiveTopology PrimitiveTopology
+		{
+			get { return _primitiveTopology; }
+			set
+			{
+				_device.Loggers.BeginOperation(OperationType.InputAssemblerSetPrimitiveTopology, value);
+				_primitiveTopology = value;
+			}
+		}
 
 		public IList Vertices
 		{
 			get { return _vertices; }
 			set
 			{
-				_device.Loggers.BeginApiCall("set_Vertices", value);
+				_device.Loggers.BeginOperation(OperationType.InputAssemblerSetVertices, value);
 				_vertices = value;
 			}
 		}
@@ -40,7 +50,7 @@ namespace Rasterizr.Core.InputAssembler
 			get { return _indices; }
 			set
 			{
-				_device.Loggers.BeginApiCall("set_Indices", value);
+				_device.Loggers.BeginOperation(OperationType.InputAssemblerSetIndices, value);
 				_indices = value;
 			}
 		}

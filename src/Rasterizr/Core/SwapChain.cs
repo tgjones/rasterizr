@@ -1,5 +1,6 @@
 using System.Windows.Media.Imaging;
 using Nexus.Graphics;
+using Rasterizr.Core.Diagnostics;
 
 namespace Rasterizr.Core
 {
@@ -23,9 +24,9 @@ namespace Rasterizr.Core
 
 		public void Present()
 		{
+			_device.Loggers.BeginOperation(OperationType.SwapChainPresent);
 			_surface.Resolve(new WriteableBitmapBuffer(_writeableBitmap));
 			_writeableBitmap.Invalidate();
-			_device.Loggers.EndFrame();
 		}
 	}
 }

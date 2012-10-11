@@ -13,12 +13,7 @@ namespace Rasterizr.Core.Diagnostics
 			_writer = writer;
 		}
 
-		protected internal override void EndFrame()
-		{
-			_writtenBeginFrame = false;
-		}
-
-		protected internal override void BeginApiCall(string methodName, params object[] methodArguments)
+		protected internal override void BeginOperation(OperationType type, params object[] methodArguments)
 		{
 			if (!_writtenBeginFrame)
 			{
@@ -26,7 +21,7 @@ namespace Rasterizr.Core.Diagnostics
 				_writtenBeginFrame = true;
 			}
 
-			_writer.Write("- {0}", methodName);
+			_writer.Write("- {0}", type);
 			if (methodArguments != null && methodArguments.Length > 0)
 			{
 				_writer.Write("(");
@@ -39,6 +34,9 @@ namespace Rasterizr.Core.Diagnostics
 				_writer.Write(")");
 			}
 			_writer.WriteLine();
+
+			if (type == OperationType.SwapChainPresent)
+				_writtenBeginFrame = false;
 		}
 	}
 }

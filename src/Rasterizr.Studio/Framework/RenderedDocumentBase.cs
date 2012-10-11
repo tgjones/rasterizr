@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.IO;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using Gemini.Framework;
@@ -7,6 +8,7 @@ using Nexus.Graphics;
 using Rasterizr.Core;
 using Rasterizr.Core.Diagnostics;
 using Rasterizr.Core.OutputMerger;
+using Rasterizr.Diagnostics.Logging;
 
 namespace Rasterizr.Studio.Framework
 {
@@ -14,6 +16,8 @@ namespace Rasterizr.Studio.Framework
 	{
 		private readonly RasterizrDevice _device;
 		private SwapChain _swapChain;
+
+		protected TracefileGraphicsLogger _logger;
 
 		protected RasterizrDevice Device
 		{
@@ -44,6 +48,9 @@ namespace Rasterizr.Studio.Framework
  		{
 			_device = new RasterizrDevice();
 			_device.Loggers.Add(new TextWriterGraphicsLogger(IoC.Get<IOutput>().Writer));
+
+			_logger = new TracefileGraphicsLogger(new StreamWriter("test.trace"));
+			_device.Loggers.Add(_logger);
  		}
 
 		private void RecreateSwapChain()
