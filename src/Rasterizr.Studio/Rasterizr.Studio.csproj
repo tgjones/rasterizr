@@ -138,6 +138,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\GraphicsPixelHistory\Views\GraphicsPixelHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Modules\ModelViewer\Views\ModelViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -151,6 +155,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
+    <Compile Include="Framework\Converters\ColorFToBrushConverter.cs" />
     <Compile Include="Modules\DemoSceneViewer\OpenWindowResult.cs" />
     <Compile Include="Modules\DemoSceneViewer\Scenes\NoBuffersScene.cs" />
     <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeSelectionService.cs" />
@@ -161,6 +166,12 @@
     <Compile Include="Modules\GraphicsDebugging\ViewModels\TracefileEventViewModel.cs" />
     <Compile Include="Modules\GraphicsEventList\Views\GraphicsEventListView.xaml.cs">
       <DependentUpon>GraphicsEventListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeGraphicsPixelHistoryViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\ViewModels\GraphicsPixelHistoryViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\ViewModels\PixelHistoryEventViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\Views\GraphicsPixelHistoryView.xaml.cs">
+      <DependentUpon>GraphicsPixelHistoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\ModelViewer\Views\ModelViewerView.xaml.cs">
       <DependentUpon>ModelViewerView.xaml</DependentUpon>

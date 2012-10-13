@@ -6,6 +6,7 @@ using Gemini.Framework;
 using Gemini.Framework.Menus;
 using Gemini.Framework.Results;
 using Rasterizr.Studio.Modules.GraphicsEventList.ViewModels;
+using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels;
 
 namespace Rasterizr.Studio.Modules.GraphicsDebugging
 {
@@ -20,6 +21,7 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging
 			viewMenuItem.Children.Add(new MenuItemSeparator());
 
 			graphicsMenuItem.Add(new MenuItem("Graphics Event List", OpenTool<GraphicsEventListViewModel>));
+			graphicsMenuItem.Add(new MenuItem("Graphics Pixel History", OpenTool<GraphicsPixelHistoryViewModel>));
 		}
 
 		private static IEnumerable<IResult> OpenTool<TTool>()
