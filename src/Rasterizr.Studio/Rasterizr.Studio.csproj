@@ -153,7 +153,9 @@
     <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
     <Compile Include="Modules\DemoSceneViewer\OpenWindowResult.cs" />
     <Compile Include="Modules\DemoSceneViewer\Scenes\NoBuffersScene.cs" />
+    <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeSelectionService.cs" />
     <Compile Include="Modules\GraphicsDebugging\Module.cs" />
+    <Compile Include="Modules\GraphicsEventList\Design\DesignTimeGraphicsEventListViewModel.cs" />
     <Compile Include="Modules\GraphicsEventList\Module.cs" />
     <Compile Include="Modules\GraphicsEventList\ViewModels\GraphicsEventListViewModel.cs" />
     <Compile Include="Modules\GraphicsDebugging\ViewModels\TracefileEventViewModel.cs" />
