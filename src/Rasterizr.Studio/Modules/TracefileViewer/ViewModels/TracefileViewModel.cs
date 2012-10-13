@@ -32,7 +32,8 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 		public TracefileViewModel(string fileName)
 		{
 			_fileName = fileName;
-			_tracefile = Tracefile.FromFile(fileName);
+			using (var fileStream = File.OpenRead(fileName))
+				_tracefile = Tracefile.FromTextReader(new StreamReader(fileStream));
 		}
 	}
 }

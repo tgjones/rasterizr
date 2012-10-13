@@ -7,6 +7,17 @@ namespace Rasterizr.Diagnostics.Logging
 {
 	public class Tracefile
 	{
+		private static readonly JsonSerializerSettings SerializerSettings;
+
+		static Tracefile()
+		{
+			SerializerSettings = new JsonSerializerSettings
+			{
+				Formatting = Formatting.Indented,
+				TypeNameHandling = TypeNameHandling.Auto
+			};
+		}
+
 		public List<TracefileFrame> Frames { get; set; }
 
 		public Tracefile()
@@ -14,14 +25,14 @@ namespace Rasterizr.Diagnostics.Logging
 			Frames = new List<TracefileFrame>();
 		}
 
-		public static Tracefile FromFile(string filename)
+		public static Tracefile FromTextReader(TextReader textReader)
 		{
-			return JsonConvert.DeserializeObject<Tracefile>(File.ReadAllText(filename));
+			return JsonConvert.DeserializeObject<Tracefile>(textReader.ReadToEnd(), SerializerSettings);
 		}
 
 		public void Save(TextWriter textWriter)
 		{
-			textWriter.Write(JsonConvert.SerializeObject(this));
+			textWriter.Write(JsonConvert.SerializeObject(this, SerializerSettings));
 		}
 	}
 
