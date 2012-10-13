@@ -13,6 +13,7 @@ namespace Rasterizr.Diagnostics.Logging
 		{
 			SerializerSettings = new JsonSerializerSettings
 			{
+				ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
 				Formatting = Formatting.Indented,
 				TypeNameHandling = TypeNameHandling.Auto
 			};

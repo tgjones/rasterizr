@@ -1,7 +1,7 @@
 using System;
-using Rasterizr.Studio.Modules.TracefileViewer.ViewModels;
+using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 
-namespace Rasterizr.Studio.Modules.TracefileViewer
+namespace Rasterizr.Studio.Modules.GraphicsDebugging
 {
 	public class TracefileFrameChangedEventArgs : EventArgs
 	{

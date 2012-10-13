@@ -1,7 +1,8 @@
 ﻿using Caliburn.Micro;
+using Rasterizr.Core.Diagnostics;
 using Rasterizr.Diagnostics.Logging;
 
-namespace Rasterizr.Studio.Modules.GraphicsEventList.ViewModels
+namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 {
 	public class TracefileEventViewModel : PropertyChangedBase
 	{
@@ -10,6 +11,11 @@ namespace Rasterizr.Studio.Modules.GraphicsEventList.ViewModels
 		public int Number
 		{
 			get { return _tracefileEvent.Number; }
+		}
+
+		public OperationType OperationType
+		{
+			get { return _tracefileEvent.OperationType; }
 		}
 
 		public TracefileEventViewModel(TracefileEvent tracefileEvent)

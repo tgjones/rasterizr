@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using Gemini.Framework.Services;
 using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.DemoSceneViewer.Scenes;
+using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 using Rasterizr.Studio.Modules.TracefileViewer.ViewModels;
 
 namespace Rasterizr.Studio.Modules.DemoSceneViewer.ViewModels
@@ -31,7 +32,7 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.ViewModels
 
 			_logger.Close();
 
-			var viewModel = new TracefileViewModel("test.trace");
+			var viewModel = new TracefileViewerViewModel("test.trace");
 			IoC.BuildUp(viewModel);
 			_shell.OpenDocument(viewModel);
 		}

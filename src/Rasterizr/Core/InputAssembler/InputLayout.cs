@@ -15,6 +15,11 @@ namespace Rasterizr.Core.InputAssembler
 			new ShaderValidator().CheckCompatibility(this, vertexShader);
 		}
 
+		internal InputLayout()
+		{
+			
+		}
+
 		public bool ContainsSemantic(string name, int index)
 		{
 			return Elements.Any(e => e.SemanticName == name && e.SemanticIndex == index);

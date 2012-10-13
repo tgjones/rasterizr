@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel.Composition;
-using System.Linq;
 using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Framework.Services;
-using Rasterizr.Studio.Modules.TracefileViewer;
+using Rasterizr.Studio.Modules.GraphicsDebugging;
+using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 
 namespace Rasterizr.Studio.Modules.GraphicsEventList.ViewModels
 {
 	[Export(typeof(GraphicsEventListViewModel))]
 	public class GraphicsEventListViewModel : Tool
 	{
+		private readonly ISelectionService _selectionService;
+
 		public override string DisplayName
 		{
 			get { return "Graphics Event List"; }
@@ -26,18 +28,30 @@ namespace Rasterizr.Studio.Modules.GraphicsEventList.ViewModels
 			get { return _events; }
 		}
 
-		[ImportingConstructor]
-		public GraphicsEventListViewModel(ITracefileService tracefileService)
+		private TracefileEventViewModel _selectedEvent;
+		public TracefileEventViewModel SelectedEvent
 		{
-			_events = new BindableCollection<TracefileEventViewModel>();
-			tracefileService.TracefileFrameChanged += OnTracefileFrameChanged;
+			get { return _selectedEvent; }
+			set
+			{
+				_selectedEvent = value;
+				_selectionService.SelectedEvent = value;
+				NotifyOfPropertyChange(() => SelectedEvent);
+			}
 		}
 
-		private void OnTracefileFrameChanged(object sender, TracefileFrameChangedEventArgs e)
+		[ImportingConstructor]
+		public GraphicsEventListViewModel(ISelectionService selectionService)
+		{
+			_selectionService = selectionService;
+			_events = new BindableCollection<TracefileEventViewModel>();
+			selectionService.SelectedFrameChanged += OnSelectedFrameChanged;
+		}
+
+		private void OnSelectedFrameChanged(object sender, TracefileFrameChangedEventArgs e)
 		{
 			_events.Clear();
-			_events.AddRange(e.TracefileFrameViewModel.Frame.Events
-				.Select(x => new TracefileEventViewModel(x)));
+			_events.AddRange(e.TracefileFrameViewModel.Events);
 		}
 	}
 }
