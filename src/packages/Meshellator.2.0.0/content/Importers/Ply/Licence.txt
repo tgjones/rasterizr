@@ -1,2 +1,0 @@
-﻿Code adapted from Greg Turk's PLY importer:
-http://paulbourke.net/dataformats/ply/

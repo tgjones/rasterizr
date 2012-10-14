@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Meshellator, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Meshellator, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Meshellator.2.0.0\lib\net40\Meshellator.dll</HintPath>
+      <HintPath>..\packages\Meshellator.2.0.1\lib\net40\Meshellator.dll</HintPath>
     </Reference>
     <Reference Include="Nexus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -59,11 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Importers\3ds\Licence.txt" />
-    <Content Include="Importers\Obj\Licence.txt" />
-    <Content Include="Importers\Ply\Licence.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
