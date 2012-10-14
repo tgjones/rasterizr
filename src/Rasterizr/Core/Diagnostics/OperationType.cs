@@ -2,6 +2,8 @@
 {
 	public enum OperationType
 	{
+		CreateDevice,
+		CreateSwapChain,
 		DeviceClearDepthBuffer,
 		DeviceClearRenderTarget,
 		DeviceDraw,

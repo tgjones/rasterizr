@@ -12,6 +12,7 @@ namespace Rasterizr.Core
 
 		public SwapChain(RasterizrDevice device, WriteableBitmap writeableBitmap, int width, int height, int multiSampleCount)
 		{
+			device.Loggers.BeginOperation(OperationType.CreateSwapChain, null, width, height, multiSampleCount);
 			_device = device;
 			_writeableBitmap = new WriteableBitmapWrapper(writeableBitmap);
 			_surface = new ColorSurface(width, height, multiSampleCount);

@@ -17,7 +17,7 @@ namespace Rasterizr.Core
 
 		#region Properties
 
-		public GraphicsLoggerCollection Loggers
+		internal GraphicsLoggerCollection Loggers
 		{
 			get { return _loggers; }
 		}
@@ -33,9 +33,11 @@ namespace Rasterizr.Core
 
 		#region Constructor
 
-		public RasterizrDevice()
+		public RasterizrDevice(IList<GraphicsLogger> loggers = null)
 		{
-			_loggers = new GraphicsLoggerCollection();
+			_loggers = new GraphicsLoggerCollection(loggers ?? new List<GraphicsLogger>());
+
+			_loggers.BeginOperation(OperationType.CreateDevice);
 
 			InputAssembler = new InputAssemblerStage(this);
 			VertexShader = new VertexShaderStage(InputAssembler);

@@ -9,17 +9,23 @@
              d:DataContext="{d:DesignInstance Type={x:Type dd:DesignTimeTracefileViewerViewModel}, IsDesignTimeCreatable=True}"
              Background="{x:Static SystemColors.ControlLightLightBrush}">
     <Grid>
-        <ListBox ItemsSource="{Binding Frames}" SelectedItem="{Binding SelectedFrame}">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Number}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="150" />
+        </Grid.RowDefinitions>
+        <Expander Grid.Row="1" Header="Frame List" IsExpanded="True">
+            <ListBox ItemsSource="{Binding Frames}" SelectedItem="{Binding SelectedFrame}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+						<TextBlock Text="{Binding Number}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Expander>
     </Grid>
 </UserControl>

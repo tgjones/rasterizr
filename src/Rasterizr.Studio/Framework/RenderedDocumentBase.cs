@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
@@ -46,11 +47,12 @@ namespace Rasterizr.Studio.Framework
 
 		protected RenderedDocumentBase()
  		{
-			_device = new RasterizrDevice();
-			_device.Loggers.Add(new TextWriterGraphicsLogger(IoC.Get<IOutput>().Writer));
-
 			_logger = new TracefileGraphicsLogger(new StreamWriter("test.trace"));
-			_device.Loggers.Add(_logger);
+			_device = new RasterizrDevice(new List<GraphicsLogger>
+			{
+				new TextWriterGraphicsLogger(IoC.Get<IOutput>().Writer),
+				_logger
+			});
  		}
 
 		private void RecreateSwapChain()
