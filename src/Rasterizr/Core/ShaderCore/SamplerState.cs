@@ -1,4 +1,4 @@
-using Nexus;
+using Nexus.Graphics.Colors;
 
 namespace Rasterizr.Core.ShaderCore
 {

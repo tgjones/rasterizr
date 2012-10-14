@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Fasterflect;
 using Nexus;
+using Nexus.Graphics.Colors;
 
 namespace Rasterizr.Core.Rasterizer.Interpolation
 {

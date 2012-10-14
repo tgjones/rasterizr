@@ -1,5 +1,5 @@
 using System;
-using Nexus;
+using Nexus.Graphics.Colors;
 
 namespace Rasterizr.Core.OutputMerger
 {

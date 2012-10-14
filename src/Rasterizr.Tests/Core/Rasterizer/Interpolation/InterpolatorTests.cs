@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.Rasterizer.Interpolation;
 
 namespace Rasterizr.Tests.Core.Rasterizer.Interpolation

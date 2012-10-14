@@ -1,4 +1,4 @@
-﻿using Nexus;
+﻿using Nexus.Graphics.Colors;
 using Rasterizr.Studio.Modules.GraphicsDebugging.Design;
 using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels;
 

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Meshellator</id>
+    <version>2.0.0</version>
+    <title>Meshellator</title>
+    <authors>Tim Jones</authors>
+    <owners>Tim Jones</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/tgjones/meshellator</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>3D asset import library for .NET 4.0. Supported formats are Autodesk 3DS and Lightwave OBJ.</description>
+    <tags>.net40 3D mesh model import 3DS OBJ</tags>
+    <dependencies>
+      <dependency id="Nexus" version="2.1.0" />
+    </dependencies>
+  </metadata>
+</package>

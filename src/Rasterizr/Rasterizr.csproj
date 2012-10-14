@@ -36,10 +36,11 @@
     </Reference>
     <Reference Include="Nexus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Nexus\Nexus.dll</HintPath>
+      <HintPath>..\packages\Nexus.2.1.0\lib\net40\Nexus.dll</HintPath>
     </Reference>
-    <Reference Include="Nexus.Wpf">
-      <HintPath>..\..\lib\Nexus\Nexus.Wpf.dll</HintPath>
+    <Reference Include="Nexus.Wpf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Nexus.Wpf.2.1.0\lib\net40\Nexus.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />

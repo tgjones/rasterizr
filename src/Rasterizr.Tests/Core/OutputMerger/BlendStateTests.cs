@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.OutputMerger;
 
 namespace Rasterizr.Tests.Core.OutputMerger

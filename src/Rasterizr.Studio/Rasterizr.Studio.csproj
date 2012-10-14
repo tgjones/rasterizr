@@ -89,13 +89,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\GeminiWpf.0.1.2\lib\net40\Gemini.dll</HintPath>
     </Reference>
-    <Reference Include="Meshellator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Meshellator, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Meshellator\Meshellator.dll</HintPath>
+      <HintPath>..\packages\Meshellator.2.0.0\lib\net40\Meshellator.dll</HintPath>
     </Reference>
     <Reference Include="Nexus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Nexus\Nexus.dll</HintPath>
+      <HintPath>..\packages\Nexus.2.1.0\lib\net40\Nexus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -248,7 +248,15 @@
       <Name>Rasterizr</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Importers\Ply\Licence.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Importers\Obj\Licence.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Importers\3ds\Licence.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

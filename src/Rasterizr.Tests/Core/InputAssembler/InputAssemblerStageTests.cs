@@ -2,6 +2,7 @@
 using NSubstitute;
 using NUnit.Framework;
 using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core;
 using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.ShaderCore;

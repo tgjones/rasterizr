@@ -1,0 +1,4 @@
+﻿Code adapted from MRI3DS, a Java 3DS importer:
+http://www.pixelnerve.com/processing/libraries/mri3ds/
+
+This is published under the Lesser GPL.

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Nexus</id>
+    <version>2.1.0</version>
+    <title>Nexus</title>
+    <authors>Tim Jones</authors>
+    <owners>Tim Jones</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/roastedamoeba/nexus</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Small and lightweight 3D vector and matrix library for .NET 4.0.</description>
+    <tags>.net40 3D math maths mathematics vector matrix camera</tags>
+  </metadata>
+</package>

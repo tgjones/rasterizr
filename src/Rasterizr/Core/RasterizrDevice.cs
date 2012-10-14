@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.Diagnostics;
 using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.OutputMerger;

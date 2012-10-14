@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.Rasterizer;
 
 namespace Rasterizr.Core.ShaderCore.PixelShader

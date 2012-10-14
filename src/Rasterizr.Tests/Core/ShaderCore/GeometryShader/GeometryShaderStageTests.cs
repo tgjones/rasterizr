@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.ShaderCore;
 using Rasterizr.Core.ShaderCore.GeometryShader;
 

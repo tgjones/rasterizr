@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Nexus;
 using Nexus.Graphics;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.ShaderCore.PixelShader;
 
 namespace Rasterizr.Core.OutputMerger

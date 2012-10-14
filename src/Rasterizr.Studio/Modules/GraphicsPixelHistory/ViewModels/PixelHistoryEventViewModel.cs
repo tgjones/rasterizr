@@ -1,5 +1,5 @@
 using Caliburn.Micro;
-using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels

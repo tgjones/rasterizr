@@ -1,5 +1,6 @@
 using System.Threading;
 using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.Rasterizer;
 using Rasterizr.Core.Rasterizer.Derivatives;
 

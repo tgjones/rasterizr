@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Nexus;
 using Nexus.Graphics;
+using Nexus.Objects2D;
 using Rasterizr.Core.OutputMerger;
 using Rasterizr.Core.Rasterizer.Interpolation;
 using Rasterizr.Core.ShaderCore;

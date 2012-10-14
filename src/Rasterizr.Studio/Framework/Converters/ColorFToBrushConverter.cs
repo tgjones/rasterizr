@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Windows.Media;
-using Nexus;
-using Color = Nexus.Color;
+using Nexus.Graphics.Colors;
+using Color = Nexus.Graphics.Colors.Color;
 
 namespace Rasterizr.Studio.Framework.Converters
 {

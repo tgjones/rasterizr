@@ -2,6 +2,7 @@
 using System.IO;
 using NUnit.Framework;
 using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.Diagnostics;
 using Rasterizr.Diagnostics.Logging;
 

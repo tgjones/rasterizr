@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.InputAssembler;
 using Rasterizr.Core.ShaderCore;
 

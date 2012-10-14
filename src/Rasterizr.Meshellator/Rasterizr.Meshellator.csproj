@@ -31,11 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Meshellator">
-      <HintPath>..\..\lib\Meshellator\Meshellator.dll</HintPath>
+    <Reference Include="Meshellator, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Meshellator.2.0.0\lib\net40\Meshellator.dll</HintPath>
     </Reference>
-    <Reference Include="Nexus">
-      <HintPath>..\..\lib\Nexus\Nexus.dll</HintPath>
+    <Reference Include="Nexus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Nexus.2.1.0\lib\net40\Nexus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,6 +56,14 @@
       <Project>{DEB98B3D-FCDD-4936-B242-CE9301D95BF1}</Project>
       <Name>Rasterizr</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Importers\3ds\Licence.txt" />
+    <Content Include="Importers\Obj\Licence.txt" />
+    <Content Include="Importers\Ply\Licence.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

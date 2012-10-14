@@ -1,6 +1,7 @@
 using System;
 using Nexus;
 using Nexus.Graphics;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.ShaderCore.PixelShader;
 
 namespace Rasterizr.Core.ShaderCore

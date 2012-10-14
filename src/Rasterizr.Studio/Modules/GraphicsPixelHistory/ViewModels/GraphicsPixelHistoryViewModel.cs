@@ -2,7 +2,7 @@
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using System.ComponentModel.Composition;
-using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Studio.Modules.GraphicsDebugging;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels

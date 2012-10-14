@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Nexus;
+using Nexus.Graphics.Colors;
 using Rasterizr.Core.ShaderCore;
 
 namespace Rasterizr.Tests.Core.ShaderCore
