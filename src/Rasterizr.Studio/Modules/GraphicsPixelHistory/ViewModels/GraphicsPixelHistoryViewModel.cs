@@ -49,6 +49,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 			_pixelEvents.Clear();
 			
 			// TODO: Fire async request to get pixel history.
+			FinalFrameBufferColor = ColorsF.Green;
 		}
 	}
 }

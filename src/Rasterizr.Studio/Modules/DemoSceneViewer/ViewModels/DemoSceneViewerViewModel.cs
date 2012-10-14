@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using Caliburn.Micro;
 using Gemini.Framework.Services;
+using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.DemoSceneViewer.Scenes;
-using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 using Rasterizr.Studio.Modules.TracefileViewer.ViewModels;
 
 namespace Rasterizr.Studio.Modules.DemoSceneViewer.ViewModels
@@ -32,7 +33,11 @@ namespace Rasterizr.Studio.Modules.DemoSceneViewer.ViewModels
 
 			_logger.Close();
 
-			var viewModel = new TracefileViewerViewModel("test.trace");
+			const string fileName = "test.trace";
+			Tracefile tracefile;
+			using (var fileStream = File.OpenRead(fileName))
+				tracefile = Tracefile.FromTextReader(new StreamReader(fileStream));
+			var viewModel = new TracefileViewerViewModel(fileName, tracefile);
 			IoC.BuildUp(viewModel);
 			_shell.OpenDocument(viewModel);
 		}

@@ -159,6 +159,7 @@
     <Compile Include="Modules\DemoSceneViewer\OpenWindowResult.cs" />
     <Compile Include="Modules\DemoSceneViewer\Scenes\NoBuffersScene.cs" />
     <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeSelectionService.cs" />
+    <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeTracefile.cs" />
     <Compile Include="Modules\GraphicsDebugging\Module.cs" />
     <Compile Include="Modules\GraphicsEventList\Design\DesignTimeGraphicsEventListViewModel.cs" />
     <Compile Include="Modules\GraphicsEventList\Module.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Modules\DemoSceneViewer\Module.cs" />
     <Compile Include="Modules\ModelViewer\EditorProvider.cs" />
     <Compile Include="Modules\Startup\Module.cs" />
+    <Compile Include="Modules\TracefileViewer\Design\DesignTimeTracefileViewerViewModel.cs" />
     <Compile Include="Modules\TracefileViewer\EditorProvider.cs" />
     <Compile Include="Modules\GraphicsDebugging\ISelectionService.cs" />
     <Compile Include="Modules\GraphicsDebugging\PixelChangedEventArgs.cs" />
