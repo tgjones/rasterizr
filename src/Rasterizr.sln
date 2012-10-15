@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Studio", "Rasteri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Diagnostics.Logging", "Rasterizr.Diagnostics.Logging\Rasterizr.Diagnostics.Logging.csproj", "{54BA2C2B-6823-4267-9D9B-78C6071850A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimShader", "SlimShader\SlimShader.csproj", "{0A69A67E-283B-424B-8785-3C81CD2EC34D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimShader.Tests", "SlimShader.Tests\SlimShader.Tests.csproj", "{3D19DAC1-E727-43BA-A264-A64408B4D598}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +99,26 @@ Global
 		{54BA2C2B-6823-4267-9D9B-78C6071850A7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{54BA2C2B-6823-4267-9D9B-78C6071850A7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{54BA2C2B-6823-4267-9D9B-78C6071850A7}.Release|x86.ActiveCfg = Release|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0A69A67E-283B-424B-8785-3C81CD2EC34D}.Release|x86.ActiveCfg = Release|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
