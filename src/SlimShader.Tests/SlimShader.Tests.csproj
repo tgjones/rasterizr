@@ -43,19 +43,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShaderLoaderTests.cs" />
+    <Compile Include="DxbcParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\test.o">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\test.vs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets\test.hlsl" />
     <Content Include="Assets\test.bin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\test.txt" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SlimShader\SlimShader.csproj">
+      <Project>{0A69A67E-283B-424B-8785-3C81CD2EC34D}</Project>
+      <Name>SlimShader</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
