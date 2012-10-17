@@ -128,11 +128,11 @@ namespace SlimShader.Parser
 		/// </summary>
 		/// <param name="token"></param>
 		/// <returns></returns>
-		public static uint DecodeOperand4ComponentMask(uint token)
+		public static ComponentMask DecodeOperand4ComponentMask(uint token)
 		{
 			const int mask = 0x000000f0;
 			const int shift = 4;
-			return (token & mask) >> shift;
+			return (ComponentMask) ((token & mask) >> shift);
 		}
 
 		/// <summary>
@@ -311,6 +311,18 @@ namespace SlimShader.Parser
 			const int shift = 11;
 
 			return (SamplerMode) ((token & mask) >> shift);
+		}
+
+		/// <summary>
+		/// DECODER MACRO: Find out interpolation mode for the input register
+		/// </summary>
+		/// <param name="token"></param>
+		/// <returns></returns>
+		public static InterpolationMode DecodeInterpolationMode(uint token)
+		{
+			const int mask = 0x00007800;
+			const int shift = 11;
+			return (InterpolationMode) ((token & mask) >> shift);
 		}
 	}
 }

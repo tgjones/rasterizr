@@ -28,6 +28,14 @@
 		public SamplerMode SamplerMode { get; internal set; }
 	}
 
+	public class InputRegisterDeclaration : DeclarationToken
+	{
+		/// <summary>
+		/// Only applicable to D3D10_SB_OPCODE_DCL_INPUT_PS and D3D10_SB_OPCODE_DCL_INPUT_PS_SIV
+		/// </summary>
+		public InterpolationMode InterpolationMode { get; set; }
+	}
+
 	public class ResourceReturnTypeToken
 	{
 		public ResourceReturnType X { get; internal set; }
@@ -48,7 +56,7 @@
 		public uint RegisterNumber { get; internal set; }
 		public int NumComponents { get; internal set; }
 		public Operand4ComponentSelectionMode SelectionMode { get; internal set; }
-		public uint ComponentMask { get; internal set; }
+		public ComponentMask ComponentMask { get; internal set; }
 		public uint Swizzle { get; internal set; }
 		public Operand4ComponentName[] Swizzles { get; private set; }
 		public float[] ImmediateValues { get; private set; }

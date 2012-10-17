@@ -45,6 +45,20 @@ namespace SlimShader.Parser
 						opcodeToken = new SamplerDeclarationParser(_reader).Parse();
 						break;
 					}
+					case OpcodeType.SM4_OPCODE_DCL_INPUT:
+					case OpcodeType.SM4_OPCODE_DCL_INPUT_PS:
+					{
+						opcodeToken = new InputRegisterDeclarationParser(_reader).Parse();
+						break;
+					}
+					//case OpcodeType.SM4_OPCODE_DCL_INPUT_SIV:
+					//case OpcodeType.SM4_OPCODE_DCL_INPUT_SGV:
+					//case OpcodeType.SM4_OPCODE_DCL_INPUT_PS_SIV:
+					//case OpcodeType.SM4_OPCODE_DCL_INPUT_PS_SGV:
+					//{
+					//	opcodeToken = new InputRegisterDeclarationParser(_reader).Parse();
+					//	break;
+					//}
 					default:
 						_reader.MoveNext();
 						if (opcodeHeader.IsExtended)

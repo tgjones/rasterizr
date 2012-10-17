@@ -40,12 +40,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ObjectModel\ChunkType.cs" />
+    <Compile Include="ObjectModel\ComponentMask.cs" />
     <Compile Include="ObjectModel\DxbcChunkHeader.cs" />
     <Compile Include="ObjectModel\DxbcContainer.cs" />
     <Compile Include="ObjectModel\DxbcContainerHeader.cs" />
+    <Compile Include="ObjectModel\InterpolationMode.cs" />
     <Compile Include="ObjectModel\Operand4ComponentSwizzles.cs" />
     <Compile Include="ObjectModel\ResourceReturnType.cs" />
     <Compile Include="ObjectModel\SamplerMode.cs" />
+    <Compile Include="Parser\Declarations\InputRegisterDeclarationParser.cs" />
     <Compile Include="Parser\Declarations\SamplerDeclarationParser.cs" />
     <Compile Include="Parser\Declarations\ResourceDeclarationParser.cs" />
     <Compile Include="Parser\DxbcContainerParser.cs" />

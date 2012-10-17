@@ -52,7 +52,7 @@ namespace SlimShader.Tests
 			Assert.That(shaderProgram.Version.ProgramType, Is.EqualTo(ProgramType.PixelShader));
 			Assert.That(shaderProgram.Length, Is.EqualTo(1241));
 
-			Assert.That(shaderProgram.Tokens, Has.Count.EqualTo(8));
+			Assert.That(shaderProgram.Tokens, Has.Count.EqualTo(10));
 
 			Assert.That(shaderProgram.Tokens[2], Is.InstanceOf<DeclareResourceToken>());
 			var resourceToken1 = (DeclareResourceToken) shaderProgram.Tokens[2];
@@ -68,7 +68,7 @@ namespace SlimShader.Tests
 			Assert.That(resourceToken1.Operand.OperandType, Is.EqualTo(OperandType.OPERAND_TYPE_RESOURCE));
 			Assert.That(resourceToken1.Operand.Modifier, Is.EqualTo(OperandModifier.OPERAND_MODIFIER_NONE));
 			Assert.That(resourceToken1.Operand.IsExtended, Is.False);
-			Assert.That(resourceToken1.Operand.ComponentMask, Is.EqualTo(0));
+			Assert.That(resourceToken1.Operand.ComponentMask, Is.EqualTo(ComponentMask.None));
 			Assert.That(resourceToken1.Operand.IndexDimension, Is.EqualTo(OperandIndexDimension.D3D10_SB_OPERAND_INDEX_1D));
 			Assert.That(resourceToken1.Operand.IndexRepresentations[0], Is.EqualTo(OperandIndexRepresentation.OPERAND_INDEX_IMMEDIATE32));
 			Assert.That(resourceToken1.Operand.ArraySizes[0], Is.EqualTo(0));
