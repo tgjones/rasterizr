@@ -1,6 +1,6 @@
 namespace SlimShader.ObjectModel
 {
-	public enum ShaderType : ushort
+	public enum ProgramType : ushort
 	{
 		PixelShader = 0,
 		VertexShader = 1,

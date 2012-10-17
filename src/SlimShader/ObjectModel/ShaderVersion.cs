@@ -4,7 +4,7 @@ namespace SlimShader.ObjectModel
 	{
 		public byte MajorVersion { get; set; }
 		public byte MinorVersion { get; set; }
-		public ShaderType ShaderType { get; set; }
+		public ProgramType ProgramType { get; set; }
 		public uint Length { get; set; }
 	}
 }

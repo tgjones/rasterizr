@@ -1,6 +1,6 @@
 using System;
 
-namespace SlimShader
+namespace SlimShader.Parser
 {
 	public class ParseException : ApplicationException
 	{

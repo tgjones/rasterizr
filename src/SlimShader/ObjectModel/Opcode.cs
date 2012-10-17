@@ -1,6 +1,6 @@
 ﻿namespace SlimShader.ObjectModel
 {
-	public enum Opcode
+	public enum OpcodeType
 	{
 		SM4_OPCODE_ADD,
 		SM4_OPCODE_AND,
