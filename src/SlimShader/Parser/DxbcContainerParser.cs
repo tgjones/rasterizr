@@ -1,87 +1,83 @@
 using System.Collections.Generic;
-using System.IO;
+using SlimShader.IO;
 using SlimShader.ObjectModel;
 
 namespace SlimShader.Parser
 {
-	public class DxbcContainerParser : DxbcParser
+	public class DxbcContainerParser : BytecodeParser<DxbcContainer>
 	{
 		private static readonly Dictionary<uint, ChunkType> KnownChunkTypes = new Dictionary<uint, ChunkType>
 		{
-			{ GetFourCc('S', 'H', 'D', 'R'), ChunkType.Shdr },
-			{ GetFourCc('S', 'H', 'E', 'X'), ChunkType.Shex }
+			{ "SHDR".ToFourCc(), ChunkType.Shdr },
+			{ "SHEX".ToFourCc(), ChunkType.Shex },
+			{ "RDEF".ToFourCc(), ChunkType.Rdef }
 		};
 
-		private readonly DxbcReader _reader;
-
-		public DxbcContainerParser(DxbcReader reader)
+		public DxbcContainerParser(BytecodeReader reader)
+			: base(reader)
 		{
-			_reader = reader;
+			
 		}
 
-		public DxbcContainer Parse()
+		public override DxbcContainer Parse()
 		{
 			var container = new DxbcContainer();
-			container.Header = ReadContainerHeader();
 
-			var chunkCount = container.Header.ChunkCount;
-			var chunkOffsets = new uint[chunkCount];
-			for (uint i = 0; i < chunkCount; i++)
-				chunkOffsets[i] = _reader.ReadAndMoveNext();
+			uint fourCc = Reader.ReadUInt32();
+			if (fourCc != "DXBC".ToFourCc())
+				throw new ParseException("Invalid FourCC");
 
-			for (uint i = 0; i < chunkCount; i++)
+			var uniqueKey = new uint[4];
+			uniqueKey[0] = Reader.ReadUInt32();
+			uniqueKey[1] = Reader.ReadUInt32();
+			uniqueKey[2] = Reader.ReadUInt32();
+			uniqueKey[3] = Reader.ReadUInt32();
+
+			container.Header = new DxbcContainerHeader
 			{
-				uint offset = chunkOffsets[i];
-				_reader.Seek(offset, SeekOrigin.Begin);
-				var chunk = ReadChunkHeader();
-				if (KnownChunkTypes.ContainsKey(chunk.FourCc))
-					chunk.ChunkType = KnownChunkTypes[chunk.FourCc];
+				FourCc = fourCc,
+				UniqueKey = uniqueKey,
+				One = Reader.ReadUInt32(),
+				TotalSize = Reader.ReadUInt32(),
+				ChunkCount = Reader.ReadUInt32()
+			};
 
-				switch (chunk.ChunkType)
-				{
-					case ChunkType.Shdr:
-					case ChunkType.Shex:
-						chunk.Content = new ShaderProgramParser(_reader).Parse();
-						break;
-				}
-
-				container.ChunkMap[chunk.FourCc] = chunk;
-				container.Chunks.Add(chunk);
+			for (uint i = 0; i < container.Header.ChunkCount; i++)
+			{
+				uint chunkOffset = Reader.ReadUInt32();
+				var chunkReader = Reader.CopyAtOffset((int) chunkOffset);
+				container.Chunks.Add(ParseChunk(chunkReader));
 			}
 
 			return container;
 		}
 
-		private DxbcContainerHeader ReadContainerHeader()
+		private DxbcChunk ParseChunk(BytecodeReader chunkReader)
 		{
-			uint fourCcDxbc = GetFourCc('D', 'X', 'B', 'C');
-			uint fourCc = _reader.ReadAndMoveNext();
-			if (fourCc != fourCcDxbc)
-				throw new ParseException("Invalid FourCC");
+			var chunk = new DxbcChunk();
 
-			var uniqueKey = new uint[4];
-			uniqueKey[0] = _reader.ReadAndMoveNext();
-			uniqueKey[1] = _reader.ReadAndMoveNext();
-			uniqueKey[2] = _reader.ReadAndMoveNext();
-			uniqueKey[3] = _reader.ReadAndMoveNext();
+			// Type of chunk this is.
+			chunk.FourCc = chunkReader.ReadUInt32();
 
-			return new DxbcContainerHeader
+			// Total length of the chunk in bytes.
+			chunk.Size = chunkReader.ReadUInt32();
+
+			if (KnownChunkTypes.ContainsKey(chunk.FourCc))
+				chunk.ChunkType = KnownChunkTypes[chunk.FourCc];
+
+			var chunkContentReader = chunkReader.CopyAtCurrentPosition((int) chunk.Size);
+			switch (chunk.ChunkType)
 			{
-				FourCc = fourCc,
-				UniqueKey = uniqueKey,
-				One = _reader.ReadAndMoveNext(),
-				TotalSize = _reader.ReadAndMoveNext(),
-				ChunkCount = _reader.ReadAndMoveNext()
-			};
-		}
+				case ChunkType.Shdr:
+				case ChunkType.Shex:
+					chunk.Content = new ShaderProgramParser(chunkContentReader).Parse();
+					break;
+				//case ChunkType.Rdef :
+				//	chunk.Content = new ResourceDefinitionParser(_reader).Parse();
+				//	break;
+			}
 
-		private DxbcChunkHeader ReadChunkHeader()
-		{
-			return new DxbcChunkHeader
-			{
-				FourCc = _reader.ReadAndMoveNext(),
-				Size = _reader.ReadAndMoveNext()
-			};
+			return chunk;
 		}
 	}
 }

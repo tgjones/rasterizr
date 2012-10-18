@@ -5,16 +5,16 @@
 		/// <summary>
 		/// Mask 4 components.
 		/// </summary>
-		OPERAND_4_COMPONENT_MASK_MODE = 0,
+		Mask = 0,
 
 		/// <summary>
 		/// Swizzle 4 components.
 		/// </summary>
-		OPERAND_4_COMPONENT_SWIZZLE_MODE = 1,
+		Swizzle = 1,
 
 		/// <summary>
 		/// Select 1 of 4 components.
 		/// </summary>
-		OPERAND_4_COMPONENT_SELECT_1_MODE = 2
+		Select1 = 2
 	}
 }

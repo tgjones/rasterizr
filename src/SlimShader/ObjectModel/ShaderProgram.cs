@@ -19,4 +19,19 @@ namespace SlimShader.ObjectModel
 			Tokens = new List<OpcodeToken>();
 		}
 	}
+
+	public class ResourceDefinition : ChunkContent
+	{
+		public List<ConstantBuffer> ConstantBuffers { get; private set; }
+
+		public ResourceDefinition()
+		{
+			ConstantBuffers = new List<ConstantBuffer>();
+		}
+	}
+
+	public class ConstantBuffer
+	{
+		public string Name { get; set; }
+	}
 }

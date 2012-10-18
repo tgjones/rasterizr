@@ -11,27 +11,35 @@
 		
 	}
 
-	public class DeclareGlobalFlagsToken : DeclarationToken
+	public class GlobalFlagsDeclarationToken : DeclarationToken
 	{
-		
+		public bool RefactoringAllowed { get; internal set; }
 	}
 
-	public class DeclareResourceToken : DeclarationToken
+	public class ResourceDeclarationToken : DeclarationToken
 	{
 		public ResourceDimension ResourceDimension { get; internal set; }
 		public byte SampleCount { get; internal set; }
 		public ResourceReturnTypeToken ReturnType { get; internal set; }
 	}
 
-	public class DeclareSamplerToken : DeclarationToken
+	public class SamplerDeclarationToken : DeclarationToken
 	{
 		public SamplerMode SamplerMode { get; internal set; }
 	}
 
-	public class InputRegisterDeclaration : DeclarationToken
+	public class InputRegisterDeclarationToken : DeclarationToken
 	{
 		/// <summary>
-		/// Only applicable to D3D10_SB_OPCODE_DCL_INPUT_PS and D3D10_SB_OPCODE_DCL_INPUT_PS_SIV
+		/// Only applicable for SGV and SIV declarations.
+		/// </summary>
+		public SystemValueName SystemValueName { get; internal set; }
+	}
+
+	public class PixelShaderInputRegisterDeclarationToken : InputRegisterDeclarationToken
+	{
+		/// <summary>
+		/// Not applicable for D3D10_SB_OPCODE_DCL_INPUT_PS_SGV
 		/// </summary>
 		public InterpolationMode InterpolationMode { get; set; }
 	}
@@ -46,39 +54,38 @@
 
 	public class Operand
 	{
-		public bool IsExtended { get; internal set; }
-		public OperandType OperandType { get; internal set; }
-		public OperandModifier Modifier { get; internal set; }
-		public OperandIndexDimension IndexDimension { get; internal set; }
-		public int WriteMask { get; internal set; }
-		public bool WriteMaskEnabled { get; internal set; }
-		public int GSInput { get; internal set; }
-		public uint RegisterNumber { get; internal set; }
-		public int NumComponents { get; internal set; }
+		public byte NumComponents { get; internal set; }
 		public Operand4ComponentSelectionMode SelectionMode { get; internal set; }
 		public ComponentMask ComponentMask { get; internal set; }
-		public uint Swizzle { get; internal set; }
 		public Operand4ComponentName[] Swizzles { get; private set; }
-		public float[] ImmediateValues { get; private set; }
+		public OperandType OperandType { get; internal set; }
+		public OperandIndexDimension IndexDimension { get; internal set; }
+		// TODO: Can merge this with Indices?
 		public OperandIndexRepresentation[] IndexRepresentations { get; private set; }
-		public uint[] ArraySizes { get; private set; }
-		public Operand[] Suboperands { get; private set; }
+		public bool IsExtended { get; internal set; }
+		public OperandModifier Modifier { get; internal set; }
+		public OperandIndex[] Indices { get; private set; }
+		public ulong[] ImmediateValues { get; private set; }
 
 		public Operand()
 		{
-			WriteMaskEnabled = true;
-			GSInput = 0;
 			Swizzles = new[]
 			{
-				Operand4ComponentName.D3D10_SB_4_COMPONENT_X,
-				Operand4ComponentName.D3D10_SB_4_COMPONENT_Y,
-				Operand4ComponentName.D3D10_SB_4_COMPONENT_Z,
-				Operand4ComponentName.D3D10_SB_4_COMPONENT_W,
+				Operand4ComponentName.X,
+				Operand4ComponentName.Y,
+				Operand4ComponentName.Z,
+				Operand4ComponentName.W
 			};
-			ImmediateValues = new float[4];
 			IndexRepresentations = new OperandIndexRepresentation[3];
-			ArraySizes = new uint[3];
-			Suboperands = new Operand[3];
+			Indices = new OperandIndex[3];
+			ImmediateValues = new ulong[4];
 		}
+	}
+
+	public class OperandIndex
+	{
+		public ulong Value { get; set; }
+		public Operand Register { get; set; }
+
 	}
 }

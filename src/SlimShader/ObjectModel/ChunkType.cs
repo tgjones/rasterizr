@@ -3,7 +3,13 @@ namespace SlimShader.ObjectModel
 	public enum ChunkType
 	{
 		Unknown,
+
 		Shdr,
-		Shex
+		Shex,
+
+		/// <summary>
+		/// Resource definition
+		/// </summary>
+		Rdef
 	}
 }

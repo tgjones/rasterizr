@@ -39,18 +39,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\BytecodeReader.cs" />
     <Compile Include="ObjectModel\ChunkType.cs" />
     <Compile Include="ObjectModel\ComponentMask.cs" />
     <Compile Include="ObjectModel\DxbcChunkHeader.cs" />
     <Compile Include="ObjectModel\DxbcContainer.cs" />
     <Compile Include="ObjectModel\DxbcContainerHeader.cs" />
     <Compile Include="ObjectModel\InterpolationMode.cs" />
-    <Compile Include="ObjectModel\Operand4ComponentSwizzles.cs" />
     <Compile Include="ObjectModel\ResourceReturnType.cs" />
     <Compile Include="ObjectModel\SamplerMode.cs" />
-    <Compile Include="Parser\Declarations\InputRegisterDeclarationParser.cs" />
-    <Compile Include="Parser\Declarations\SamplerDeclarationParser.cs" />
-    <Compile Include="Parser\Declarations\ResourceDeclarationParser.cs" />
+    <Compile Include="ObjectModel\SystemValueName.cs" />
+    <Compile Include="Parser\DecoderExtensions.cs" />
+    <Compile Include="Parser\NameTokenParser.cs" />
+    <Compile Include="Parser\Opcodes\Declarations\GlobalFlagsDeclarationParser.cs" />
+    <Compile Include="Parser\Opcodes\Declarations\InputRegisterDeclarationParser.cs" />
+    <Compile Include="Parser\Opcodes\Declarations\SamplerDeclarationParser.cs" />
+    <Compile Include="Parser\Opcodes\Declarations\ResourceDeclarationParser.cs" />
     <Compile Include="Parser\DxbcContainerParser.cs" />
     <Compile Include="Parser\DxbcParser.cs" />
     <Compile Include="ObjectModel\ExtendedOperandType.cs" />
@@ -67,10 +71,12 @@
     <Compile Include="ObjectModel\ResourceDimension.cs" />
     <Compile Include="ObjectModel\Tokens\OpcodeToken.cs" />
     <Compile Include="ObjectModel\ShaderProgram.cs" />
+    <Compile Include="Parser\BytecodeParser.cs" />
     <Compile Include="Parser\OperandParser.cs" />
     <Compile Include="Parser\ParseException.cs" />
     <Compile Include="Parser\Decoder.cs" />
     <Compile Include="Parser\DxbcReader.cs" />
+    <Compile Include="Parser\ResourceDefinitionParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ObjectModel\ShaderVersion.cs" />
     <Compile Include="ObjectModel\ProgramType.cs" />

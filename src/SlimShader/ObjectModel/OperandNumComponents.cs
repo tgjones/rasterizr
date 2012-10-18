@@ -5,9 +5,9 @@
 	/// </summary>
 	public enum OperandNumComponents
 	{
-		OPERAND_0_COMPONENT = 0,
-		OPERAND_1_COMPONENT = 1,
-		OPERAND_4_COMPONENT = 2,
-		OPERAND_N_COMPONENT = 3 // unused for now
+		Zero = 0,
+		One = 1,
+		Four = 2,
+		N = 3 // unused for now
 	}
 }

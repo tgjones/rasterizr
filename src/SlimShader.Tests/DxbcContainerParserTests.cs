@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using NUnit.Framework;
+using SlimShader.IO;
 using SlimShader.ObjectModel;
 using SlimShader.ObjectModel.Tokens;
 using SlimShader.Parser;
@@ -16,8 +17,8 @@ namespace SlimShader.Tests
 		public void CanLoadShaderBytecode()
 		{
 			// Arrange.
-			var binaryReader = new BinaryReader(File.OpenRead("Assets/test.bin"));
-			var parser = new DxbcContainerParser(new DxbcReader(binaryReader));
+			var fileBytes = File.ReadAllBytes("Assets/test.bin");
+			var parser = new DxbcContainerParser(new BytecodeReader(fileBytes, 0, fileBytes.Length));
 			
 			// Act.
 			var container = parser.Parse();
@@ -32,7 +33,6 @@ namespace SlimShader.Tests
 			Assert.That(container.Header.TotalSize, Is.EqualTo(5864));
 			Assert.That(container.Header.ChunkCount, Is.EqualTo(5));
 
-			Assert.That(container.ChunkMap.Count, Is.EqualTo(5));
 			Assert.That(container.Chunks.Count, Is.EqualTo(5));
 			Assert.That(container.Chunks[0].FourCc, Is.EqualTo(1178944594));
 			Assert.That(container.Chunks[0].Size, Is.EqualTo(544));
@@ -54,24 +54,24 @@ namespace SlimShader.Tests
 
 			Assert.That(shaderProgram.Tokens, Has.Count.EqualTo(10));
 
-			Assert.That(shaderProgram.Tokens[2], Is.InstanceOf<DeclareResourceToken>());
-			var resourceToken1 = (DeclareResourceToken) shaderProgram.Tokens[2];
+			Assert.That(shaderProgram.Tokens[2], Is.InstanceOf<ResourceDeclarationToken>());
+			var resourceToken1 = (ResourceDeclarationToken) shaderProgram.Tokens[2];
 			Assert.That(resourceToken1.Header.IsExtended, Is.False);
 			Assert.That(resourceToken1.Header.Length, Is.EqualTo(4));
 			Assert.That(resourceToken1.Header.OpcodeType, Is.EqualTo(OpcodeType.SM4_OPCODE_DCL_RESOURCE));
-			Assert.That(resourceToken1.ResourceDimension, Is.EqualTo(ResourceDimension.RESOURCE_DIMENSION_TEXTURE2D));
-			Assert.That(resourceToken1.ReturnType.X, Is.EqualTo(ResourceReturnType.D3D10_SB_RETURN_TYPE_FLOAT));
-			Assert.That(resourceToken1.ReturnType.Y, Is.EqualTo(ResourceReturnType.D3D10_SB_RETURN_TYPE_FLOAT));
-			Assert.That(resourceToken1.ReturnType.Z, Is.EqualTo(ResourceReturnType.D3D10_SB_RETURN_TYPE_FLOAT));
-			Assert.That(resourceToken1.ReturnType.W, Is.EqualTo(ResourceReturnType.D3D10_SB_RETURN_TYPE_FLOAT));
+			Assert.That(resourceToken1.ResourceDimension, Is.EqualTo(ResourceDimension.Texture2D));
+			Assert.That(resourceToken1.ReturnType.X, Is.EqualTo(ResourceReturnType.Float));
+			Assert.That(resourceToken1.ReturnType.Y, Is.EqualTo(ResourceReturnType.Float));
+			Assert.That(resourceToken1.ReturnType.Z, Is.EqualTo(ResourceReturnType.Float));
+			Assert.That(resourceToken1.ReturnType.W, Is.EqualTo(ResourceReturnType.Float));
 			Assert.That(resourceToken1.SampleCount, Is.EqualTo(0));
-			Assert.That(resourceToken1.Operand.OperandType, Is.EqualTo(OperandType.OPERAND_TYPE_RESOURCE));
-			Assert.That(resourceToken1.Operand.Modifier, Is.EqualTo(OperandModifier.OPERAND_MODIFIER_NONE));
+			Assert.That(resourceToken1.Operand.OperandType, Is.EqualTo(OperandType.Resource));
+			Assert.That(resourceToken1.Operand.Modifier, Is.EqualTo(OperandModifier.None));
 			Assert.That(resourceToken1.Operand.IsExtended, Is.False);
 			Assert.That(resourceToken1.Operand.ComponentMask, Is.EqualTo(ComponentMask.None));
-			Assert.That(resourceToken1.Operand.IndexDimension, Is.EqualTo(OperandIndexDimension.D3D10_SB_OPERAND_INDEX_1D));
-			Assert.That(resourceToken1.Operand.IndexRepresentations[0], Is.EqualTo(OperandIndexRepresentation.OPERAND_INDEX_IMMEDIATE32));
-			Assert.That(resourceToken1.Operand.ArraySizes[0], Is.EqualTo(0));
+			Assert.That(resourceToken1.Operand.IndexDimension, Is.EqualTo(OperandIndexDimension._1D));
+			Assert.That(resourceToken1.Operand.IndexRepresentations[0], Is.EqualTo(OperandIndexRepresentation.Immediate32));
+			Assert.That(resourceToken1.Operand.Indices[0].Value, Is.EqualTo(0));
 		}
 	}
 }

@@ -1,6 +1,6 @@
 namespace SlimShader.ObjectModel
 {
-	public class DxbcChunkHeader
+	public class DxbcChunk
 	{
 		public uint FourCc { get; internal set; }
 		public ChunkType ChunkType { get; internal set; }

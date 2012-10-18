@@ -2,11 +2,11 @@
 {
 	public enum ResourceReturnType
 	{
-		D3D10_SB_RETURN_TYPE_UNORM = 1,
-		D3D10_SB_RETURN_TYPE_SNORM = 2,
-		D3D10_SB_RETURN_TYPE_SINT = 3,
-		D3D10_SB_RETURN_TYPE_UINT = 4,
-		D3D10_SB_RETURN_TYPE_FLOAT = 5,
-		D3D10_SB_RETURN_TYPE_MIXED = 6,
+		UNorm = 1,
+		SNorm = 2,
+		SInt = 3,
+		UInt = 4,
+		Float = 5,
+		Mixed = 6,
 	}
 }

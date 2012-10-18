@@ -2,13 +2,13 @@
 {
 	public enum Operand4ComponentName
 	{
-		D3D10_SB_4_COMPONENT_X = 0,
-		D3D10_SB_4_COMPONENT_Y = 1,
-		D3D10_SB_4_COMPONENT_Z = 2,
-		D3D10_SB_4_COMPONENT_W = 3,
-		D3D10_SB_4_COMPONENT_R = 0,
-		D3D10_SB_4_COMPONENT_G = 1,
-		D3D10_SB_4_COMPONENT_B = 2,
-		D3D10_SB_4_COMPONENT_A = 3
+		X = 0,
+		Y = 1,
+		Z = 2,
+		W = 3,
+		R = 0,
+		G = 1,
+		B = 2,
+		A = 3
 	}
 }

@@ -5,8 +5,8 @@
 		/// <summary>
 		/// Might be used if this enum is full and further extended opcode is needed.
 		/// </summary>
-		D3D10_SB_EXTENDED_OPERAND_EMPTY = 0, 
+		Empty = 0, 
 
-		D3D10_SB_EXTENDED_OPERAND_MODIFIER = 1,
+		Modifier = 1,
 	}
 }
