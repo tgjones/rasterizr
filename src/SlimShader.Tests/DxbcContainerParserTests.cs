@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using SlimShader.IO;
 using SlimShader.ObjectModel;
@@ -72,6 +74,25 @@ namespace SlimShader.Tests
 			Assert.That(resourceToken1.Operand.IndexDimension, Is.EqualTo(OperandIndexDimension._1D));
 			Assert.That(resourceToken1.Operand.IndexRepresentations[0], Is.EqualTo(OperandIndexRepresentation.Immediate32));
 			Assert.That(resourceToken1.Operand.Indices[0].Value, Is.EqualTo(0));
+		}
+
+		[TestCase("Assets/test.bin", "Assets/test.txt")]
+		public void CanParseShader(string binaryFile, string asmFile)
+		{
+			// Arrange.
+			var binaryFileBytes = File.ReadAllBytes(binaryFile);
+			var parser = new DxbcContainerParser(new BytecodeReader(binaryFileBytes, 0, binaryFileBytes.Length));
+
+			// Act.
+			var container = parser.Parse();
+
+			// Assert.
+			// Ignore first 5 lines - they contain the compiler-specific headers.
+			var decompiledAsmText = string.Join(Environment.NewLine, container.ToString()
+				.Split(new[] { Environment.NewLine }, StringSplitOptions.None)
+				.Skip(5));
+			var asmFileText = string.Join(Environment.NewLine, File.ReadAllLines(asmFile).Skip(5));
+			Assert.That(decompiledAsmText, Is.EqualTo(asmFileText));
 		}
 	}
 }

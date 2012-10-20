@@ -47,6 +47,8 @@
     <Compile Include="ObjectModel\DxbcChunkHeader.cs" />
     <Compile Include="ObjectModel\DxbcContainer.cs" />
     <Compile Include="ObjectModel\DxbcContainerHeader.cs" />
+    <Compile Include="ObjectModel\EnumExtensions.cs" />
+    <Compile Include="ObjectModel\InstructionTestBoolean.cs" />
     <Compile Include="ObjectModel\InstructionTokenExtendedType.cs" />
     <Compile Include="ObjectModel\InterpolationMode.cs" />
     <Compile Include="ObjectModel\Primitive.cs" />
@@ -57,6 +59,8 @@
     <Compile Include="ObjectModel\TessellatorDomain.cs" />
     <Compile Include="ObjectModel\TessellatorOutputPrimitive.cs" />
     <Compile Include="ObjectModel\TessellatorPartitioning.cs" />
+    <Compile Include="ObjectModel\Tokens\ConstantBufferDeclarationToken.cs" />
+    <Compile Include="ObjectModel\Tokens\SamplerDeclarationToken.cs" />
     <Compile Include="Parser\DecoderExtensions.cs" />
     <Compile Include="Parser\NameTokenParser.cs" />
     <Compile Include="Parser\Opcodes\Declarations\ConstantBufferDeclarationParser.cs" />

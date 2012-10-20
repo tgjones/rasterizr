@@ -5,6 +5,16 @@ namespace SlimShader.ObjectModel.Tokens
 	public abstract class OpcodeToken
 	{
 		public OpcodeHeader Header { get; internal set; }
+
+		protected string TypeDescription
+		{
+			get { return Header.OpcodeType.GetDescription(); }
+		}
+
+		public override string ToString()
+		{
+			return TypeDescription;
+		}
 	}
 
 	public abstract class DeclarationToken : OpcodeToken
@@ -14,6 +24,8 @@ namespace SlimShader.ObjectModel.Tokens
 
 	public class InstructionToken : OpcodeToken
 	{
+		public bool Saturate { get; internal set; }
+		public InstructionTestBoolean TestBoolean { get; internal set; }
 		public InstructionTokenExtendedType ExtendedType { get; internal set; }
 		public uint[] SampleOffsets { get; private set; }
 		public byte ResourceTarget { get; internal set; }
@@ -25,6 +37,11 @@ namespace SlimShader.ObjectModel.Tokens
 			SampleOffsets = new uint[3];
 			ResourceReturnTypes = new byte[4];
 			Operands = new List<Operand>();
+		}
+
+		public override string ToString()
+		{
+			return TypeDescription;
 		}
 	}
 
@@ -38,11 +55,6 @@ namespace SlimShader.ObjectModel.Tokens
 		public ResourceDimension ResourceDimension { get; internal set; }
 		public byte SampleCount { get; internal set; }
 		public ResourceReturnTypeToken ReturnType { get; internal set; }
-	}
-
-	public class SamplerDeclarationToken : DeclarationToken
-	{
-		public SamplerMode SamplerMode { get; internal set; }
 	}
 
 	public class InputRegisterDeclarationToken : DeclarationToken
@@ -83,6 +95,11 @@ namespace SlimShader.ObjectModel.Tokens
 		/// Indicates how many temps are being declared. i.e. 5 means r0...r4 are declared.
 		/// </summary>
 		public uint TempCount { get; internal set; }
+
+		public override string ToString()
+		{
+			return string.Format("dcl_temps {0}", TempCount);
+		}
 	}
 
 	public class IndexableTempRegisterDeclarationToken : DeclarationToken
@@ -101,11 +118,12 @@ namespace SlimShader.ObjectModel.Tokens
 		/// Number of components in the array (1-4). 1 means .x, 2 means .xy, etc.
 		/// </summary>
 		public uint NumComponents { get; internal set; }
-	}
 
-	public class ConstantBufferDeclarationToken : DeclarationToken
-	{
-		public ConstantBufferAccessPattern AccessPattern { get; internal set; }
+		public override string ToString()
+		{
+			return string.Format("{0} x{1}[{2}], {3}", TypeDescription,
+				RegisterIndex, RegisterCount, NumComponents);
+		}
 	}
 
 	public abstract class ImmediateDeclarationToken : DeclarationToken

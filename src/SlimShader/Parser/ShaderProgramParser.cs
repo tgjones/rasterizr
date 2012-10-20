@@ -201,6 +201,9 @@ namespace SlimShader.Parser
 				{
 					var instructionToken = new InstructionToken();
 
+					instructionToken.Saturate = (opcodeToken0.DecodeValue(13, 13) == 1);
+					instructionToken.TestBoolean = opcodeToken0.DecodeValue<InstructionTestBoolean>(18, 18);
+
 					// Advance to next token.
 					var instructionEnd = Reader.CurrentPosition + (opcodeHeader.Length * sizeof(uint));
 					Reader.ReadUInt32();

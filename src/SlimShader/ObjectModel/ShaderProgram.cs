@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using SlimShader.ObjectModel.Tokens;
 
 namespace SlimShader.ObjectModel
@@ -17,6 +18,21 @@ namespace SlimShader.ObjectModel
 		public ShaderProgram()
 		{
 			Tokens = new List<OpcodeToken>();
+		}
+
+		public override string ToString()
+		{
+			var sb = new StringBuilder();
+
+			sb.AppendLine(string.Format("{0}_{1}_{2}",
+				Version.ProgramType.GetDescription(),
+				Version.MajorVersion,
+				Version.MinorVersion));
+
+			foreach (var token in Tokens)
+				sb.AppendLine(token.ToString());
+
+			return sb.ToString();
 		}
 	}
 
