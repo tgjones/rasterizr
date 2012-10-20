@@ -8,5 +8,8 @@
 		UInt = 4,
 		Float = 5,
 		Mixed = 6,
+		Double = 7,
+		Continued = 8,
+		Unused = 9
 	}
 }

@@ -52,13 +52,13 @@ namespace SlimShader.Tests
 			Assert.That(shaderProgram.Version.ProgramType, Is.EqualTo(ProgramType.PixelShader));
 			Assert.That(shaderProgram.Length, Is.EqualTo(1241));
 
-			Assert.That(shaderProgram.Tokens, Has.Count.EqualTo(10));
+			Assert.That(shaderProgram.Tokens, Has.Count.EqualTo(17));
 
-			Assert.That(shaderProgram.Tokens[2], Is.InstanceOf<ResourceDeclarationToken>());
-			var resourceToken1 = (ResourceDeclarationToken) shaderProgram.Tokens[2];
+			Assert.That(shaderProgram.Tokens[3], Is.InstanceOf<ResourceDeclarationToken>());
+			var resourceToken1 = (ResourceDeclarationToken) shaderProgram.Tokens[3];
 			Assert.That(resourceToken1.Header.IsExtended, Is.False);
 			Assert.That(resourceToken1.Header.Length, Is.EqualTo(4));
-			Assert.That(resourceToken1.Header.OpcodeType, Is.EqualTo(OpcodeType.SM4_OPCODE_DCL_RESOURCE));
+			Assert.That(resourceToken1.Header.OpcodeType, Is.EqualTo(OpcodeType.DclResource));
 			Assert.That(resourceToken1.ResourceDimension, Is.EqualTo(ResourceDimension.Texture2D));
 			Assert.That(resourceToken1.ReturnType.X, Is.EqualTo(ResourceReturnType.Float));
 			Assert.That(resourceToken1.ReturnType.Y, Is.EqualTo(ResourceReturnType.Float));

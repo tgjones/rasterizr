@@ -2,13 +2,16 @@
 {
 	public enum InterpolationMode
 	{
-		INTERPOLATION_UNDEFINED = 0,
-		INTERPOLATION_CONSTANT = 1,
-		INTERPOLATION_LINEAR = 2,
-		INTERPOLATION_LINEAR_CENTROID = 3,
-		INTERPOLATION_LINEAR_NOPERSPECTIVE = 4,
-		INTERPOLATION_LINEAR_NOPERSPECTIVE_CENTROID = 5,
-		INTERPOLATION_LINEAR_SAMPLE = 6,
-		INTERPOLATION_LINEAR_NOPERSPECTIVE_SAMPLE = 7
+		Undefined = 0,
+		Constant = 1,
+		Linear = 2,
+		LinearCentroid = 3,
+		LinearNoPerspective = 4,
+		LinearNoPerspectiveCentroid = 5,
+
+		// Following are new in DX10.1
+
+		LinearSample = 6,
+		LinearNoPerspectiveSample = 7
 	}
 }

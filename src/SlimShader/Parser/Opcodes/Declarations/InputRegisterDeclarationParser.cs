@@ -138,14 +138,14 @@ namespace SlimShader.Parser.Opcodes.Declarations
 			InputRegisterDeclarationToken result;
 			switch (opcodeType)
 			{
-				case OpcodeType.SM4_OPCODE_DCL_INPUT :
-				case OpcodeType.SM4_OPCODE_DCL_INPUT_SGV :
-				case OpcodeType.SM4_OPCODE_DCL_INPUT_SIV :
+				case OpcodeType.DclInput :
+				case OpcodeType.DclInputSgv:
+				case OpcodeType.DclInputSiv:
 					result = new InputRegisterDeclarationToken();
 					break;
-				case OpcodeType.SM4_OPCODE_DCL_INPUT_PS :
-				case OpcodeType.SM4_OPCODE_DCL_INPUT_PS_SGV:
-				case OpcodeType.SM4_OPCODE_DCL_INPUT_PS_SIV:
+				case OpcodeType.DclInputPs:
+				case OpcodeType.DclInputPsSgv:
+				case OpcodeType.DclInputPsSiv:
 					result = new PixelShaderInputRegisterDeclarationToken
 					{
 						InterpolationMode = token0.DecodeValue<InterpolationMode>(11, 14)
@@ -159,15 +159,15 @@ namespace SlimShader.Parser.Opcodes.Declarations
 
 			switch (opcodeType)
 			{
-				case OpcodeType.SM4_OPCODE_DCL_INPUT_SGV:
-				case OpcodeType.SM4_OPCODE_DCL_INPUT_SIV:
-				case OpcodeType.SM4_OPCODE_DCL_INPUT_PS_SGV :
-				case OpcodeType.SM4_OPCODE_DCL_INPUT_PS_SIV :
+				case OpcodeType.DclInputSgv:
+				case OpcodeType.DclInputSiv:
+				case OpcodeType.DclInputPsSgv:
+				case OpcodeType.DclInputPsSiv:
 					result.SystemValueName = new NameTokenParser(Reader).Parse();
 					break;
 			}
 
-			return new InputRegisterDeclarationToken();
+			return result;
 		}
 	}
 }

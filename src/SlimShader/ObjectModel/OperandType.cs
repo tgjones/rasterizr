@@ -78,7 +78,7 @@
 		/// </summary>
 		Null = 13,
 
-		// Below Are operands new in DX 10.1
+		// Below are operands new in DX 10.1
 		
 		/// <summary>
 		/// DX10.1 Rasterizer register, used to denote the depth/stencil and render target resources

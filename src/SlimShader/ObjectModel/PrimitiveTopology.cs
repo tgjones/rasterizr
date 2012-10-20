@@ -2,17 +2,19 @@
 {
 	public enum PrimitiveTopology
 	{
-		PRIMITIVE_TOPOLOGY_UNDEFINED = 0,
-		PRIMITIVE_TOPOLOGY_POINTLIST = 1,
-		PRIMITIVE_TOPOLOGY_LINELIST = 2,
-		PRIMITIVE_TOPOLOGY_LINESTRIP = 3,
-		PRIMITIVE_TOPOLOGY_TRIANGLELIST = 4,
-		PRIMITIVE_TOPOLOGY_TRIANGLESTRIP = 5,
+		Undefined = 0,
+		PointList = 1,
+		LineList = 2,
+		LineStrip = 3,
+		TriangleList = 4,
+		TriangleStrip = 5,
+
 		// 6 is reserved for legacy triangle fans
 		// Adjacency values should be equal to (0x8 & non-adjacency):
-		PRIMITIVE_TOPOLOGY_LINELIST_ADJ = 10,
-		PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ = 11,
-		PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ = 12,
-		PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ = 13,
+
+		LineListAdj = 10,
+		LineStripAdj = 11,
+		TriangleListAdj = 12,
+		TriangleStripAdj = 13,
 	}
 }
