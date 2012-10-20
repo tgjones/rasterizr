@@ -1,14 +1,31 @@
-﻿namespace SlimShader.ObjectModel.Tokens
+﻿using System.Collections.Generic;
+
+namespace SlimShader.ObjectModel.Tokens
 {
 	public abstract class OpcodeToken
 	{
 		public OpcodeHeader Header { get; internal set; }
-		public Operand Operand { get; internal set; }
 	}
 
 	public abstract class DeclarationToken : OpcodeToken
 	{
-		
+		public Operand Operand { get; internal set; }
+	}
+
+	public class InstructionToken : OpcodeToken
+	{
+		public InstructionTokenExtendedType ExtendedType { get; internal set; }
+		public uint[] SampleOffsets { get; private set; }
+		public byte ResourceTarget { get; internal set; }
+		public byte[] ResourceReturnTypes { get; private set; }
+		public List<Operand> Operands { get; private set; }
+
+		public InstructionToken()
+		{
+			SampleOffsets = new uint[3];
+			ResourceReturnTypes = new byte[4];
+			Operands = new List<Operand>();
+		}
 	}
 
 	public class GlobalFlagsDeclarationToken : DeclarationToken

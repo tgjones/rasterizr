@@ -47,6 +47,7 @@
     <Compile Include="ObjectModel\DxbcChunkHeader.cs" />
     <Compile Include="ObjectModel\DxbcContainer.cs" />
     <Compile Include="ObjectModel\DxbcContainerHeader.cs" />
+    <Compile Include="ObjectModel\InstructionTokenExtendedType.cs" />
     <Compile Include="ObjectModel\InterpolationMode.cs" />
     <Compile Include="ObjectModel\Primitive.cs" />
     <Compile Include="ObjectModel\ResourceReturnType.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="Parser\DxbcContainerParser.cs" />
     <Compile Include="Parser\DxbcParser.cs" />
     <Compile Include="ObjectModel\ExtendedOperandType.cs" />
-    <Compile Include="ObjectModel\Opcode.cs" />
+    <Compile Include="ObjectModel\OpcodeType.cs" />
     <Compile Include="ObjectModel\OpcodeHeader.cs" />
     <Compile Include="ObjectModel\Operand4ComponentName.cs" />
     <Compile Include="ObjectModel\Operand4ComponentSelectionMode.cs" />

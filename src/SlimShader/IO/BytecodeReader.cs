@@ -13,6 +13,11 @@ namespace SlimShader.IO
 			get { return _reader.BaseStream.Position >= _reader.BaseStream.Length; }
 		}
 
+		public long CurrentPosition
+		{
+			get { return _reader.BaseStream.Position; }
+		}
+
 		public BytecodeReader(byte[] buffer, int index, int count)
 		{
 			_buffer = buffer;

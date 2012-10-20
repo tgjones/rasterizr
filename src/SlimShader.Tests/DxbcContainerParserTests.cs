@@ -52,7 +52,7 @@ namespace SlimShader.Tests
 			Assert.That(shaderProgram.Version.ProgramType, Is.EqualTo(ProgramType.PixelShader));
 			Assert.That(shaderProgram.Length, Is.EqualTo(1241));
 
-			Assert.That(shaderProgram.Tokens, Has.Count.EqualTo(17));
+			Assert.That(shaderProgram.Tokens, Has.Count.EqualTo(213));
 
 			Assert.That(shaderProgram.Tokens[3], Is.InstanceOf<ResourceDeclarationToken>());
 			var resourceToken1 = (ResourceDeclarationToken) shaderProgram.Tokens[3];

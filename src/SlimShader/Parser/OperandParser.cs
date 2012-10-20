@@ -114,14 +114,14 @@ namespace SlimShader.Parser
 						}
 						default:
 						{
-							throw new ArgumentOutOfRangeException();
+							throw new ArgumentException("Unrecognized selection method: " + operand.SelectionMode);
 						}
 					}
 					break;
 				}
 				case OperandNumComponents.N:
 				{
-					throw new ArgumentOutOfRangeException();
+					throw new ArgumentException("OperandNumComponents.N is not currently supported.");
 				}
 			}
 
