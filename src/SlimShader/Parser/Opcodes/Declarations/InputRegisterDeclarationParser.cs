@@ -155,7 +155,7 @@ namespace SlimShader.Parser.Opcodes.Declarations
 					throw new ArgumentOutOfRangeException();
 			}
 
-			result.Operand = new OperandParser(Reader).Parse();
+			result.Operand = new OperandParser(Reader, false).Parse();
 
 			switch (opcodeType)
 			{

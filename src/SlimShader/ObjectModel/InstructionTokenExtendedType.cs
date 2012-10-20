@@ -1,4 +1,6 @@
-﻿namespace SlimShader.ObjectModel
+﻿using System;
+
+namespace SlimShader.ObjectModel
 {
 	public enum InstructionTokenExtendedType
 	{

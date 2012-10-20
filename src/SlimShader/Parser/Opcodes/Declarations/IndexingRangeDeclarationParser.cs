@@ -37,7 +37,7 @@ namespace SlimShader.Parser.Opcodes.Declarations
 		public override IndexingRangeDeclarationToken Parse()
 		{
 			var token0 = Reader.ReadUInt32();
-			var operand = new OperandParser(Reader).Parse();
+			var operand = new OperandParser(Reader, false).Parse();
 			var registerCount = Reader.ReadUInt32();
 			return new IndexingRangeDeclarationToken
 			{

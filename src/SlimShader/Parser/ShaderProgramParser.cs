@@ -212,10 +212,11 @@ namespace SlimShader.Parser
 					while (extended)
 					{
 						uint extendedToken = Reader.ReadUInt32();
-						instructionToken.ExtendedType = extendedToken.DecodeValue<InstructionTokenExtendedType>(0, 6);
+						var extendedType = extendedToken.DecodeValue<InstructionTokenExtendedType>(0, 6);
+						instructionToken.ExtendedTypes.Add(extendedType);
 						extended = (extendedToken.DecodeValue(31, 31) == 1);
 
-						switch (instructionToken.ExtendedType)
+						switch (extendedType)
 						{
 							case InstructionTokenExtendedType.SampleControls:
 								instructionToken.SampleOffsets[0] = extendedToken.DecodeValue(09, 12);
@@ -244,7 +245,8 @@ namespace SlimShader.Parser
 
 					while (Reader.CurrentPosition < instructionEnd)
 					{
-						instructionToken.Operands.Add(new OperandParser(Reader).Parse());
+						instructionToken.Operands.Add(new OperandParser(Reader,
+							opcodeHeader.OpcodeType.IsIntegralTypeInstruction()).Parse());
 					}
 
 					opcodeToken = instructionToken;

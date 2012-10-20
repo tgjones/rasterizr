@@ -32,7 +32,7 @@ namespace SlimShader.Parser.Opcodes.Declarations
 		public override SamplerDeclarationToken Parse()
 		{
 			var token0 = Reader.ReadUInt32();
-			var operand = new OperandParser(Reader).Parse();
+			var operand = new OperandParser(Reader, false).Parse();
 			return new SamplerDeclarationToken
 			{
 				SamplerMode = token0.DecodeValue<SamplerMode>(11, 14),

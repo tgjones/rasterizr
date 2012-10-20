@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using SlimShader.ObjectModel.Tokens;
 
@@ -29,8 +30,21 @@ namespace SlimShader.ObjectModel
 				Version.MajorVersion,
 				Version.MinorVersion));
 
+			int indent = 0;
 			foreach (var token in Tokens)
-				sb.AppendLine(token.ToString());
+			{
+				if (token.Header.OpcodeType == OpcodeType.EndLoop || token.Header.OpcodeType == OpcodeType.EndIf
+					|| token.Header.OpcodeType == OpcodeType.Else)
+					indent -= 2;
+				sb.AppendLine(string.Join(string.Empty, Enumerable.Repeat(" ", indent)) + token);
+				// TODO: Change this, and other checks on enum values such as IsDeclaration and IsIntegerOperation,
+				// into extension methods.
+				if (token.Header.OpcodeType == OpcodeType.Loop || token.Header.OpcodeType == OpcodeType.If
+					|| token.Header.OpcodeType == OpcodeType.Else)
+					indent += 2;
+			}
+
+			sb.AppendFormat("// Approximately {0} instruction slots used", Tokens.OfType<InstructionToken>().Count());
 
 			return sb.ToString();
 		}

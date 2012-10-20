@@ -1,8 +1,6 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel;
-using SlimShader.ObjectModel.Tokens;
+using System;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Resource Declaration (non multisampled)
@@ -43,50 +41,31 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	///     t# register (D3D10_SB_OPERAND_TYPE_RESOURCE) is being declared.
 	/// (2) a Resource Return Type token (ResourceReturnTypeToken)
 	/// </summary>
-	public class ResourceDeclarationParser : BytecodeParser<ResourceDeclarationToken>
+	public class ResourceDeclarationToken : DeclarationToken
 	{
-		public ResourceDeclarationParser(BytecodeReader reader)
-			: base(reader)
+		public ResourceDimension ResourceDimension { get; internal set; }
+		public byte SampleCount { get; internal set; }
+		public ResourceReturnTypeToken ReturnType { get; internal set; }
+
+		public override string ToString()
 		{
-			
+			return string.Format("{0}_{1}{2} ({3}) t{4}", TypeDescription, ResourceDimension.GetDescription(),
+				(IsMultiSampled) ? "(" + SampleCount + ")" : string.Empty, ReturnType, Operand.Indices[0].Value);
 		}
 
-		public override ResourceDeclarationToken Parse()
+		public bool IsMultiSampled
 		{
-			var token0 = Reader.ReadUInt32();
-
-			var resourceDimension = token0.DecodeValue<ResourceDimension>(11, 15);
-
-			byte sampleCount;
-			switch (resourceDimension)
+			get
 			{
-				case ResourceDimension.Texture2DMultiSampled :
-				case ResourceDimension.Texture2DMultiSampledArray :
-					sampleCount = token0.DecodeValue<byte>(16, 22);
-					break;
-				default :
-					sampleCount = 0;
-					break;
+				switch (ResourceDimension)
+				{
+					case ResourceDimension.Texture2DMultiSampled:
+					case ResourceDimension.Texture2DMultiSampledArray:
+						return true;
+					default:
+						return false;
+				}
 			}
-
-			var operand = new OperandParser(Reader, false).Parse();
-
-			var token = Reader.ReadUInt32();
-			var returnType = new ResourceReturnTypeToken
-			{
-				X = token.DecodeValue<ResourceReturnType>(00, 03),
-				Y = token.DecodeValue<ResourceReturnType>(04, 07),
-				Z = token.DecodeValue<ResourceReturnType>(08, 11),
-				W = token.DecodeValue<ResourceReturnType>(12, 15)
-			};
-
-			return new ResourceDeclarationToken
-			{
-				ResourceDimension = resourceDimension,
-				SampleCount = sampleCount,
-				Operand = operand,
-				ReturnType = returnType
-			};
 		}
 	}
 }

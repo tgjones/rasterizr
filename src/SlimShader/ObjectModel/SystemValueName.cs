@@ -1,17 +1,39 @@
-﻿namespace SlimShader.ObjectModel
+﻿using System.ComponentModel;
+
+namespace SlimShader.ObjectModel
 {
 	public enum SystemValueName
 	{
 		Undefined = 0,
+
+		[Description("position")]
 		Position = 1,
+
+		[Description("clipdistance")]
 		ClipDistance = 2,
+
+		[Description("culldistance")]
 		CullDistance = 3,
+
+		[Description("rendertargetarrayindex")]
 		RenderTargetArrayIndex = 4,
+
+		[Description("viewportarrayindex")]
 		ViewportArrayIndex = 5,
+
+		[Description("vertexid")]
 		VertexID = 6,
+
+		[Description("primitiveid")]
 		PrimitiveID = 7,
+
+		[Description("instanceid")]
 		InstanceID = 8,
+
+		[Description("isfrontface")]
 		IsFrontFace = 9,
+
+		[Description("sampleindex")]
 		SampleIndex = 10,
 
 		// The following are added for D3D11

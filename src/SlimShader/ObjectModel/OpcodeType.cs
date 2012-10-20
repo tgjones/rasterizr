@@ -303,7 +303,7 @@ namespace SlimShader.ObjectModel
 		[Description("dcl_input_ps_sgv")]
 		DclInputPsSgv,
 
-		[Description("dcl_input_ps_sv")]
+		[Description("dcl_input_ps_siv")]
 		DclInputPsSiv,
 
 		[Description("dcl_output")]

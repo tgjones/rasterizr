@@ -1,8 +1,4 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel;
-using SlimShader.ObjectModel.Tokens;
-
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Output Register Declaration
@@ -63,31 +59,17 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	///     including writemask.
 	/// (2) a System Generated Name token (NameToken)
 	/// </summary>
-	public class OutputRegisterDeclarationParser : BytecodeParser<OutputRegisterDeclarationToken>
+	public class OutputRegisterDeclarationToken : DeclarationToken
 	{
-		public OutputRegisterDeclarationParser(BytecodeReader reader)
-			: base(reader)
+		/// <summary>
+		/// Only applicable for SGV and SIV declarations.
+		/// </summary>
+		public SystemValueName SystemValueName { get; internal set; }
+
+		public override string ToString()
 		{
-			
-		}
-
-		public override OutputRegisterDeclarationToken Parse()
-		{
-			uint token0 = Reader.ReadUInt32();
-			var opcodeType = token0.DecodeValue<OpcodeType>(0, 10);
-
-			var result = new OutputRegisterDeclarationToken();
-			result.Operand = new OperandParser(Reader, false).Parse();
-
-			switch (opcodeType)
-			{
-				case OpcodeType.DclOutputSgv:
-				case OpcodeType.DclOutputSiv:
-					result.SystemValueName = new NameTokenParser(Reader).Parse();
-					break;
-			}
-
-			return result;
+			return string.Format("{0} o{1}.{2}", TypeDescription, Operand.Indices[0].Value,
+				Operand.ComponentMask.GetDescription());
 		}
 	}
 }

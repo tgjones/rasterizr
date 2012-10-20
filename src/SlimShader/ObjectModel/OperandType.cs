@@ -1,25 +1,31 @@
-﻿namespace SlimShader.ObjectModel
+﻿using System.ComponentModel;
+
+namespace SlimShader.ObjectModel
 {
 	public enum OperandType
 	{
 		/// <summary>
 		/// Temporary Register File
 		/// </summary>
+		[Description("r")]
 		Temp = 0,
 
 		/// <summary>
 		/// General Input Register File
 		/// </summary>
+		[Description("v")]
 		Input = 1,
 
 		/// <summary>
 		/// General Output Register File
 		/// </summary>
+		[Description("o")]
 		Output = 2,
 
 		/// <summary>
 		/// Temporary Register File (indexable)
 		/// </summary>
+		[Description("x")]
 		IndexableTemp = 3,
 
 		/// <summary>
@@ -41,16 +47,19 @@
 		/// <summary>
 		/// Reference to sampler state
 		/// </summary>
+		[Description("s")]
 		Sampler = 6,
 
 		/// <summary>
 		/// Reference to memory resource (e.g. texture)
 		/// </summary>
+		[Description("t")]
 		Resource = 7,
 
 		/// <summary>
 		/// Reference to constant buffer
 		/// </summary>
+		[Description("cb")]
 		ConstantBuffer = 8,
 
 		/// <summary>
@@ -76,6 +85,7 @@
 		/// <summary>
 		/// Null register, used to discard results of operations
 		/// </summary>
+		[Description("null")]
 		Null = 13,
 
 		// Below are operands new in DX 10.1

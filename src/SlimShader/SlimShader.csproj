@@ -60,6 +60,15 @@
     <Compile Include="ObjectModel\TessellatorOutputPrimitive.cs" />
     <Compile Include="ObjectModel\TessellatorPartitioning.cs" />
     <Compile Include="ObjectModel\Tokens\ConstantBufferDeclarationToken.cs" />
+    <Compile Include="ObjectModel\Tokens\GlobalFlagsDeclarationToken.cs" />
+    <Compile Include="ObjectModel\Tokens\InputRegisterDeclarationToken.cs" />
+    <Compile Include="ObjectModel\Tokens\InstructionToken.cs" />
+    <Compile Include="ObjectModel\Tokens\Operand.cs" />
+    <Compile Include="ObjectModel\Tokens\OperandIndex.cs" />
+    <Compile Include="ObjectModel\Tokens\OutputRegisterDeclarationToken.cs" />
+    <Compile Include="ObjectModel\Tokens\PixelShaderInputRegisterDeclarationToken.cs" />
+    <Compile Include="ObjectModel\Tokens\ResourceDeclarationToken.cs" />
+    <Compile Include="ObjectModel\Tokens\ResourceReturnTypeToken.cs" />
     <Compile Include="ObjectModel\Tokens\SamplerDeclarationToken.cs" />
     <Compile Include="Parser\DecoderExtensions.cs" />
     <Compile Include="Parser\NameTokenParser.cs" />

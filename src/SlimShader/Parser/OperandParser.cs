@@ -59,10 +59,12 @@ namespace SlimShader.Parser
 	/// </summary>
 	public class OperandParser : BytecodeParser<Operand>
 	{
-		public OperandParser(BytecodeReader reader)
+		private readonly bool _isIntegerOperation;
+
+		public OperandParser(BytecodeReader reader, bool isIntegerOperation)
 			: base(reader)
 		{
-			
+			_isIntegerOperation = isIntegerOperation;
 		}
 
 		public override Operand Parse()
@@ -162,15 +164,21 @@ namespace SlimShader.Parser
 				}
 			}
 
+			operand.AreImmediateValuesIntegral = _isIntegerOperation;
 			switch (operand.OperandType)
 			{
 				case OperandType.Immediate32 :
 					for (var i = 0; i < operand.NumComponents; i++)
-						operand.ImmediateValues[i] = Reader.ReadUInt32();
+						operand.ImmediateValues[i] = (_isIntegerOperation)
+							? Reader.ReadUInt32()
+							: Reader.ReadSingle();
 					break;
 				case OperandType.Immediate64 :
 					for (var i = 0; i < operand.NumComponents; i++)
-						operand.ImmediateValues[i] = Reader.ReadUInt64();
+						operand.ImmediateValues[i] = (_isIntegerOperation)
+							? Reader.ReadUInt64()
+							: -666d;
+							//: Reader.ReadDouble();
 					break;
 			}
 
