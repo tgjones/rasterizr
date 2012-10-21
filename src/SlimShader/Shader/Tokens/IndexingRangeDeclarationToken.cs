@@ -1,4 +1,5 @@
 using SlimShader.IO;
+using SlimShader.Util;
 
 namespace SlimShader.Shader.Tokens
 {
@@ -35,7 +36,7 @@ namespace SlimShader.Shader.Tokens
 		public static IndexingRangeDeclarationToken Parse(BytecodeReader reader)
 		{
 			var token0 = reader.ReadUInt32();
-			var operand = Operand.Parse(reader, false);
+			var operand = Operand.Parse(reader, token0.DecodeValue<OpcodeType>(0, 10));
 			var registerCount = reader.ReadUInt32();
 			return new IndexingRangeDeclarationToken
 			{

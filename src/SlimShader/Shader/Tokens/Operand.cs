@@ -58,6 +58,8 @@ namespace SlimShader.Shader.Tokens
 	/// </summary>
 	public class Operand
 	{
+		private readonly OpcodeType _parentType;
+
 		public byte NumComponents { get; internal set; }
 		public Operand4ComponentSelectionMode SelectionMode { get; internal set; }
 		public ComponentMask ComponentMask { get; internal set; }
@@ -69,11 +71,11 @@ namespace SlimShader.Shader.Tokens
 		public bool IsExtended { get; internal set; }
 		public OperandModifier Modifier { get; internal set; }
 		public OperandIndex[] Indices { get; private set; }
-		public bool AreImmediateValuesIntegral { get; internal set; }
 		public double[] ImmediateValues { get; private set; }
 
-		public Operand()
+		public Operand(OpcodeType parentType)
 		{
+			_parentType = parentType;
 			Swizzles = new[]
 			{
 				Operand4ComponentName.X,
@@ -86,11 +88,11 @@ namespace SlimShader.Shader.Tokens
 			ImmediateValues = new double[4];
 		}
 
-		public static Operand Parse(BytecodeReader reader, bool isIntegralTypeOperation)
+		public static Operand Parse(BytecodeReader reader, OpcodeType parentType)
 		{
 			uint token0 = reader.ReadUInt32();
 
-			var operand = new Operand();
+			var operand = new Operand(parentType);
 
 			var numComponents = token0.DecodeValue<OperandNumComponents>(0, 1);
 			switch (numComponents)
@@ -170,7 +172,7 @@ namespace SlimShader.Shader.Tokens
 						operand.Indices[i].Value = reader.ReadUInt64();
 						goto default;
 					case OperandIndexRepresentation.Relative:
-						operand.Indices[i].Register = Parse(reader, isIntegralTypeOperation);
+						operand.Indices[i].Register = Parse(reader, parentType);
 						break;
 					case OperandIndexRepresentation.Immediate32PlusRelative:
 						operand.Indices[i].Value = reader.ReadUInt32();
@@ -183,18 +185,17 @@ namespace SlimShader.Shader.Tokens
 				}
 			}
 
-			operand.AreImmediateValuesIntegral = isIntegralTypeOperation;
 			switch (operand.OperandType)
 			{
 				case OperandType.Immediate32:
 					for (var i = 0; i < operand.NumComponents; i++)
-						operand.ImmediateValues[i] = (isIntegralTypeOperation)
+						operand.ImmediateValues[i] = (parentType.IsIntegralTypeInstruction())
 							? reader.ReadUInt32()
 							: reader.ReadSingle();
 					break;
 				case OperandType.Immediate64:
 					for (var i = 0; i < operand.NumComponents; i++)
-						operand.ImmediateValues[i] = (isIntegralTypeOperation)
+						operand.ImmediateValues[i] = (parentType.IsIntegralTypeInstruction())
 							? reader.ReadUInt64()
 							: reader.ReadDouble();
 					break;
@@ -250,10 +251,10 @@ namespace SlimShader.Shader.Tokens
 			{
 				case OperandType.Immediate32:
 				{
-					string result = "l(";
+					string result = (_parentType.IsDoubleTypeInstruction()) ? "d(" : "l(";
 					for (int i = 0; i < NumComponents; i++)
 					{
-						if (AreImmediateValuesIntegral)
+						if (_parentType.IsIntegralTypeInstruction())
 						{
 							// Just guessing this number based on fxc output.
 							const int hexThreshold = 10000;

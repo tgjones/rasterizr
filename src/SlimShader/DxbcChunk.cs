@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SlimShader.IO;
+using SlimShader.InputOutputSignature;
 using SlimShader.ResourceDefinition;
 using SlimShader.Shader;
 using SlimShader.Util;
@@ -42,10 +43,10 @@ namespace SlimShader
 			switch (chunkType)
 			{
 				case ChunkType.Isgn :
-					chunk = InputSignatureChunk.Parse(chunkContentReader);
+					chunk = InputOutputSignatureChunk.Parse(chunkContentReader);
 					break;
 				case ChunkType.Osgn:
-					chunk = OutputSignatureChunk.Parse(chunkContentReader);
+					chunk = InputOutputSignatureChunk.Parse(chunkContentReader);
 					break;
 				case ChunkType.Rdef:
 					chunk = ResourceDefinitionChunk.Parse(chunkContentReader);

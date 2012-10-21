@@ -74,8 +74,10 @@ namespace SlimShader.Shader.Tokens
 			uint token0 = reader.ReadUInt32();
 			var opcodeType = token0.DecodeValue<OpcodeType>(0, 10);
 
-			var result = new OutputRegisterDeclarationToken();
-			result.Operand = Operand.Parse(reader, false);
+			var result = new OutputRegisterDeclarationToken
+			{
+				Operand = Operand.Parse(reader, token0.DecodeValue<OpcodeType>(0, 10))
+			};
 
 			switch (opcodeType)
 			{

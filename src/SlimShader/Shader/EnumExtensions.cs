@@ -88,5 +88,25 @@ namespace SlimShader.Shader
 					return false;
 			}
 		}
+
+		public static bool IsDoubleTypeInstruction(this OpcodeType type)
+		{
+			switch (type)
+			{
+				case OpcodeType.DAdd:
+				case OpcodeType.DMax:
+				case OpcodeType.DMin:
+				case OpcodeType.DMul:
+				case OpcodeType.DEq:
+				case OpcodeType.DGe:
+				case OpcodeType.DLt:
+				case OpcodeType.DNe:
+				case OpcodeType.DMov:
+				case OpcodeType.DMovC:
+					return true;
+				default:
+					return false;
+			}
+		}
 	}
 }

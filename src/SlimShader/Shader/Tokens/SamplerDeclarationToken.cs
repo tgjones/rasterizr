@@ -27,7 +27,7 @@ namespace SlimShader.Shader.Tokens
 		public static SamplerDeclarationToken Parse(BytecodeReader reader)
 		{
 			var token0 = reader.ReadUInt32();
-			var operand = Operand.Parse(reader, false);
+			var operand = Operand.Parse(reader, token0.DecodeValue<OpcodeType>(0, 10));
 			return new SamplerDeclarationToken
 			{
 				SamplerMode = token0.DecodeValue<SamplerMode>(11, 14),

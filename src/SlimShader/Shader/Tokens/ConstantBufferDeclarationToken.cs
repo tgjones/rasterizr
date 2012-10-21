@@ -41,7 +41,7 @@ namespace SlimShader.Shader.Tokens
 			return new ConstantBufferDeclarationToken
 			{
 				AccessPattern = token0.DecodeValue<ConstantBufferAccessPattern>(11, 11),
-				Operand = Operand.Parse(reader, false)
+				Operand = Operand.Parse(reader, token0.DecodeValue<OpcodeType>(0, 10))
 			};
 		}
 

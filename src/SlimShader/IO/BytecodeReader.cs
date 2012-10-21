@@ -26,6 +26,11 @@ namespace SlimShader.IO
 			_reader = new BinaryReader(new MemoryStream(buffer, index, count));
 		}
 
+		public byte ReadByte()
+		{
+			return _reader.ReadByte();
+		}
+
 		public float ReadSingle()
 		{
 			return _reader.ReadSingle();

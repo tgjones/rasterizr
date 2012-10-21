@@ -97,7 +97,7 @@ namespace SlimShader.Shader.Tokens
 					throw new ArgumentOutOfRangeException();
 			}
 
-			result.Operand = Operand.Parse(reader, false);
+			result.Operand = Operand.Parse(reader, token0.DecodeValue<OpcodeType>(0, 10));
 
 			switch (opcodeType)
 			{

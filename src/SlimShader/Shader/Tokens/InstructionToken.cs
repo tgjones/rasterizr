@@ -70,10 +70,7 @@ namespace SlimShader.Shader.Tokens
 			}
 
 			while (reader.CurrentPosition < instructionEnd)
-			{
-				instructionToken.Operands.Add(Operand.Parse(reader,
-					header.OpcodeType.IsIntegralTypeInstruction()));
-			}
+				instructionToken.Operands.Add(Operand.Parse(reader, header.OpcodeType));
 
 			return instructionToken;
 		}

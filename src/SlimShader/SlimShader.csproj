@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InputOutputSignature\MinPrecision.cs" />
+    <Compile Include="InputOutputSignature\RegisterComponentType.cs" />
+    <Compile Include="InputOutputSignature\SignatureParameterDescription.cs" />
     <Compile Include="ResourceDefinition\CBufferType.cs" />
     <Compile Include="IO\BytecodeReader.cs" />
     <Compile Include="ChunkType.cs" />
@@ -55,12 +58,11 @@
     <Compile Include="DxbcContainer.cs" />
     <Compile Include="DxbcContainerHeader.cs" />
     <Compile Include="EnumExtensions.cs" />
-    <Compile Include="InputSignatureChunk.cs" />
+    <Compile Include="InputOutputSignature\InputOutputSignatureChunk.cs" />
     <Compile Include="Shader\EnumExtensions.cs" />
     <Compile Include="Shader\InstructionTestBoolean.cs" />
     <Compile Include="Shader\InstructionTokenExtendedType.cs" />
     <Compile Include="Shader\InterpolationMode.cs" />
-    <Compile Include="OutputSignatureChunk.cs" />
     <Compile Include="Shader\Primitive.cs" />
     <Compile Include="ResourceDefinition\ConstantBufferVariable.cs" />
     <Compile Include="ResourceDefinition\ResourceBinding.cs" />
