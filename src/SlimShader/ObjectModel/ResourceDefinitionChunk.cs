@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using SlimShader.IO;
 
 namespace SlimShader.ObjectModel
@@ -20,6 +21,7 @@ namespace SlimShader.ObjectModel
 
 		public static ResourceDefinitionChunk Parse(BytecodeReader reader)
 		{
+			var startOfResourceDefinitionReader = reader.CopyAtCurrentPosition();
 			var headerReader = reader.CopyAtCurrentPosition();
 
 			uint constantBufferCount = headerReader.ReadUInt32();
@@ -37,9 +39,33 @@ namespace SlimShader.ObjectModel
 
 			var resourceBindingReader = reader.CopyAtOffset((int) resourceBindingOffset);
 			for (int i = 0; i < resourceBindingCount; i++)
-				result.ResourceBindings.Add(ResourceBinding.Parse(resourceBindingReader));
+				result.ResourceBindings.Add(ResourceBinding.Parse(resourceBindingReader,
+					startOfResourceDefinitionReader));
 
 			return result;
+		}
+
+		public override string ToString()
+		{
+			var sb = new StringBuilder();
+
+			sb.AppendLine("// Buffer Definitions: ");
+			sb.AppendLine("//");
+
+			foreach (var constantBuffer in ConstantBuffers)
+				sb.Append(constantBuffer);
+
+			sb.AppendLine("//");
+			sb.AppendLine("//");
+			sb.AppendLine("// Resource Bindings:");
+			sb.AppendLine("//");
+			sb.AppendLine("// Name                                 Type  Format         Dim Slot Elements");
+			sb.AppendLine("// ------------------------------ ---------- ------- ----------- ---- --------");
+
+			foreach (var resourceBinding in ResourceBindings)
+				sb.AppendLine(resourceBinding.ToString());
+
+			return sb.ToString();
 		}
 	}
 }

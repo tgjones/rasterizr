@@ -177,8 +177,7 @@ namespace SlimShader.Parser
 					for (var i = 0; i < operand.NumComponents; i++)
 						operand.ImmediateValues[i] = (_isIntegerOperation)
 							? Reader.ReadUInt64()
-							: -666d;
-							//: Reader.ReadDouble();
+							: Reader.ReadDouble();
 					break;
 			}
 

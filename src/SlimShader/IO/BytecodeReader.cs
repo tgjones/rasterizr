@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 
 namespace SlimShader.IO
 {
@@ -30,6 +31,11 @@ namespace SlimShader.IO
 			return _reader.ReadSingle();
 		}
 
+		public double ReadDouble()
+		{
+			return _reader.ReadDouble();
+		}
+
 		public uint ReadUInt32()
 		{
 			return _reader.ReadUInt32();
@@ -38,6 +44,18 @@ namespace SlimShader.IO
 		public ulong ReadUInt64()
 		{
 			return _reader.ReadUInt64();
+		}
+
+		public string ReadString()
+		{
+			var nextCharacter = _reader.ReadChar();
+			var sb = new StringBuilder();
+			while (nextCharacter != 0)
+			{
+				sb.Append(nextCharacter);
+				nextCharacter = _reader.ReadChar();
+			}
+			return sb.ToString();
 		}
 
 		public BytecodeReader CopyAtCurrentPosition(int? count = null)

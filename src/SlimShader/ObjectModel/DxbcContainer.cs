@@ -58,35 +58,14 @@ namespace SlimShader.ObjectModel
 			sb.AppendLine("// ");
 			sb.AppendLine("// ");
 
-			// TODO: Remove these hardcoded lines once we have the proper reflected values.
+			sb.AppendLine("//");
+			sb.AppendLine("//");
+
+			var resourceDefinitionChunk = Chunks.OfType<ResourceDefinitionChunk>().FirstOrDefault();
+			if (resourceDefinitionChunk != null)
+				sb.Append(resourceDefinitionChunk);
 
 			sb.AppendLine(@"//
-//
-// Buffer Definitions: 
-//
-// cbuffer cbuf0
-// {
-//
-//   float4 cool;                       // Offset:    0 Size:    16
-//   int4 zeek;                         // Offset:   16 Size:    16
-//   int2 arr[127];                     // Offset:   32 Size:  2024
-//
-// }
-//
-//
-// Resource Bindings:
-//
-// Name                                 Type  Format         Dim Slot Elements
-// ------------------------------ ---------- ------- ----------- ---- --------
-// samp0                             sampler      NA          NA    0        1
-// samp1                             sampler      NA          NA    1        1
-// tex0                              texture  float4          2d    0        1
-// tex1                              texture  float4        cube    1        1
-// tex2                              texture  float4          3d    2        1
-// tex3                              texture  float4       2dMS2    3        1
-// tex4                              texture  float4          2d    4        2
-// cbuf0                             cbuffer      NA          NA    0        1
-//
 //
 //
 // Input signature:

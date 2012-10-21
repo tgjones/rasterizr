@@ -112,5 +112,17 @@ namespace SlimShader.ObjectModel
 					return false;
 			}
 		}
+
+		public static bool IsMultiSampled(this ResourceDefinitionResourceDimension value)
+		{
+			switch (value)
+			{
+				case ResourceDefinitionResourceDimension.Texture2DMultiSampled :
+				case ResourceDefinitionResourceDimension.Texture2DMultiSampledArray :
+					return true;
+				default :
+					return false;
+			}
+		}
 	}
 }
