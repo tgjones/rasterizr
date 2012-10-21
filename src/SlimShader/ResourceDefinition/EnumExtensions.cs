@@ -2,12 +2,12 @@
 {
 	internal static class EnumExtensions
 	{
-		public static bool IsMultiSampled(this ResourceDefinitionResourceDimension value)
+		public static bool IsMultiSampled(this ResourceDimension value)
 		{
 			switch (value)
 			{
-				case ResourceDefinitionResourceDimension.Texture2DMultiSampled :
-				case ResourceDefinitionResourceDimension.Texture2DMultiSampledArray :
+				case ResourceDimension.Texture2DMultiSampled :
+				case ResourceDimension.Texture2DMultiSampledArray :
 					return true;
 				default :
 					return false;

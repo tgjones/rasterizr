@@ -13,24 +13,24 @@ namespace SlimShader.ResourceDefinition
 		public uint BindPoint { get; private set; }
 		public uint BindCount { get; private set; }
 		public ShaderInputFlags Flags { get; private set; }
-		public ResourceDefinitionResourceDimension Dimension { get; private set; }
+		public ResourceDimension Dimension { get; private set; }
 		public ResourceReturnType ReturnType { get; private set; }
 		public uint NumSamples { get; private set; }
 
-		public static ResourceBinding Parse(BytecodeReader reader, BytecodeReader resourceDefinitionReader)
+		public static ResourceBinding Parse(BytecodeReader reader, BytecodeReader resourceBindingReader)
 		{
-			uint nameOffset = reader.ReadUInt32();
-			var nameReader = resourceDefinitionReader.CopyAtOffset((int) nameOffset);
+			uint nameOffset = resourceBindingReader.ReadUInt32();
+			var nameReader = reader.CopyAtOffset((int) nameOffset);
 			return new ResourceBinding
 			{
 				Name = nameReader.ReadString(),
-				Type = (ShaderInputType) reader.ReadUInt32(),
-				ReturnType = (ResourceReturnType) reader.ReadUInt32(),
-				Dimension = (ResourceDefinitionResourceDimension) reader.ReadUInt32(),
-				NumSamples = reader.ReadUInt32(),
-				BindPoint = reader.ReadUInt32(),
-				BindCount = reader.ReadUInt32(),
-				Flags = (ShaderInputFlags) reader.ReadUInt32()
+				Type = (ShaderInputType) resourceBindingReader.ReadUInt32(),
+				ReturnType = (ResourceReturnType) resourceBindingReader.ReadUInt32(),
+				Dimension = (ResourceDimension) resourceBindingReader.ReadUInt32(),
+				NumSamples = resourceBindingReader.ReadUInt32(),
+				BindPoint = resourceBindingReader.ReadUInt32(),
+				BindCount = resourceBindingReader.ReadUInt32(),
+				Flags = (ShaderInputFlags) resourceBindingReader.ReadUInt32()
 			};
 		}
 

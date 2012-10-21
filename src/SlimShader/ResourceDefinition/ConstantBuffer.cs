@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using SlimShader.IO;
 
 namespace SlimShader.ResourceDefinition
@@ -7,47 +8,52 @@ namespace SlimShader.ResourceDefinition
 	{
 		public string Name { get; private set; }
 		public List<ConstantBufferVariable> Variables { get; private set; }
+		public uint Size { get; private set; }
 		public ShaderCBufferFlags Flags { get; private set; }
+		public CBufferType BufferType { get; private set; }
 
 		public ConstantBuffer()
 		{
 			Variables = new List<ConstantBufferVariable>();
 		}
 
-		public static ConstantBuffer Parse(BytecodeReader reader, BytecodeReader resourceDefinitionReader)
+		public static ConstantBuffer Parse(BytecodeReader reader, BytecodeReader constantBufferReader)
 		{
-			uint nameOffset = reader.ReadUInt32();
-			var nameReader = resourceDefinitionReader.CopyAtOffset((int) nameOffset);
+			uint nameOffset = constantBufferReader.ReadUInt32();
+			var nameReader = reader.CopyAtOffset((int) nameOffset);
 
-			uint variableCount = reader.ReadUInt32();
-			uint variablesOffset = reader.ReadUInt32();
+			uint variableCount = constantBufferReader.ReadUInt32();
+			uint variableOffset = constantBufferReader.ReadUInt32();
 
 			var result = new ConstantBuffer
 			{
 				Name = nameReader.ReadString()
 			};
 
-			var variablesReader = resourceDefinitionReader.CopyAtOffset((int) variablesOffset);
+			var variableReader = reader.CopyAtOffset((int) variableOffset);
 			for (int i = 0; i < variableCount; i++)
-				result.Variables.Add(ConstantBufferVariable.Parse(variablesReader));
+				result.Variables.Add(ConstantBufferVariable.Parse(reader, variableReader));
 
-			uint size = reader.ReadUInt32();
-
+			result.Size = constantBufferReader.ReadUInt32();
+			result.Flags = (ShaderCBufferFlags) constantBufferReader.ReadUInt32();
+			result.BufferType = (CBufferType) constantBufferReader.ReadUInt32();
 
 			return result;
 		}
 
 		public override string ToString()
 		{
-			return @"// cbuffer cbuf0
-// {
-//
-//   float4 cool;                       // Offset:    0 Size:    16
-//   int4 zeek;                         // Offset:   16 Size:    16
-//   int2 arr[127];                     // Offset:   32 Size:  2024
-//
-// }
-";
+			var sb = new StringBuilder();
+			sb.AppendLine("// cbuffer " + Name);
+			sb.AppendLine("// {");
+			sb.AppendLine("//");
+
+			foreach (var variable in Variables)
+				sb.AppendLine("//   " + variable);
+
+			sb.AppendLine("//");
+			sb.AppendLine("// }");
+			return sb.ToString();
 		}
 	}
 }

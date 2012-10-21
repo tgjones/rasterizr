@@ -22,7 +22,6 @@ namespace SlimShader.ResourceDefinition
 
 		public static ResourceDefinitionChunk Parse(BytecodeReader reader)
 		{
-			var startOfResourceDefinitionReader = reader.CopyAtCurrentPosition();
 			var headerReader = reader.CopyAtCurrentPosition();
 
 			uint constantBufferCount = headerReader.ReadUInt32();
@@ -36,13 +35,11 @@ namespace SlimShader.ResourceDefinition
 
 			var constantBufferReader = reader.CopyAtOffset((int) constantBufferOffset);
 			for (int i = 0; i < constantBufferCount; i++)
-				result.ConstantBuffers.Add(ConstantBuffer.Parse(constantBufferReader,
-					startOfResourceDefinitionReader));
+				result.ConstantBuffers.Add(ConstantBuffer.Parse(reader, constantBufferReader));
 
 			var resourceBindingReader = reader.CopyAtOffset((int) resourceBindingOffset);
 			for (int i = 0; i < resourceBindingCount; i++)
-				result.ResourceBindings.Add(ResourceBinding.Parse(resourceBindingReader,
-					startOfResourceDefinitionReader));
+				result.ResourceBindings.Add(ResourceBinding.Parse(reader, resourceBindingReader));
 
 			return result;
 		}

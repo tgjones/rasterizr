@@ -43,6 +43,10 @@
     <Compile Include="IO\BytecodeReader.cs" />
     <Compile Include="ChunkType.cs" />
     <Compile Include="ResourceDefinition\EnumExtensions.cs" />
+    <Compile Include="ResourceDefinition\ShaderType.cs" />
+    <Compile Include="ResourceDefinition\ShaderVariableClass.cs" />
+    <Compile Include="ResourceDefinition\ShaderVariableFlags.cs" />
+    <Compile Include="ResourceDefinition\ShaderVariableType.cs" />
     <Compile Include="Shader\ComponentMask.cs" />
     <Compile Include="ResourceDefinition\ConstantBuffer.cs" />
     <Compile Include="Shader\ConstantBufferAccessPattern.cs" />
@@ -67,7 +71,7 @@
     <Compile Include="ResourceDefinition\ShaderInputFlags.cs" />
     <Compile Include="ResourceDefinition\ShaderInputType.cs" />
     <Compile Include="Shader\ShaderMessageFormat.cs" />
-    <Compile Include="ResourceDefinition\ResourceDefinitionResourceDimension.cs" />
+    <Compile Include="ResourceDefinition\ResourceDimension.cs" />
     <Compile Include="StatChunk.cs" />
     <Compile Include="Shader\SystemValueName.cs" />
     <Compile Include="Shader\TessellatorDomain.cs" />

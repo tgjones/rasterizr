@@ -3,10 +3,10 @@ using System.ComponentModel;
 namespace SlimShader.ResourceDefinition
 {
 	/// <summary>
-	/// Very similar to ResourceDimension, but this one is used within the RDEF (Resource Definition) chunk.
+	/// Very similar to Shader.ResourceDimension, but this one is used within the RDEF (Resource Definition) chunk.
 	/// The multi-sampled values are different from ResourceDimension.
 	/// </summary>
-	public enum ResourceDefinitionResourceDimension
+	public enum ResourceDimension
 	{
 		/// <summary>
 		/// The type is unknown.
