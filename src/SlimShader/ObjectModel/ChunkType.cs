@@ -4,12 +4,34 @@ namespace SlimShader.ObjectModel
 	{
 		Unknown,
 
-		Shdr,
-		Shex,
+		/// <summary>
+		/// Input signature
+		/// </summary>
+		Isgn,
+
+		/// <summary>
+		/// Output signature
+		/// </summary>
+		Osgn,
 
 		/// <summary>
 		/// Resource definition
 		/// </summary>
-		Rdef
+		Rdef,
+
+		/// <summary>
+		/// Shader
+		/// </summary>
+		Shdr,
+
+		/// <summary>
+		/// Shader
+		/// </summary>
+		Shex,
+
+		/// <summary>
+		/// ?
+		/// </summary>
+		Stat
 	}
 }

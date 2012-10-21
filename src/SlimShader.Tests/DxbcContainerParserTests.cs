@@ -5,7 +5,6 @@ using NUnit.Framework;
 using SlimShader.IO;
 using SlimShader.ObjectModel;
 using SlimShader.ObjectModel.Tokens;
-using SlimShader.Parser;
 
 namespace SlimShader.Tests
 {
@@ -20,10 +19,9 @@ namespace SlimShader.Tests
 		{
 			// Arrange.
 			var fileBytes = File.ReadAllBytes("Assets/test.bin");
-			var parser = new DxbcContainerParser(new BytecodeReader(fileBytes, 0, fileBytes.Length));
 			
 			// Act.
-			var container = parser.Parse();
+			var container = DxbcContainer.Parse(new BytecodeReader(fileBytes, 0, fileBytes.Length));
 
 			// Assert.
 			Assert.That(container.Header.FourCc, Is.EqualTo(1128421444));
@@ -37,18 +35,18 @@ namespace SlimShader.Tests
 
 			Assert.That(container.Chunks.Count, Is.EqualTo(5));
 			Assert.That(container.Chunks[0].FourCc, Is.EqualTo(1178944594));
-			Assert.That(container.Chunks[0].Size, Is.EqualTo(544));
+			Assert.That(container.Chunks[0].ChunkSize, Is.EqualTo(544));
 			Assert.That(container.Chunks[1].FourCc, Is.EqualTo(1313297225));
-			Assert.That(container.Chunks[1].Size, Is.EqualTo(104));
+			Assert.That(container.Chunks[1].ChunkSize, Is.EqualTo(104));
 			Assert.That(container.Chunks[2].FourCc, Is.EqualTo(1313297231));
-			Assert.That(container.Chunks[2].Size, Is.EqualTo(44));
+			Assert.That(container.Chunks[2].ChunkSize, Is.EqualTo(44));
 			Assert.That(container.Chunks[3].FourCc, Is.EqualTo(1380206675));
-			Assert.That(container.Chunks[3].Size, Is.EqualTo(4964));
+			Assert.That(container.Chunks[3].ChunkSize, Is.EqualTo(4964));
 			Assert.That(container.Chunks[3].ChunkType, Is.EqualTo(ChunkType.Shdr));
 			Assert.That(container.Chunks[4].FourCc, Is.EqualTo(1413567571));
-			Assert.That(container.Chunks[4].Size, Is.EqualTo(116));
+			Assert.That(container.Chunks[4].ChunkSize, Is.EqualTo(116));
 
-			var shaderProgram = (ShaderProgram) container.Chunks[3].Content;
+			var shaderProgram = (ShaderProgramChunk) container.Chunks[3];
 			Assert.That(shaderProgram.Version.MajorVersion, Is.EqualTo(4));
 			Assert.That(shaderProgram.Version.MinorVersion, Is.EqualTo(0));
 			Assert.That(shaderProgram.Version.ProgramType, Is.EqualTo(ProgramType.PixelShader));
@@ -81,10 +79,9 @@ namespace SlimShader.Tests
 		{
 			// Arrange.
 			var binaryFileBytes = File.ReadAllBytes(binaryFile);
-			var parser = new DxbcContainerParser(new BytecodeReader(binaryFileBytes, 0, binaryFileBytes.Length));
 
 			// Act.
-			var container = parser.Parse();
+			var container = DxbcContainer.Parse(new BytecodeReader(binaryFileBytes, 0, binaryFileBytes.Length));
 
 			// Assert.
 			// Ignore first 5 lines - they contain the compiler-specific headers.

@@ -57,5 +57,15 @@ namespace SlimShader.Parser
 			var d = (byte) fourCc[3];
 			return a | ((uint) (b << 8)) | ((uint) c << 16) | ((uint) d << 24);
 		}
+
+		public static string ToFourCcString(this uint fourCc)
+		{
+			var a = fourCc.DecodeValue<char>(00, 07);
+			var b = fourCc.DecodeValue<char>(08, 15);
+			var c = fourCc.DecodeValue<char>(16, 23);
+			var d = fourCc.DecodeValue<char>(24, 31);
+
+			return new string(new[] { a, b, c, d });
+		}
 	}
 }

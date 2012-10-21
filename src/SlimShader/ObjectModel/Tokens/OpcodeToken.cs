@@ -14,14 +14,4 @@
 			return TypeDescription;
 		}
 	}
-
-	public abstract class DeclarationToken : OpcodeToken
-	{
-		public Operand Operand { get; internal set; }
-	}
-
-	public abstract class ImmediateDeclarationToken : DeclarationToken
-	{
-		public uint DeclarationLength { get; internal set; }
-	}
 }
