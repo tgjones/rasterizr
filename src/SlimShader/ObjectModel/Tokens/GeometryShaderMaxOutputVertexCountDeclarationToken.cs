@@ -1,7 +1,6 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Geometry Shader Maximum Output Vertex Count Declaration
@@ -19,21 +18,16 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	/// maximum number of primitives that could be output
 	/// by the Geometry Shader.
 	/// </summary>
-	public class GeometryShaderMaxOutputVertexCountDeclarationParser
-		: BytecodeParser<GeometryShaderMaxOutputVertexCountDeclarationToken>
+	public class GeometryShaderMaxOutputVertexCountDeclarationToken : DeclarationToken
 	{
-		public GeometryShaderMaxOutputVertexCountDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public uint MaxPrimitives { get; private set; }
 
-		public override GeometryShaderMaxOutputVertexCountDeclarationToken Parse()
+		public static GeometryShaderMaxOutputVertexCountDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
 			return new GeometryShaderMaxOutputVertexCountDeclarationToken
 			{
-				MaxPrimitives = Reader.ReadUInt32()
+				MaxPrimitives = reader.ReadUInt32()
 			};
 		}
 	}

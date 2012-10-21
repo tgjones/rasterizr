@@ -1,8 +1,7 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
+using SlimShader.Parser;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Geometry Shader Output Topology Declaration
@@ -17,18 +16,13 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	///         contains extended operand description.  This dcl is currently not
 	///         extended.
 	/// </summary>
-	public class GeometryShaderOutputPrimitiveTopologyDeclarationParser
-		: BytecodeParser<GeometryShaderOutputPrimitiveTopologyDeclarationToken>
+	public class GeometryShaderOutputPrimitiveTopologyDeclarationToken : DeclarationToken
 	{
-		public GeometryShaderOutputPrimitiveTopologyDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public PrimitiveTopology PrimitiveTopology { get; set; }
 
-		public override GeometryShaderOutputPrimitiveTopologyDeclarationToken Parse()
+		public static GeometryShaderOutputPrimitiveTopologyDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
 			return new GeometryShaderOutputPrimitiveTopologyDeclarationToken
 			{
 				PrimitiveTopology = token0.DecodeValue<PrimitiveTopology>(11, 17)

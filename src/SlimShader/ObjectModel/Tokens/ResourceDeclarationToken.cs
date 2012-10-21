@@ -1,4 +1,6 @@
 using System;
+using SlimShader.IO;
+using SlimShader.Parser;
 
 namespace SlimShader.ObjectModel.Tokens
 {
@@ -47,12 +49,6 @@ namespace SlimShader.ObjectModel.Tokens
 		public byte SampleCount { get; internal set; }
 		public ResourceReturnTypeToken ReturnType { get; internal set; }
 
-		public override string ToString()
-		{
-			return string.Format("{0}_{1}{2} ({3}) t{4}", TypeDescription, ResourceDimension.GetDescription(),
-				(IsMultiSampled) ? "(" + SampleCount + ")" : string.Empty, ReturnType, Operand.Indices[0].Value);
-		}
-
 		public bool IsMultiSampled
 		{
 			get
@@ -66,6 +62,50 @@ namespace SlimShader.ObjectModel.Tokens
 						return false;
 				}
 			}
+		}
+
+		public static ResourceDeclarationToken Parse(BytecodeReader reader)
+		{
+			var token0 = reader.ReadUInt32();
+
+			var resourceDimension = token0.DecodeValue<ResourceDimension>(11, 15);
+
+			byte sampleCount;
+			switch (resourceDimension)
+			{
+				case ResourceDimension.Texture2DMultiSampled:
+				case ResourceDimension.Texture2DMultiSampledArray:
+					sampleCount = token0.DecodeValue<byte>(16, 22);
+					break;
+				default:
+					sampleCount = 0;
+					break;
+			}
+
+			var operand = new OperandParser(reader, false).Parse();
+
+			var token = reader.ReadUInt32();
+			var returnType = new ResourceReturnTypeToken
+			{
+				X = token.DecodeValue<ResourceReturnType>(00, 03),
+				Y = token.DecodeValue<ResourceReturnType>(04, 07),
+				Z = token.DecodeValue<ResourceReturnType>(08, 11),
+				W = token.DecodeValue<ResourceReturnType>(12, 15)
+			};
+
+			return new ResourceDeclarationToken
+			{
+				ResourceDimension = resourceDimension,
+				SampleCount = sampleCount,
+				Operand = operand,
+				ReturnType = returnType
+			};
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}_{1}{2} ({3}) t{4}", TypeDescription, ResourceDimension.GetDescription(),
+				(IsMultiSampled) ? "(" + SampleCount + ")" : string.Empty, ReturnType, Operand.Indices[0].Value);
 		}
 	}
 }

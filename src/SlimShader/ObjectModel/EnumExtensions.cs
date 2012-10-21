@@ -78,6 +78,13 @@ namespace SlimShader.ObjectModel
 			}
 		}
 
+		public static bool IsDeclaration(this OpcodeType type)
+		{
+			return (type >= OpcodeType.DclResource && type <= OpcodeType.DclGlobalFlags)
+				|| (type >= OpcodeType.DclStream && type <= OpcodeType.DclResourceStructured)
+				|| type == OpcodeType.DclGsInstanceCount;
+		}
+
 		public static bool IsIntegralTypeInstruction(this OpcodeType type)
 		{
 			switch (type)

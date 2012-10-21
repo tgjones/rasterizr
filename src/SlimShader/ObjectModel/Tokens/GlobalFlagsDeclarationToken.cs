@@ -1,3 +1,6 @@
+using SlimShader.IO;
+using SlimShader.Parser;
+
 namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
@@ -18,5 +21,14 @@ namespace SlimShader.ObjectModel.Tokens
 	public class GlobalFlagsDeclarationToken : DeclarationToken
 	{
 		public bool RefactoringAllowed { get; internal set; }
+
+		public static GlobalFlagsDeclarationToken Parse(BytecodeReader reader)
+		{
+			var token0 = reader.ReadUInt32();
+			return new GlobalFlagsDeclarationToken
+			{
+				RefactoringAllowed = (token0.DecodeValue(11, 11) == 1)
+			};
+		}
 	}
 }

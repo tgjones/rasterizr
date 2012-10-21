@@ -2,11 +2,9 @@ using System;
 using SlimShader.IO;
 using SlimShader.ObjectModel;
 using SlimShader.ObjectModel.Tokens;
-using SlimShader.Parser.Opcodes.Declarations;
 
 namespace SlimShader.Parser
 {
-
 	public class ShaderProgramParser : BytecodeParser<ShaderProgram>
 	{
 		public ShaderProgramParser(BytecodeReader reader)
@@ -84,27 +82,27 @@ namespace SlimShader.Parser
 					switch (customDataClass)
 					{
 						case CustomDataClass.DclImmediateConstantBuffer:
-							opcodeToken = new ImmediateConstantBufferDeclarationParser(Reader).Parse();
+							opcodeToken = ImmediateConstantBufferDeclarationToken.Parse(Reader);
 							break;
 						case CustomDataClass.ShaderMessage:
-							opcodeToken = new ShaderMessageDeclarationParser(Reader).Parse();
+							opcodeToken = ShaderMessageDeclarationToken.Parse(Reader);
 							break;
 						default:
 							throw new ArgumentOutOfRangeException();
 					}
 				}
-				else if (IsDeclaration(opcodeHeader.OpcodeType))
+				else if (opcodeHeader.OpcodeType.IsDeclaration())
 				{
 					switch (opcodeHeader.OpcodeType)
 					{
 						case OpcodeType.DclGlobalFlags:
-							opcodeToken = new GlobalFlagsDeclarationParser(Reader).Parse();
+							opcodeToken = GlobalFlagsDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclResource:
-							opcodeToken = new ResourceDeclarationParser(Reader).Parse();
+							opcodeToken = ResourceDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclSampler:
-							opcodeToken = new SamplerDeclarationParser(Reader).Parse();
+							opcodeToken = SamplerDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclInput:
 						case OpcodeType.DclInputSgv:
@@ -112,86 +110,55 @@ namespace SlimShader.Parser
 						case OpcodeType.DclInputPs:
 						case OpcodeType.DclInputPsSgv:
 						case OpcodeType.DclInputPsSiv:
-							opcodeToken = new InputRegisterDeclarationParser(Reader).Parse();
+							opcodeToken = InputRegisterDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclOutput:
 						case OpcodeType.DclOutputSgv:
 						case OpcodeType.DclOutputSiv:
-							opcodeToken = new OutputRegisterDeclarationParser(Reader).Parse();
+							opcodeToken = OutputRegisterDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclIndexRange:
-							opcodeToken = new IndexingRangeDeclarationParser(Reader).Parse();
+							opcodeToken = IndexingRangeDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclTemps:
-							opcodeToken = new TempRegisterDeclarationParser(Reader).Parse();
+							opcodeToken = TempRegisterDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclIndexableTemp:
-							opcodeToken = new IndexableTempRegisterDeclarationParser(Reader).Parse();
+							opcodeToken = IndexableTempRegisterDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclConstantBuffer:
-							opcodeToken = new ConstantBufferDeclarationParser(Reader).Parse();
+							opcodeToken = ConstantBufferDeclarationToken.Parse(Reader);
 							break;
-						case OpcodeType.CustomData:
-						{
-							// Custom-Data Block Format
-							//
-							// DWORD 0 (CustomDataDescTok):
-							// [10:00] == D3D10_SB_OPCODE_CUSTOMDATA
-							// [31:11] == D3D10_SB_CUSTOMDATA_CLASS
-							//
-							// DWORD 1: 
-							//          32-bit unsigned integer count of number
-							//          of DWORDs in custom-data block,
-							//          including DWORD 0 and DWORD 1.
-							//          So the minimum value is 0x00000002,
-							//          meaning empty custom-data.
-							//
-							// Layout of custom-data contents, for the various meta-data classes,
-							// not defined in this file.
-							var customDataClass = opcodeToken0.DecodeValue<CustomDataClass>(11, 31);
-							switch (customDataClass)
-							{
-								case CustomDataClass.DclImmediateConstantBuffer:
-									opcodeToken = new ImmediateConstantBufferDeclarationParser(Reader).Parse();
-									break;
-								case CustomDataClass.ShaderMessage:
-									opcodeToken = new ShaderMessageDeclarationParser(Reader).Parse();
-									break;
-								default:
-									throw new ArgumentOutOfRangeException();
-							}
-							break;
-						}
 						case OpcodeType.DclGsInputPrimitive:
-							opcodeToken = new GeometryShaderInputPrimitiveDeclarationParser(Reader).Parse();
+							opcodeToken = GeometryShaderInputPrimitiveDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclGsOutputPrimitiveTopology:
-							opcodeToken = new GeometryShaderOutputPrimitiveTopologyDeclarationParser(Reader).Parse();
+							opcodeToken = GeometryShaderOutputPrimitiveTopologyDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclMaxOutputVertexCount:
-							opcodeToken = new GeometryShaderMaxOutputVertexCountDeclarationParser(Reader).Parse();
+							opcodeToken = GeometryShaderMaxOutputVertexCountDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclGsInstanceCount:
-							opcodeToken = new GeometryShaderInstanceCountDeclarationParser(Reader).Parse();
+							opcodeToken = GeometryShaderInstanceCountDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclInputControlPointCount:
 						case OpcodeType.DclOutputControlPointCount:
-							opcodeToken = new ControlPointCountDeclarationParser(Reader).Parse();
+							opcodeToken = ControlPointCountDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclTessDomain:
-							opcodeToken = new TessellatorDomainDeclarationParser(Reader).Parse();
+							opcodeToken = TessellatorDomainDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclTessPartitioning:
-							opcodeToken = new TessellatorPartitioningDeclarationParser(Reader).Parse();
+							opcodeToken = TessellatorPartitioningDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclTessOutputPrimitive:
-							opcodeToken = new TessellatorOutputPrimitiveDeclarationParser(Reader).Parse();
+							opcodeToken = TessellatorOutputPrimitiveDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclHsMaxTessFactor:
-							opcodeToken = new HullShaderMaxTessFactorDeclarationParser(Reader).Parse();
+							opcodeToken = HullShaderMaxTessFactorDeclarationToken.Parse(Reader);
 							break;
 						case OpcodeType.DclHsForkPhaseInstanceCount:
-							opcodeToken = new HullShaderForkPhaseInstanceCountDeclarationParser(Reader).Parse();
+							opcodeToken = HullShaderForkPhaseInstanceCountDeclarationToken.Parse(Reader);
 							break;
 						default:
 							throw new ArgumentOutOfRangeException();
@@ -260,13 +227,6 @@ namespace SlimShader.Parser
 			}
 
 			return program;
-		}
-
-		private static bool IsDeclaration(OpcodeType type)
-		{
-			return (type >= OpcodeType.DclResource && type <= OpcodeType.DclGlobalFlags)
-				|| (type >= OpcodeType.DclStream && type <= OpcodeType.DclResourceStructured)
-				|| type == OpcodeType.DclGsInstanceCount;
 		}
 	}
 }

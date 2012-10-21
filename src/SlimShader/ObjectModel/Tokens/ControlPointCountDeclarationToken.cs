@@ -1,7 +1,7 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
+using SlimShader.Parser;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Hull Shader Declaration Phase: HS/DS Input Control Point Count
@@ -30,18 +30,13 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	///         contains extended operand description.  This dcl is currently not
 	///         extended.
 	/// </summary>
-	public class ControlPointCountDeclarationParser
-		: BytecodeParser<ControlPointCountDeclarationToken>
+	public class ControlPointCountDeclarationToken : DeclarationToken
 	{
-		public ControlPointCountDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public uint ControlPointCount { get; private set; }
 
-		public override ControlPointCountDeclarationToken Parse()
+		public static ControlPointCountDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
 			return new ControlPointCountDeclarationToken
 			{
 				ControlPointCount = token0.DecodeValue(11, 16)

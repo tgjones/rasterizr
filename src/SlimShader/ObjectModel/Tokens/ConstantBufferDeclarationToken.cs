@@ -1,3 +1,6 @@
+using SlimShader.IO;
+using SlimShader.Parser;
+
 namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
@@ -31,6 +34,16 @@ namespace SlimShader.ObjectModel.Tokens
 	public class ConstantBufferDeclarationToken : DeclarationToken
 	{
 		public ConstantBufferAccessPattern AccessPattern { get; internal set; }
+
+		public static ConstantBufferDeclarationToken Parse(BytecodeReader reader)
+		{
+			var token0 = reader.ReadUInt32();
+			return new ConstantBufferDeclarationToken
+			{
+				AccessPattern = token0.DecodeValue<ConstantBufferAccessPattern>(11, 11),
+				Operand = new OperandParser(reader, false).Parse()
+			};
+		}
 
 		public override string ToString()
 		{

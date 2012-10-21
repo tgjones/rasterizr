@@ -1,8 +1,7 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
+using SlimShader.Parser;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Hull Shader Declaration Phase: Tessellator Partitioning
@@ -17,19 +16,14 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	///         contains extended operand description.  This dcl is currently not
 	///         extended.
 	/// </summary>
-	public class TessellatorPartitioningDeclarationParser
-		: BytecodeParser<TessellatorPartioningDeclarationToken>
+	public class TessellatorPartitioningDeclarationToken : DeclarationToken
 	{
-		public TessellatorPartitioningDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public TessellatorPartitioning Partioning { get; private set; }
 
-		public override TessellatorPartioningDeclarationToken Parse()
+		public static TessellatorPartitioningDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
-			return new TessellatorPartioningDeclarationToken
+			var token0 = reader.ReadUInt32();
+			return new TessellatorPartitioningDeclarationToken
 			{
 				Partioning = token0.DecodeValue<TessellatorPartitioning>(11, 13)
 			};

@@ -1,7 +1,6 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Hull Shader Declaration Phase: Hull Shader Fork Phase Instance Count
@@ -18,21 +17,16 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	/// OpcodeToken0 is followed by a UINT32 representing the
 	/// number of instances of the current fork phase program to execute.
 	/// </summary>
-	public class HullShaderForkPhaseInstanceCountDeclarationParser
-		: BytecodeParser<HullShaderForkPhaseInstanceCountDeclarationToken>
+	public class HullShaderForkPhaseInstanceCountDeclarationToken : DeclarationToken
 	{
-		public HullShaderForkPhaseInstanceCountDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public uint InstanceCount { get; private set; }
 
-		public override HullShaderForkPhaseInstanceCountDeclarationToken Parse()
+		public static HullShaderForkPhaseInstanceCountDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
 			return new HullShaderForkPhaseInstanceCountDeclarationToken
 			{
-				InstanceCount = Reader.ReadUInt32()
+				InstanceCount = reader.ReadUInt32()
 			};
 		}
 	}

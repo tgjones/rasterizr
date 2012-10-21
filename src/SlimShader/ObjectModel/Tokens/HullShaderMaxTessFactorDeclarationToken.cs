@@ -1,7 +1,6 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Hull Shader Declaration Phase: Hull Shader Max Tessfactor
@@ -18,21 +17,16 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	/// OpcodeToken0 is followed by a float32 representing the
 	/// maximum TessFactor.
 	/// </summary>
-	public class HullShaderMaxTessFactorDeclarationParser
-		: BytecodeParser<HullShaderMaxTessFactorDeclarationToken>
+	public class HullShaderMaxTessFactorDeclarationToken : DeclarationToken
 	{
-		public HullShaderMaxTessFactorDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public float MaxTessFactor { get; set; }
 
-		public override HullShaderMaxTessFactorDeclarationToken Parse()
+		public static HullShaderMaxTessFactorDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
 			return new HullShaderMaxTessFactorDeclarationToken
 			{
-				MaxTessFactor = Reader.ReadSingle()
+				MaxTessFactor = reader.ReadSingle()
 			};
 		}
 	}

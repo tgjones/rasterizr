@@ -1,7 +1,6 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Immediate Constant Buffer Declaration
@@ -18,18 +17,14 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	/// (2) Sequence of 4-tuples of DWORDs defining the Immediate Constant Buffer.
 	///     The number of 4-tuples is (length above - 1) / 4
 	/// </summary>
-	public class ImmediateConstantBufferDeclarationParser : BytecodeParser<ImmediateConstantBufferDeclarationToken>
+	public class ImmediateConstantBufferDeclarationToken : ImmediateDeclarationToken
 	{
-		public ImmediateConstantBufferDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public uint[] Data { get; private set; }
 
-		public override ImmediateConstantBufferDeclarationToken Parse()
+		public static ImmediateConstantBufferDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
-			var length = Reader.ReadUInt32() - 2;
+			var token0 = reader.ReadUInt32();
+			var length = reader.ReadUInt32() - 2;
 
 			var result = new ImmediateConstantBufferDeclarationToken
 			{
@@ -38,7 +33,7 @@ namespace SlimShader.Parser.Opcodes.Declarations
 			};
 
 			for (int i = 0; i < length; i++)
-				result.Data[i] = Reader.ReadUInt32();
+				result.Data[i] = reader.ReadUInt32();
 
 			return result;
 		}

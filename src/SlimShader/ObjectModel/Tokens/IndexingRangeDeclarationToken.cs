@@ -1,7 +1,7 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
+using SlimShader.Parser;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Input or Output Register Indexing Range Declaration
@@ -26,19 +26,18 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	/// (2) a DWORD representing the count of registers starting from the one
 	///     indicated in (1).
 	/// </summary>
-	public class IndexingRangeDeclarationParser : BytecodeParser<IndexingRangeDeclarationToken>
+	public class IndexingRangeDeclarationToken : DeclarationToken
 	{
-		public IndexingRangeDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		/// <summary>
+		/// Represents the count of registers starting the from the one indicated in Operand.
+		/// </summary>
+		public uint RegisterCount { get; internal set; }
 
-		public override IndexingRangeDeclarationToken Parse()
+		public static IndexingRangeDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
-			var operand = new OperandParser(Reader, false).Parse();
-			var registerCount = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
+			var operand = new OperandParser(reader, false).Parse();
+			var registerCount = reader.ReadUInt32();
 			return new IndexingRangeDeclarationToken
 			{
 				Operand = operand,

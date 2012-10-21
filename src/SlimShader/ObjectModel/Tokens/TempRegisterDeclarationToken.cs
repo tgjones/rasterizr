@@ -1,7 +1,6 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Temp Register Declaration r0...r(n-1) 
@@ -19,21 +18,25 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	/// (1) DWORD (unsigned int) indicating how many temps are being declared.  
 	///     i.e. 5 means r0...r4 are declared.
 	/// </summary>
-	public class TempRegisterDeclarationParser : BytecodeParser<TempRegisterDeclarationToken>
+	public class TempRegisterDeclarationToken : DeclarationToken
 	{
-		public TempRegisterDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		/// <summary>
+		/// Indicates how many temps are being declared. i.e. 5 means r0...r4 are declared.
+		/// </summary>
+		public uint TempCount { get; internal set; }
 
-		public override TempRegisterDeclarationToken Parse()
+		public static TempRegisterDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
 			return new TempRegisterDeclarationToken
 			{
-				TempCount = Reader.ReadUInt32()
+				TempCount = reader.ReadUInt32()
 			};
+		}
+
+		public override string ToString()
+		{
+			return string.Format("dcl_temps {0}", TempCount);
 		}
 	}
 }

@@ -1,8 +1,7 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
+using SlimShader.Parser;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Hull Shader Declaration Phase: Tessellator Output Primitive
@@ -17,18 +16,13 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	///         contains extended operand description.  This dcl is currently not
 	///         extended.
 	/// </summary>
-	public class TessellatorOutputPrimitiveDeclarationParser
-		: BytecodeParser<TessellatorOutputPrimitiveDeclarationToken>
+	public class TessellatorOutputPrimitiveDeclarationToken : DeclarationToken
 	{
-		public TessellatorOutputPrimitiveDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public TessellatorOutputPrimitive OutputPrimitive { get; set; }
 
-		public override TessellatorOutputPrimitiveDeclarationToken Parse()
+		public static TessellatorOutputPrimitiveDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
 			return new TessellatorOutputPrimitiveDeclarationToken
 			{
 				OutputPrimitive = token0.DecodeValue<TessellatorOutputPrimitive>(11, 13)

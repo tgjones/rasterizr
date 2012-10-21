@@ -1,3 +1,6 @@
+using SlimShader.IO;
+using SlimShader.Parser;
+
 namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
@@ -20,6 +23,17 @@ namespace SlimShader.ObjectModel.Tokens
 	public class SamplerDeclarationToken : DeclarationToken
 	{
 		public SamplerMode SamplerMode { get; internal set; }
+
+		public static SamplerDeclarationToken Parse(BytecodeReader reader)
+		{
+			var token0 = reader.ReadUInt32();
+			var operand = new OperandParser(reader, false).Parse();
+			return new SamplerDeclarationToken
+			{
+				SamplerMode = token0.DecodeValue<SamplerMode>(11, 14),
+				Operand = operand
+			};
+		}
 
 		public override string ToString()
 		{

@@ -1,8 +1,6 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Geometry Shader Instance Count Declaration
@@ -19,21 +17,16 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	/// OpcodeToken0 is followed by a UINT32 representing the
 	/// number of instances of the geometry shader program to execute.
 	/// </summary>
-	public class GeometryShaderInstanceCountDeclarationParser
-		: BytecodeParser<GeometryShaderInstanceCountDeclarationToken>
+	public class GeometryShaderInstanceCountDeclarationToken : DeclarationToken
 	{
-		public GeometryShaderInstanceCountDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public uint InstanceCount { get; set; }
 
-		public override GeometryShaderInstanceCountDeclarationToken Parse()
+		public static GeometryShaderInstanceCountDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
 			return new GeometryShaderInstanceCountDeclarationToken
 			{
-				InstanceCount = Reader.ReadUInt32()
+				InstanceCount = reader.ReadUInt32()
 			};
 		}
 	}

@@ -1,8 +1,7 @@
-﻿using SlimShader.IO;
-using SlimShader.ObjectModel;
-using SlimShader.ObjectModel.Tokens;
+using SlimShader.IO;
+using SlimShader.Parser;
 
-namespace SlimShader.Parser.Opcodes.Declarations
+namespace SlimShader.ObjectModel.Tokens
 {
 	/// <summary>
 	/// Hull Shader Declaration Phase: Tessellator Domain
@@ -17,18 +16,13 @@ namespace SlimShader.Parser.Opcodes.Declarations
 	///         contains extended operand description.  This dcl is currently not
 	///         extended.
 	/// </summary>
-	public class TessellatorDomainDeclarationParser
-		: BytecodeParser<TessellatorDomainDeclarationToken>
+	public class TessellatorDomainDeclarationToken : DeclarationToken
 	{
-		public TessellatorDomainDeclarationParser(BytecodeReader reader)
-			: base(reader)
-		{
-			
-		}
+		public TessellatorDomain Domain { get; private set; }
 
-		public override TessellatorDomainDeclarationToken Parse()
+		public static TessellatorDomainDeclarationToken Parse(BytecodeReader reader)
 		{
-			var token0 = Reader.ReadUInt32();
+			var token0 = reader.ReadUInt32();
 			return new TessellatorDomainDeclarationToken
 			{
 				Domain = token0.DecodeValue<TessellatorDomain>(11, 12)
