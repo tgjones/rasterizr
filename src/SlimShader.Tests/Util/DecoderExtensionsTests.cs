@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using SlimShader.Shader;
 using SlimShader.Util;
 
 namespace SlimShader.Tests.Util

@@ -3,7 +3,8 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using SlimShader.IO;
-using SlimShader.Tokens;
+using SlimShader.Shader;
+using SlimShader.Shader.Tokens;
 
 namespace SlimShader.Tests
 {

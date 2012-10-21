@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using SlimShader.IO;
+using SlimShader.ResourceDefinition;
+using SlimShader.Shader;
 using SlimShader.Util;
 
 namespace SlimShader
