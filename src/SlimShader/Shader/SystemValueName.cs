@@ -4,6 +4,7 @@ namespace SlimShader.Shader
 {
 	public enum SystemValueName
 	{
+		[Description("NONE")]
 		Undefined = 0,
 
 		[Description("position")]

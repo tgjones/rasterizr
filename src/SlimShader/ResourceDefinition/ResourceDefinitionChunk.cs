@@ -1,9 +1,38 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using SlimShader.IO;
+using SlimShader.Shader;
+using SlimShader.Util;
 
 namespace SlimShader.ResourceDefinition
 {
+	public enum ShaderFlags
+	{
+		None = 0,
+		Debug = 1,
+		SkipValidation = 2,
+		SkipOptimization = 4,
+		PackMatrixRowMajor = 8,
+		PackMatrixColumnMajor = 16,
+		PartialPrecision = 32,
+		ForceVsSoftwareNoOpt = 64,
+		ForcePsSoftwareNoOpt = 128,
+		NoPreshader = 256,
+		AvoidFlowControl = 512,
+		PreferFlowControl = 1024,
+		EnableStrictness = 2048,
+		EnableBackwardsCompatibility = 4096,
+		IeeeStrictness = 8192,
+		OptimizationLevel0 = 16384,
+		OptimizationLevel1 = 0,
+		OptimizationLevel2 = 49152,
+		OptimizationLevel3 = 32768,
+		Reserved16 = 65536,
+		Reserved17 = 131072,
+		WarningsAreErrors = 262144
+	}
+
 	/// <summary>
 	/// Most of this was adapted from 
 	/// https://devel.nuclex.org/framework/browser/graphics/Nuclex.Graphics.Native/trunk/Source/Introspection/HlslShaderReflector.cpp?rev=1743
@@ -13,6 +42,9 @@ namespace SlimShader.ResourceDefinition
 	{
 		public List<ConstantBuffer> ConstantBuffers { get; private set; }
 		public List<ResourceBinding> ResourceBindings { get; private set; }
+		public ShaderVersion Target { get; private set; }
+		public ShaderFlags Flags { get; private set; }
+		public string Creator { get; private set; }
 
 		public ResourceDefinitionChunk()
 		{
@@ -28,10 +60,35 @@ namespace SlimShader.ResourceDefinition
 			uint constantBufferOffset = headerReader.ReadUInt32();
 			uint resourceBindingCount = headerReader.ReadUInt32();
 			uint resourceBindingOffset = headerReader.ReadUInt32();
-			uint requiredShaderVersion = headerReader.ReadUInt32();
+			uint target = headerReader.ReadUInt32();
 			uint flags = headerReader.ReadUInt32();
 
-			var result = new ResourceDefinitionChunk();
+			var creatorOffset = headerReader.ReadUInt32();
+			var creatorReader = reader.CopyAtOffset((int) creatorOffset);
+			var creator = creatorReader.ReadString();
+
+			// TODO: Maybe move this into a ShaderTarget class.
+			ProgramType programType;
+			switch (target.DecodeValue<ushort>(16, 31))
+			{
+				case 0xFFFF :
+					programType = ProgramType.PixelShader;
+					break;
+				default :
+					throw new ArgumentOutOfRangeException();
+			}
+
+			var result = new ResourceDefinitionChunk
+			{
+				Target = new ShaderVersion
+				{
+					MajorVersion = target.DecodeValue<byte>(8, 15),
+					MinorVersion = target.DecodeValue<byte>(0, 7),
+					ProgramType = programType
+				},
+				Flags = (ShaderFlags) flags,
+				Creator = creator
+			};
 
 			var constantBufferReader = reader.CopyAtOffset((int) constantBufferOffset);
 			for (int i = 0; i < constantBufferCount; i++)

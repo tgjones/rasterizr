@@ -14,6 +14,7 @@ namespace SlimShader
 		{
 			{ "ISGN".ToFourCc(), ChunkType.Isgn },
 			{ "OSGN".ToFourCc(), ChunkType.Osgn },
+			{ "OSG5".ToFourCc(), ChunkType.Osg5 },
 			{ "RDEF".ToFourCc(), ChunkType.Rdef },
 			{ "SHDR".ToFourCc(), ChunkType.Shdr },
 			{ "SHEX".ToFourCc(), ChunkType.Shex },
@@ -24,7 +25,7 @@ namespace SlimShader
 		public ChunkType ChunkType { get; internal set; }
 		public uint ChunkSize { get; internal set; }
 
-		public static DxbcChunk ParseChunk(BytecodeReader chunkReader)
+		public static DxbcChunk ParseChunk(BytecodeReader chunkReader, DxbcContainer container)
 		{
 			// Type of chunk this is.
 			uint fourCc = chunkReader.ReadUInt32();
@@ -43,10 +44,13 @@ namespace SlimShader
 			switch (chunkType)
 			{
 				case ChunkType.Isgn :
-					chunk = InputOutputSignatureChunk.Parse(chunkContentReader);
+					chunk = InputOutputSignatureChunk.Parse(chunkContentReader, true, chunkType,
+						container.ResourceDefinition.Target.ProgramType);
 					break;
 				case ChunkType.Osgn:
-					chunk = InputOutputSignatureChunk.Parse(chunkContentReader);
+				case ChunkType.Osg5:
+					chunk = InputOutputSignatureChunk.Parse(chunkContentReader, false, chunkType,
+						container.ResourceDefinition.Target.ProgramType);
 					break;
 				case ChunkType.Rdef:
 					chunk = ResourceDefinitionChunk.Parse(chunkContentReader);
@@ -56,7 +60,7 @@ namespace SlimShader
 					chunk = ShaderProgramChunk.Parse(chunkContentReader);
 					break;
 				case ChunkType.Stat:
-					chunk = StatChunk.Parse(chunkContentReader);
+					chunk = StatisticsChunk.Parse(chunkContentReader, chunkSize);
 					break;
 				default :
 					throw new ArgumentOutOfRangeException();

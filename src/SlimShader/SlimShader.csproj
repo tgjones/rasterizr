@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SlimShader</RootNamespace>
     <AssemblyName>SlimShader</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InputOutputSignature\InputSignatureChunk.cs" />
     <Compile Include="InputOutputSignature\MinPrecision.cs" />
+    <Compile Include="InputOutputSignature\Name.cs" />
+    <Compile Include="InputOutputSignature\OutputSignatureChunk.cs" />
     <Compile Include="InputOutputSignature\RegisterComponentType.cs" />
+    <Compile Include="InputOutputSignature\SignatureElementSize.cs" />
     <Compile Include="InputOutputSignature\SignatureParameterDescription.cs" />
     <Compile Include="ResourceDefinition\CBufferType.cs" />
     <Compile Include="IO\BytecodeReader.cs" />
@@ -74,7 +79,7 @@
     <Compile Include="ResourceDefinition\ShaderInputType.cs" />
     <Compile Include="Shader\ShaderMessageFormat.cs" />
     <Compile Include="ResourceDefinition\ResourceDimension.cs" />
-    <Compile Include="StatChunk.cs" />
+    <Compile Include="StatisticsChunk.cs" />
     <Compile Include="Shader\SystemValueName.cs" />
     <Compile Include="Shader\TessellatorDomain.cs" />
     <Compile Include="Shader\TessellatorOutputPrimitive.cs" />

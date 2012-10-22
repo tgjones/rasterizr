@@ -2,9 +2,13 @@
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
+using SharpDX.D3DCompiler;
 using SlimShader.IO;
+using SlimShader.ResourceDefinition;
 using SlimShader.Shader;
 using SlimShader.Shader.Tokens;
+using ResourceDimension = SlimShader.Shader.ResourceDimension;
+using ResourceReturnType = SlimShader.Shader.ResourceReturnType;
 
 namespace SlimShader.Tests
 {
@@ -90,6 +94,66 @@ namespace SlimShader.Tests
 				.Skip(5));
 			var asmFileText = string.Join(Environment.NewLine, File.ReadAllLines(asmFile).Skip(5));
 			Assert.That(decompiledAsmText, Is.EqualTo(asmFileText));
+
+			// Compare with actual Direct3D reflected objects.
+			var shaderBytecode = ShaderBytecode.FromFile(binaryFile);
+			var shaderReflection = new ShaderReflection(shaderBytecode);
+			AssertAreEqual(shaderReflection.Description, container.ResourceDefinition);
+			AssertAreEqual(shaderReflection.Description, container.Statistics);
+			AssertAreEqual(shaderReflection, container.Statistics);
+			Assert.AreEqual(shaderReflection.Description.InputParameters, container.InputSignature.Parameters.Count);
+			Assert.AreEqual(shaderReflection.Description.OutputParameters, container.OutputSignature.Parameters.Count);
+		}
+
+		private static void AssertAreEqual(ShaderDescription expected, StatisticsChunk actual)
+		{
+			Assert.AreEqual(expected.ArrayInstructionCount, actual.ArrayInstructionCount);
+			Assert.AreEqual(expected.BarrierInstructions, actual.BarrierInstructions);
+			Assert.AreEqual(expected.ControlPoints, actual.ControlPoints);
+			Assert.AreEqual(expected.CutInstructionCount, actual.CutInstructionCount);
+			Assert.AreEqual(expected.DeclarationCount, actual.DeclarationCount);
+			Assert.AreEqual(expected.DefineCount, actual.DefineCount);
+			Assert.AreEqual(expected.DynamicFlowControlCount, actual.DynamicFlowControlCount);
+			Assert.AreEqual(expected.EmitInstructionCount, actual.EmitInstructionCount);
+			Assert.AreEqual(expected.FloatInstructionCount, actual.FloatInstructionCount);
+			Assert.AreEqual(expected.GeometryShaderInstanceCount, actual.GeometryShaderInstanceCount);
+			Assert.AreEqual(expected.GeometryShaderMaxOutputVertexCount, actual.GeometryShaderMaxOutputVertexCount);
+			Assert.AreEqual((int) expected.GeometryShaderOutputTopology, (int) actual.GeometryShaderOutputTopology);
+			Assert.AreEqual((int) expected.HullShaderOutputPrimitive, (int) actual.HullShaderOutputPrimitive);
+			Assert.AreEqual((int) expected.HullShaderPartitioning, (int) actual.HullShaderPartitioning);
+			Assert.AreEqual((int) expected.InputPrimitive, (int) actual.InputPrimitive);
+			Assert.AreEqual(expected.InstructionCount, actual.InstructionCount);
+			Assert.AreEqual(expected.InterlockedInstructions, actual.InterlockedInstructions);
+			Assert.AreEqual(expected.IntInstructionCount, actual.IntInstructionCount);
+			Assert.AreEqual(expected.MacroInstructionCount, actual.MacroInstructionCount);
+			Assert.AreEqual(expected.PatchConstantParameters, actual.PatchConstantParameters);
+			Assert.AreEqual(expected.StaticFlowControlCount, actual.StaticFlowControlCount);
+			Assert.AreEqual(expected.TempArrayCount, actual.TempArrayCount);
+			Assert.AreEqual(expected.TempRegisterCount, actual.TempRegisterCount);
+			Assert.AreEqual((int) expected.TessellatorDomain, (int) actual.TessellatorDomain);
+			Assert.AreEqual(expected.TextureBiasInstructions, actual.TextureBiasInstructions);
+			Assert.AreEqual(expected.TextureCompInstructions, actual.TextureCompInstructions);
+			Assert.AreEqual(expected.TextureGradientInstructions, actual.TextureGradientInstructions);
+			Assert.AreEqual(expected.TextureLoadInstructions, actual.TextureLoadInstructions);
+			Assert.AreEqual(expected.TextureNormalInstructions, actual.TextureNormalInstructions);
+			Assert.AreEqual(expected.TextureStoreInstructions, actual.TextureStoreInstructions);
+			Assert.AreEqual(expected.UintInstructionCount, actual.UIntInstructionCount);
+		}
+
+		private static void AssertAreEqual(ShaderReflection expected, StatisticsChunk actual)
+		{
+			Assert.AreEqual(expected.ConditionalMoveInstructionCount, actual.MovCInstructionCount);
+			Assert.AreEqual(expected.ConversionInstructionCount, actual.ConversionInstructionCount);
+			Assert.AreEqual(expected.MoveInstructionCount, actual.MovInstructionCount);
+		}
+
+		private static void AssertAreEqual(ShaderDescription expected, ResourceDefinitionChunk actual)
+		{
+			Assert.AreEqual(expected.Creator, actual.Creator);
+			Assert.AreEqual((int) expected.Flags, (int) actual.Flags);
+			//Assert.AreEqual(expected.Version, actual.Target);
+			Assert.AreEqual(expected.BoundResources, actual.ResourceBindings.Count);
+			Assert.AreEqual(expected.ConstantBuffers, actual.ConstantBuffers.Count);
 		}
 	}
 }

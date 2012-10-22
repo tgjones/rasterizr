@@ -10,6 +10,11 @@ namespace SlimShader
 		Isgn,
 
 		/// <summary>
+		/// Output signature (SM5)
+		/// </summary>
+		Osg5,
+
+		/// <summary>
 		/// Output signature
 		/// </summary>
 		Osgn,

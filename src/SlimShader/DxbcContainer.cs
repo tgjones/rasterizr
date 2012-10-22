@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SlimShader.IO;
+using SlimShader.InputOutputSignature;
 using SlimShader.ResourceDefinition;
 using SlimShader.Shader;
 using SlimShader.Util;
@@ -12,6 +13,31 @@ namespace SlimShader
 	{
 		public DxbcContainerHeader Header { get; private set; }
 		public List<DxbcChunk> Chunks { get; private set; }
+
+		public ResourceDefinitionChunk ResourceDefinition
+		{
+			get { return Chunks.OfType<ResourceDefinitionChunk>().FirstOrDefault(); }
+		}
+
+		public InputSignatureChunk InputSignature
+		{
+			get { return Chunks.OfType<InputSignatureChunk>().FirstOrDefault(); }
+		}
+
+		public OutputSignatureChunk OutputSignature
+		{
+			get { return Chunks.OfType<OutputSignatureChunk>().FirstOrDefault(); }
+		}
+
+		public ShaderProgramChunk Shader
+		{
+			get { return Chunks.OfType<ShaderProgramChunk>().FirstOrDefault(); }
+		}
+
+		public StatisticsChunk Statistics
+		{
+			get { return Chunks.OfType<StatisticsChunk>().FirstOrDefault(); }
+		}
 
 		public DxbcContainer()
 		{
@@ -45,7 +71,7 @@ namespace SlimShader
 			{
 				uint chunkOffset = reader.ReadUInt32();
 				var chunkReader = reader.CopyAtOffset((int) chunkOffset);
-				container.Chunks.Add(DxbcChunk.ParseChunk(chunkReader));
+				container.Chunks.Add(DxbcChunk.ParseChunk(chunkReader, container));
 			}
 
 			return container;
@@ -63,32 +89,26 @@ namespace SlimShader
 			sb.AppendLine("//");
 			sb.AppendLine("//");
 
-			var resourceDefinitionChunk = Chunks.OfType<ResourceDefinitionChunk>().FirstOrDefault();
-			if (resourceDefinitionChunk != null)
-				sb.Append(resourceDefinitionChunk);
+			if (ResourceDefinition != null)
+				sb.Append(ResourceDefinition);
 
-			sb.AppendLine(@"//
-//
-//
-// Input signature:
-//
-// Name                 Index   Mask Register SysValue Format   Used
-// -------------------- ----- ------ -------- -------- ------ ------
-// TEXCOORD                 0   xyzw        0     NONE  float   xyzw
-// TEXCOORD                 1   xyzw        1     NONE  float   x   
-// SV_POSITION              0   xyzw        2      POS  float   x   
-//
-//
-// Output signature:
-//
-// Name                 Index   Mask Register SysValue Format   Used
-// -------------------- ----- ------ -------- -------- ------ ------
-// SV_TARGET                0   xyzw        0   TARGET  float   xyzw
-//");
+			sb.AppendLine(@"//");
+			sb.AppendLine(@"//");
+			sb.AppendLine(@"//");
 
-			var shaderProgramChunk = Chunks.OfType<ShaderProgramChunk>().FirstOrDefault();
-			if (shaderProgramChunk != null)
-				sb.Append(shaderProgramChunk);
+			if (InputSignature != null)
+				sb.Append(InputSignature);
+
+			sb.AppendLine(@"//");
+			sb.AppendLine(@"//");
+
+			if (OutputSignature != null)
+				sb.Append(OutputSignature);
+
+			sb.AppendLine(@"//");
+
+			if (Shader != null)
+				sb.Append(Shader);
 
 			return sb.ToString();
 		}
