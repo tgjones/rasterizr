@@ -382,6 +382,8 @@ namespace SlimShader.Shader
 
 		// TODO: Finish descriptions.
 		EmitThenCutStream,
+
+		[Description("fcall")]
 		InterfaceCall,
 		Bufinfo,
 		RtxCoarse,
@@ -412,7 +414,10 @@ namespace SlimShader.Shader
 
 		[Description("dcl_function_table")]
 		DclFunctionTable,
+
+		[Description("dcl_interface")]
 		DclInterface,
+
 		DclInputControlPointCount,
 		DclOutputControlPointCount,
 		DclTessDomain,

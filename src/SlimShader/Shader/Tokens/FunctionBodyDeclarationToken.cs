@@ -33,5 +33,10 @@ namespace SlimShader.Shader.Tokens
 				Identifier = reader.ReadUInt32()
 			};
 		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} fb{1}", TypeDescription, Identifier);
+		}
 	}
 }

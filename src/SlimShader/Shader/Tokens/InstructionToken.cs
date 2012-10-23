@@ -133,11 +133,21 @@ namespace SlimShader.Shader.Tokens
 				result += "_sat";
 			result += " ";
 
-			for (int i = 0; i < Operands.Count; i++)
+			if (Header.OpcodeType == OpcodeType.InterfaceCall)
 			{
-				result += Operands[i].ToString();
-				if (i < Operands.Count - 1)
-					result += ", ";
+				result += string.Format("fp{0}[{1}][{2}]", 
+					Operands[0].Indices[0].Value,
+					FunctionIndex,
+					Operands[0].Indices[1].Value);
+			}
+			else
+			{
+				for (int i = 0; i < Operands.Count; i++)
+				{
+					result += Operands[i].ToString();
+					if (i < Operands.Count - 1)
+						result += ", ";
+				}
 			}
 
 			return result;

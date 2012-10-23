@@ -110,6 +110,7 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// Reference to a function definition
 		/// </summary>
+		[Description("fb")]
 		FunctionBody = 17,
 
 		/// <summary>

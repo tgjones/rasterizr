@@ -96,8 +96,6 @@ namespace SlimShader.Shader
 					indent += 2;
 			}
 
-			sb.AppendFormat("// Approximately {0} instruction slots used", Tokens.OfType<InstructionToken>().Count());
-
 			return sb.ToString();
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SlimShader.IO;
 using SlimShader.Util;
 
@@ -83,6 +84,12 @@ namespace SlimShader.Shader.Tokens
 				result.FunctionTableIdentifiers.Add(reader.ReadUInt32());
 
 			return result;
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} fp{1}[{2}][{3}] = {{{4}}}", TypeDescription, Identifier, ArrayLength,
+				ExpectedFunctionTableLength, string.Join(", ", FunctionTableIdentifiers.Select(x => "ft" + x)));
 		}
 	}
 }

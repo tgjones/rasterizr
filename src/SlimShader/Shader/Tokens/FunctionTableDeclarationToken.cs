@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SlimShader.IO;
 
 namespace SlimShader.Shader.Tokens
@@ -52,6 +53,12 @@ namespace SlimShader.Shader.Tokens
 				result.FunctionBodyIndices.Add(reader.ReadUInt32());
 
 			return result;
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} ft{1} = {{{2}}}", TypeDescription, Identifier,
+				string.Join(", ", FunctionBodyIndices.Select(x => "fb" + x)));
 		}
 	}
 }
