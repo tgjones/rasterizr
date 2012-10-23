@@ -1,4 +1,6 @@
-﻿namespace SlimShader.ResourceDefinition
+﻿using System.ComponentModel;
+
+namespace SlimShader.ResourceDefinition
 {
 	/// <summary>
 	/// Indicates a constant buffer's type.
@@ -9,6 +11,7 @@
 		/// <summary>
 		/// A buffer containing scalar constants.
 		/// </summary>
+		[Description("cbuffer")]
 		CBuffer,
 
 		/// <summary>
@@ -19,6 +22,7 @@
 		/// <summary>
 		/// A buffer containing interface pointers.
 		/// </summary>
+		[Description("interfaces")]
 		InterfacePointers,
 
 		/// <summary>

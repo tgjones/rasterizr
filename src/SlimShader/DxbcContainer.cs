@@ -16,27 +16,32 @@ namespace SlimShader
 
 		public ResourceDefinitionChunk ResourceDefinition
 		{
-			get { return Chunks.OfType<ResourceDefinitionChunk>().FirstOrDefault(); }
+			get { return Chunks.OfType<ResourceDefinitionChunk>().SingleOrDefault(); }
 		}
 
 		public InputSignatureChunk InputSignature
 		{
-			get { return Chunks.OfType<InputSignatureChunk>().FirstOrDefault(); }
+			get { return Chunks.OfType<InputSignatureChunk>().SingleOrDefault(); }
 		}
 
 		public OutputSignatureChunk OutputSignature
 		{
-			get { return Chunks.OfType<OutputSignatureChunk>().FirstOrDefault(); }
+			get { return Chunks.OfType<OutputSignatureChunk>().SingleOrDefault(); }
 		}
 
 		public ShaderProgramChunk Shader
 		{
-			get { return Chunks.OfType<ShaderProgramChunk>().FirstOrDefault(); }
+			get { return Chunks.OfType<ShaderProgramChunk>().SingleOrDefault(); }
 		}
 
 		public StatisticsChunk Statistics
 		{
-			get { return Chunks.OfType<StatisticsChunk>().FirstOrDefault(); }
+			get { return Chunks.OfType<StatisticsChunk>().SingleOrDefault(); }
+		}
+
+		public InterfacesChunk Interfaces
+		{
+			get { return Chunks.OfType<InterfacesChunk>().SingleOrDefault(); }
 		}
 
 		public DxbcContainer()
@@ -93,8 +98,6 @@ namespace SlimShader
 				sb.Append(ResourceDefinition);
 
 			sb.AppendLine(@"//");
-			sb.AppendLine(@"//");
-			sb.AppendLine(@"//");
 
 			if (InputSignature != null)
 				sb.Append(InputSignature);
@@ -106,6 +109,9 @@ namespace SlimShader
 				sb.Append(OutputSignature);
 
 			sb.AppendLine(@"//");
+
+			if (Interfaces != null)
+				sb.Append(Interfaces);
 
 			if (Shader != null)
 				sb.Append(Shader);

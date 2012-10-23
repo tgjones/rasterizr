@@ -21,7 +21,11 @@ namespace SlimShader
 			if (!TypeDescriptions.ContainsKey(type))
 				TypeDescriptions[type] = Enum.GetValues(type).Cast<Enum>().Distinct()
 					.ToDictionary(x => x, GetDescriptionInternal);
-			return TypeDescriptions[type][value];
+			var typeDescriptions = TypeDescriptions[type];
+			if (!typeDescriptions.ContainsKey(value))
+				throw new ArgumentOutOfRangeException("value",
+					string.Format("Could not find description for type '{0}' and value '{1}'.", type, value));
+			return typeDescriptions[value];
 		}
 
 		private static string GetDescriptionInternal(Enum value)

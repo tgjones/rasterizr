@@ -5,6 +5,11 @@ namespace SlimShader
 		Unknown,
 
 		/// <summary>
+		/// Interfaces
+		/// </summary>
+		Ifce,
+
+		/// <summary>
 		/// Input signature
 		/// </summary>
 		Isgn,
@@ -35,7 +40,7 @@ namespace SlimShader
 		Shex,
 
 		/// <summary>
-		/// ?
+		/// Statistics
 		/// </summary>
 		Stat
 	}

@@ -12,6 +12,7 @@ namespace SlimShader
 	{
 		private static readonly Dictionary<uint, ChunkType> KnownChunkTypes = new Dictionary<uint, ChunkType>
 		{
+			{ "IFCE".ToFourCc(), ChunkType.Ifce },
 			{ "ISGN".ToFourCc(), ChunkType.Isgn },
 			{ "OSGN".ToFourCc(), ChunkType.Osgn },
 			{ "OSG5".ToFourCc(), ChunkType.Osg5 },
@@ -43,6 +44,9 @@ namespace SlimShader
 			DxbcChunk chunk;
 			switch (chunkType)
 			{
+				case ChunkType.Ifce :
+					chunk = InterfacesChunk.Parse(chunkContentReader, chunkSize);
+					break;
 				case ChunkType.Isgn :
 					chunk = InputOutputSignatureChunk.Parse(chunkContentReader, true, chunkType,
 						container.ResourceDefinition.Target.ProgramType);

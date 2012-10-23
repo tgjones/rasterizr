@@ -92,8 +92,12 @@ namespace SlimShader.Shader.Tokens
 
 		public override string ToString()
 		{
-			return string.Format("{0} o{1}.{2}", TypeDescription, Operand.Indices[0].Value,
-				Operand.ComponentMask.GetDescription());
+			string result = string.Format("{0} {1}", TypeDescription, Operand);
+
+			if (Header.OpcodeType == OpcodeType.DclOutputSgv || Header.OpcodeType == OpcodeType.DclOutputSiv)
+				result += ", " + SystemValueName.GetDescription();
+
+			return result;
 		}
 	}
 }

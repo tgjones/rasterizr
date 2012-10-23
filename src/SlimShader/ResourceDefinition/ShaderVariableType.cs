@@ -49,7 +49,10 @@ namespace SlimShader.ResourceDefinition
 
 		HullShader = 35,
 		DomainShader = 36,
+
+		[Description("interface")]
 		InterfacePointer = 37,
+
 		ComputeShader = 38,
 		Double = 39,
 		ReadWriteTexture1D,

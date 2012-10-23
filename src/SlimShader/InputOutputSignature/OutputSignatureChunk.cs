@@ -4,7 +4,7 @@ namespace SlimShader.InputOutputSignature
 	{
 		public override string ToString()
 		{
-			return @"// Output signature:
+			return @"// Output signature: 
 //
 " + base.ToString();
 		}

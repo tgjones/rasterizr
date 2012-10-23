@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using SlimShader.IO;
 using SlimShader.Util;
 
@@ -252,9 +253,11 @@ namespace SlimShader.Shader.Tokens
 				case OperandType.Immediate32:
 				{
 					string result = (_parentType.IsDoubleTypeInstruction()) ? "d(" : "l(";
+					bool allComponentsZeroOrOne = ImmediateValues.All(x => x == 0.0 || x == 1.0);
 					for (int i = 0; i < NumComponents; i++)
 					{
-						if (_parentType.IsIntegralTypeInstruction())
+						if (_parentType.IsIntegralTypeInstruction()
+							|| ((_parentType == OpcodeType.Mov || _parentType == OpcodeType.MovC) && ImmediateValues[i] == 0.0)) // Don't look at me...
 						{
 							// Just guessing this number based on fxc output.
 							const int hexThreshold = 10000;
@@ -269,7 +272,11 @@ namespace SlimShader.Shader.Tokens
 							result += string.Format("{0:F6}", ImmediateValues[i]);
 						}
 						if (i < NumComponents - 1)
-							result += ", ";
+						{
+							result += ",";
+							if (!allComponentsZeroOrOne)
+								result += " ";
+						}
 					}
 					result += ")";
 					return result;
@@ -316,8 +323,7 @@ namespace SlimShader.Shader.Tokens
 					if (!string.IsNullOrEmpty(components))
 						components = "." + components;
 
-					return string.Format("{0}{1}{2}{3}", Modifier.GetDescription(), OperandType.GetDescription(),
-						index, components);
+					return Modifier.Wrap(string.Format("{0}{1}{2}", OperandType.GetDescription(), index, components));
 				}
 			}
 		}

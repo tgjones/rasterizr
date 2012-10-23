@@ -111,5 +111,16 @@ namespace SlimShader.Shader.Tokens
 
 			return result;
 		}
+
+		public override string ToString()
+		{
+			string result = string.Format("{0} v{1}.{2}", TypeDescription,
+				Operand.Indices[0].Value, Operand.ComponentMask.GetDescription());
+
+			if (Header.OpcodeType == OpcodeType.DclInputSgv || Header.OpcodeType == OpcodeType.DclInputSiv)
+				result += ", " + SystemValueName.GetDescription();
+
+			return result;
+		}
 	}
 }

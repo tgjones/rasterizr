@@ -406,7 +406,11 @@ namespace SlimShader.Shader
 		BfRev,
 		SwapC,
 		DclStream,
+
+		[Description("dcl_function_body")]
 		DclFunctionBody,
+
+		[Description("dcl_function_table")]
 		DclFunctionTable,
 		DclInterface,
 		DclInputControlPointCount,

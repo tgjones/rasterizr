@@ -25,7 +25,7 @@ namespace SlimShader.Shader
 		[Description("vertexid")]
 		VertexID = 6,
 
-		[Description("primitiveid")]
+		[Description("primitive_id")]
 		PrimitiveID = 7,
 
 		[Description("instanceid")]

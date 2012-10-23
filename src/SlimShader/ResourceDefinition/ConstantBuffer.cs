@@ -1,23 +1,46 @@
 using System.Collections.Generic;
 using System.Text;
 using SlimShader.IO;
+using SlimShader.Shader;
 
 namespace SlimShader.ResourceDefinition
 {
+	/// <summary>
+	/// Describes a shader constant-buffer.
+	/// Based on D3D11_SHADER_BUFFER_DESC.
+	/// </summary>
 	public class ConstantBuffer
 	{
+		/// <summary>
+		/// The name of the buffer.
+		/// </summary>
 		public string Name { get; private set; }
-		public List<ConstantBufferVariable> Variables { get; private set; }
-		public uint Size { get; private set; }
-		public ShaderCBufferFlags Flags { get; private set; }
+
+		/// <summary>
+		/// A <see cref="CBufferType" />-typed value that indicates the intended use of the constant data.
+		/// </summary>
 		public CBufferType BufferType { get; private set; }
+
+		public List<ShaderVariable> Variables { get; private set; }
+
+		/// <summary>
+		/// Buffer size (in bytes).
+		/// </summary>
+		public uint Size { get; private set; }
+
+		/// <summary>
+		/// A combination of <see cref="ShaderCBufferFlags" />-typed values that are combined by using a bitwise OR 
+		/// operation. The resulting value specifies properties for the shader constant-buffer.
+		/// </summary>
+		public ShaderCBufferFlags Flags { get; private set; }
 
 		public ConstantBuffer()
 		{
-			Variables = new List<ConstantBufferVariable>();
+			Variables = new List<ShaderVariable>();
 		}
 
-		public static ConstantBuffer Parse(BytecodeReader reader, BytecodeReader constantBufferReader)
+		public static ConstantBuffer Parse(BytecodeReader reader, BytecodeReader constantBufferReader,
+			ShaderVersion target)
 		{
 			uint nameOffset = constantBufferReader.ReadUInt32();
 			var nameReader = reader.CopyAtOffset((int) nameOffset);
@@ -32,7 +55,7 @@ namespace SlimShader.ResourceDefinition
 
 			var variableReader = reader.CopyAtOffset((int) variableOffset);
 			for (int i = 0; i < variableCount; i++)
-				result.Variables.Add(ConstantBufferVariable.Parse(reader, variableReader));
+				result.Variables.Add(ShaderVariable.Parse(reader, variableReader, target));
 
 			result.Size = constantBufferReader.ReadUInt32();
 			result.Flags = (ShaderCBufferFlags) constantBufferReader.ReadUInt32();
@@ -44,7 +67,7 @@ namespace SlimShader.ResourceDefinition
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
-			sb.AppendLine("// cbuffer " + Name);
+			sb.AppendLine(string.Format("// {0} {1}", BufferType.GetDescription(), Name));
 			sb.AppendLine("// {");
 			sb.AppendLine("//");
 
@@ -53,6 +76,8 @@ namespace SlimShader.ResourceDefinition
 
 			sb.AppendLine("//");
 			sb.AppendLine("// }");
+			sb.AppendLine("//");
+
 			return sb.ToString();
 		}
 	}

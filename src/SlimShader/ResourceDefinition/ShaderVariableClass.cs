@@ -1,4 +1,6 @@
-﻿namespace SlimShader.ResourceDefinition
+﻿using System.ComponentModel;
+
+namespace SlimShader.ResourceDefinition
 {
 	/// <summary>
 	/// These flags identify the shader-variable class.
@@ -19,6 +21,7 @@
 		/// <summary>
 		/// The shader variable is a row-major matrix.
 		/// </summary>
+		[Description("row_major")]
 		MatrixRows,
 
 		/// <summary>

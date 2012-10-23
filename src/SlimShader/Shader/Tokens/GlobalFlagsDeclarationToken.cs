@@ -27,60 +27,20 @@ namespace SlimShader.Shader.Tokens
 	/// </summary>
 	public class GlobalFlagsDeclarationToken : DeclarationToken
 	{
-		/// <summary>
-		/// Refactoring allowed if bit set.
-		/// </summary>
-		public bool RefactoringAllowed { get; private set; }
-
-		/// <summary>
-		/// Enable double precision float ops.
-		/// </summary>
-		public bool EnableDoublePrecisionFloatOps { get; private set; }
-
-		/// <summary>
-		/// Force early depth-stencil test.
-		/// </summary>
-		public bool ForceEarlyDepthStencilTest { get; private set; }
-
-		/// <summary>
-		/// Enable RAW and structured buffers in non-CS 4.x shaders.
-		/// </summary>
-		public bool EnableRawAndStructuredBuffersInNonCsShaders { get; private set; }
-
-		/// <summary>
-		/// Skip optimizations of shader IL when translating to native code
-		/// </summary>
-		public bool SkipOptimizationsOfShaderIl { get; private set; }
-
-		/// <summary>
-		/// Enable minimum-precision data types
-		/// </summary>
-		public bool EnableMinimumPrecisionDataTypes { get; private set; }
-
-		/// <summary>
-		/// Enable 11.1 double-precision floating-point instruction extensions
-		/// </summary>
-		public bool Enable11Point1DoublePrecisionInstructionExtensions { get; private set; }
-
-		/// <summary>
-		/// Enable 11.1 non-double instruction extensions
-		/// </summary>
-		public bool Enable11Point1NonDoubleInstructionExtensions { get; private set; }
+		public GlobalFlags Flags { get; private set; }
 
 		public static GlobalFlagsDeclarationToken Parse(BytecodeReader reader)
 		{
 			var token0 = reader.ReadUInt32();
 			return new GlobalFlagsDeclarationToken
 			{
-				RefactoringAllowed = (token0.DecodeValue(11, 11) == 1),
-				EnableDoublePrecisionFloatOps = (token0.DecodeValue(12, 12) == 1),
-				ForceEarlyDepthStencilTest = (token0.DecodeValue(13, 13) == 1),
-				EnableRawAndStructuredBuffersInNonCsShaders = (token0.DecodeValue(14, 14) == 1),
-				SkipOptimizationsOfShaderIl = (token0.DecodeValue(15, 15) == 1),
-				EnableMinimumPrecisionDataTypes = (token0.DecodeValue(16, 16) == 1),
-				Enable11Point1DoublePrecisionInstructionExtensions = (token0.DecodeValue(17, 17) == 1),
-				Enable11Point1NonDoubleInstructionExtensions = (token0.DecodeValue(18, 18) == 1)
+				Flags = token0.DecodeValue<GlobalFlags>(11, 18)
 			};
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} {1}", TypeDescription, Flags.GetDescription());
 		}
 	}
 }

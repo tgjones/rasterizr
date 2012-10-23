@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 
 namespace SlimShader.Shader
 {
@@ -66,6 +62,7 @@ namespace SlimShader.Shader
 			switch (type)
 			{
 				case OpcodeType.And :
+				case OpcodeType.Case :
 				case OpcodeType.IAdd:
 				case OpcodeType.IBfe:
 				case OpcodeType.IEq:
@@ -80,7 +77,6 @@ namespace SlimShader.Shader
 				case OpcodeType.IShl:
 				case OpcodeType.IShr:
 				case OpcodeType.LdMs:
-				case OpcodeType.Mov:
 				case OpcodeType.UShr :
 				case OpcodeType.Xor:
 					return true;
@@ -103,6 +99,51 @@ namespace SlimShader.Shader
 				case OpcodeType.DNe:
 				case OpcodeType.DMov:
 				case OpcodeType.DMovC:
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		public static string Wrap(this OperandModifier modifier, string valueToWrap)
+		{
+			switch (modifier)
+			{
+				case OperandModifier.None:
+					return valueToWrap;
+				case OperandModifier.Neg:
+					return "-" + valueToWrap;
+				case OperandModifier.Abs:
+					return "|" + valueToWrap + "|";
+				case OperandModifier.AbsNeg:
+					return "-|" + valueToWrap + "|";
+				default:
+					throw new ArgumentOutOfRangeException("modifier");
+			}
+		}
+
+		public static bool IsNestedSectionStart(this OpcodeType type)
+		{
+			switch (type)
+			{
+				case OpcodeType.Loop :
+				case OpcodeType.If :
+				case OpcodeType.Else :
+				case OpcodeType.Switch :
+					return true;
+				default :
+					return false;
+			}
+		}
+
+		public static bool IsNestedSectionEnd(this OpcodeType type)
+		{
+			switch (type)
+			{
+				case OpcodeType.EndLoop:
+				case OpcodeType.EndIf:
+				case OpcodeType.Else:
+				case OpcodeType.EndSwitch:
 					return true;
 				default:
 					return false;

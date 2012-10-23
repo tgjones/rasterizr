@@ -215,11 +215,13 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// Output Depth, forced to be greater than or equal than current depth
 		/// </summary>
+		[Description("oDepthGE")]
 		OutputDepthGreaterEqual = 38,
 
 		/// <summary>
 		/// Output Depth, forced to be less than or equal to current depth
 		/// </summary>
+		[Description("oDepthLE")]
 		OutputDepthLessEqual = 39,
 
 		/// <summary>

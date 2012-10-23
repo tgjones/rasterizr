@@ -86,16 +86,19 @@ namespace SlimShader.InputOutputSignature
 			result.Mask = mask.DecodeValue<ComponentMask>(0, 7);
 			result.ReadWriteMask = mask.DecodeValue<ComponentMask>(8, 15);
 
+			// Maybe something in the higher order of mask that indicates used or unused...
+
 			// TODO: This is completely made up by me...
 			if (chunkType == ChunkType.Osg5 || chunkType == ChunkType.Osgn)
-				result.ReadWriteMask = ComponentMask.All;
+				result.ReadWriteMask = (ComponentMask) (ComponentMask.All - result.ReadWriteMask);
 
-			// Pixel shaders need special handling for SystemValueType in the output signature (thanks Wine!)
+			// Vertex and pixel shaders need special handling for SystemValueType in the output signature (thanks Wine!)
 			// http://source.winehq.org/source/dlls/d3dcompiler_43/reflection.c
-			if (programType == ProgramType.PixelShader && (chunkType == ChunkType.Osg5 || chunkType == ChunkType.Osgn))
+			if ((programType == ProgramType.PixelShader || programType == ProgramType.VertexShader)
+				&& (chunkType == ChunkType.Osg5 || chunkType == ChunkType.Osgn))
 			{
 				if (result.Register == 0xffffffff)
-					switch (result.SemanticName)
+					switch (result.SemanticName.ToUpper())
 					{
 						case "SV_DEPTH":
 							result.SystemValueType = Name.Depth;
@@ -110,7 +113,7 @@ namespace SlimShader.InputOutputSignature
 							result.SystemValueType = Name.DepthLessEqual;
 							break;
 					}
-				else
+				else if (programType == ProgramType.PixelShader)
 					result.SystemValueType = Name.Target;
 			}
 
@@ -122,9 +125,17 @@ namespace SlimShader.InputOutputSignature
 			// For example:
 			// Name                 Index   Mask Register SysValue Format   Used
 			// TEXCOORD                 0   xyzw        0     NONE  float   xyzw
-			return string.Format("{0,-20} {1,5} {2,6} {3,8} {4,8} {5,6}   {6,-4}", SemanticName, SemanticIndex,
-				Shader.EnumExtensions.GetDescription(Mask), Register, SystemValueType.GetDescription(),
-				ComponentType.GetDescription(), Shader.EnumExtensions.GetDescription(ReadWriteMask));
+			// SV_DepthGreaterEqual     0    N/A oDepthGE  DEPTHGE  float    YES
+			if (SystemValueType.RequiresMask())
+			{
+				return string.Format("{0,-20} {1,5}   {2,-4} {3,8} {4,8} {5,6}   {6,-4}", SemanticName, SemanticIndex,
+					Shader.EnumExtensions.GetDescription(Mask),
+					Register, SystemValueType.GetDescription(),
+					ComponentType.GetDescription(), ReadWriteMask.GetDescription());
+			}
+			return string.Format("{0,-20} {1,5}   {2,4} {3,8} {4,8} {5,6}   {6,4}", SemanticName, SemanticIndex,
+				"N/A", SystemValueType.GetRegisterName(), SystemValueType.GetDescription(),
+				ComponentType.GetDescription(), "YES");
 		}
 	}
 }

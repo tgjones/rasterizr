@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using SlimShader.IO;
 using SlimShader.Shader;
@@ -7,32 +8,6 @@ using SlimShader.Util;
 
 namespace SlimShader.ResourceDefinition
 {
-	public enum ShaderFlags
-	{
-		None = 0,
-		Debug = 1,
-		SkipValidation = 2,
-		SkipOptimization = 4,
-		PackMatrixRowMajor = 8,
-		PackMatrixColumnMajor = 16,
-		PartialPrecision = 32,
-		ForceVsSoftwareNoOpt = 64,
-		ForcePsSoftwareNoOpt = 128,
-		NoPreshader = 256,
-		AvoidFlowControl = 512,
-		PreferFlowControl = 1024,
-		EnableStrictness = 2048,
-		EnableBackwardsCompatibility = 4096,
-		IeeeStrictness = 8192,
-		OptimizationLevel0 = 16384,
-		OptimizationLevel1 = 0,
-		OptimizationLevel2 = 49152,
-		OptimizationLevel3 = 32768,
-		Reserved16 = 65536,
-		Reserved17 = 131072,
-		WarningsAreErrors = 262144
-	}
-
 	/// <summary>
 	/// Most of this was adapted from 
 	/// https://devel.nuclex.org/framework/browser/graphics/Nuclex.Graphics.Native/trunk/Source/Introspection/HlslShaderReflector.cpp?rev=1743
@@ -67,12 +42,18 @@ namespace SlimShader.ResourceDefinition
 			var creatorReader = reader.CopyAtOffset((int) creatorOffset);
 			var creator = creatorReader.ReadString();
 
+			// TODO: Parse Direct3D 11 resource definition stuff.
+			// https://github.com/mirrors/wine/blob/master/dlls/d3dcompiler_43/reflection.c#L1429
+
 			// TODO: Maybe move this into a ShaderTarget class.
 			ProgramType programType;
 			switch (target.DecodeValue<ushort>(16, 31))
 			{
 				case 0xFFFF :
 					programType = ProgramType.PixelShader;
+					break;
+				case 0xFFFE :
+					programType = ProgramType.VertexShader;
 					break;
 				default :
 					throw new ArgumentOutOfRangeException();
@@ -92,7 +73,7 @@ namespace SlimShader.ResourceDefinition
 
 			var constantBufferReader = reader.CopyAtOffset((int) constantBufferOffset);
 			for (int i = 0; i < constantBufferCount; i++)
-				result.ConstantBuffers.Add(ConstantBuffer.Parse(reader, constantBufferReader));
+				result.ConstantBuffers.Add(ConstantBuffer.Parse(reader, constantBufferReader, result.Target));
 
 			var resourceBindingReader = reader.CopyAtOffset((int) resourceBindingOffset);
 			for (int i = 0; i < resourceBindingCount; i++)
@@ -105,21 +86,30 @@ namespace SlimShader.ResourceDefinition
 		{
 			var sb = new StringBuilder();
 
-			sb.AppendLine("// Buffer Definitions: ");
-			sb.AppendLine("//");
+			if (ConstantBuffers.Any())
+			{
+				sb.AppendLine("// Buffer Definitions: ");
+				sb.AppendLine("//");
 
-			foreach (var constantBuffer in ConstantBuffers)
-				sb.Append(constantBuffer);
+				foreach (var constantBuffer in ConstantBuffers)
+					sb.Append(constantBuffer);
 
-			sb.AppendLine("//");
-			sb.AppendLine("//");
-			sb.AppendLine("// Resource Bindings:");
-			sb.AppendLine("//");
-			sb.AppendLine("// Name                                 Type  Format         Dim Slot Elements");
-			sb.AppendLine("// ------------------------------ ---------- ------- ----------- ---- --------");
+				sb.AppendLine("//");
+			}
 
-			foreach (var resourceBinding in ResourceBindings)
-				sb.AppendLine(resourceBinding.ToString());
+			if (ResourceBindings.Any())
+			{
+				sb.AppendLine("// Resource Bindings:");
+				sb.AppendLine("//");
+				sb.AppendLine("// Name                                 Type  Format         Dim Slot Elements");
+				sb.AppendLine("// ------------------------------ ---------- ------- ----------- ---- --------");
+
+				foreach (var resourceBinding in ResourceBindings)
+					sb.AppendLine(resourceBinding.ToString());
+
+				sb.AppendLine("//");
+				sb.AppendLine("//");
+			}
 
 			return sb.ToString();
 		}

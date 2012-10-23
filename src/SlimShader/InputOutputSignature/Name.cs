@@ -19,7 +19,10 @@ namespace SlimShader.InputOutputSignature
 		RenderTargetArrayIndex = 4,
 		ViewportArrayIndex = 5,
 		VertexID = 6,
+
+		[Description("PRIMID")]
 		PrimitiveID = 7,
+
 		InstanceID = 8,
 		IsFrontFace = 9,
 		SampleIndex = 10,
@@ -32,9 +35,16 @@ namespace SlimShader.InputOutputSignature
 
 		[Description("TARGET")]
 		Target = 64,
+
+		[Description("DEPTH")]
 		Depth = 65,
+
 		Coverage = 66,
+
+		[Description("DEPTHGE")]
 		DepthGreaterEqual = 67,
+
+		[Description("DEPTHLE")]
 		DepthLessEqual = 68
 	}
 }

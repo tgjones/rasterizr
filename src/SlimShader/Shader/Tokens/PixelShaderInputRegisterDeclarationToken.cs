@@ -64,7 +64,8 @@ namespace SlimShader.Shader.Tokens
 
 		public override string ToString()
 		{
-			string result = string.Format("{0} {1} v{2}.{3}", TypeDescription, InterpolationMode.GetDescription(),
+			string result = string.Format("{0} {1}v{2}.{3}", TypeDescription,
+				(InterpolationMode != InterpolationMode.Constant) ? InterpolationMode.GetDescription() + " " : string.Empty,
 				Operand.Indices[0].Value, Operand.ComponentMask.GetDescription());
 
 			if (Header.OpcodeType == OpcodeType.DclInputPsSgv || Header.OpcodeType == OpcodeType.DclInputPsSiv)

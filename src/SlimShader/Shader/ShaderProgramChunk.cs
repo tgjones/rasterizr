@@ -67,7 +67,7 @@ namespace SlimShader.Shader
 				}
 				else // Not custom data or declaration, so must be instruction.
 				{
-					opcodeToken = InstructionToken.Parse(reader, opcodeHeader, opcodeToken0);
+					opcodeToken = InstructionToken.Parse(reader, opcodeHeader);
 				}
 
 				opcodeToken.Header = opcodeHeader;
@@ -89,14 +89,10 @@ namespace SlimShader.Shader
 			int indent = 0;
 			foreach (var token in Tokens)
 			{
-				if (token.Header.OpcodeType == OpcodeType.EndLoop || token.Header.OpcodeType == OpcodeType.EndIf
-					|| token.Header.OpcodeType == OpcodeType.Else)
+				if (token.Header.OpcodeType.IsNestedSectionEnd())
 					indent -= 2;
 				sb.AppendLine(string.Join(string.Empty, Enumerable.Repeat(" ", indent)) + token);
-				// TODO: Change this, and other checks on enum values such as IsDeclaration and IsIntegerOperation,
-				// into extension methods.
-				if (token.Header.OpcodeType == OpcodeType.Loop || token.Header.OpcodeType == OpcodeType.If
-					|| token.Header.OpcodeType == OpcodeType.Else)
+				if (token.Header.OpcodeType.IsNestedSectionStart())
 					indent += 2;
 			}
 

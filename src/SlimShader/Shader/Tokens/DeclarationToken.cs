@@ -57,8 +57,15 @@ namespace SlimShader.Shader.Tokens
 					return HullShaderMaxTessFactorDeclarationToken.Parse(reader);
 				case OpcodeType.DclHsForkPhaseInstanceCount:
 					return HullShaderForkPhaseInstanceCountDeclarationToken.Parse(reader);
+				case OpcodeType.DclFunctionBody :
+					return FunctionBodyDeclarationToken.Parse(reader);
+				case OpcodeType.DclFunctionTable :
+					return FunctionTableDeclarationToken.Parse(reader);
+				case OpcodeType.DclInterface :
+					return InterfaceDeclarationToken.Parse(reader);
 				default:
-					throw new ArgumentOutOfRangeException();
+					throw new ArgumentOutOfRangeException("opcodeType",
+						"OpcodeType '" + opcodeType + "' is not supported.");
 			}
 		}
 	}
