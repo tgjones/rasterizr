@@ -48,7 +48,8 @@
     <Compile Include="InputOutputSignature\RegisterComponentType.cs" />
     <Compile Include="InputOutputSignature\SignatureElementSize.cs" />
     <Compile Include="InputOutputSignature\SignatureParameterDescription.cs" />
-    <Compile Include="InterfacesChunk.cs" />
+    <Compile Include="Interface\ClassType.cs" />
+    <Compile Include="Interface\InterfacesChunk.cs" />
     <Compile Include="ResourceDefinition\CBufferType.cs" />
     <Compile Include="IO\BytecodeReader.cs" />
     <Compile Include="ChunkType.cs" />

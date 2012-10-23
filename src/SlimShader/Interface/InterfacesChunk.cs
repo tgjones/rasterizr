@@ -1,17 +1,25 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using SlimShader.IO;
 
-namespace SlimShader
+namespace SlimShader.Interface
 {
 	public class InterfacesChunk : DxbcChunk
 	{
+		public List<ClassType> AvailableClassTypes { get; private set; }
+
+		public InterfacesChunk()
+		{
+			AvailableClassTypes = new List<ClassType>();
+		}
+
 		public static InterfacesChunk Parse(BytecodeReader reader, uint sizeInBytes)
 		{
 			var headerReader = reader.CopyAtCurrentPosition();
 
 			var unknown1 = headerReader.ReadUInt32();
 
-			var unknown2 = headerReader.ReadUInt32();
+			var classTypeCount = headerReader.ReadUInt32();
 			var interfaceSlotCount = headerReader.ReadUInt32();
 
 			var unknown4 = headerReader.ReadUInt32();
@@ -19,17 +27,16 @@ namespace SlimShader
 			var interfaceSlotOffset = headerReader.ReadUInt32();
 			var interfaceSlotReader = reader.CopyAtOffset((int) interfaceSlotOffset);
 
-			var offset2 = headerReader.ReadUInt32();
-			var classLinkageReader = reader.CopyAtOffset((int) offset2);
+			var classTypeOffset = headerReader.ReadUInt32();
+			var classTypeReader = reader.CopyAtOffset((int) classTypeOffset);
 
-			for (int i = 0; i < unknown2; i++)
+			var result = new InterfacesChunk();
+
+			for (uint i = 0; i < classTypeCount; i++)
 			{
-				var nameOffset = classLinkageReader.ReadUInt32();
-				var nameReader = reader.CopyAtOffset((int) nameOffset);
-				var name = nameReader.ReadString();
-
-				var unknown11 = classLinkageReader.ReadUInt32();
-				var unknown12 = classLinkageReader.ReadUInt32();
+				var classType = ClassType.Parse(reader, classTypeReader);
+				classType.ID = i; // Really??
+				result.AvailableClassTypes.Add(classType);
 			}
 
 			for (int i = 0; i < interfaceSlotCount; i++)
@@ -42,7 +49,7 @@ namespace SlimShader
 				var type2 = interfaceSlotReader.ReadUInt32();
 			}
 
-			return new InterfacesChunk();
+			return result;
 		}
 
 		public override string ToString()
@@ -54,11 +61,10 @@ namespace SlimShader
 			sb.AppendLine("//");
 			sb.AppendLine("// Name                             ID CB Stride Texture Sampler");
 			sb.AppendLine("// ------------------------------ ---- --------- ------- -------");
-			sb.AppendLine("// cUnchangedColour                  0         0       0       0");
-			sb.AppendLine("// cHalfColour                       1         0       0       0");
-			sb.AppendLine("// cDoubleColour                     2         0       0       0");
-			sb.AppendLine("// TwoThirdsAlpha                    3         0       0       0");
-			sb.AppendLine("// OneAlpha                          4         0       0       0");
+
+			foreach (var classType in AvailableClassTypes)
+				sb.AppendLine("// " + classType);
+
 			sb.AppendLine("//");
 			sb.AppendLine("// Interface slots, 3 total:");
 			sb.AppendLine("//");
@@ -76,10 +82,5 @@ namespace SlimShader
 
 			return sb.ToString();
 		}
-	}
-
-	public class ClassInstance
-	{
-		public string Name { get; set; }
 	}
 }

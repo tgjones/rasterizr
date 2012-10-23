@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using SlimShader.IO;
 using SlimShader.InputOutputSignature;
+using SlimShader.Interface;
 using SlimShader.ResourceDefinition;
 using SlimShader.Shader;
 using SlimShader.Util;

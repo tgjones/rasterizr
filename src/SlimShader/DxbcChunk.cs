@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SlimShader.IO;
 using SlimShader.InputOutputSignature;
+using SlimShader.Interface;
 using SlimShader.ResourceDefinition;
 using SlimShader.Shader;
 using SlimShader.Util;
