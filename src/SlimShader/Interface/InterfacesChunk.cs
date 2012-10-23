@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using SlimShader.IO;
 
@@ -7,28 +8,32 @@ namespace SlimShader.Interface
 	public class InterfacesChunk : DxbcChunk
 	{
 		public List<ClassType> AvailableClassTypes { get; private set; }
+		public List<InterfaceSlot> InterfaceSlots { get; private set; }
 
 		public InterfacesChunk()
 		{
 			AvailableClassTypes = new List<ClassType>();
+			InterfaceSlots = new List<InterfaceSlot>();
 		}
 
 		public static InterfacesChunk Parse(BytecodeReader reader, uint sizeInBytes)
 		{
 			var headerReader = reader.CopyAtCurrentPosition();
 
-			var unknown1 = headerReader.ReadUInt32();
+			Debug.Assert(headerReader.ReadUInt32() == 0); // Unknown
 
 			var classTypeCount = headerReader.ReadUInt32();
 			var interfaceSlotCount = headerReader.ReadUInt32();
 
-			var unknown4 = headerReader.ReadUInt32();
+			Debug.Assert(headerReader.ReadUInt32() == interfaceSlotCount); // Unknown
 
-			var interfaceSlotOffset = headerReader.ReadUInt32();
-			var interfaceSlotReader = reader.CopyAtOffset((int) interfaceSlotOffset);
+			headerReader.ReadUInt32(); // Think this is offset to start of interface slot info, but we don't need it.
 
 			var classTypeOffset = headerReader.ReadUInt32();
 			var classTypeReader = reader.CopyAtOffset((int) classTypeOffset);
+
+			var interfaceSlotOffset = headerReader.ReadUInt32();
+			var interfaceSlotReader = reader.CopyAtOffset((int) interfaceSlotOffset);
 
 			var result = new InterfacesChunk();
 
@@ -39,14 +44,11 @@ namespace SlimShader.Interface
 				result.AvailableClassTypes.Add(classType);
 			}
 
-			for (int i = 0; i < interfaceSlotCount; i++)
+			for (uint i = 0; i < interfaceSlotCount; i++)
 			{
-				var unknown13 = interfaceSlotReader.ReadUInt32();
-				var unknown14 = interfaceSlotReader.ReadUInt32();
-
-				var type0 = interfaceSlotReader.ReadUInt32();
-				var type1 = interfaceSlotReader.ReadUInt32();
-				var type2 = interfaceSlotReader.ReadUInt32();
+				var interfaceSlot = InterfaceSlot.Parse(reader, interfaceSlotReader);
+				interfaceSlot.ID = i; // Really??
+				result.InterfaceSlots.Add(interfaceSlot);
 			}
 
 			return result;
@@ -66,19 +68,13 @@ namespace SlimShader.Interface
 				sb.AppendLine("// " + classType);
 
 			sb.AppendLine("//");
-			sb.AppendLine("// Interface slots, 3 total:");
+			sb.AppendLine(string.Format("// Interface slots, {0} total:", InterfaceSlots.Count));
 			sb.AppendLine("//");
 			sb.AppendLine("//             Slots");
 			sb.AppendLine("// +----------+---------+---------------------------------------");
-			sb.AppendLine("// | Type ID  |   0     |0    1    2    ");
-			sb.AppendLine("// | Table ID |         |0    1    2    ");
-			sb.AppendLine("// +----------+---------+---------------------------------------");
-			sb.AppendLine("// | Type ID  |   1     |0    1    2    ");
-			sb.AppendLine("// | Table ID |         |3    4    5    ");
-			sb.AppendLine("// +----------+---------+---------------------------------------");
-			sb.AppendLine("// | Type ID  |   2     |3    4    ");
-			sb.AppendLine("// | Table ID |         |6    7    ");
-			sb.AppendLine("// +----------+---------+---------------------------------------");
+
+			foreach (var interfaceSlot in InterfaceSlots)
+				sb.Append(interfaceSlot);
 
 			return sb.ToString();
 		}

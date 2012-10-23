@@ -50,6 +50,7 @@
     <Compile Include="InputOutputSignature\SignatureParameterDescription.cs" />
     <Compile Include="Interface\ClassType.cs" />
     <Compile Include="Interface\InterfacesChunk.cs" />
+    <Compile Include="Interface\InterfaceSlot.cs" />
     <Compile Include="ResourceDefinition\CBufferType.cs" />
     <Compile Include="IO\BytecodeReader.cs" />
     <Compile Include="ChunkType.cs" />
