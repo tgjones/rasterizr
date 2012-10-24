@@ -92,6 +92,7 @@ namespace SlimShader.Tests
 		[TestCase("Shaders/vs5/mad_imm")]
 		[TestCase("Shaders/vs5/mov")]
 		[TestCase("Shaders/vs5/sincos")]
+		[TestCase("Shaders/Sdk/DynamicShaderLinkage11_PS")]
 		public void CanParseShader(string file)
 		{
 			// Arrange.

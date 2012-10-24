@@ -293,10 +293,14 @@ namespace SlimShader.Shader.Tokens
 						case OperandIndexDimension._0D:
 							break;
 						case OperandIndexDimension._1D:
-							index = Indices[0].ToString();
+							index = (OperandType == OperandType.ThisPointer)
+								? string.Format("[{0}]", Indices[0])
+								: Indices[0].ToString();
 							break;
 						case OperandIndexDimension._2D :
-							index = string.Format("{0}[{1}]", Indices[0], Indices[1]);
+							index = (IndexRepresentations[0] == OperandIndexRepresentation.Relative)
+								? string.Format("[{0}][{1}]", Indices[0], Indices[1])
+								: string.Format("{0}[{1}]", Indices[0], Indices[1]);
 							break;
 						case OperandIndexDimension._3D:
 							break;

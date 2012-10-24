@@ -137,8 +137,8 @@ namespace SlimShader.Shader.Tokens
 			{
 				result += string.Format("fp{0}[{1}][{2}]", 
 					Operands[0].Indices[0].Value,
-					FunctionIndex,
-					Operands[0].Indices[1].Value);
+					Operands[0].Indices[1].Value,
+					FunctionIndex);
 			}
 			else
 			{

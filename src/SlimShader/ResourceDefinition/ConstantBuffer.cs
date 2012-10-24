@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using SlimShader.IO;
 using SlimShader.Shader;
@@ -39,7 +40,8 @@ namespace SlimShader.ResourceDefinition
 			Variables = new List<ShaderVariable>();
 		}
 
-		public static ConstantBuffer Parse(BytecodeReader reader, BytecodeReader constantBufferReader,
+		public static ConstantBuffer Parse(
+			BytecodeReader reader, BytecodeReader constantBufferReader,
 			ShaderVersion target)
 		{
 			uint nameOffset = constantBufferReader.ReadUInt32();
@@ -55,7 +57,7 @@ namespace SlimShader.ResourceDefinition
 
 			var variableReader = reader.CopyAtOffset((int) variableOffset);
 			for (int i = 0; i < variableCount; i++)
-				result.Variables.Add(ShaderVariable.Parse(reader, variableReader, target));
+				result.Variables.Add(ShaderVariable.Parse(reader, variableReader, target, i == 0));
 
 			result.Size = constantBufferReader.ReadUInt32();
 			result.Flags = (ShaderCBufferFlags) constantBufferReader.ReadUInt32();
@@ -69,10 +71,9 @@ namespace SlimShader.ResourceDefinition
 			var sb = new StringBuilder();
 			sb.AppendLine(string.Format("// {0} {1}", BufferType.GetDescription(), Name));
 			sb.AppendLine("// {");
-			sb.AppendLine("//");
 
 			foreach (var variable in Variables)
-				sb.AppendLine("//   " + variable);
+				sb.Append(variable);
 
 			sb.AppendLine("//");
 			sb.AppendLine("// }");

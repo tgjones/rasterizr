@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+using System;
+using System.Linq;
 using SlimShader.IO;
 using SlimShader.Shader;
 
@@ -10,20 +11,27 @@ namespace SlimShader.ResourceDefinition
 	/// </summary>
 	public class ShaderVariable
 	{
+		internal ShaderTypeMember Member { get; private set; }
+
 		/// <summary>
 		/// The variable name.
 		/// </summary>
-		public string Name { get; private set; }
+		public string Name { get; internal set; }
+
+		/// <summary>
+		/// Offset from the start of the parent structure, to the beginning of the variable.
+		/// </summary>
+		public uint StartOffset { get; internal set; }
+
+		/// <summary>
+		/// Get a shader-variable type.
+		/// </summary>
+		public ShaderType ShaderType { get; internal set; }
 
 		/// <summary>
 		/// Gets the name of the base class.
 		/// </summary>
 		public string BaseType { get; private set; }
-
-		/// <summary>
-		/// Offset from the start of the parent structure, to the beginning of the variable.
-		/// </summary>
-		public uint StartOffset { get; private set; }
 
 		/// <summary>
 		/// Size of the variable (in bytes).
@@ -36,21 +44,18 @@ namespace SlimShader.ResourceDefinition
 		public ShaderVariableFlags Flags { get; private set; }
 
 		/// <summary>
-		/// Get a shader-variable type.
-		/// </summary>
-		public ShaderType ShaderType { get; private set; }
-
-		/// <summary>
 		/// The default value for initializing the variable.
 		/// </summary>
 		public object DefaultValue { get; private set; }
 
-		/// <summary>
-		/// Gets the corresponding interface slot for a variable that represents an interface pointer.
-		/// </summary>
-		public List<uint> InterfaceSlots { get; private set; }
+		///// <summary>
+		///// Gets the corresponding interface slot for a variable that represents an interface pointer.
+		///// </summary>
+		//public List<uint> InterfaceSlots { get; private set; }
 
-		public static ShaderVariable Parse(BytecodeReader reader, BytecodeReader variableReader, ShaderVersion target)
+		public static ShaderVariable Parse(BytecodeReader reader,
+			BytecodeReader variableReader, ShaderVersion target,
+			bool isFirst)
 		{
 			uint nameOffset = variableReader.ReadUInt32();
 			var nameReader = reader.CopyAtOffset((int) nameOffset);
@@ -61,7 +66,7 @@ namespace SlimShader.ResourceDefinition
 
 			var typeOffset = variableReader.ReadUInt32();
 			var typeReader = reader.CopyAtOffset((int) typeOffset);
-			var shaderType = ShaderType.Parse(reader, typeReader, target);
+			var shaderType = ShaderType.Parse(reader, typeReader, target, 2, isFirst, startOffset);
 
 			var defaultValueOffset = variableReader.ReadUInt32();
 			if (defaultValueOffset != 0)
@@ -83,50 +88,26 @@ namespace SlimShader.ResourceDefinition
 
 			return new ShaderVariable
 			{
-				Name = nameReader.ReadString(),
+				Member = new ShaderTypeMember(0)
+				{
+					Name = nameReader.ReadString(),
+					Offset = startOffset,
+					Type = shaderType
+				},
 				BaseType = nameReader.ReadString(),
-				StartOffset = startOffset,
 				Size = size,
-				Flags = flags,
-				ShaderType = shaderType
+				Flags = flags
 			};
 		}
 
 		public override string ToString()
 		{
-			// For example:
-			// row_major modelview;               // Offset:    0 Size:    64
-			// float4x4 modelview;                // Offset:    0 Size:    64
-			// int unusedTestA;                   // Offset:   64 Size:     4 [unused]
-			// float4 cool;                       // Offset:    0 Size:    16
-
-			string variableType = string.Empty;
-			switch (ShaderType.VariableClass)
-			{
-				case ShaderVariableClass.MatrixRows :
-					variableType += ShaderType.VariableClass.GetDescription() + " ";
-					break;
-			}
-			variableType += ShaderType.VariableType.GetDescription();
-			if (ShaderType.Columns > 1 && ShaderType.VariableType != ShaderVariableType.InterfacePointer)
-			{
-				variableType += ShaderType.Columns;
-				if (ShaderType.Rows > 1)
-					variableType += "x" + ShaderType.Rows;
-			}
-
-			string arrayCount = string.Empty;
-			if (ShaderType.ElementCount > 0)
-				arrayCount = "[" + ShaderType.ElementCount + "]";
-
-			if (!string.IsNullOrEmpty(ShaderType.BaseTypeName))
-				variableType += " " + ShaderType.BaseTypeName;
-
-			string declaration = string.Format("{0} {1}{2};", variableType, Name, arrayCount);
-			string result = string.Format("{0,-35}// Offset: {1,4} Size: {2,5}", declaration, StartOffset, Size);
+			string result = string.Format("{0} Size: {1,5}", Member, Size);
 
 			if (!Flags.HasFlag(ShaderVariableFlags.Used))
 				result += " [unused]";
+
+			result += Environment.NewLine;
 
 			return result;
 		}

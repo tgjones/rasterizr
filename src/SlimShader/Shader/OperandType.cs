@@ -171,6 +171,7 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// Reference to an interface this pointer
 		/// </summary>
+		[Description("this")]
 		ThisPointer = 29,
 
 		/// <summary>

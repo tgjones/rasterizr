@@ -48,6 +48,7 @@
     <Compile Include="InputOutputSignature\RegisterComponentType.cs" />
     <Compile Include="InputOutputSignature\SignatureElementSize.cs" />
     <Compile Include="InputOutputSignature\SignatureParameterDescription.cs" />
+    <Compile Include="Interface\ClassInstance.cs" />
     <Compile Include="Interface\ClassType.cs" />
     <Compile Include="Interface\InterfacesChunk.cs" />
     <Compile Include="Interface\InterfaceSlot.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="ResourceDefinition\EnumExtensions.cs" />
     <Compile Include="ResourceDefinition\ShaderFlags.cs" />
     <Compile Include="ResourceDefinition\ShaderType.cs" />
+    <Compile Include="ResourceDefinition\ShaderTypeMember.cs" />
     <Compile Include="ResourceDefinition\ShaderVariableClass.cs" />
     <Compile Include="ResourceDefinition\ShaderVariableFlags.cs" />
     <Compile Include="ResourceDefinition\ShaderVariableType.cs" />
