@@ -151,6 +151,7 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// HS Fork+Join, DS phase input control points (array of them)
 		/// </summary>
+		[Description("vicp")]
 		InputControlPoint = 25,
 
 		/// <summary>
@@ -166,6 +167,7 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// DS Input Domain point
 		/// </summary>
+		[Description("vDomain")]
 		InputDomainPoint = 28,
 
 		/// <summary>

@@ -30,7 +30,11 @@ namespace SlimShader.InputOutputSignature
 		FinalQuadInsideTessFactor = 12,
 		FinalTriEdgeTessFactor = 13,
 		FinalTriInsideTessFactor = 14,
+
+		[Description("LINEDET")]
 		FinalLineDetailTessFactor = 15,
+
+		[Description("LINEDEN")]
 		FinalLineDensityTessFactor = 16,
 
 		[Description("TARGET")]

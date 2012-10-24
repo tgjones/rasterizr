@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chunks\Pcsg\PatchConstantSignatureChunk.cs" />
+    <Compile Include="Chunks\Stat\EnumExtensions.cs" />
     <Compile Include="InputOutputSignature\EnumExtensions.cs" />
     <Compile Include="InputOutputSignature\InputSignatureChunk.cs" />
     <Compile Include="InputOutputSignature\MinPrecision.cs" />
@@ -57,6 +59,7 @@
     <Compile Include="ChunkType.cs" />
     <Compile Include="ResourceDefinition\EnumExtensions.cs" />
     <Compile Include="ResourceDefinition\ShaderFlags.cs" />
+    <Compile Include="ResourceDefinition\ShaderTarget.cs" />
     <Compile Include="ResourceDefinition\ShaderType.cs" />
     <Compile Include="ResourceDefinition\ShaderTypeMember.cs" />
     <Compile Include="ResourceDefinition\ShaderVariableClass.cs" />
@@ -90,7 +93,7 @@
     <Compile Include="Shader\Tokens\InterfaceDeclarationToken.cs" />
     <Compile Include="Shader\Tokens\FunctionTableDeclarationToken.cs" />
     <Compile Include="Shader\Tokens\FunctionBodyDeclarationToken.cs" />
-    <Compile Include="StatisticsChunk.cs" />
+    <Compile Include="Chunks\Stat\StatisticsChunk.cs" />
     <Compile Include="Shader\SystemValueName.cs" />
     <Compile Include="Shader\TessellatorDomain.cs" />
     <Compile Include="Shader\TessellatorOutputPrimitive.cs" />

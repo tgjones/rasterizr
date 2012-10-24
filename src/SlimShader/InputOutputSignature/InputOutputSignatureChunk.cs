@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SlimShader.Chunks.Pcsg;
 using SlimShader.IO;
 using SlimShader.Shader;
 
@@ -15,12 +16,24 @@ namespace SlimShader.InputOutputSignature
 			Parameters = new List<SignatureParameterDescription>();
 		}
 
-		public static InputOutputSignatureChunk Parse(BytecodeReader reader, bool input, ChunkType chunkType,
+		public static InputOutputSignatureChunk Parse(BytecodeReader reader, ChunkType chunkType,
 			ProgramType programType)
 		{
-			InputOutputSignatureChunk result = (input) ?
-				(InputOutputSignatureChunk) new InputSignatureChunk()
-				: new OutputSignatureChunk();
+			InputOutputSignatureChunk result;
+			switch (chunkType)
+			{
+				case ChunkType.Isgn :
+					result = new InputSignatureChunk();
+					break;
+				case ChunkType.Osgn :
+					result = new OutputSignatureChunk();
+					break;
+				case ChunkType.Pcsg :
+					result = new PatchConstantSignatureChunk();
+					break;
+				default :
+					throw new ArgumentOutOfRangeException("chunkType");
+			}
 
 			var chunkReader = reader.CopyAtCurrentPosition();
 			var elementCount = chunkReader.ReadUInt32();
@@ -34,6 +47,7 @@ namespace SlimShader.InputOutputSignature
 					break;
 				case ChunkType.Isgn:
 				case ChunkType.Osgn:
+				case ChunkType.Pcsg:
 					elementSize = SignatureElementSize._6;
 					break;
 				default:

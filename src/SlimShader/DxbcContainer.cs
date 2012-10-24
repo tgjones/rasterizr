@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SlimShader.Chunks.Pcsg;
+using SlimShader.Chunks.Stat;
 using SlimShader.IO;
 using SlimShader.InputOutputSignature;
 using SlimShader.Interface;
@@ -18,6 +20,11 @@ namespace SlimShader
 		public ResourceDefinitionChunk ResourceDefinition
 		{
 			get { return Chunks.OfType<ResourceDefinitionChunk>().SingleOrDefault(); }
+		}
+
+		public PatchConstantSignatureChunk PatchConstantSignature
+		{
+			get { return Chunks.OfType<PatchConstantSignatureChunk>().SingleOrDefault(); }
 		}
 
 		public InputSignatureChunk InputSignature
@@ -100,16 +107,22 @@ namespace SlimShader
 
 			sb.AppendLine(@"//");
 
-			if (InputSignature != null)
-				sb.Append(InputSignature);
+			if (PatchConstantSignature != null)
+			{
+				sb.Append(PatchConstantSignature);
+				sb.AppendLine(@"//");
+				sb.AppendLine(@"//");
+			}
 
+			sb.Append(InputSignature);
 			sb.AppendLine(@"//");
 			sb.AppendLine(@"//");
 
-			if (OutputSignature != null)
-				sb.Append(OutputSignature);
-
+			sb.Append(OutputSignature);
 			sb.AppendLine(@"//");
+
+			if (Statistics != null)
+				sb.Append(Statistics);
 
 			if (Interfaces != null)
 				sb.Append(Interfaces);

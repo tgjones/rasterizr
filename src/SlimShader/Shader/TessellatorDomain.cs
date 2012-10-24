@@ -1,4 +1,6 @@
-﻿namespace SlimShader.Shader
+﻿using System.ComponentModel;
+
+namespace SlimShader.Shader
 {
 	/// <summary>
 	/// Values that identify domain options for tessellator data.
@@ -14,6 +16,7 @@
 		/// <summary>
 		/// Isoline data.
 		/// </summary>
+		[Description("domain_isoline")]
 		Isoline = 1,
 
 		/// <summary>

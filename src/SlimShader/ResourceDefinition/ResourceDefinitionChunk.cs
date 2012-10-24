@@ -35,7 +35,7 @@ namespace SlimShader.ResourceDefinition
 			uint constantBufferOffset = headerReader.ReadUInt32();
 			uint resourceBindingCount = headerReader.ReadUInt32();
 			uint resourceBindingOffset = headerReader.ReadUInt32();
-			uint target = headerReader.ReadUInt32();
+			var target = ShaderTarget.Parse(headerReader);
 			uint flags = headerReader.ReadUInt32();
 
 			var creatorOffset = headerReader.ReadUInt32();
@@ -45,28 +45,21 @@ namespace SlimShader.ResourceDefinition
 			// TODO: Parse Direct3D 11 resource definition stuff.
 			// https://github.com/mirrors/wine/blob/master/dlls/d3dcompiler_43/reflection.c#L1429
 
-			// TODO: Maybe move this into a ShaderTarget class.
-			ProgramType programType;
-			switch (target.DecodeValue<ushort>(16, 31))
+			if (target.MajorVersion >= 5)
 			{
-				case 0xFFFF :
-					programType = ProgramType.PixelShader;
-					break;
-				case 0xFFFE :
-					programType = ProgramType.VertexShader;
-					break;
-				default :
-					throw new ArgumentOutOfRangeException();
+				var unknown0 = headerReader.ReadUInt32();
+				var unknown1 = headerReader.ReadUInt32();
+				var unknown2 = headerReader.ReadUInt32();
+				var unknown3 = headerReader.ReadUInt32();
+				var unknown4 = headerReader.ReadUInt32();
+				var unknown5 = headerReader.ReadUInt32();
+				var unknown6 = headerReader.ReadUInt32();
+				var unknown7 = headerReader.ReadUInt32();
 			}
 
 			var result = new ResourceDefinitionChunk
 			{
-				Target = new ShaderVersion
-				{
-					MajorVersion = target.DecodeValue<byte>(8, 15),
-					MinorVersion = target.DecodeValue<byte>(0, 7),
-					ProgramType = programType
-				},
+				Target = target,
 				Flags = (ShaderFlags) flags,
 				Creator = creator
 			};

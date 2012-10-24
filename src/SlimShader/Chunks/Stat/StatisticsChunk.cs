@@ -1,7 +1,8 @@
+using System.Text;
 using SlimShader.IO;
 using SlimShader.Shader;
 
-namespace SlimShader
+namespace SlimShader.Chunks.Stat
 {
 	/// <summary>
 	/// Statistics chunk. Thanks to Wine for the hard work in decoding this.
@@ -141,11 +142,6 @@ namespace SlimShader
 		public Primitive InputPrimitive { get; private set; }
 
 		/// <summary>
-		/// Number of parameters in the patch-constant signature.
-		/// </summary>
-		public uint PatchConstantParameters { get; private set; }
-
-		/// <summary>
 		/// Number of geometry shader instances.
 		/// </summary>
 		public uint GeometryShaderInstanceCount { get; private set; }
@@ -266,6 +262,20 @@ namespace SlimShader
 				return result;
 
 			throw new ParseException("Unhandled stat size: " + chunkSize);
+		}
+
+		public override string ToString()
+		{
+			if (TessellatorDomain != TessellatorDomain.Undefined)
+			{
+				var sb = new StringBuilder();
+				sb.AppendLine("// Tessellation Domain   # of control points");
+				sb.AppendLine("// -------------------- --------------------");
+				sb.AppendLine(string.Format("// {0,-20} {1,20}", TessellatorDomain.GetDescription(), ControlPoints));
+				sb.AppendLine("//");
+				return sb.ToString();
+			}
+			return string.Empty;
 		}
 	}
 }

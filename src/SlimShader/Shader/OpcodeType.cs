@@ -418,8 +418,12 @@ namespace SlimShader.Shader
 		[Description("dcl_interface")]
 		DclInterface,
 
+		[Description("dcl_input_control_point_count")]
 		DclInputControlPointCount,
+
 		DclOutputControlPointCount,
+
+		[Description("dcl_tessellator_domain")]
 		DclTessDomain,
 		DclTessPartitioning,
 		DclTessOutputPrimitive,

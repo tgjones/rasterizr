@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using SlimShader.Chunks.Pcsg;
+using SlimShader.Chunks.Stat;
 using SlimShader.IO;
 using SlimShader.InputOutputSignature;
 using SlimShader.Interface;
@@ -17,6 +19,7 @@ namespace SlimShader
 			{ "ISGN".ToFourCc(), ChunkType.Isgn },
 			{ "OSGN".ToFourCc(), ChunkType.Osgn },
 			{ "OSG5".ToFourCc(), ChunkType.Osg5 },
+			{ "PCSG".ToFourCc(), ChunkType.Pcsg },
 			{ "RDEF".ToFourCc(), ChunkType.Rdef },
 			{ "SHDR".ToFourCc(), ChunkType.Shdr },
 			{ "SHEX".ToFourCc(), ChunkType.Shex },
@@ -49,12 +52,10 @@ namespace SlimShader
 					chunk = InterfacesChunk.Parse(chunkContentReader, chunkSize);
 					break;
 				case ChunkType.Isgn :
-					chunk = InputOutputSignatureChunk.Parse(chunkContentReader, true, chunkType,
-						container.ResourceDefinition.Target.ProgramType);
-					break;
 				case ChunkType.Osgn:
 				case ChunkType.Osg5:
-					chunk = InputOutputSignatureChunk.Parse(chunkContentReader, false, chunkType,
+				case ChunkType.Pcsg:
+					chunk = InputOutputSignatureChunk.Parse(chunkContentReader, chunkType,
 						container.ResourceDefinition.Target.ProgramType);
 					break;
 				case ChunkType.Rdef:

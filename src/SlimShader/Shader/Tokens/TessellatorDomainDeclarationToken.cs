@@ -28,5 +28,10 @@ namespace SlimShader.Shader.Tokens
 				Domain = token0.DecodeValue<TessellatorDomain>(11, 12)
 			};
 		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} {1}", TypeDescription, Domain.GetDescription());
+		}
 	}
 }

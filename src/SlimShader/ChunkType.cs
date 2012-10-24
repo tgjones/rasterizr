@@ -25,6 +25,11 @@ namespace SlimShader
 		Osgn,
 
 		/// <summary>
+		/// Patch constant signature
+		/// </summary>
+		Pcsg,
+
+		/// <summary>
 		/// Resource definition
 		/// </summary>
 		Rdef,
