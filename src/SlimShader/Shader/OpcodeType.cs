@@ -276,7 +276,7 @@ namespace SlimShader.Shader
 		[Description("dcl_sampler")]
 		DclSampler,
 
-		[Description("dcl_indexRange")]
+		[Description("dcl_indexrange")]
 		DclIndexRange,
 
 		[Description("dcl_outputtopology")]
@@ -421,15 +421,25 @@ namespace SlimShader.Shader
 		[Description("dcl_input_control_point_count")]
 		DclInputControlPointCount,
 
+		[Description("dcl_output_control_point_count")]
 		DclOutputControlPointCount,
 
 		[Description("dcl_tessellator_domain")]
 		DclTessDomain,
+
+		[Description("dcl_tessellator_partitioning")]
 		DclTessPartitioning,
+
+		[Description("dcl_tessellator_output_primitive")]
 		DclTessOutputPrimitive,
 		DclHsMaxTessFactor,
+
+		[Description("dcl_hs_fork_phase_instance_count")]
 		DclHsForkPhaseInstanceCount,
+
+		[Description("dcl_hs_join_phase_instance_count")]
 		DclHsJoinPhaseInstanceCount,
+
 		DclThreadGroup,
 		DclUnorderedAccessViewTyped,
 		DclUnorderedAccessViewRaw,

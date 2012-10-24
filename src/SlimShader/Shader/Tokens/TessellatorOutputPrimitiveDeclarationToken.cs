@@ -28,5 +28,10 @@ namespace SlimShader.Shader.Tokens
 				OutputPrimitive = token0.DecodeValue<TessellatorOutputPrimitive>(11, 13)
 			};
 		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} {1}", TypeDescription, OutputPrimitive.GetDescription());
+		}
 	}
 }

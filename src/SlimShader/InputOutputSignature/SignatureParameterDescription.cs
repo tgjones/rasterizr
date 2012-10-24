@@ -89,7 +89,8 @@ namespace SlimShader.InputOutputSignature
 			// Maybe something in the higher order of mask that indicates used or unused...
 
 			// TODO: This is completely made up by me...
-			if (chunkType == ChunkType.Osg5 || chunkType == ChunkType.Osgn)
+			if (chunkType == ChunkType.Osg5 || chunkType == ChunkType.Osgn
+				|| (chunkType == ChunkType.Pcsg && programType == ProgramType.HullShader))
 				result.ReadWriteMask = (ComponentMask) (ComponentMask.All - result.ReadWriteMask);
 
 			// Vertex and pixel shaders need special handling for SystemValueType in the output signature (thanks Wine!)

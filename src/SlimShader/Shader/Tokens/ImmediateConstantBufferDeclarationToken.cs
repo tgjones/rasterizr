@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using SlimShader.IO;
 
 namespace SlimShader.Shader.Tokens
@@ -19,7 +21,7 @@ namespace SlimShader.Shader.Tokens
 	/// </summary>
 	public class ImmediateConstantBufferDeclarationToken : ImmediateDeclarationToken
 	{
-		public uint[] Data { get; private set; }
+		public float[] Data { get; private set; }
 
 		public static ImmediateConstantBufferDeclarationToken Parse(BytecodeReader reader)
 		{
@@ -29,12 +31,28 @@ namespace SlimShader.Shader.Tokens
 			var result = new ImmediateConstantBufferDeclarationToken
 			{
 				DeclarationLength = length,
-				Data = new uint[length]
+				Data = new float[length]
 			};
 
 			for (int i = 0; i < length; i++)
-				result.Data[i] = reader.ReadUInt32();
+				result.Data[i] = reader.ReadSingle();
 
+			return result;
+		}
+
+		public override string ToString()
+		{
+			string result = "dcl_immediateConstantBuffer { ";
+
+			for (int i = 0; i < Data.Length; i += 4)
+			{
+				if (i > 0)
+					result += "," + Environment.NewLine + new string(' ', 30);
+				result += string.Format("{{ {0:##.000000;;0}, {1:##.000000;;0}, {2:##.000000;;0}, {3:##.000000;;0}}}",
+					Data[i], Data[i + 1], Data[i + 2], Data[i + 3]);
+			}
+			
+			result += " }";
 			return result;
 		}
 	}

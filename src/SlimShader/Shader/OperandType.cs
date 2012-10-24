@@ -65,6 +65,7 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// Reference to immediate constant buffer
 		/// </summary>
+		[Description("icb")]
 		ImmediateConstantBuffer = 9,
 
 		/// <summary>
@@ -141,6 +142,7 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// HS Fork Phase input instance ID
 		/// </summary>
+		[Description("vForkInstanceID")]
 		InputForkInstanceID = 23,
 
 		/// <summary>

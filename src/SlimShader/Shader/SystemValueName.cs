@@ -49,7 +49,11 @@ namespace SlimShader.Shader
 		FinalTriVEq0EdgeTessFactor = 18,
 		FinalTriWEq0EdgeTessFactor = 19,
 		FinalTriInsideTessFactor = 20,
+
+		[Description("finalLineDetailTessFactor")]
 		FinalLineDetailTessFactor = 21,
+
+		[Description("finalLineDensityTessFactor")]
 		FinalLineDensityTessFactor = 22
 	}
 }

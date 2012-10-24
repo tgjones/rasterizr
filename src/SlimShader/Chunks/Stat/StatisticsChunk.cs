@@ -11,26 +11,6 @@ namespace SlimShader.Chunks.Stat
 	/// </summary>
 	public class StatisticsChunk : DxbcChunk
 	{
-		///// <summary>
-		///// The number of shader-constant buffers.
-		///// </summary>
-		//public uint ConstantBuffers { get; private set; }
-
-		///// <summary>
-		///// The number of resource (textures and buffers) bound to a shader.
-		///// </summary>
-		//public uint BoundResources { get; private set; }
-
-		///// <summary>
-		///// The number of parameters in the input signature.
-		///// </summary>
-		//public uint InputParameters { get; private set; }
-
-		///// <summary>
-		///// The number of parameters in the output signature.
-		///// </summary>
-		//public uint OutputParameters { get; private set; }
-
 		/// <summary>
 		/// The number of intermediate-language instructions in the compiled shader.
 		/// </summary>
@@ -195,10 +175,6 @@ namespace SlimShader.Chunks.Stat
 			var size = chunkSize / sizeof(uint);
 
 			// Unknowns:
-			// ConstantBuffers
-			// BoundResources
-			// InputParameters
-			// OutputParameters
 			// DefCount
 			// MacroInstructionCount
 
@@ -266,16 +242,23 @@ namespace SlimShader.Chunks.Stat
 
 		public override string ToString()
 		{
+			var sb = new StringBuilder();
 			if (TessellatorDomain != TessellatorDomain.Undefined)
 			{
-				var sb = new StringBuilder();
 				sb.AppendLine("// Tessellation Domain   # of control points");
 				sb.AppendLine("// -------------------- --------------------");
 				sb.AppendLine(string.Format("// {0,-20} {1,20}", TessellatorDomain.GetDescription(), ControlPoints));
 				sb.AppendLine("//");
-				return sb.ToString();
 			}
-			return string.Empty;
+			if (HullShaderOutputPrimitive != TessellatorOutputPrimitive.Undefined)
+			{
+				sb.AppendLine("// Tessellation Output Primitive  Partitioning Type ");
+				sb.AppendLine("// ------------------------------ ------------------");
+				sb.AppendLine(string.Format("// {0,-30} {1,-18}", HullShaderOutputPrimitive.GetDescription(),
+					HullShaderPartitioning.GetDescription()));
+				sb.AppendLine("//");
+			}
+			return sb.ToString();
 		}
 	}
 }

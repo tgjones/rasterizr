@@ -18,15 +18,20 @@ namespace SlimShader.Shader.Tokens
 	/// </summary>
 	public class TessellatorPartitioningDeclarationToken : DeclarationToken
 	{
-		public TessellatorPartitioning Partioning { get; private set; }
+		public TessellatorPartitioning Partitioning { get; private set; }
 
 		public static TessellatorPartitioningDeclarationToken Parse(BytecodeReader reader)
 		{
 			var token0 = reader.ReadUInt32();
 			return new TessellatorPartitioningDeclarationToken
 			{
-				Partioning = token0.DecodeValue<TessellatorPartitioning>(11, 13)
+				Partitioning = token0.DecodeValue<TessellatorPartitioning>(11, 13)
 			};
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} {1}", TypeDescription, Partitioning.GetDescription());
 		}
 	}
 }

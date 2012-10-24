@@ -8,5 +8,15 @@ namespace SlimShader.Chunks.Stat
 		{
 			return value.ToString();
 		}
+
+		public static string GetDescription(this TessellatorPartitioning value)
+		{
+			return value.ToString();
+		}
+
+		public static string GetDescription(this TessellatorOutputPrimitive value)
+		{
+			return value.ToString();
+		}
 	}
 }

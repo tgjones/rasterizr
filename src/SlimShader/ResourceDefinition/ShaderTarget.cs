@@ -21,6 +21,9 @@ namespace SlimShader.ResourceDefinition
 				case 0xFFFE:
 					programType = ProgramType.VertexShader;
 					break;
+				case 0x4853:
+					programType = ProgramType.HullShader;
+					break;
 				case 0x4753 :
 					programType = ProgramType.GeometryShader;
 					break;
