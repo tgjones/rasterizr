@@ -79,6 +79,7 @@ namespace SlimShader.Tests
 		}
 
 		[TestCase("Shaders/test")]
+		[TestCase("Shaders/ds5/basic")]
 		[TestCase("Shaders/ps4/fxaa")]
 		[TestCase("Shaders/ps4/primID")]
 		[TestCase("Shaders/ps5/conservative_depth_ge")]

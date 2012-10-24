@@ -109,10 +109,33 @@ namespace SlimShader.ResourceDefinition
 			switch (VariableClass)
 			{
 				case ShaderVariableClass.InterfacePointer:
+				case ShaderVariableClass.MatrixColumns:
+				case ShaderVariableClass.MatrixRows:
+				{
+					sb.Append(indentString);
+					if (!string.IsNullOrEmpty(BaseTypeName))
 					{
-						sb.Append(indentString + string.Format("{0} {1}", VariableType.GetDescription(), BaseTypeName));
-						break;
+						sb.Append(string.Format("{0}{1}", VariableClass.GetDescription(), BaseTypeName));
 					}
+					else
+					{
+						sb.Append(VariableType.GetDescription());
+						if (Columns > 1)
+						{
+							sb.Append(Columns);
+							if (Rows > 1)
+								sb.Append("x" + Rows);
+						}
+					}
+					break;
+				}
+				case ShaderVariableClass.Vector:
+				{
+					sb.Append(indentString + VariableType.GetDescription());
+					if (Columns > 1)
+						sb.Append(Columns);
+					break;
+				}
 				case ShaderVariableClass.Struct:
 					{
 						if (!_isFirst)
@@ -128,11 +151,6 @@ namespace SlimShader.ResourceDefinition
 				case ShaderVariableClass.Scalar:
 					{
 						sb.Append(indentString + VariableType.GetDescription());
-						break;
-					}
-				case ShaderVariableClass.Vector:
-					{
-						sb.Append(indentString + BaseTypeName);
 						break;
 					}
 				default:

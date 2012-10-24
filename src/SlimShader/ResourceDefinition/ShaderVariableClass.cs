@@ -16,17 +16,19 @@ namespace SlimShader.ResourceDefinition
 		/// <summary>
 		/// The shader variable is a vector.
 		/// </summary>
+		[Description("")]
 		Vector,
 
 		/// <summary>
 		/// The shader variable is a row-major matrix.
 		/// </summary>
-		[Description("row_major")]
+		[Description("row_major ")]
 		MatrixRows,
 
 		/// <summary>
 		/// The shader variable is a column-major matrix.
 		/// </summary>
+		[Description("")]
 		MatrixColumns,
 
 		/// <summary>
@@ -47,6 +49,7 @@ namespace SlimShader.ResourceDefinition
 		/// <summary>
 		/// The shader variable is an interface.
 		/// </summary>
+		[Description("interface ")]
 		InterfacePointer
 	}
 }

@@ -99,7 +99,10 @@ namespace SlimShader.ResourceDefinition
 			//string declaration = string.Format("{0} {1}{2};", variableType, Name, arrayCount);
 			//return string.Format("{0,-35}// Offset: {1,4}", declaration, Offset);
 
-			string declaration = Type + " " + Name + ";";
+			string declaration = Type + " " + Name;
+			if (Type.ElementCount > 0)
+				declaration += string.Format("[{0}]", Type.ElementCount);
+			declaration += ";";
 
 			// Split declaration into separate lines, so that we can put the "// Offset" comment at the right place.
 			var declarationLines = declaration.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
