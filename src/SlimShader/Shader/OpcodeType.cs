@@ -279,13 +279,13 @@ namespace SlimShader.Shader
 		[Description("dcl_indexRange")]
 		DclIndexRange,
 
-		[Description("dcl_outputTopology")]
+		[Description("dcl_outputtopology")]
 		DclGsOutputPrimitiveTopology,
 
-		[Description("dcl_inputPrimitive")]
+		[Description("dcl_inputprimitive")]
 		DclGsInputPrimitive,
 
-		[Description("dcl_maxOutputVertexCount")]
+		[Description("dcl_maxout")]
 		DclMaxOutputVertexCount,
 
 		[Description("dcl_input")]

@@ -1,12 +1,24 @@
-﻿namespace SlimShader.Shader
+﻿using System.ComponentModel;
+
+namespace SlimShader.Shader
 {
 	public enum PrimitiveTopology
 	{
 		Undefined = 0,
+
+		[Description("pointlist")]
 		PointList = 1,
+
+		[Description("linelist")]
 		LineList = 2,
+
+		[Description("linestrip")]
 		LineStrip = 3,
+
+		[Description("trianglelist")]
 		TriangleList = 4,
+
+		[Description("trianglestrip")]
 		TriangleStrip = 5,
 
 		// 6 is reserved for legacy triangle fans

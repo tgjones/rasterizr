@@ -28,5 +28,10 @@ namespace SlimShader.Shader.Tokens
 				Primitive = token0.DecodeValue<Primitive>(11, 16)
 			};
 		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} {1}", TypeDescription, Primitive.GetDescription());
+		}
 	}
 }

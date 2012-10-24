@@ -1,10 +1,18 @@
+using System.ComponentModel;
+
 namespace SlimShader.Shader
 {
 	public enum Primitive
 	{
 		Undefined = 0,
+
+		[Description("point")]
 		Point = 1,
+
+		[Description("line")]
 		Line = 2,
+
+		[Description("triangle")]
 		Triangle = 3,
 
 		// Adjacency values should be equal to (0x4 & non-adjacency):

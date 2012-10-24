@@ -30,5 +30,10 @@ namespace SlimShader.Shader.Tokens
 				MaxPrimitives = reader.ReadUInt32()
 			};
 		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} {1}", TypeDescription, MaxPrimitives);
+		}
 	}
 }

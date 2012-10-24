@@ -16,7 +16,10 @@ namespace SlimShader.InputOutputSignature
 
 		ClipDistance = 2,
 		CullDistance = 3,
+
+		[Description("RTINDEX")]
 		RenderTargetArrayIndex = 4,
+
 		ViewportArrayIndex = 5,
 		VertexID = 6,
 

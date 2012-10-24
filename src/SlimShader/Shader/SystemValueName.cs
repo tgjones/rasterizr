@@ -16,7 +16,7 @@ namespace SlimShader.Shader
 		[Description("culldistance")]
 		CullDistance = 3,
 
-		[Description("rendertargetarrayindex")]
+		[Description("rendertarget_array_index")]
 		RenderTargetArrayIndex = 4,
 
 		[Description("viewportarrayindex")]
