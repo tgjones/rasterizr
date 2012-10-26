@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using SlimShader.Chunks.Pcsg;
 using SlimShader.IO;
@@ -70,6 +71,9 @@ namespace SlimShader.InputOutputSignature
 
 			foreach (var parameter in Parameters)
 				sb.AppendLine("// " + parameter);
+
+			if (Parameters.Any())
+				sb.AppendLine("//");
 
 			return sb.ToString();
 		}

@@ -36,11 +36,12 @@ namespace SlimShader.ResourceDefinition
 
 		public override string ToString()
 		{
-			string returnType = (ReturnType == ResourceReturnType.NotApplicable)
-				? "NA" : ReturnType.GetDescription() + "4";
+			string returnType = ReturnType.GetDescription(Type);
+			if (ReturnType != ResourceReturnType.NotApplicable && ReturnType != ResourceReturnType.Mixed)
+				returnType += "4";
 			return string.Format("// {0,-30} {1,10} {2,7} {3,11} {4,4} {5,8}",
 				Name, Type.GetDescription(), returnType,
-				Dimension.GetDescription() + (Dimension.IsMultiSampled() ? NumSamples.ToString() : string.Empty),
+				Dimension.GetDescription(Type) + (Dimension.IsMultiSampled() ? NumSamples.ToString() : string.Empty),
 				BindPoint, BindCount);
 		}
 	}

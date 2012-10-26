@@ -47,7 +47,9 @@ namespace SlimShader.ResourceDefinition
 
 			if (target.MajorVersion >= 5)
 			{
-				var unknown0 = headerReader.ReadUInt32();
+				string rd11 = headerReader.ReadUInt32().ToFourCcString();
+				if (rd11 != "RD11")
+					throw new ParseException("Expected RD11.");
 				var unknown1 = headerReader.ReadUInt32();
 				var unknown2 = headerReader.ReadUInt32();
 				var unknown3 = headerReader.ReadUInt32();

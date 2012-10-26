@@ -111,15 +111,12 @@ namespace SlimShader
 			{
 				sb.Append(PatchConstantSignature);
 				sb.AppendLine(@"//");
-				sb.AppendLine(@"//");
 			}
 
 			sb.Append(InputSignature);
 			sb.AppendLine(@"//");
-			sb.AppendLine(@"//");
 
 			sb.Append(OutputSignature);
-			sb.AppendLine(@"//");
 
 			if (Statistics != null)
 				sb.Append(Statistics);

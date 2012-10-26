@@ -82,15 +82,7 @@ namespace SlimShader.Shader.Tokens
 			}
 
 			var operand = Operand.Parse(reader, token0.DecodeValue<OpcodeType>(0, 10));
-
-			var token = reader.ReadUInt32();
-			var returnType = new ResourceReturnTypeToken
-			{
-				X = token.DecodeValue<ResourceReturnType>(00, 03),
-				Y = token.DecodeValue<ResourceReturnType>(04, 07),
-				Z = token.DecodeValue<ResourceReturnType>(08, 11),
-				W = token.DecodeValue<ResourceReturnType>(12, 15)
-			};
+			var returnType = ResourceReturnTypeToken.Parse(reader);
 
 			return new ResourceDeclarationToken
 			{

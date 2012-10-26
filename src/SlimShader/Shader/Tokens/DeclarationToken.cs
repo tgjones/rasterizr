@@ -63,6 +63,22 @@ namespace SlimShader.Shader.Tokens
 					return FunctionTableDeclarationToken.Parse(reader);
 				case OpcodeType.DclInterface :
 					return InterfaceDeclarationToken.Parse(reader);
+				case OpcodeType.DclThreadGroup:
+					return ThreadGroupDeclarationToken.Parse(reader);
+				case OpcodeType.DclUnorderedAccessViewTyped :
+					return TypedUnorderedAccessViewDeclarationToken.Parse(reader);
+				case OpcodeType.DclUnorderedAccessViewRaw :
+					return RawUnorderedAccessViewDeclarationToken.Parse(reader);
+				case OpcodeType.DclUnorderedAccessViewStructured :
+					return StructuredUnorderedAccessViewDeclarationToken.Parse(reader);
+				case OpcodeType.DclThreadGroupSharedMemoryRaw :
+					return RawThreadGroupSharedMemoryDeclarationToken.Parse(reader);
+				case OpcodeType.DclThreadGroupSharedMemoryStructured :
+					return StructuredThreadGroupSharedMemoryDeclarationToken.Parse(reader);
+				case OpcodeType.DclResourceRaw :
+					return RawShaderResourceViewDeclarationToken.Parse(reader);
+				case OpcodeType.DclResourceStructured:
+					return StructuredShaderResourceViewDeclarationToken.Parse(reader);
 				default:
 					throw new ArgumentOutOfRangeException("opcodeType",
 						"OpcodeType '" + opcodeType + "' is not supported.");

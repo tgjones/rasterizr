@@ -11,22 +11,31 @@ namespace SlimShader.ResourceDefinition
 	/// </summary>
 	public class ShaderVariable
 	{
-		internal ShaderTypeMember Member { get; private set; }
+		private ShaderTypeMember Member { get; set; }
 
 		/// <summary>
 		/// The variable name.
 		/// </summary>
-		public string Name { get; internal set; }
+		public string Name
+		{
+			get { return Member.Name; }
+		}
 
 		/// <summary>
 		/// Offset from the start of the parent structure, to the beginning of the variable.
 		/// </summary>
-		public uint StartOffset { get; internal set; }
+		public uint StartOffset
+		{
+			get { return Member.Offset; }
+		}
 
 		/// <summary>
 		/// Get a shader-variable type.
 		/// </summary>
-		public ShaderType ShaderType { get; internal set; }
+		public ShaderType ShaderType
+		{
+			get { return Member.Type; }
+		}
 
 		/// <summary>
 		/// Gets the name of the base class.

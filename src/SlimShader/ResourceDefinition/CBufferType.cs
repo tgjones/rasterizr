@@ -28,6 +28,7 @@ namespace SlimShader.ResourceDefinition
 		/// <summary>
 		/// A buffer containing binding information.
 		/// </summary>
+		[Description("Resource bind info for")]
 		ResourceBindInfo
 	}
 }

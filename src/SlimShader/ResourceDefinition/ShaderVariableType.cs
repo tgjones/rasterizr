@@ -28,7 +28,10 @@ namespace SlimShader.ResourceDefinition
 		Sampler = 10,
 		PixelShader = 15,
 		VertexShader = 16,
+
+		[Description("uint")]
 		UInt = 19,
+
 		UInt8 = 20,
 		GeometryShader = 21,
 		Rasterizer = 22,

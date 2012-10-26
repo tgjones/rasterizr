@@ -17,6 +17,7 @@ namespace SlimShader.ResourceDefinition
 		/// <summary>
 		/// The resource is a buffer.
 		/// </summary>
+		[Description("buf")]
 		Buffer = 1,
 
 		/// <summary>

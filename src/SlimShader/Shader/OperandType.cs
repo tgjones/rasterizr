@@ -181,26 +181,31 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// Reference to UAV u#
 		/// </summary>
+		[Description("u")]
 		UnorderedAccessView = 30,
 
 		/// <summary>
 		/// Reference to Thread Group Shared Memory g#
 		/// </summary>
+		[Description("g")]
 		ThreadGroupSharedMemory = 31,
 
 		/// <summary>
 		/// Compute Shader Thread ID
 		/// </summary>
+		[Description("vThreadID")]
 		InputThreadID = 32,
 
 		/// <summary>
 		/// Compute Shader Thread Group ID
 		/// </summary>
+		[Description("vThreadGroupID")]
 		InputThreadGroupID = 33,
 
 		/// <summary>
 		/// Compute Shader Thread ID In Thread Group
 		/// </summary>
+		[Description("vThreadIDInGroup")]
 		InputThreadIDInGroup = 34,
 
 		/// <summary>
@@ -211,6 +216,7 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// Compute Shader Thread ID In Group Flattened to a 1D value.
 		/// </summary>
+		[Description("vThreadIDInGroupFlattened")]
 		InputThreadIDInGroupFlattened = 36,
 
 		/// <summary>

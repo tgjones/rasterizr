@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using SlimShader.IO;
 
 namespace SlimShader.Shader.Tokens
@@ -21,7 +20,7 @@ namespace SlimShader.Shader.Tokens
 	/// </summary>
 	public class ImmediateConstantBufferDeclarationToken : ImmediateDeclarationToken
 	{
-		public float[] Data { get; private set; }
+		public Number[] Data { get; private set; }
 
 		public static ImmediateConstantBufferDeclarationToken Parse(BytecodeReader reader)
 		{
@@ -31,11 +30,11 @@ namespace SlimShader.Shader.Tokens
 			var result = new ImmediateConstantBufferDeclarationToken
 			{
 				DeclarationLength = length,
-				Data = new float[length]
+				Data = new Number[length]
 			};
 
 			for (int i = 0; i < length; i++)
-				result.Data[i] = reader.ReadSingle();
+				result.Data[i] = Number.Parse32(reader, NumberType.Unknown);
 
 			return result;
 		}
@@ -48,7 +47,7 @@ namespace SlimShader.Shader.Tokens
 			{
 				if (i > 0)
 					result += "," + Environment.NewLine + new string(' ', 30);
-				result += string.Format("{{ {0:##.000000;;0}, {1:##.000000;;0}, {2:##.000000;;0}, {3:##.000000;;0}}}",
+				result += string.Format("{{ {0}, {1}, {2}, {3}}}",
 					Data[i], Data[i + 1], Data[i + 2], Data[i + 3]);
 			}
 			

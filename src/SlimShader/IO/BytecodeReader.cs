@@ -41,6 +41,11 @@ namespace SlimShader.IO
 			return _reader.ReadDouble();
 		}
 
+		public int ReadInt32()
+		{
+			return _reader.ReadInt32();
+		}
+
 		public ushort ReadUInt16()
 		{
 			return _reader.ReadUInt16();

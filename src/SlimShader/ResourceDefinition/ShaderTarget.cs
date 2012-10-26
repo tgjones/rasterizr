@@ -30,6 +30,9 @@ namespace SlimShader.ResourceDefinition
 				case 0x4453 :
 					programType = ProgramType.DomainShader;
 					break;
+				case 0x4353 :
+					programType = ProgramType.ComputeShader;
+					break;
 				default:
 					throw new ArgumentOutOfRangeException(string.Format("Unknown program type: 0x{0:X}", programTypeValue));
 			}

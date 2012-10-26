@@ -57,51 +57,37 @@ namespace SlimShader.Shader
 				|| type == OpcodeType.DclGsInstanceCount;
 		}
 
-		public static bool IsIntegralTypeInstruction(this OpcodeType type)
+		public static NumberType GetNumberType(this OpcodeType type)
+		{
+			return type.GetAttributeValue<NumberTypeAttribute, NumberType>((a, v) =>
+			{
+				if (a == null)
+					return NumberType.Unknown;
+				return a.Type;
+			});	
+		}
+
+		public static bool RequiresRegisterNumberFor1DIndex(this OperandType type)
 		{
 			switch (type)
 			{
-				case OpcodeType.And :
-				case OpcodeType.Case :
-				case OpcodeType.IAdd:
-				case OpcodeType.IBfe:
-				case OpcodeType.IEq:
-				case OpcodeType.IGe:
-				case OpcodeType.ILt:
-				case OpcodeType.IMad:
-				case OpcodeType.IMax:
-				case OpcodeType.IMin:
-				case OpcodeType.IMul:
-				case OpcodeType.INe:
-				case OpcodeType.INeg:
-				case OpcodeType.IShl:
-				case OpcodeType.IShr:
-				case OpcodeType.LdMs:
-				case OpcodeType.UShr :
-				case OpcodeType.Xor:
-					return true;
-				default:
+				case OperandType.ImmediateConstantBuffer:
+				case OperandType.ThisPointer:
 					return false;
+				default:
+					return true;
 			}
 		}
 
-		public static bool IsDoubleTypeInstruction(this OpcodeType type)
+		public static bool RequiresRegisterNumberFor2DIndex(this OperandType type)
 		{
 			switch (type)
 			{
-				case OpcodeType.DAdd:
-				case OpcodeType.DMax:
-				case OpcodeType.DMin:
-				case OpcodeType.DMul:
-				case OpcodeType.DEq:
-				case OpcodeType.DGe:
-				case OpcodeType.DLt:
-				case OpcodeType.DNe:
-				case OpcodeType.DMov:
-				case OpcodeType.DMovC:
-					return true;
-				default:
+				case OperandType.InputControlPoint:
+				case OperandType.Input:
 					return false;
+				default:
+					return true;
 			}
 		}
 

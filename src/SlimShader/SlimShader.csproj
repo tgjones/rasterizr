@@ -78,6 +78,7 @@
     <Compile Include="Shader\InstructionTestBoolean.cs" />
     <Compile Include="Shader\InstructionTokenExtendedType.cs" />
     <Compile Include="Shader\InterpolationMode.cs" />
+    <Compile Include="Shader\NumberTypeAttribute.cs" />
     <Compile Include="Shader\Primitive.cs" />
     <Compile Include="ResourceDefinition\ShaderVariable.cs" />
     <Compile Include="ResourceDefinition\ResourceBinding.cs" />
@@ -90,6 +91,14 @@
     <Compile Include="Shader\ShaderMessageFormat.cs" />
     <Compile Include="ResourceDefinition\ResourceDimension.cs" />
     <Compile Include="Shader\GlobalFlags.cs" />
+    <Compile Include="Shader\Number.cs" />
+    <Compile Include="Shader\NumberType.cs" />
+    <Compile Include="Shader\Tokens\StructuredShaderResourceViewDeclarationToken.cs" />
+    <Compile Include="Shader\Tokens\RawShaderResourceViewDeclarationToken.cs" />
+    <Compile Include="Shader\Tokens\StructuredThreadGroupSharedMemoryDeclarationToken.cs" />
+    <Compile Include="Shader\Tokens\RawThreadGroupSharedMemoryDeclarationToken.cs" />
+    <Compile Include="Shader\Tokens\StructuredUnorderedAccessViewDeclarationToken.cs" />
+    <Compile Include="Shader\Tokens\RawUnorderedAccessViewDeclarationToken.cs" />
     <Compile Include="Shader\Tokens\InterfaceDeclarationToken.cs" />
     <Compile Include="Shader\Tokens\FunctionTableDeclarationToken.cs" />
     <Compile Include="Shader\Tokens\FunctionBodyDeclarationToken.cs" />
@@ -128,6 +137,10 @@
     <Compile Include="Shader\Tokens\TessellatorDomainDeclarationToken.cs" />
     <Compile Include="Shader\Tokens\TessellatorOutputPrimitiveDeclarationToken.cs" />
     <Compile Include="Shader\Tokens\TessellatorPartitioningDeclarationToken.cs" />
+    <Compile Include="Shader\Tokens\ThreadGroupDeclarationToken.cs" />
+    <Compile Include="Shader\Tokens\TypedUnorderedAccessViewDeclarationToken.cs" />
+    <Compile Include="Shader\Tokens\UnorderedAccessViewDeclarationTokenBase.cs" />
+    <Compile Include="Shader\UnorderedAccessViewCoherency.cs" />
     <Compile Include="Util\DecoderExtensions.cs" />
     <Compile Include="Shader\ExtendedOperandType.cs" />
     <Compile Include="Shader\OpcodeType.cs" />

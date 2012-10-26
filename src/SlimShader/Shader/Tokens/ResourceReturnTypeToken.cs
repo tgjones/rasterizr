@@ -1,3 +1,6 @@
+using SlimShader.IO;
+using SlimShader.Util;
+
 namespace SlimShader.Shader.Tokens
 {
 	/// <summary>
@@ -16,6 +19,18 @@ namespace SlimShader.Shader.Tokens
 		public ResourceReturnType Y { get; internal set; }
 		public ResourceReturnType Z { get; internal set; }
 		public ResourceReturnType W { get; internal set; }
+
+		public static ResourceReturnTypeToken Parse(BytecodeReader reader)
+		{
+			var token = reader.ReadUInt32();
+			return new ResourceReturnTypeToken
+			{
+				X = token.DecodeValue<ResourceReturnType>(00, 03),
+				Y = token.DecodeValue<ResourceReturnType>(04, 07),
+				Z = token.DecodeValue<ResourceReturnType>(08, 11),
+				W = token.DecodeValue<ResourceReturnType>(12, 15)
+			};
+		}
 
 		public override string ToString()
 		{

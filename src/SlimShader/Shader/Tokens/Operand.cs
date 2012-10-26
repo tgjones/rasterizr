@@ -72,7 +72,7 @@ namespace SlimShader.Shader.Tokens
 		public bool IsExtended { get; internal set; }
 		public OperandModifier Modifier { get; internal set; }
 		public OperandIndex[] Indices { get; private set; }
-		public double[] ImmediateValues { get; private set; }
+		public Number[] ImmediateValues { get; private set; }
 
 		public Operand(OpcodeType parentType)
 		{
@@ -86,7 +86,7 @@ namespace SlimShader.Shader.Tokens
 			};
 			IndexRepresentations = new OperandIndexRepresentation[3];
 			Indices = new OperandIndex[3];
-			ImmediateValues = new double[4];
+			ImmediateValues = new Number[4];
 		}
 
 		public static Operand Parse(BytecodeReader reader, OpcodeType parentType)
@@ -186,19 +186,16 @@ namespace SlimShader.Shader.Tokens
 				}
 			}
 
+			var numberType = parentType.GetNumberType();
 			switch (operand.OperandType)
 			{
 				case OperandType.Immediate32:
 					for (var i = 0; i < operand.NumComponents; i++)
-						operand.ImmediateValues[i] = (parentType.IsIntegralTypeInstruction())
-							? reader.ReadUInt32()
-							: reader.ReadSingle();
+						operand.ImmediateValues[i] = Number.Parse32(reader, numberType);
 					break;
 				case OperandType.Immediate64:
 					for (var i = 0; i < operand.NumComponents; i++)
-						operand.ImmediateValues[i] = (parentType.IsIntegralTypeInstruction())
-							? reader.ReadUInt64()
-							: reader.ReadDouble();
+						operand.ImmediateValues[i] = Number.Parse64(reader, numberType);
 					break;
 			}
 
@@ -248,33 +245,21 @@ namespace SlimShader.Shader.Tokens
 
 		public override string ToString()
 		{
+			var numberType = _parentType.GetNumberType();
 			switch (OperandType)
 			{
 				case OperandType.Immediate32:
 				{
-					string result = (_parentType.IsDoubleTypeInstruction()) ? "d(" : "l(";
-					bool allComponentsZeroOrOne = ImmediateValues.All(x => x == 0.0 || x == 1.0);
+					string result = (numberType == NumberType.Double) ? "d(" : "l(";
+					bool addSpaces = _parentType != OpcodeType.Mov && _parentType != OpcodeType.MovC;
 					for (int i = 0; i < NumComponents; i++)
 					{
-						if (_parentType.IsIntegralTypeInstruction()
-							|| ((_parentType == OpcodeType.Mov || _parentType == OpcodeType.MovC) && ImmediateValues[i] == 0.0)) // Don't look at me...
-						{
-							// Just guessing this number based on fxc output.
-							const int hexThreshold = 10000;
-							bool isHexNumber = ImmediateValues[i] > hexThreshold;
-							string formatSpecifier = isHexNumber ? "x8" : "g";
-							if (isHexNumber)
-								result += "0x";
-							result += string.Format("{0:" + formatSpecifier + "}", (long) ImmediateValues[i]);
-						}
-						else
-						{
-							result += string.Format("{0:F6}", ImmediateValues[i]);
-						}
+						result += ImmediateValues[i].ToString();
+
 						if (i < NumComponents - 1)
 						{
 							result += ",";
-							if (!allComponentsZeroOrOne)
+							if (addSpaces)
 								result += " ";
 						}
 					}
@@ -294,14 +279,13 @@ namespace SlimShader.Shader.Tokens
 							break;
 						case OperandIndexDimension._1D:
 							index = (IndexRepresentations[0] == OperandIndexRepresentation.Relative
-								|| OperandType == OperandType.ThisPointer)
+								|| !OperandType.RequiresRegisterNumberFor1DIndex())
 								? string.Format("[{0}]", Indices[0])
 								: Indices[0].ToString();
 							break;
 						case OperandIndexDimension._2D :
 							index = (IndexRepresentations[0] == OperandIndexRepresentation.Relative
-								|| OperandType == OperandType.InputControlPoint
-								|| OperandType == OperandType.Input)
+								|| !OperandType.RequiresRegisterNumberFor2DIndex())
 								? string.Format("[{0}][{1}]", Indices[0], Indices[1])
 								: string.Format("{0}[{1}]", Indices[0], Indices[1]);
 							break;

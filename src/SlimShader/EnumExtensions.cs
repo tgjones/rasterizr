@@ -8,32 +8,54 @@ namespace SlimShader
 {
 	internal static class EnumExtensions
 	{
-		private static readonly Dictionary<Type, Dictionary<Enum, string>> TypeDescriptions;
+		private static readonly Dictionary<Type, Dictionary<Type, Dictionary<Enum, object>>> AttributeValues;
 
 		static EnumExtensions()
 		{
-			TypeDescriptions = new Dictionary<Type, Dictionary<Enum, string>>();
+			AttributeValues = new Dictionary<Type, Dictionary<Type, Dictionary<Enum, object>>>();
 		}
 
 		public static string GetDescription(this Enum value)
 		{
-			Type type = value.GetType();
-			if (!TypeDescriptions.ContainsKey(type))
-				TypeDescriptions[type] = Enum.GetValues(type).Cast<Enum>().Distinct()
-					.ToDictionary(x => x, GetDescriptionInternal);
-			var typeDescriptions = TypeDescriptions[type];
-			if (!typeDescriptions.ContainsKey(value))
-				throw new ArgumentOutOfRangeException("value",
-					string.Format("Could not find description for type '{0}' and value '{1}'.", type, value));
-			return typeDescriptions[value];
+			return value.GetAttributeValue<DescriptionAttribute, string>((a, v) =>
+			{
+				if (a == null)
+					return v.ToString();
+				return a.Description;
+			});
 		}
 
-		private static string GetDescriptionInternal(Enum value)
+		public static TValue GetAttributeValue<TAttribute, TValue>(this Enum value,
+			Func<TAttribute, Enum, TValue> getValueCallback)
+			where TAttribute : Attribute
+		{
+			Type type = value.GetType();
+
+			if (!AttributeValues.ContainsKey(type))
+				AttributeValues[type] = new Dictionary<Type, Dictionary<Enum, object>>();
+
+			var attributeValuesForType = AttributeValues[type];
+
+			var attributeType = typeof(TAttribute);
+			if (!attributeValuesForType.ContainsKey(attributeType))
+				attributeValuesForType[attributeType] = Enum.GetValues(type).Cast<Enum>().Distinct()
+					.ToDictionary(x => x, x => (object) GetAttributeValueInternal(x, getValueCallback));
+
+			var attributeValues = attributeValuesForType[attributeType];
+			if (!attributeValues.ContainsKey(value))
+				throw new ArgumentOutOfRangeException("value",
+					string.Format("Could not find attribute value for type '{0}' and value '{1}'.", type, value));
+			return (TValue) attributeValues[value];
+		}
+
+		private static TValue GetAttributeValueInternal<TAttribute, TValue>(Enum value,
+			Func<TAttribute, Enum, TValue> getValueCallback)
+			where TAttribute : Attribute
 		{
 			FieldInfo field = value.GetType().GetField(value.ToString());
 			var attribute = Attribute.GetCustomAttribute(
-				field, typeof(DescriptionAttribute)) as DescriptionAttribute;
-			return attribute == null ? value.ToString() : attribute.Description;
+				field, typeof(TAttribute)) as TAttribute;
+			return getValueCallback(attribute, value);
 		}
 	}
 }

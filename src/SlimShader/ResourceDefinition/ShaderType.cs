@@ -113,12 +113,13 @@ namespace SlimShader.ResourceDefinition
 				case ShaderVariableClass.MatrixRows:
 				{
 					sb.Append(indentString);
-					if (!string.IsNullOrEmpty(BaseTypeName))
+					if (!string.IsNullOrEmpty(BaseTypeName)) // BaseTypeName is only populated in SM 5.0
 					{
 						sb.Append(string.Format("{0}{1}", VariableClass.GetDescription(), BaseTypeName));
 					}
 					else
 					{
+						sb.Append(VariableClass.GetDescription());
 						sb.Append(VariableType.GetDescription());
 						if (Columns > 1)
 						{

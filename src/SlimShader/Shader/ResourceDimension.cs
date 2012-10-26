@@ -12,6 +12,7 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// The resource is a buffer.
 		/// </summary>
+		[Description("buffer")]
 		Buffer = 1,
 
 		/// <summary>
@@ -71,7 +72,10 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// The resource is a raw buffer.
 		/// </summary>
+		[Description("raw_buffer")]
 		RawBuffer = 11,
+
+		[Description("structured_buffer")]
 		StructuredBuffer = 12,
 	}
 }

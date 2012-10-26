@@ -5,13 +5,29 @@ using SlimShader.Util;
 
 namespace SlimShader.Shader.Tokens
 {
+	/// <summary>
+	/// Instruction Token
+	///
+	/// OpcodeToken0:
+	///
+	/// [10:00] OpcodeType
+	/// [13:13] Saturate?
+	/// [18:18] InstructionTestBoolean
+	/// [23:16] Ignored, 0
+	/// [30:24] Instruction length in DWORDs including the opcode token.
+	/// [31]    0 normally. 1 if extended operand definition, meaning next DWORD
+	///         contains extended operand description.
+	///
+	/// OpcodeToken0 is followed by 1 or more operands.
+	/// </summary>
 	public class InstructionToken : OpcodeToken
 	{
-		public bool Saturate { get; internal set; }
-		public InstructionTestBoolean TestBoolean { get; internal set; }
+		public bool Saturate { get; set; }
+		public InstructionTestBoolean TestBoolean { get; set; }
 		public List<InstructionTokenExtendedType> ExtendedTypes { get; private set; }
 		public sbyte[] SampleOffsets { get; private set; }
-		public ResourceDimension ResourceTarget { get; internal set; }
+		public ResourceDimension ResourceTarget { get; set; }
+		public byte ResourceStride { get; private set; }
 		public ResourceReturnType[] ResourceReturnTypes { get; private set; }
 
 		/// <summary>
@@ -58,6 +74,7 @@ namespace SlimShader.Shader.Tokens
 						break;
 					case InstructionTokenExtendedType.ResourceDim:
 						instructionToken.ResourceTarget = extendedToken.DecodeValue<ResourceDimension>(6, 10);
+						instructionToken.ResourceStride = extendedToken.DecodeValue<byte>(11, 15);
 						break;
 					case InstructionTokenExtendedType.ResourceReturnType:
 						instructionToken.ResourceReturnTypes[0] = extendedToken.DecodeValue<ResourceReturnType>(06, 09);
@@ -96,6 +113,7 @@ namespace SlimShader.Shader.Tokens
 			return instructionToken;
 		}
 
+		// TODO: Move this to the Decoder class.
 		private static sbyte DecodeSigned4BitValue(uint token, byte start, byte end)
 		{
 			if (end - start != 3)
@@ -117,7 +135,12 @@ namespace SlimShader.Shader.Tokens
 				result += string.Format("({0},{1},{2})", SampleOffsets[0], SampleOffsets[1], SampleOffsets[2]);
 
 			if (ExtendedTypes.Contains(InstructionTokenExtendedType.ResourceDim))
-				result += string.Format("({0})", ResourceTarget.GetDescription());
+			{
+				result += string.Format("({0}", ResourceTarget.GetDescription());
+				if (ResourceStride != 0)
+					result += string.Format(", stride={0}", ResourceStride);
+				result += ")";
+			}
 
 			if (ExtendedTypes.Contains(InstructionTokenExtendedType.ResourceReturnType))
 				result += string.Format("({0},{1},{2},{3})",

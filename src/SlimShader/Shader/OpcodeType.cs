@@ -4,9 +4,11 @@ namespace SlimShader.Shader
 {
 	public enum OpcodeType
 	{
+		[NumberType(NumberType.Float)]
 		[Description("add")]
 		Add,
 
+		[NumberType(NumberType.UInt)]
 		[Description("and")]
 		And,
 
@@ -46,15 +48,19 @@ namespace SlimShader.Shader
 		[Description("discard")]
 		Discard,
 
+		[NumberType(NumberType.Float)]
 		[Description("div")]
 		Div,
 
+		[NumberType(NumberType.Float)]
 		[Description("dp2")]
 		Dp2,
 
+		[NumberType(NumberType.Float)]
 		[Description("dp3")]
 		Dp3,
 
+		[NumberType(NumberType.Float)]
 		[Description("dp4")]
 		Dp4,
 
@@ -76,12 +82,15 @@ namespace SlimShader.Shader
 		[Description("endswitch")]
 		EndSwitch,
 
+		[NumberType(NumberType.Float)]
 		[Description("eq")]
 		Eq,
 
+		[NumberType(NumberType.Float)]
 		[Description("exp")]
 		Exp,
 
+		[NumberType(NumberType.Float)]
 		[Description("frc")]
 		Frc,
 
@@ -91,45 +100,58 @@ namespace SlimShader.Shader
 		[Description("ftou")]
 		FtoU,
 
+		[NumberType(NumberType.Float)]
 		[Description("ge")]
 		Ge,
 
+		[NumberType(NumberType.Int)]
 		[Description("iadd")]
 		IAdd,
 
 		[Description("if")]
 		If,
 
+		[NumberType(NumberType.Int)]
 		[Description("ieq")]
 		IEq,
 
+		[NumberType(NumberType.Int)]
 		[Description("ige")]
 		IGe,
 
+		[NumberType(NumberType.Int)]
 		[Description("ilt")]
 		ILt,
 
+		[NumberType(NumberType.Int)]
 		[Description("imad")]
 		IMad,
 
+		[NumberType(NumberType.Int)]
 		[Description("imax")]
 		IMax,
 
+		[NumberType(NumberType.Int)]
 		[Description("imin")]
 		IMin,
 
+		[NumberType(NumberType.Int)]
 		[Description("imul")]
 		IMul,
 
+		[NumberType(NumberType.Int)]
 		[Description("ine")]
 		INe,
 
+		[NumberType(NumberType.Int)]
 		[Description("ineg")]
 		INeg,
 
+		[NumberType(NumberType.Int)]
 		[Description("ishl")]
 		IShl,
 
+		[NumberType(NumberType.Int)]
 		[Description("ishr")]
 		IShr,
 
@@ -139,27 +161,34 @@ namespace SlimShader.Shader
 		[Description("label")]
 		Label,
 
+		[NumberType(NumberType.UInt)]
 		[Description("ld")]
 		Ld,
 
+		[NumberType(NumberType.UInt)]
 		[Description("ldms")]
 		LdMs,
 
+		[NumberType(NumberType.Float)]
 		[Description("log")]
 		Log,
 
 		[Description("loop")]
 		Loop,
 
+		[NumberType(NumberType.Float)]
 		[Description("lt")]
 		Lt,
 
+		[NumberType(NumberType.Float)]
 		[Description("mad")]
 		Mad,
 
+		[NumberType(NumberType.Float)]
 		[Description("min")]
 		Min,
 
+		[NumberType(NumberType.Float)]
 		[Description("max")]
 		Max,
 
@@ -171,9 +200,11 @@ namespace SlimShader.Shader
 		[Description("movc")]
 		MovC,
 
+		[NumberType(NumberType.Float)]
 		[Description("mul")]
 		Mul,
 
+		[NumberType(NumberType.Float)]
 		[Description("ne")]
 		Ne,
 
@@ -183,6 +214,7 @@ namespace SlimShader.Shader
 		[Description("not")]
 		Not,
 
+		[NumberType(NumberType.UInt)]
 		[Description("or")]
 		Or,
 
@@ -195,75 +227,98 @@ namespace SlimShader.Shader
 		[Description("retc")]
 		RetC,
 
+		[NumberType(NumberType.Float)]
 		[Description("round_ne")]
 		RoundNe,
 
+		[NumberType(NumberType.Float)]
 		[Description("round_ni")]
 		RoundNi,
 
+		[NumberType(NumberType.Float)]
 		[Description("round_pi")]
 		RoundPi,
 
+		[NumberType(NumberType.Float)]
 		[Description("round_z")]
 		RoundZ,
 
+		[NumberType(NumberType.Float)]
 		[Description("rsq")]
 		Rsq,
 
+		[NumberType(NumberType.Float)]
 		[Description("sample")]
 		Sample,
 
+		[NumberType(NumberType.Float)]
 		[Description("sample_c")]
 		SampleC,
 
+		[NumberType(NumberType.Float)]
 		[Description("sample_c_lz")]
 		SampleCLz,
 
+		[NumberType(NumberType.Float)]
 		[Description("sample_l")]
 		SampleL,
 
+		[NumberType(NumberType.Float)]
 		[Description("sample_d")]
 		SampleD,
 
+		[NumberType(NumberType.Float)]
 		[Description("sample_b")]
 		SampleB,
 
+		[NumberType(NumberType.Float)]
 		[Description("sqrt")]
 		Sqrt,
 
+		[NumberType(NumberType.Float)]
 		[Description("switch")]
 		Switch,
 
+		[NumberType(NumberType.Float)]
 		[Description("sincos")]
 		Sincos,
 
+		[NumberType(NumberType.UInt)]
 		[Description("udiv")]
 		UDiv,
 
+		[NumberType(NumberType.UInt)]
 		[Description("ult")]
 		ULt,
 
+		[NumberType(NumberType.UInt)]
 		[Description("uge")]
 		UGe,
 
+		[NumberType(NumberType.UInt)]
 		[Description("umul")]
 		UMul,
 
+		[NumberType(NumberType.UInt)]
 		[Description("umad")]
 		UMad,
 
+		[NumberType(NumberType.UInt)]
 		[Description("umax")]
 		UMax,
 
+		[NumberType(NumberType.UInt)]
 		[Description("umin")]
 		UMin,
 
+		[NumberType(NumberType.UInt)]
 		[Description("ushr")]
 		UShr,
 
 		[Description("utof")]
 		UTof,
 
+		[NumberType(NumberType.UInt)]
 		[Description("xor")]
 		Xor,
 
@@ -394,18 +449,46 @@ namespace SlimShader.Shader
 		Gather4Po,
 		Gather4PoC,
 		Rcp,
+
+		[NumberType(NumberType.Float)]
 		F32ToF16,
+
+		[NumberType(NumberType.Float)]
 		F16ToF32,
+
+		[NumberType(NumberType.UInt)]
 		UAddC,
+
+		[NumberType(NumberType.UInt)]
 		USubB,
+
+		[NumberType(NumberType.UInt)]
 		CountBits,
+
+		[NumberType(NumberType.UInt)]
 		FirstBitHi,
+
+		[NumberType(NumberType.UInt)]
 		FirstBitLo,
+
+		[NumberType(NumberType.UInt)]
 		FirstBitSHi,
+
+		[NumberType(NumberType.UInt)]
+		[Description("ubfe")]
 		UBfe,
+
+		[NumberType(NumberType.Int)]
+		[Description("ibfe")]
 		IBfe,
+
+		[NumberType(NumberType.UInt)]
+		[Description("bfi")]
 		Bfi,
+
 		BfRev,
+
+		[Description("swapc")]
 		SwapC,
 		DclStream,
 
@@ -440,52 +523,136 @@ namespace SlimShader.Shader
 		[Description("dcl_hs_join_phase_instance_count")]
 		DclHsJoinPhaseInstanceCount,
 
+		[Description("dcl_thread_group")]
 		DclThreadGroup,
+
+		[Description("dcl_uav_typed")]
 		DclUnorderedAccessViewTyped,
+
+		[Description("dcl_uav_raw")]
 		DclUnorderedAccessViewRaw,
+
+		[Description("dcl_uav_structured")]
 		DclUnorderedAccessViewStructured,
+
+		[Description("dcl_tgsm_raw")]
 		DclThreadGroupSharedMemoryRaw,
+
+		[Description("dcl_tgsm_structured")]
 		DclThreadGroupSharedMemoryStructured,
+
+		[Description("dcl_resource_raw")]
 		DclResourceRaw,
+
+		[Description("dcl_resource_structured")]
 		DclResourceStructured,
+
+		[Description("ld_uav_typed")]
 		LdUavTyped,
+
+		[Description("store_uav_typed")]
 		StoreUavTyped,
+
+		[Description("ld_raw")]
 		LdRaw,
+
+		[Description("store_raw")]
 		StoreRaw,
+
+		[Description("ld_structured")]
 		LdStructured,
+
+		[Description("store_structured")]
 		StoreStructured,
+
+		[NumberType(NumberType.UInt)]
 		AtomicAnd,
+
+		[NumberType(NumberType.UInt)]
 		AtomicOr,
+
+		[NumberType(NumberType.UInt)]
 		AtomicXor,
+
 		AtomicCmpStore,
+
+		[NumberType(NumberType.Int)]
 		AtomicIAdd,
+
+		[NumberType(NumberType.Int)]
 		AtomicIMax,
+
+		[NumberType(NumberType.Int)]
 		AtomicIMin,
+
+		[NumberType(NumberType.UInt)]
 		AtomicUMax,
+
+		[NumberType(NumberType.UInt)]
 		AtomicUMin,
+
 		ImmAtomicAlloc,
 		ImmAtomicConsume,
+
+		[NumberType(NumberType.Int)]
 		ImmAtomicIAdd,
+
+		[NumberType(NumberType.UInt)]
 		ImmAtomicAnd,
+
+		[NumberType(NumberType.UInt)]
 		ImmAtomicOr,
+
+		[NumberType(NumberType.UInt)]
 		ImmAtomicXor,
+
 		ImmAtomicExch,
 		ImmAtomicCmpExch,
+
+		[NumberType(NumberType.Int)]
 		ImmAtomicIMax,
+
+		[NumberType(NumberType.Int)]
 		ImmAtomicIMin,
+
+		[NumberType(NumberType.UInt)]
 		ImmAtomicUMax,
+
+		[NumberType(NumberType.UInt)]
 		ImmAtomicUMin,
+
 		Sync,
+
+		[NumberType(NumberType.Double)]
 		DAdd,
+
+		[NumberType(NumberType.Double)]
 		DMax,
+
+		[NumberType(NumberType.Double)]
 		DMin,
+
+		[NumberType(NumberType.Double)]
 		DMul,
+
+		[NumberType(NumberType.Double)]
 		DEq,
+
+		[NumberType(NumberType.Double)]
 		DGe,
+
+		[NumberType(NumberType.Double)]
 		DLt,
+
+		[NumberType(NumberType.Double)]
 		DNe,
+
+		[NumberType(NumberType.Double)]
 		DMov,
+
+		[NumberType(NumberType.Double)]
 		DMovC,
+
 		DToD,
 		FToD,
 		EvalSnapped,

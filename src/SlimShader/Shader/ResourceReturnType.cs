@@ -37,6 +37,7 @@ namespace SlimShader.Shader
 		/// <summary>
 		/// Return type is unknown.
 		/// </summary>
+		[Description("mixed")]
 		Mixed = 6,
 
 		/// <summary>

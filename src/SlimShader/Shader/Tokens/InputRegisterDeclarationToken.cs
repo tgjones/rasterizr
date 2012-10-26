@@ -114,7 +114,7 @@ namespace SlimShader.Shader.Tokens
 
 		public override string ToString()
 		{
-			string result = TypeDescription + " " + Operand;
+			string result = string.Format("{0} {1}", TypeDescription, Operand);
 
 			if (Header.OpcodeType == OpcodeType.DclInputSgv || Header.OpcodeType == OpcodeType.DclInputSiv)
 				result += ", " + SystemValueName.GetDescription();
