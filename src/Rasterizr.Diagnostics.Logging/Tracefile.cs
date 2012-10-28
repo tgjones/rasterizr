@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using Rasterizr.Core.Diagnostics;
 
 namespace Rasterizr.Diagnostics.Logging
 {

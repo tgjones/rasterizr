@@ -3,9 +3,9 @@ using Meshellator;
 using Nexus;
 using Nexus.Graphics.Cameras;
 using Nexus.Graphics.Colors;
-using Rasterizr.Effects;
-using Rasterizr.Meshellator;
 using Rasterizr.Studio.Framework;
+using Rasterizr.Toolkit;
+using Rasterizr.Toolkit.Effects;
 
 namespace Rasterizr.Studio.Modules.ModelViewer.ViewModels
 {

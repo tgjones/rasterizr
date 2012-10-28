@@ -2,11 +2,10 @@ using System;
 using System.Runtime.InteropServices;
 using Nexus;
 using Nexus.Graphics.Colors;
-using Rasterizr.Core;
-using Rasterizr.Core.InputAssembler;
-using Rasterizr.Core.ShaderCore;
-using Rasterizr.Core.ShaderCore.PixelShader;
-using Rasterizr.Core.ShaderCore.VertexShader;
+using Rasterizr.InputAssembler;
+using Rasterizr.ShaderCore;
+using Rasterizr.ShaderCore.PixelShader;
+using Rasterizr.ShaderCore.VertexShader;
 
 namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 {

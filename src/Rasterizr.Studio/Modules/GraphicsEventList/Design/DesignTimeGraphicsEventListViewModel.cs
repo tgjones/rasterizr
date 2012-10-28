@@ -1,4 +1,5 @@
-﻿using Rasterizr.Diagnostics.Logging;
+﻿using Rasterizr.Diagnostics;
+using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Studio.Modules.GraphicsDebugging.Design;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 using Rasterizr.Studio.Modules.GraphicsEventList.ViewModels;
@@ -13,12 +14,12 @@ namespace Rasterizr.Studio.Modules.GraphicsEventList.Design
 			Events.Add(new TracefileEventViewModel(new TracefileEvent
 			{
 				Number = 1,
-				OperationType = Core.Diagnostics.OperationType.InputAssemblerSetVertices
+				OperationType = OperationType.InputAssemblerSetVertices
 			}));
 			Events.Add(new TracefileEventViewModel(new TracefileEvent
 			{
 				Number = 2,
-				OperationType = Core.Diagnostics.OperationType.DeviceDraw
+				OperationType = OperationType.DeviceDraw
 			}));
 		}
 	}

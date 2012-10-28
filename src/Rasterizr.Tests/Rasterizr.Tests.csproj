@@ -51,15 +51,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\InputAssembler\InputAssemblerStageTests.cs" />
-    <Compile Include="Core\OutputMerger\BlendStateTests.cs" />
-    <Compile Include="Core\OutputMerger\DepthStencilStateTests.cs" />
-    <Compile Include="Core\Rasterizer\Interpolation\InterpolatorTests.cs" />
-    <Compile Include="Core\Rasterizer\RasterizerStageTests.cs" />
-    <Compile Include="Core\ShaderCore\ShaderDescriptionTests.cs" />
-    <Compile Include="Core\ShaderCore\GeometryShader\GeometryShaderStageTests.cs" />
-    <Compile Include="Core\ShaderCore\Texture2DTests.cs" />
-    <Compile Include="Core\ShaderCore\VertexShader\VertexShaderStageTests.cs" />
+    <Compile Include="InputAssembler\InputAssemblerStageTests.cs" />
+    <Compile Include="OutputMerger\BlendStateTests.cs" />
+    <Compile Include="OutputMerger\DepthStencilStateTests.cs" />
+    <Compile Include="Rasterizer\Interpolation\InterpolatorTests.cs" />
+    <Compile Include="Rasterizer\RasterizerStageTests.cs" />
+    <Compile Include="ShaderCore\ShaderDescriptionTests.cs" />
+    <Compile Include="ShaderCore\GeometryShader\GeometryShaderStageTests.cs" />
+    <Compile Include="ShaderCore\Texture2DTests.cs" />
+    <Compile Include="ShaderCore\VertexShader\VertexShaderStageTests.cs" />
     <Compile Include="Diagnostics\Logging\TracefileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestVertexPositionColor.cs" />
@@ -72,6 +72,10 @@
     <ProjectReference Include="..\Rasterizr.Diagnostics.Logging\Rasterizr.Diagnostics.Logging.csproj">
       <Project>{54BA2C2B-6823-4267-9D9B-78C6071850A7}</Project>
       <Name>Rasterizr.Diagnostics.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rasterizr.Toolkit\Rasterizr.Toolkit.csproj">
+      <Project>{58a0ee66-b14b-40a2-a3a2-6635e716eddb}</Project>
+      <Name>Rasterizr.Toolkit</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rasterizr\Rasterizr.csproj">
       <Project>{DEB98B3D-FCDD-4936-B242-CE9301D95BF1}</Project>

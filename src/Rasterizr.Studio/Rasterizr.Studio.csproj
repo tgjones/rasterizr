@@ -243,9 +243,9 @@
       <Project>{54ba2c2b-6823-4267-9d9b-78c6071850a7}</Project>
       <Name>Rasterizr.Diagnostics.Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rasterizr.Meshellator\Rasterizr.Meshellator.csproj">
-      <Project>{E7F132F7-3D39-4642-8DAD-91BCD4335A36}</Project>
-      <Name>Rasterizr.Meshellator</Name>
+    <ProjectReference Include="..\Rasterizr.Toolkit\Rasterizr.Toolkit.csproj">
+      <Project>{58a0ee66-b14b-40a2-a3a2-6635e716eddb}</Project>
+      <Name>Rasterizr.Toolkit</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rasterizr\Rasterizr.csproj">
       <Project>{DEB98B3D-FCDD-4936-B242-CE9301D95BF1}</Project>

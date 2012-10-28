@@ -1,9 +1,9 @@
 using Nexus;
 using Nexus.Graphics.Cameras;
 using Nexus.Graphics.Colors;
-using Rasterizr.Core;
-using Rasterizr.Core.InputAssembler;
-using Rasterizr.Effects;
+using Rasterizr.InputAssembler;
+using Rasterizr.Toolkit;
+using Rasterizr.Toolkit.Effects;
 
 namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 {

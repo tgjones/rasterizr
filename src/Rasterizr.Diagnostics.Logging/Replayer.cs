@@ -3,11 +3,9 @@ using System.Collections;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Nexus.Graphics.Colors;
-using Rasterizr.Core;
-using Rasterizr.Core.Diagnostics;
-using Rasterizr.Core.InputAssembler;
-using Rasterizr.Core.ShaderCore;
-using Rasterizr.Core.ShaderCore.PixelShader;
+using Rasterizr.InputAssembler;
+using Rasterizr.ShaderCore;
+using Rasterizr.ShaderCore.PixelShader;
 using Int32Collection = Nexus.Int32Collection;
 
 namespace Rasterizr.Diagnostics.Logging

@@ -1,6 +1,4 @@
-﻿using Rasterizr.Core;
-
-namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
+﻿namespace Rasterizr.Studio.Modules.DemoSceneViewer.Scenes
 {
 	public abstract class DemoSceneBase
 	{

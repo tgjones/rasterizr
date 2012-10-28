@@ -6,10 +6,9 @@ using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Modules.Output;
 using Nexus.Graphics;
-using Rasterizr.Core;
-using Rasterizr.Core.Diagnostics;
-using Rasterizr.Core.OutputMerger;
+using Rasterizr.Diagnostics;
 using Rasterizr.Diagnostics.Logging;
+using Rasterizr.OutputMerger;
 
 namespace Rasterizr.Studio.Framework
 {

@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using Rasterizr.Core.Diagnostics;
+using Rasterizr.Diagnostics;
 using Rasterizr.Diagnostics.Logging;
 
 namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
