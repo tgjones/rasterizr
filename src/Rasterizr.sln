@@ -1,0 +1,103 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{28234864-E0DB-4DB2-A3A6-3E7463BFC5E5}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\shaders\CompileShaders.bat = ..\..\shaders\CompileShaders.bat
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr", "Rasterizr\Rasterizr.csproj", "{5975A920-5CA3-4187-824A-1804A1ACB6D2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E390F27-EBFB-43F9-AFD8-1E49E5BE4450} = {0E390F27-EBFB-43F9-AFD8-1E49E5BE4450}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Platform.WindowsForms", "Rasterizr.Platform.WindowsForms\Rasterizr.Platform.WindowsForms.csproj", "{C15E888C-94BB-42E8-B2CF-C22117B325C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weavers", "Weavers\Weavers.csproj", "{0E390F27-EBFB-43F9-AFD8-1E49E5BE4450}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Samples.BasicWindow", "Rasterizr.Samples.BasicWindow\Rasterizr.Samples.BasicWindow.csproj", "{872086F9-B18D-493D-9890-A5DA30C750E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Samples.Common", "Rasterizr.Samples.Common\Rasterizr.Samples.Common.csproj", "{7624C1A7-08A6-4FC1-9B6F-1FFA029D8A88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Platform.Wpf", "Rasterizr.Platform.Wpf\Rasterizr.Platform.Wpf.csproj", "{4633E75B-1C03-4588-BD29-8BE9A111AD1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Tests", "Rasterizr.Tests\Rasterizr.Tests.csproj", "{34AADB52-9CEB-44AD-A0E0-D860BE9C4378}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SlimShader", "SlimShader", "{BBE0B1B2-C862-4DEC-BDA1-21ADC5CCF055}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimShader", "..\..\slimshader\src\csharp\SlimShader\SlimShader.csproj", "{D75528F5-54F9-4E31-94F6-03C194F74CF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimShader.Tests", "..\..\slimshader\src\csharp\SlimShader.Tests\SlimShader.Tests.csproj", "{3D19DAC1-E727-43BA-A264-A64408B4D598}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimShader.VirtualMachine", "..\..\slimshader\src\csharp\SlimShader.VirtualMachine\SlimShader.VirtualMachine.csproj", "{167769B9-A10E-4DFD-B09F-43BFEF4EB673}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimShader.VirtualMachine.Tests", "..\..\slimshader\src\csharp\SlimShader.VirtualMachine.Tests\SlimShader.VirtualMachine.Tests.csproj", "{B2E82297-2DCA-4D0A-8CA1-C68A6DB62D67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimShader.Studio", "..\..\slimshader\src\csharp\SlimShader.Studio\SlimShader.Studio.csproj", "{A8C6CC60-E125-4993-9DA4-41784675B5A5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5975A920-5CA3-4187-824A-1804A1ACB6D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5975A920-5CA3-4187-824A-1804A1ACB6D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5975A920-5CA3-4187-824A-1804A1ACB6D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5975A920-5CA3-4187-824A-1804A1ACB6D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C15E888C-94BB-42E8-B2CF-C22117B325C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C15E888C-94BB-42E8-B2CF-C22117B325C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C15E888C-94BB-42E8-B2CF-C22117B325C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C15E888C-94BB-42E8-B2CF-C22117B325C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E390F27-EBFB-43F9-AFD8-1E49E5BE4450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E390F27-EBFB-43F9-AFD8-1E49E5BE4450}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E390F27-EBFB-43F9-AFD8-1E49E5BE4450}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E390F27-EBFB-43F9-AFD8-1E49E5BE4450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{872086F9-B18D-493D-9890-A5DA30C750E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{872086F9-B18D-493D-9890-A5DA30C750E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{872086F9-B18D-493D-9890-A5DA30C750E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{872086F9-B18D-493D-9890-A5DA30C750E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7624C1A7-08A6-4FC1-9B6F-1FFA029D8A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7624C1A7-08A6-4FC1-9B6F-1FFA029D8A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7624C1A7-08A6-4FC1-9B6F-1FFA029D8A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7624C1A7-08A6-4FC1-9B6F-1FFA029D8A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4633E75B-1C03-4588-BD29-8BE9A111AD1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4633E75B-1C03-4588-BD29-8BE9A111AD1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4633E75B-1C03-4588-BD29-8BE9A111AD1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4633E75B-1C03-4588-BD29-8BE9A111AD1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34AADB52-9CEB-44AD-A0E0-D860BE9C4378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34AADB52-9CEB-44AD-A0E0-D860BE9C4378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34AADB52-9CEB-44AD-A0E0-D860BE9C4378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34AADB52-9CEB-44AD-A0E0-D860BE9C4378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D75528F5-54F9-4E31-94F6-03C194F74CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D75528F5-54F9-4E31-94F6-03C194F74CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D75528F5-54F9-4E31-94F6-03C194F74CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D75528F5-54F9-4E31-94F6-03C194F74CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D19DAC1-E727-43BA-A264-A64408B4D598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{167769B9-A10E-4DFD-B09F-43BFEF4EB673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167769B9-A10E-4DFD-B09F-43BFEF4EB673}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167769B9-A10E-4DFD-B09F-43BFEF4EB673}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167769B9-A10E-4DFD-B09F-43BFEF4EB673}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2E82297-2DCA-4D0A-8CA1-C68A6DB62D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2E82297-2DCA-4D0A-8CA1-C68A6DB62D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2E82297-2DCA-4D0A-8CA1-C68A6DB62D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2E82297-2DCA-4D0A-8CA1-C68A6DB62D67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8C6CC60-E125-4993-9DA4-41784675B5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8C6CC60-E125-4993-9DA4-41784675B5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8C6CC60-E125-4993-9DA4-41784675B5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8C6CC60-E125-4993-9DA4-41784675B5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D75528F5-54F9-4E31-94F6-03C194F74CF2} = {BBE0B1B2-C862-4DEC-BDA1-21ADC5CCF055}
+		{3D19DAC1-E727-43BA-A264-A64408B4D598} = {BBE0B1B2-C862-4DEC-BDA1-21ADC5CCF055}
+		{167769B9-A10E-4DFD-B09F-43BFEF4EB673} = {BBE0B1B2-C862-4DEC-BDA1-21ADC5CCF055}
+		{B2E82297-2DCA-4D0A-8CA1-C68A6DB62D67} = {BBE0B1B2-C862-4DEC-BDA1-21ADC5CCF055}
+		{A8C6CC60-E125-4993-9DA4-41784675B5A5} = {BBE0B1B2-C862-4DEC-BDA1-21ADC5CCF055}
+	EndGlobalSection
+EndGlobal
