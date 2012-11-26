@@ -11,16 +11,11 @@ namespace Rasterizr.Pipeline.VertexShader
 			{
 				yield return new VertexShaderOutput
 				{
-
+					VertexID = input.VertexID,
+					InstanceID = input.InstanceID,
+					
 				};
 			}
 		}
-	}
-
-	internal struct VertexShaderOutput
-	{
-		public int VertexID;
-		public int InstanceID;
-		public byte[] Data;
 	}
 }

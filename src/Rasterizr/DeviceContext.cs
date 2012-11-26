@@ -1,4 +1,5 @@
-﻿using Rasterizr.Pipeline.InputAssembler;
+﻿using System.Collections.Generic;
+using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
@@ -51,7 +52,7 @@ namespace Rasterizr
 
 		public void ClearDepthStencilView(DepthStencilView depthStencilView, DepthStencilClearFlags clearFlags, float depth, byte stencil)
 		{
-			
+
 		}
 
 		public void ClearRenderTargetView(RenderTargetView renderTargetView, Color4 color)
@@ -61,7 +62,26 @@ namespace Rasterizr
 
 		public void Draw(int vertexCount, int startVertexLocation)
 		{
-			
+			DrawInternal(_inputAssembler.GetVertexStream(vertexCount, startVertexLocation));
+		}
+
+		public void DrawIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
+		{
+			DrawInternal(_inputAssembler.GetVertexStreamIndexed(indexCount, startIndexLocation, baseVertexLocation));
+		}
+
+		public void DrawInstanced(int vertexCountPerInstance, int instanceCount, int startVertexLocation, int startInstanceLocation)
+		{
+			DrawInternal(_inputAssembler.GetVertexStreamInstanced(vertexCountPerInstance,
+				instanceCount, startVertexLocation, startInstanceLocation));
+		}
+
+		private void DrawInternal(IEnumerable<InputAssemblerVertexOutput> vertexStream)
+		{
+			var vertexShaderOutputs = _vertexShader.Execute(vertexStream);
+			var primitiveStream = _inputAssembler.GetPrimitiveStream(vertexShaderOutputs);
+			var rasterizerOutputs = _rasterizer.Execute(primitiveStream);
+
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Rasterizr.Pipeline.VertexShader;
 using Buffer = Rasterizr.Resources.Buffer;
 
 namespace Rasterizr.Pipeline.InputAssembler
@@ -138,6 +139,112 @@ namespace Rasterizr.Pipeline.InputAssembler
 					vertexBufferIndex.Increment(InputClassification.PerVertexData);
 			}
 		}
-
+		
+		internal IEnumerable<InputAssemblerPrimitiveOutput> GetPrimitiveStream(IEnumerable<VertexShaderOutput> shadedVertices)
+		{
+			var enumerator = shadedVertices.GetEnumerator();
+			var primitiveID = 0;
+			switch (PrimitiveTopology)
+			{
+				case PrimitiveTopology.PointList:
+				{
+					while (enumerator.MoveNext())
+						yield return new InputAssemblerPrimitiveOutput
+						{
+							PrimitiveType = PrimitiveType.Point,
+							PrimitiveID = primitiveID++,
+							Vertex0 = enumerator.Current,
+						};
+					break;
+				}
+				case PrimitiveTopology.LineList:
+				{
+					while (enumerator.MoveNext())
+					{
+						var vertex0 = enumerator.Current;
+						enumerator.MoveNext();
+						var vertex1 = enumerator.Current;
+						yield return new InputAssemblerPrimitiveOutput
+						{
+							PrimitiveType = PrimitiveType.Line,
+							PrimitiveID = primitiveID++,
+							Vertex0 = vertex0,
+							Vertex1 = vertex1
+						};
+					}
+					break;
+				}
+				case PrimitiveTopology.LineStrip:
+				{
+					enumerator.MoveNext();
+					var vertex0 = enumerator.Current;
+					while (enumerator.MoveNext())
+					{
+						var vertex1 = enumerator.Current;
+						yield return new InputAssemblerPrimitiveOutput
+						{
+							PrimitiveType = PrimitiveType.Line,
+							PrimitiveID = primitiveID++,
+							Vertex0 = vertex0,
+							Vertex1 = vertex1
+						};
+						vertex0 = vertex1;
+					}
+					break;
+				}
+				case PrimitiveTopology.TriangleList:
+				{
+					while (enumerator.MoveNext())
+					{
+						var vertex0 = enumerator.Current;
+						enumerator.MoveNext();
+						var vertex1 = enumerator.Current;
+						enumerator.MoveNext();
+						var vertex2 = enumerator.Current;
+						yield return new InputAssemblerPrimitiveOutput
+						{
+							PrimitiveType = PrimitiveType.Triangle,
+							PrimitiveID = primitiveID++,
+							Vertex0 = vertex0,
+							Vertex1 = vertex1,
+							Vertex2 = vertex2
+						};
+					}
+					break;
+				}
+				case PrimitiveTopology.TriangleStrip:
+				{
+					enumerator.MoveNext();
+					var vertex0 = enumerator.Current;
+					enumerator.MoveNext();
+					var vertex1 = enumerator.Current;
+					while (enumerator.MoveNext())
+					{
+						var vertex2 = enumerator.Current;
+						yield return new InputAssemblerPrimitiveOutput
+						{
+							PrimitiveType = PrimitiveType.Triangle,
+							PrimitiveID = primitiveID++,
+							Vertex0 = vertex0,
+							Vertex1 = vertex1,
+							Vertex2 = vertex2
+						};
+						vertex1 = vertex2;
+						vertex0 = vertex1;
+					}
+					break;
+				}
+				case PrimitiveTopology.LineListWithAdjacency:
+					break;
+				case PrimitiveTopology.LineStripWithAdjacency:
+					break;
+				case PrimitiveTopology.TriangleListWithAdjacency:
+					break;
+				case PrimitiveTopology.TriangleStripWithAdjacency:
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("Invalid PrimitiveTopology");
+			}
+		}
 	}
 }
