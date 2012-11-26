@@ -46,7 +46,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			offset = _indexBufferBinding.Offset;
 		}
 
-		public IEnumerable<InputAssemblerVertexOutput> GetVertexStream(
+		internal IEnumerable<InputAssemblerVertexOutput> GetVertexStream(
 			int vertexCount, 
 			int startVertexLocation)
 		{
@@ -57,7 +57,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			return GetVertexStreamInternal(vertexCount, 0, startVertexLocation, vertexBufferIndices);
 		}
 
-		public IEnumerable<InputAssemblerVertexOutput> GetVertexStreamIndexed(
+		internal IEnumerable<InputAssemblerVertexOutput> GetVertexStreamIndexed(
 			int indexCount, 
 			int startIndexLocation, 
 			int baseVertexLocation)
@@ -69,7 +69,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			return GetVertexStreamInternal(indexCount, 0, startIndexLocation, vertexBufferIndices);
 		}
 
-		public IEnumerable<InputAssemblerVertexOutput> GetVertexStreamInstanced(
+		internal IEnumerable<InputAssemblerVertexOutput> GetVertexStreamInstanced(
 			int vertexCountPerInstance, 
 			int instanceCount, 
 			int startVertexLocation, 
@@ -103,7 +103,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			}
 		}
 
-		public IEnumerable<InputAssemblerVertexOutput> GetVertexStreamIndexedInstanced(
+		internal IEnumerable<InputAssemblerVertexOutput> GetVertexStreamIndexedInstanced(
 			int indexCountPerInstance, 
 			int instanceCount, 
 			int startIndexLocation, 
@@ -139,118 +139,5 @@ namespace Rasterizr.Pipeline.InputAssembler
 			}
 		}
 
-		private class VertexBufferIndex
-		{
-			private readonly VertexBufferBinding _binding;
-			private readonly int _offset;
-			private int _index;
-
-			public virtual InputClassification InputDataClass
-			{
-				get { return InputClassification.PerVertexData; }
-			}
-
-			public VertexBufferIndex(VertexBufferBinding binding, int startLocation)
-			{
-				_binding = binding;
-				_offset = binding.Offset + (startLocation * binding.Stride);
-			}
-
-			public void GetData(byte[] dst, int dstOffset, int offset, int count)
-			{
-				_binding.Buffer.GetData(dstOffset, dst, _offset + (GetIndex(_index) * _binding.Stride) + offset, count);
-			}
-
-			protected virtual int GetIndex(int index)
-			{
-				return index;
-			}
-
-			public void Increment(InputClassification inputDataClass)
-			{
-				_index = GetNextIndex(inputDataClass, _index);
-			}
-
-			protected virtual int GetNextIndex(InputClassification inputDataClass, int index)
-			{
-				return index + 1;
-			}
-
-			public void Reset()
-			{
-				_index = 0;
-			}
-		}
-
-		private class InstancedVertexBufferIndex : VertexBufferIndex
-		{
-			private readonly int _stepRate;
-			private int _steps;
-			private int _index;
-
-			public override InputClassification InputDataClass
-			{
-				get { return InputClassification.PerInstanceData; }
-			}
-
-			public InstancedVertexBufferIndex(
-				int instanceDataStepRate,
-				VertexBufferBinding binding,
-				int startLocation)
-				: base(binding, startLocation)
-			{
-				_stepRate = instanceDataStepRate;
-			}
-
-			protected override int GetNextIndex(InputClassification inputDataClass, int index)
-			{
-				if (_stepRate == 0 || inputDataClass == InputClassification.PerVertexData)
-					return index;
-				if (++_steps == _stepRate)
-				{
-					_steps = 0;
-					_index++;
-				}
-				return _index;
-			}
-		}
-
-		private class IndexedVertexBufferIndex : VertexBufferIndex
-		{
-			private readonly IndexBufferBinding _indexBufferBinding;
-			private readonly int _offset;
-
-			public IndexedVertexBufferIndex(
-				IndexBufferBinding indexBufferBinding, int startIndexLocation,
-				VertexBufferBinding vertexBufferBinding, int startVertexLocation)
-				: base(vertexBufferBinding, startVertexLocation)
-			{
-				_indexBufferBinding = indexBufferBinding;
-				_offset = indexBufferBinding.Offset + (startIndexLocation * FormatHelper.SizeOfInBytes(indexBufferBinding.Format));
-			}
-
-			protected override int GetIndex(int index)
-			{
-				if (_indexBufferBinding.Format == Format.R32_UInt)
-				{
-					var data = new uint[1];
-					_indexBufferBinding.Buffer.GetData(data, _offset + index, 1);
-					return (int) data[0];
-				}
-				else
-				{
-					var data = new ushort[1];
-					_indexBufferBinding.Buffer.GetData(data, _offset + index, 1);
-					return data[0];
-				}
-			}
-		}
-
-		public struct InputAssemblerVertexOutput
-		{
-			public int VertexID;
-			public int InstanceID;
-			public byte[] Data;
-		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
+using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
 
 namespace Rasterizr
@@ -8,12 +9,18 @@ namespace Rasterizr
 	public class DeviceContext
 	{
 		private readonly InputAssemblerStage _inputAssembler;
+		private readonly VertexShaderStage _vertexShader;
 		private readonly RasterizerStage _rasterizer;
 		private readonly OutputMergerStage _outputMerger;
 
 		public InputAssemblerStage InputAssembler
 		{
 			get { return _inputAssembler; }
+		}
+
+		public VertexShaderStage VertexShader
+		{
+			get { return _vertexShader; }
 		}
 
 		public RasterizerStage Rasterizer
@@ -29,6 +36,7 @@ namespace Rasterizr
 		public DeviceContext()
 		{
 			_inputAssembler = new InputAssemblerStage();
+			_vertexShader = new VertexShaderStage();
 			_rasterizer = new RasterizerStage();
 			_outputMerger = new OutputMergerStage();
 		}

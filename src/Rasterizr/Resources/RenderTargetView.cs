@@ -5,12 +5,29 @@ namespace Rasterizr.Resources
 {
 	public class RenderTargetView : ResourceView
 	{
+		private readonly RenderTargetViewDescription _description;
 		private readonly Color4[] _colors;
 
-		public RenderTargetView(Device device, Texture2D resource)
+		public RenderTargetViewDescription Description
+		{
+			get { return _description; }
+		}
+
+		public RenderTargetView(Device device, Texture2D resource, RenderTargetViewDescription description)
 			: base(device, resource)
 		{
+			_description = description;
 			_colors = new Color4[resource.Description.Width * resource.Description.Height];
+		}
+
+		public RenderTargetView(Device device, Texture2D resource)
+			: this(device, resource, new RenderTargetViewDescription
+			{
+				Format = Format.Unknown,
+				Dimension = RenderTargetViewDimension.Unknown
+			})
+		{
+			
 		}
 
 		public unsafe void Clear(Color4 color)

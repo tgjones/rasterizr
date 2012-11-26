@@ -38,7 +38,32 @@
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pipeline\CommonShaderStage.cs" />
+    <Compile Include="Pipeline\InputAssembler\IndexedVertexBufferIndex.cs" />
+    <Compile Include="Pipeline\InputAssembler\InputAssemblerVertexOutput.cs" />
+    <Compile Include="Pipeline\InputAssembler\InstancedVertexBufferIndex.cs" />
+    <Compile Include="Pipeline\InputAssembler\VertexBufferIndex.cs" />
+    <Compile Include="Pipeline\OutputMerger\BlendOperation.cs" />
+    <Compile Include="Pipeline\OutputMerger\BlendOption.cs" />
+    <Compile Include="Pipeline\OutputMerger\BlendState.cs" />
+    <Compile Include="Pipeline\OutputMerger\BlendStateDescription.cs" />
+    <Compile Include="Pipeline\OutputMerger\ColorWriteMaskFlags.cs" />
+    <Compile Include="Pipeline\OutputMerger\RenderTargetBlendDescription.cs" />
+    <Compile Include="Pipeline\Rasterizer\CullMode.cs" />
+    <Compile Include="Pipeline\Rasterizer\FillMode.cs" />
+    <Compile Include="Pipeline\Rasterizer\RasterizerState.cs" />
+    <Compile Include="Pipeline\Rasterizer\RasterizerStateDescription.cs" />
+    <Compile Include="Pipeline\ShaderBase.cs" />
+    <Compile Include="Pipeline\VertexShader\VertexShader.cs" />
+    <Compile Include="Pipeline\VertexShader\VertexShaderStage.cs" />
+    <Compile Include="Resources\Comparison.cs" />
+    <Compile Include="Resources\Filter.cs" />
+    <Compile Include="Resources\RenderTargetViewDescription.cs" />
+    <Compile Include="Resources\RenderTargetViewDimension.cs" />
+    <Compile Include="Resources\SamplerState.cs" />
+    <Compile Include="Resources\SamplerStateDescription.cs" />
     <Compile Include="Resources\ShaderResourceView.cs" />
+    <Compile Include="Resources\TextureAddressMode.cs" />
     <Compile Include="Resources\UnorderedAccessView.cs" />
     <Compile Include="Resources\BindFlags.cs" />
     <Compile Include="Resources\Buffer.cs" />
@@ -78,6 +103,10 @@
     <Compile Include="Pipeline\Rasterizer\Viewport.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader.VirtualMachine\SlimShader.VirtualMachine.csproj">
+      <Project>{167769B9-A10E-4DFD-B09F-43BFEF4EB673}</Project>
+      <Name>SlimShader.VirtualMachine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader\SlimShader.csproj">
       <Project>{D75528F5-54F9-4E31-94F6-03C194F74CF2}</Project>
       <Name>SlimShader %28SlimShader\SlimShader%29</Name>

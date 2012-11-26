@@ -2,14 +2,13 @@
 
 namespace Rasterizr.Resources
 {
-	public abstract class Resource
+	public abstract class Resource : DeviceChild
 	{
-		private readonly Device _device;
 		private readonly byte[] _data;
 
 		protected Resource(Device device, int sizeInBytes)
+			: base(device)
 		{
-			_device = device;
 			_data = new byte[sizeInBytes];
 		}
 
