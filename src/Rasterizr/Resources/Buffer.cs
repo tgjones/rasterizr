@@ -10,7 +10,7 @@ namespace Rasterizr.Resources
 			var description = new BufferDescription
 			{
 				BindFlags = bindFlags,
-				SizeInBytes = sizeInBytes == 0 ? Interop.SizeOf<T>() * data.Length : sizeInBytes
+				SizeInBytes = sizeInBytes == 0 ? Utilities.SizeOf<T>() * data.Length : sizeInBytes
 			};
 
 			var buffer = new Buffer(device, description);
