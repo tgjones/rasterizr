@@ -1,5 +1,4 @@
 ﻿using Rasterizr.Math;
-using SlimShader;
 
 namespace Rasterizr.Pipeline.VertexShader
 {
@@ -8,6 +7,6 @@ namespace Rasterizr.Pipeline.VertexShader
 		public int VertexID;
 		public int InstanceID;
 		public Vector4 Position;
-		public Number4[] Data;
+		public Vector4[] Data;
 	}
 }

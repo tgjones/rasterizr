@@ -2,7 +2,6 @@
 using System.Linq;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
-using SlimShader;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Pipeline.VertexShader
@@ -13,7 +12,7 @@ namespace Rasterizr.Pipeline.VertexShader
 		{
 			foreach (var input in inputs)
 			{
-				var outputs = new Number4[Shader.Bytecode.OutputSignature.Parameters.Count];
+				var outputs = new Vector4[Shader.Bytecode.OutputSignature.Parameters.Count];
 				ExecuteShader(input.Data, outputs);
 
 				var positionParameter = Shader.Bytecode.OutputSignature.Parameters.Single(x => x.SystemValueType == Name.Position);
@@ -22,7 +21,7 @@ namespace Rasterizr.Pipeline.VertexShader
 				{
 					VertexID = input.VertexID,
 					InstanceID = input.InstanceID,
-					Position = Vector4.FromNumber4(outputs[positionParameter.Register]),
+					Position = outputs[positionParameter.Register],
 					Data = outputs
 				};
 			}

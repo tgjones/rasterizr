@@ -1,4 +1,4 @@
-﻿using SlimShader;
+﻿using Rasterizr.Math;
 
 namespace Rasterizr.Pipeline.InputAssembler
 {
@@ -6,6 +6,6 @@ namespace Rasterizr.Pipeline.InputAssembler
 	{
 		public int VertexID;
 		public int InstanceID;
-		public Number4[] Data;
+		public Vector4[] Data;
 	}
 }

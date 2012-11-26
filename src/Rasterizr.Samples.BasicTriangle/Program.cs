@@ -68,7 +68,7 @@ namespace Rasterizr.Samples.BasicTriangle
 			// Prepare all the stages
 			_deviceContext.InputAssembler.InputLayout = layout;
 			_deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-			_deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 32, 0));
+			_deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 0, 32));
 			_deviceContext.VertexShader.Shader = vertexShader;
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, demoConfiguration.Width, demoConfiguration.Height, 0.0f, 1.0f));
 			_deviceContext.PixelShader.Shader = pixelShader;

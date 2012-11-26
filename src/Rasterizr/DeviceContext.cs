@@ -47,7 +47,7 @@ namespace Rasterizr
 			_inputAssembler = new InputAssemblerStage();
 			_vertexShader = new VertexShaderStage();
 			_pixelShader = new PixelShaderStage();
-			_outputMerger = new OutputMergerStage();
+			_outputMerger = new OutputMergerStage(device);
 
 			_rasterizer = new RasterizerStage(device, _vertexShader, _pixelShader, _outputMerger);
 		}

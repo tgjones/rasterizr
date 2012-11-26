@@ -1,5 +1,5 @@
-﻿using Rasterizr.Resources;
-using SlimShader;
+﻿using Rasterizr.Math;
+using Rasterizr.Resources;
 using SlimShader.Chunks.Shex;
 using SlimShader.VirtualMachine;
 using SlimShader.VirtualMachine.Registers;
@@ -40,15 +40,15 @@ namespace Rasterizr.Pipeline
 			}
 		}
 
-		protected void ExecuteShader(Number4[] inputs, Number4[] outputs)
+		protected void ExecuteShader(Vector4[] inputs, Vector4[] outputs)
 		{
 			for (ushort i = 0; i < inputs.Length; i++)
-				_virtualMachine.SetRegister(0, OperandType.Input, new RegisterIndex(i), inputs[i]);
+				_virtualMachine.SetRegister(0, OperandType.Input, new RegisterIndex(i), inputs[i].ToNumber4());
 
 			_virtualMachine.Execute();
 
 			for (ushort i = 0; i < outputs.Length; i++)
-				outputs[i] = _virtualMachine.GetRegister(0, OperandType.Output, new RegisterIndex(i));
+				outputs[i] = Vector4.FromNumber4(_virtualMachine.GetRegister(0, OperandType.Output, new RegisterIndex(i)));
 		}
 	}
 }

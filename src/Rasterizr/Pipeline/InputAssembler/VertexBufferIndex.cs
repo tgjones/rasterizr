@@ -1,4 +1,4 @@
-﻿using SlimShader;
+﻿using Rasterizr.Math;
 
 namespace Rasterizr.Pipeline.InputAssembler
 {
@@ -19,7 +19,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			_offset = binding.Offset + (startLocation * binding.Stride);
 		}
 
-		public void GetData(Number4[] dst, int dstOffset, int offset, int count)
+		public void GetData(Vector4[] dst, int dstOffset, int offset, int count)
 		{
 			_binding.Buffer.GetData(dstOffset, dst, _offset + (GetIndex(_index) * _binding.Stride) + offset, count);
 		}

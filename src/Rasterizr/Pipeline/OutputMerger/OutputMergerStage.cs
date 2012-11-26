@@ -20,6 +20,11 @@ namespace Rasterizr.Pipeline.OutputMerger
 			get { return 1; }
 		}
 
+		public OutputMergerStage(Device device)
+		{
+			BlendState = new BlendState(device, BlendStateDescription.Default);
+		}
+
 		public void GetTargets(out DepthStencilView depthStencilView, out RenderTargetView[] renderTargetViews)
 		{
 			depthStencilView = _depthStencilView;
@@ -41,8 +46,8 @@ namespace Rasterizr.Pipeline.OutputMerger
 			{
 				for (int sampleIndex = 0; sampleIndex < MultiSampleCount; ++sampleIndex)
 				{
-					if (!pixel.Samples[sampleIndex].Covered)
-						continue;
+					//if (!pixel.Samples[sampleIndex].Covered)
+					//    continue;
 
 					float newDepth = pixel.Samples[sampleIndex].Depth;
 					// TODO

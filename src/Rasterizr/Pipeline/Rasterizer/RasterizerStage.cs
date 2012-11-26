@@ -196,9 +196,9 @@ namespace Rasterizr.Pipeline.Rasterizer
 				// Grab values from vertex shader outputs.
 				var outputParameterRegister = vertexShaderOutputSignature.Parameters.FindRegister(
 					parameter.SemanticName, parameter.SemanticIndex);
-				Number4 v0Value = triangle.Vertex0.Data[outputParameterRegister];
-				Number4 v1Value = triangle.Vertex1.Data[outputParameterRegister];
-				Number4 v2Value = triangle.Vertex2.Data[outputParameterRegister];
+				var v0Value = triangle.Vertex0.Data[outputParameterRegister];
+				var v1Value = triangle.Vertex1.Data[outputParameterRegister];
+				var v2Value = triangle.Vertex2.Data[outputParameterRegister];
 
 				// Interpolate values.
 				const bool isPerspectiveCorrect = true; // TODO
