@@ -11,7 +11,7 @@
 
 		public Device()
 		{
-			_immediateContext = new DeviceContext();
+			_immediateContext = new DeviceContext(this);
 		}
 	}
 }

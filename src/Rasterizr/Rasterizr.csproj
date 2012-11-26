@@ -54,6 +54,7 @@
     <Compile Include="Pipeline\OutputMerger\BlendStateDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\ColorWriteMaskFlags.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetBlendDescription.cs" />
+    <Compile Include="Pipeline\PixelShader\Pixel.cs" />
     <Compile Include="Pipeline\PixelShader\PixelShader.cs" />
     <Compile Include="Pipeline\PixelShader\PixelShaderStage.cs" />
     <Compile Include="Pipeline\Rasterizer\CullMode.cs" />

@@ -44,7 +44,7 @@ namespace Rasterizr.Samples.BasicWindow
 
 		protected override void Draw(DemoTime time)
 		{
-			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4((byte) ((time.ElapsedTime * 30) % 255), 0, 0, 255));
+			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4F((float) (time.ElapsedTime / 5.0) % 1.0f, 0, 0, 1));
 			_swapChain.Present();
 
 			base.Draw(time);

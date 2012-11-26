@@ -1,5 +1,4 @@
-﻿using Rasterizr.Math;
-using Rasterizr.Resources;
+﻿using Rasterizr.Resources;
 
 namespace Rasterizr
 {
@@ -7,7 +6,6 @@ namespace Rasterizr
 	{
 		private readonly SwapChainDescription _description;
 		private readonly Resource _backBuffer;
-		private readonly Color4[] _colors;
 		private readonly byte[] _resolvedColors;
 
 		public SwapChainDescription Description
@@ -24,8 +22,7 @@ namespace Rasterizr
 				Height = description.Height,
 				Format = description.Format
 			});
-			_colors = new Color4[description.Width * description.Height];
-			_resolvedColors = new byte[_colors.Length * 4];
+			_resolvedColors = new byte[description.Width * description.Height * FormatHelper.SizeOfInBytes(description.Format)];
 		}
 
 		public T GetBuffer<T>(int index)

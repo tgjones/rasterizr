@@ -14,6 +14,24 @@ namespace Rasterizr.Resources
 			get { return _description; }
 		}
 
+		public Color4F this[int x, int y, int sampleIndex]
+		{
+			get
+			{
+				// TODO: Get rid of all these conversions.
+				var texture = (Texture2D) Resource;
+				return _colors[(y * texture.Description.Width) + x].ToColor4F();
+			}
+			set
+			{
+				var texture = (Texture2D) Resource;
+				_colors[(y * texture.Description.Width) + x] = value.ToColor4();
+
+				// TODO: only do this at the end of the frame.
+				texture.SetData(_colors);
+			}
+		}
+
 		public RenderTargetView(Device device, Texture2D resource, RenderTargetViewDescription description)
 			: base(device, resource)
 		{
@@ -31,11 +49,11 @@ namespace Rasterizr.Resources
 			
 		}
 
-		public unsafe void Clear(Color4 color)
+		public unsafe void Clear(Color4F color)
 		{
 			// TODO: Use RenderTargetView description to access resource.
-
-			var invertedColor = new Color4(color.Blue, color.Green, color.Red, color.Alpha);
+			var typedColor = color.ToColor4();
+			var invertedColor = new Color4(typedColor.B, typedColor.G, typedColor.R, typedColor.A);
 			var texture = (Texture2D) Resource;
 
 			// Fill first line.

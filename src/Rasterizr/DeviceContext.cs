@@ -42,14 +42,14 @@ namespace Rasterizr
 			get { return _outputMerger; }
 		}
 
-		public DeviceContext()
+		public DeviceContext(Device device)
 		{
 			_inputAssembler = new InputAssemblerStage();
 			_vertexShader = new VertexShaderStage();
 			_pixelShader = new PixelShaderStage();
 			_outputMerger = new OutputMergerStage();
 
-			_rasterizer = new RasterizerStage(_vertexShader, _pixelShader, _outputMerger);
+			_rasterizer = new RasterizerStage(device, _vertexShader, _pixelShader, _outputMerger);
 		}
 
 		public void ClearDepthStencilView(DepthStencilView depthStencilView, DepthStencilClearFlags clearFlags, float depth, byte stencil)
@@ -57,7 +57,7 @@ namespace Rasterizr
 
 		}
 
-		public void ClearRenderTargetView(RenderTargetView renderTargetView, Color4 color)
+		public void ClearRenderTargetView(RenderTargetView renderTargetView, Color4F color)
 		{
 			renderTargetView.Clear(color);
 		}
@@ -83,7 +83,8 @@ namespace Rasterizr
 			var vertexShaderOutputs = _vertexShader.Execute(vertexStream);
 			var primitiveStream = _inputAssembler.GetPrimitiveStream(vertexShaderOutputs);
 			var rasterizerOutputs = _rasterizer.Execute(primitiveStream);
-
+			var pixelShaderOutputs = _pixelShader.Execute(rasterizerOutputs);
+			_outputMerger.Execute(pixelShaderOutputs);
 		}
 	}
 }

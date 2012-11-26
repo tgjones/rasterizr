@@ -18,11 +18,13 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 		public RasterizerState State { get; set; }
 
-		public RasterizerStage(VertexShaderStage vertexShader, PixelShaderStage pixelShader, OutputMergerStage outputMerger)
+		public RasterizerStage(Device device,  VertexShaderStage vertexShader, PixelShaderStage pixelShader, OutputMergerStage outputMerger)
 		{
 			_vertexShader = vertexShader;
 			_pixelShader = pixelShader;
 			_outputMerger = outputMerger;
+
+			State = new RasterizerState(device, RasterizerStateDescription.Default);
 		}
 
 		public void SetViewports(params Viewport[] viewports)

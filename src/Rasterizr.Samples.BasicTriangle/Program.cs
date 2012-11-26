@@ -77,7 +77,7 @@ namespace Rasterizr.Samples.BasicTriangle
 
 		protected override void Draw(DemoTime time)
 		{
-			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4(0, 0, 0, 255));
+			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4F(0, 0, 0, 1));
 			_deviceContext.Draw(3, 0);
 			_swapChain.Present();
 
