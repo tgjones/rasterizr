@@ -1,4 +1,5 @@
-﻿using Rasterizr.Resources;
+﻿using Rasterizr.Math;
+using Rasterizr.Resources;
 
 namespace Rasterizr
 {

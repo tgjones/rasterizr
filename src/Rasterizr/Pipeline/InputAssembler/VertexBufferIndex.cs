@@ -1,4 +1,6 @@
-﻿namespace Rasterizr.Pipeline.InputAssembler
+﻿using SlimShader;
+
+namespace Rasterizr.Pipeline.InputAssembler
 {
 	internal class VertexBufferIndex
 	{
@@ -17,7 +19,7 @@
 			_offset = binding.Offset + (startLocation * binding.Stride);
 		}
 
-		public void GetData(byte[] dst, int dstOffset, int offset, int count)
+		public void GetData(Number4[] dst, int dstOffset, int offset, int count)
 		{
 			_binding.Buffer.GetData(dstOffset, dst, _offset + (GetIndex(_index) * _binding.Stride) + offset, count);
 		}

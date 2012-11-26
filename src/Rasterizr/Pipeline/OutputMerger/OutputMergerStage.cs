@@ -1,4 +1,5 @@
-﻿using Rasterizr.Resources;
+﻿using Rasterizr.Math;
+using Rasterizr.Resources;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
@@ -10,6 +11,12 @@ namespace Rasterizr.Pipeline.OutputMerger
 		public BlendState BlendState { get; set; }
 		public Color4 BlendFactor { get; set; }
 		public int BlendSampleMask { get; set; }
+
+		internal int MultiSampleCount
+		{
+			// TODO
+			get { return 1; }
+		}
 
 		public void GetTargets(out DepthStencilView depthStencilView, out RenderTargetView[] renderTargetViews)
 		{

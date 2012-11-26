@@ -39,6 +39,8 @@
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Math\Vector2.cs" />
+    <Compile Include="Math\Vector4.cs" />
     <Compile Include="Pipeline\CommonShaderStage.cs" />
     <Compile Include="Pipeline\InputAssembler\IndexedVertexBufferIndex.cs" />
     <Compile Include="Pipeline\InputAssembler\InputAssemblerPrimitiveOutput.cs" />
@@ -57,8 +59,14 @@
     <Compile Include="Pipeline\Rasterizer\CullMode.cs" />
     <Compile Include="Pipeline\Rasterizer\FillMode.cs" />
     <Compile Include="Pipeline\Rasterizer\Fragment.cs" />
+    <Compile Include="Pipeline\Rasterizer\FragmentQuad.cs" />
+    <Compile Include="Pipeline\Rasterizer\FragmentQuadLocation.cs" />
+    <Compile Include="Pipeline\Rasterizer\InterpolationUtility.cs" />
+    <Compile Include="Pipeline\Rasterizer\MultiSamplingUtility.cs" />
     <Compile Include="Pipeline\Rasterizer\RasterizerState.cs" />
     <Compile Include="Pipeline\Rasterizer\RasterizerStateDescription.cs" />
+    <Compile Include="Pipeline\Rasterizer\Sample.cs" />
+    <Compile Include="Pipeline\Rasterizer\Samples.cs" />
     <Compile Include="Pipeline\ShaderBase.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShader.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderOutput.cs" />
@@ -75,7 +83,7 @@
     <Compile Include="Resources\BindFlags.cs" />
     <Compile Include="Resources\Buffer.cs" />
     <Compile Include="Resources\BufferDescription.cs" />
-    <Compile Include="Color4F.cs" />
+    <Compile Include="Math\Color4F.cs" />
     <Compile Include="Pipeline\OutputMerger\DepthStencilClearFlags.cs" />
     <Compile Include="Resources\DepthStencilView.cs" />
     <Compile Include="Device.cs" />
@@ -100,6 +108,7 @@
     <Compile Include="Resources\Resource.cs" />
     <Compile Include="Resources\Texture1D.cs" />
     <Compile Include="Resources\TextureBase.cs" />
+    <Compile Include="SampleDescription.cs" />
     <Compile Include="SwapChain.cs" />
     <Compile Include="SwapChainDescription.cs" />
     <Compile Include="Resources\Texture2D.cs" />

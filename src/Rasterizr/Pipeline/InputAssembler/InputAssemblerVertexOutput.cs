@@ -1,9 +1,11 @@
-﻿namespace Rasterizr.Pipeline.InputAssembler
+﻿using SlimShader;
+
+namespace Rasterizr.Pipeline.InputAssembler
 {
 	internal struct InputAssemblerVertexOutput
 	{
 		public int VertexID;
 		public int InstanceID;
-		public byte[] Data;
+		public Number4[] Data;
 	}
 }

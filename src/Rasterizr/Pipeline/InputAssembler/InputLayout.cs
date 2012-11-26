@@ -11,9 +11,9 @@ namespace Rasterizr.Pipeline.InputAssembler
 		private readonly ProcessedInputElement[] _elements;
 		private readonly InputSlotElement[] _slots;
 
-		public int DataLength
+		public int ShaderInputParameterCount
 		{
-			get { return _inputSignature.Parameters.Count * sizeof(float) * 4; }
+			get { return _inputSignature.Parameters.Count; }
 		}
 
 		public ProcessedInputElement[] Elements
@@ -48,7 +48,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 
 				result[i] = new ProcessedInputElement
 				{
-					RegisterIndex = FindRegisterIndex(element.SemanticName, element.SemanticIndex),
+					RegisterIndex = (int) _inputSignature.Parameters.FindRegister(element.SemanticName, (uint) element.SemanticIndex),
 					Format = element.Format,
 					InputSlot = element.InputSlot,
 					AlignedByteOffset = slotOffsets[element.InputSlot],
@@ -59,16 +59,6 @@ namespace Rasterizr.Pipeline.InputAssembler
 				slotOffsets[element.InputSlot] += FormatHelper.SizeOfInBytes(element.Format);
 			}
 			return result;
-		}
-
-		private int FindRegisterIndex(string semanticName, int semanticIndex)
-		{
-			var inputParameter = _inputSignature.Parameters
-				.SingleOrDefault(x => x.SemanticName == semanticName && x.SemanticIndex == semanticIndex);
-			if (inputParameter == null)
-				throw new Exception(string.Format("No matching input parameter for semantic name '{0}' and index '{1}'.",
-					semanticName, semanticIndex));
-			return (int) inputParameter.Register;
 		}
 
 		private InputSlotElement[] ProcessSlots(InputElement[] elements)

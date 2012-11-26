@@ -1,4 +1,5 @@
 ﻿using System;
+using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
@@ -6,7 +7,6 @@ using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.Samples.Common;
-using SharpDX;
 using SlimShader.Compiler;
 using Buffer = Rasterizr.Resources.Buffer;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Rasterizr.Math;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Rasterizr
+namespace Rasterizr.Math
 {
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	public struct Color4F

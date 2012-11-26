@@ -1,9 +1,13 @@
-﻿namespace Rasterizr.Pipeline.VertexShader
+﻿using Rasterizr.Math;
+using SlimShader;
+
+namespace Rasterizr.Pipeline.VertexShader
 {
 	internal struct VertexShaderOutput
 	{
 		public int VertexID;
 		public int InstanceID;
-		public byte[] Data;
+		public Vector4 Position;
+		public Number4[] Data;
 	}
 }

@@ -1,4 +1,6 @@
-﻿namespace Rasterizr.Resources
+﻿using Rasterizr.Math;
+
+namespace Rasterizr.Resources
 {
 	public struct SamplerStateDescription
 	{

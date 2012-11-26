@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rasterizr.Pipeline.VertexShader;
+using SlimShader;
 using Buffer = Rasterizr.Resources.Buffer;
 
 namespace Rasterizr.Pipeline.InputAssembler
@@ -125,11 +126,11 @@ namespace Rasterizr.Pipeline.InputAssembler
 				var output = new InputAssemblerVertexOutput();
 				output.VertexID = vertexID++;
 				output.InstanceID = instanceID;
-				output.Data = new byte[InputLayout.DataLength];
+				output.Data = new Number4[InputLayout.ShaderInputParameterCount];
 
 				foreach (var inputElement in InputLayout.Elements)
 					vertexBufferIndices[inputElement.InputSlot].GetData(
-						output.Data, inputElement.RegisterIndex * sizeof (float) * 4,
+						output.Data, inputElement.RegisterIndex,
 						inputElement.AlignedByteOffset,
 						FormatHelper.SizeOfInBytes(inputElement.Format));
 

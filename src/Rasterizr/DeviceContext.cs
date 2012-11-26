@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
@@ -45,9 +46,10 @@ namespace Rasterizr
 		{
 			_inputAssembler = new InputAssemblerStage();
 			_vertexShader = new VertexShaderStage();
-			_rasterizer = new RasterizerStage();
 			_pixelShader = new PixelShaderStage();
 			_outputMerger = new OutputMergerStage();
+
+			_rasterizer = new RasterizerStage(_vertexShader, _pixelShader, _outputMerger);
 		}
 
 		public void ClearDepthStencilView(DepthStencilView depthStencilView, DepthStencilClearFlags clearFlags, float depth, byte stencil)
