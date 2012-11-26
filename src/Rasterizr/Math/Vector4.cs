@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using SlimShader;
 
 namespace Rasterizr.Math
 {
@@ -16,6 +17,11 @@ namespace Rasterizr.Math
 			Y = y;
 			Z = z;
 			W = w;
+		}
+
+		public static Vector4 FromNumber4(Number4 value)
+		{
+			return new Vector4(value.Number0.Float, value.Number1.Float, value.Number2.Float, value.Number3.Float);
 		}
 	}
 }
