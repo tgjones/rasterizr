@@ -20,7 +20,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			_vertexBufferBindings = new VertexBufferBinding[VertexInputResourceSlotCount];
 		}
 
-		public void SetVertexBuffers(int startSlot, VertexBufferBinding[] vertexBufferBindings)
+		public void SetVertexBuffers(int startSlot, params VertexBufferBinding[] vertexBufferBindings)
 		{
 			for (int i = 0; i < vertexBufferBindings.Length; i++)
 				_vertexBufferBindings[i + startSlot] = vertexBufferBindings[i];

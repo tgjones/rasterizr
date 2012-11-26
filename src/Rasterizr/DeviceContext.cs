@@ -1,5 +1,6 @@
 ﻿using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
+using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
@@ -11,6 +12,7 @@ namespace Rasterizr
 		private readonly InputAssemblerStage _inputAssembler;
 		private readonly VertexShaderStage _vertexShader;
 		private readonly RasterizerStage _rasterizer;
+		private readonly PixelShaderStage _pixelShader;
 		private readonly OutputMergerStage _outputMerger;
 
 		public InputAssemblerStage InputAssembler
@@ -28,6 +30,11 @@ namespace Rasterizr
 			get { return _rasterizer; }
 		}
 
+		public PixelShaderStage PixelShader
+		{
+			get { return _pixelShader; }
+		}
+
 		public OutputMergerStage OutputMerger
 		{
 			get { return _outputMerger; }
@@ -38,6 +45,7 @@ namespace Rasterizr
 			_inputAssembler = new InputAssemblerStage();
 			_vertexShader = new VertexShaderStage();
 			_rasterizer = new RasterizerStage();
+			_pixelShader = new PixelShaderStage();
 			_outputMerger = new OutputMergerStage();
 		}
 
@@ -49,6 +57,11 @@ namespace Rasterizr
 		public void ClearRenderTargetView(RenderTargetView renderTargetView, Color4 color)
 		{
 			renderTargetView.Clear(color);
+		}
+
+		public void Draw(int vertexCount, int startVertexLocation)
+		{
+			
 		}
 	}
 }
