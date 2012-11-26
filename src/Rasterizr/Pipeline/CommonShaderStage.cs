@@ -43,12 +43,12 @@ namespace Rasterizr.Pipeline
 		protected void ExecuteShader(Number4[] inputs, Number4[] outputs)
 		{
 			for (ushort i = 0; i < inputs.Length; i++)
-				_virtualMachine.GetRegister<NumberRegister>(0, OperandType.Input, new RegisterIndex(i)).Value = inputs[i];
+				_virtualMachine.SetRegister(0, OperandType.Input, new RegisterIndex(i), inputs[i]);
 
 			_virtualMachine.Execute();
 
 			for (ushort i = 0; i < outputs.Length; i++)
-				outputs[i] = _virtualMachine.GetRegister<NumberRegister>(0, OperandType.Output, new RegisterIndex(i)).Value;
+				outputs[i] = _virtualMachine.GetRegister(0, OperandType.Output, new RegisterIndex(i));
 		}
 	}
 }

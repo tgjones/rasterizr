@@ -1,11 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{28234864-E0DB-4DB2-A3A6-3E7463BFC5E5}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\shaders\CompileShaders.bat = ..\..\shaders\CompileShaders.bat
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr", "Rasterizr\Rasterizr.csproj", "{5975A920-5CA3-4187-824A-1804A1ACB6D2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0E390F27-EBFB-43F9-AFD8-1E49E5BE4450} = {0E390F27-EBFB-43F9-AFD8-1E49E5BE4450}
