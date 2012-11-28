@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.VertexShader;
-using SlimShader;
 using Buffer = Rasterizr.Resources.Buffer;
 
 namespace Rasterizr.Pipeline.InputAssembler
@@ -156,7 +155,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 						{
 							PrimitiveType = PrimitiveType.Point,
 							PrimitiveID = primitiveID++,
-							Vertex0 = enumerator.Current,
+							Vertices = new[] { enumerator.Current },
 						};
 					break;
 				}
@@ -171,8 +170,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 						{
 							PrimitiveType = PrimitiveType.Line,
 							PrimitiveID = primitiveID++,
-							Vertex0 = vertex0,
-							Vertex1 = vertex1
+							Vertices = new[] { vertex0, vertex1 }
 						};
 					}
 					break;
@@ -188,8 +186,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 						{
 							PrimitiveType = PrimitiveType.Line,
 							PrimitiveID = primitiveID++,
-							Vertex0 = vertex0,
-							Vertex1 = vertex1
+							Vertices = new[] { vertex0, vertex1 }
 						};
 						vertex0 = vertex1;
 					}
@@ -208,9 +205,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 						{
 							PrimitiveType = PrimitiveType.Triangle,
 							PrimitiveID = primitiveID++,
-							Vertex0 = vertex0,
-							Vertex1 = vertex1,
-							Vertex2 = vertex2
+							Vertices = new[] { vertex0, vertex1, vertex2 }
 						};
 					}
 					break;
@@ -228,9 +223,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 						{
 							PrimitiveType = PrimitiveType.Triangle,
 							PrimitiveID = primitiveID++,
-							Vertex0 = vertex0,
-							Vertex1 = vertex1,
-							Vertex2 = vertex2
+							Vertices = new[] { vertex0, vertex1, vertex2 }
 						};
 						vertex1 = vertex2;
 						vertex0 = vertex1;

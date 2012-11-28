@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Math;
+using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
@@ -13,6 +14,7 @@ namespace Rasterizr
 	{
 		private readonly InputAssemblerStage _inputAssembler;
 		private readonly VertexShaderStage _vertexShader;
+		private readonly GeometryShaderStage _geometryShader;
 		private readonly RasterizerStage _rasterizer;
 		private readonly PixelShaderStage _pixelShader;
 		private readonly OutputMergerStage _outputMerger;
@@ -25,6 +27,11 @@ namespace Rasterizr
 		public VertexShaderStage VertexShader
 		{
 			get { return _vertexShader; }
+		}
+
+		public GeometryShaderStage GeometryShader
+		{
+			get { return _geometryShader; }
 		}
 
 		public RasterizerStage Rasterizer
@@ -46,6 +53,7 @@ namespace Rasterizr
 		{
 			_inputAssembler = new InputAssemblerStage();
 			_vertexShader = new VertexShaderStage();
+			_geometryShader = new GeometryShaderStage();
 			_pixelShader = new PixelShaderStage();
 			_outputMerger = new OutputMergerStage(device);
 

@@ -35,6 +35,13 @@ namespace Rasterizr.Pipeline.Rasterizer
 		internal IEnumerable<FragmentQuad> Execute(IEnumerable<InputAssemblerPrimitiveOutput> primitiveStream)
 		{
 			foreach (var primitive in primitiveStream)
+			{
+				for (int i = 0; i < primitive.Vertices.Length; i++)
+				{
+					PerspectiveDivide(ref primitive.Vertices[i].Position);
+					ToScreenCoordinates(ref primitive.Vertices[i].Position);
+				}
+
 				switch (primitive.PrimitiveType)
 				{
 					case PrimitiveType.Point:
@@ -54,25 +61,18 @@ namespace Rasterizr.Pipeline.Rasterizer
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
+			}
 		}
-
+		 
 		private IEnumerable<FragmentQuad> RasterizeTriangle(InputAssemblerPrimitiveOutput primitive)
 		{
-			PerspectiveDivide(ref primitive.Vertex0.Position);
-			PerspectiveDivide(ref primitive.Vertex1.Position);
-			PerspectiveDivide(ref primitive.Vertex2.Position);
-
-			ToScreenCoordinates(ref primitive.Vertex0.Position);
-			ToScreenCoordinates(ref primitive.Vertex1.Position);
-			ToScreenCoordinates(ref primitive.Vertex2.Position);
-
 			var screenBounds = GetTriangleScreenBounds(ref primitive);
 
 			// Scan pixels in target area, checking if they are inside the triangle.
 			// If they are, calculate the coverage.
-			var p0 = primitive.Vertex0.Position;
-			var p1 = primitive.Vertex1.Position;
-			var p2 = primitive.Vertex2.Position;
+			var p0 = primitive.Vertices[0].Position;
+			var p1 = primitive.Vertices[1].Position;
+			var p2 = primitive.Vertices[2].Position;
 
 			// Calculate start and end positions. Because of the need to calculate derivatives
 			// in the pixel shader, we require that fragment quads always have even numbered
@@ -198,15 +198,15 @@ namespace Rasterizr.Pipeline.Rasterizer
 				// Grab values from vertex shader outputs.
 				var outputParameterRegister = vertexShaderOutputSignature.Parameters.FindRegister(
 					parameter.SemanticName, parameter.SemanticIndex);
-				var v0Value = triangle.Vertex0.Data[outputParameterRegister];
-				var v1Value = triangle.Vertex1.Data[outputParameterRegister];
-				var v2Value = triangle.Vertex2.Data[outputParameterRegister];
+				var v0Value = triangle.Vertices[0].Data[outputParameterRegister];
+				var v1Value = triangle.Vertices[1].Data[outputParameterRegister];
+				var v2Value = triangle.Vertices[2].Data[outputParameterRegister];
 
 				// Interpolate values.
 				const bool isPerspectiveCorrect = true; // TODO
 				Number4 interpolatedValue = (isPerspectiveCorrect)
 					? InterpolationUtility.Perspective(alpha, beta, gamma, ref v0Value, ref v1Value, ref v2Value,
-						triangle.Vertex0.Position.W, triangle.Vertex1.Position.W, triangle.Vertex2.Position.W)
+						triangle.Vertices[0].Position.W, triangle.Vertices[1].Position.W, triangle.Vertices[2].Position.W)
 					: InterpolationUtility.Linear(alpha, beta, gamma, ref v0Value, ref v1Value, ref v2Value);
 
 				// Set value onto pixel shader input.

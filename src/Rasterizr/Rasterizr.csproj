@@ -42,6 +42,9 @@
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector4.cs" />
     <Compile Include="Pipeline\CommonShaderStage.cs" />
+    <Compile Include="Pipeline\GeometryShader\GeometryShader.cs" />
+    <Compile Include="Pipeline\GeometryShader\GeometryShaderOutput.cs" />
+    <Compile Include="Pipeline\GeometryShader\GeometryShaderStage.cs" />
     <Compile Include="Pipeline\InputAssembler\IndexedVertexBufferIndex.cs" />
     <Compile Include="Pipeline\InputAssembler\InputAssemblerPrimitiveOutput.cs" />
     <Compile Include="Pipeline\InputAssembler\InputAssemblerVertexOutput.cs" />
