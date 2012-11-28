@@ -90,7 +90,8 @@ namespace Rasterizr
 		{
 			var vertexShaderOutputs = _vertexShader.Execute(vertexStream);
 			var primitiveStream = _inputAssembler.GetPrimitiveStream(vertexShaderOutputs);
-			var rasterizerOutputs = _rasterizer.Execute(primitiveStream);
+			var geometryShaderOutputs = _geometryShader.Execute(primitiveStream);
+			var rasterizerOutputs = _rasterizer.Execute(geometryShaderOutputs);
 			var pixelShaderOutputs = _pixelShader.Execute(rasterizerOutputs);
 			_outputMerger.Execute(pixelShaderOutputs);
 		}

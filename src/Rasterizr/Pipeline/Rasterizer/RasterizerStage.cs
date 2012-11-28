@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Rasterizr.Math;
+using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
@@ -32,9 +33,9 @@ namespace Rasterizr.Pipeline.Rasterizer
 			_viewports = viewports;
 		}
 
-		internal IEnumerable<FragmentQuad> Execute(IEnumerable<InputAssemblerPrimitiveOutput> primitiveStream)
+		internal IEnumerable<FragmentQuad> Execute(IEnumerable<GeometryShaderOutput> inputs)
 		{
-			foreach (var primitive in primitiveStream)
+			foreach (var primitive in inputs)
 			{
 				for (int i = 0; i < primitive.Vertices.Length; i++)
 				{
@@ -63,8 +64,8 @@ namespace Rasterizr.Pipeline.Rasterizer
 				}
 			}
 		}
-		 
-		private IEnumerable<FragmentQuad> RasterizeTriangle(InputAssemblerPrimitiveOutput primitive)
+
+		private IEnumerable<FragmentQuad> RasterizeTriangle(GeometryShaderOutput primitive)
 		{
 			var screenBounds = GetTriangleScreenBounds(ref primitive);
 
@@ -114,7 +115,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 				}
 		}
 
-		private void InterpolateFragmentData(ref Fragment fragment, ref InputAssemblerPrimitiveOutput triangle,
+		private void InterpolateFragmentData(ref Fragment fragment, ref GeometryShaderOutput triangle,
 			ref Vector4 p0, ref Vector4 p2, ref Vector4 p1)
 		{
 			var pixelCenter = new Vector2(fragment.X + 0.5f, fragment.Y + 0.5f);
@@ -151,7 +152,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 			position.Z = viewport.MinDepth + position.Z * (viewport.MaxDepth - viewport.MinDepth);
 		}
 
-		private static Box2D GetTriangleScreenBounds(ref InputAssemblerPrimitiveOutput triangle)
+		private static Box2D GetTriangleScreenBounds(ref GeometryShaderOutput triangle)
 		{
 			float minX = float.MaxValue, minY = float.MaxValue;
 			float maxX = float.MinValue, maxY = float.MinValue;
@@ -184,7 +185,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 			return (pa.Y - pb.Y) * x + (pb.X - pa.X) * y + pa.X * pb.Y - pb.X * pa.Y;
 		}
 
-		private Number4[] CreatePixelShaderInput(ref InputAssemblerPrimitiveOutput triangle, float beta, float alpha, float gamma)
+		private Number4[] CreatePixelShaderInput(ref GeometryShaderOutput triangle, float beta, float alpha, float gamma)
 		{
 			// TODO: Cache as much of this as possible.
 			// Calculate interpolated attribute values for this fragment.
