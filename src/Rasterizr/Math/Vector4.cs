@@ -3,7 +3,7 @@ using SlimShader;
 
 namespace Rasterizr.Math
 {
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct Vector4
 	{
 		public float X;

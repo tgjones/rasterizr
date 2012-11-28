@@ -27,7 +27,7 @@ namespace Rasterizr.Resources
 		public void GetData<T>(T[] data)
 			where T : struct
 		{
-			GetData(data, 0, _data.Length / Utilities.SizeOf<T>());
+			GetData(data, 0, _data.Length);
 		}
 
 		public void SetData<T>(T[] data)

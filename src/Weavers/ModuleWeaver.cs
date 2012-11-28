@@ -299,7 +299,7 @@ namespace Weavers
 		/// <summary>
 		/// Creates the write range method with the following signature:
 		/// <code>
-		/// public static unsafe void* Write&lt;T&gt;(void* pDest, T[] data, int offset, int count) where T : struct
+		/// public static unsafe void Write&lt;T&gt;(void* pDest, T[] data, int offset, int count) where T : struct
 		/// </code>
 		/// </summary>
 		/// <param name="method">The method copy struct.</param>
@@ -340,12 +340,6 @@ namespace Weavers
 
 			// Emit cpblk
 			EmitCpblk(method, gen);
-
-			// Return pDest + totalSize
-			gen.Emit(OpCodes.Ldloc_0);
-			gen.Emit(OpCodes.Conv_I);
-			gen.Emit(OpCodes.Ldarg_0);
-			gen.Emit(OpCodes.Add);
 
 			// Ret
 			gen.Emit(OpCodes.Ret);
@@ -427,7 +421,7 @@ namespace Weavers
 		/// <summary>
 		/// Creates the read range method with the following signature:
 		/// <code>
-		/// public static unsafe void* Read&lt;T&gt;(void* pSrc, T[] data, int offset, int count) where T : struct
+		/// public static unsafe void Read&lt;T&gt;(void* pSrc, T[] data, int offset, int count) where T : struct
 		/// </code>
 		/// </summary>
 		/// <param name="method">The method copy struct.</param>
@@ -456,25 +450,11 @@ namespace Weavers
 			// Push (1) pDest for memcpy
 			gen.Emit(OpCodes.Ldarg_0);
 
-			// totalSize = sizeof(T) * count
-			gen.Emit(OpCodes.Sizeof, paramT);
-			gen.Emit(OpCodes.Conv_I4);
+			// Push (2) count
 			gen.Emit(OpCodes.Ldarg_3);
-			gen.Emit(OpCodes.Conv_I4);
-			gen.Emit(OpCodes.Mul);
-			gen.Emit(OpCodes.Stloc_0);
-
-			// Push (2) totalSize
-			gen.Emit(OpCodes.Ldloc_0);
 
 			// Emit cpblk
 			EmitCpblk(method, gen);
-
-			// Return pDest + totalSize
-			gen.Emit(OpCodes.Ldloc_0);
-			gen.Emit(OpCodes.Conv_I);
-			gen.Emit(OpCodes.Ldarg_0);
-			gen.Emit(OpCodes.Add);
 
 			// Ret
 			gen.Emit(OpCodes.Ret);

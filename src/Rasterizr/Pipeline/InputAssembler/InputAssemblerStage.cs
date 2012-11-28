@@ -128,7 +128,8 @@ namespace Rasterizr.Pipeline.InputAssembler
 				output.VertexID = vertexID++;
 				output.InstanceID = instanceID;
 				output.Data = new Vector4[InputLayout.ShaderInputParameterCount];
-
+				
+				// TODO: Support non-32-bit formats.
 				foreach (var inputElement in InputLayout.Elements)
 					vertexBufferIndices[inputElement.InputSlot].GetData(
 						output.Data, inputElement.RegisterIndex,

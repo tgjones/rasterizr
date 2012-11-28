@@ -79,6 +79,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 			// coordinates (both x and y) for the top-left fragment.
 			int startY = NearestEvenNumber(screenBounds.MinY);
 			int startX = NearestEvenNumber(screenBounds.MinX);
+
 			for (int y = startY; y <= screenBounds.MaxY; y += 2)
 				for (int x = startX; x <= screenBounds.MaxX; x += 2)
 				{
@@ -185,6 +186,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 		private Number4[] CreatePixelShaderInput(ref InputAssemblerPrimitiveOutput triangle, float beta, float alpha, float gamma)
 		{
+			// TODO: Cache as much of this as possible.
 			// Calculate interpolated attribute values for this fragment.
 			var vertexShaderOutputSignature = _vertexShader.Shader.Bytecode.OutputSignature;
 			var pixelShaderInputSignature = _pixelShader.Shader.Bytecode.InputSignature;

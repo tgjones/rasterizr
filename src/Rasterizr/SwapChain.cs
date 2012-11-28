@@ -1,4 +1,5 @@
-﻿using Rasterizr.Resources;
+﻿using System.Diagnostics;
+using Rasterizr.Resources;
 
 namespace Rasterizr
 {
@@ -31,11 +32,14 @@ namespace Rasterizr
 			return (T) _backBuffer;
 		}
 
+		private int _frameCounter;
 		public void Present()
 		{
 			// TODO: Resolve multi-sampled back buffer.
 			_backBuffer.GetData(_resolvedColors);
 			Present(_resolvedColors);
+
+			Debug.WriteLine("Done frame " + _frameCounter++);
 		}
 
 		protected abstract void Present(byte[] colors);

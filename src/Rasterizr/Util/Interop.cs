@@ -37,7 +37,7 @@ namespace Rasterizr.Util
 			throw new NotImplementedException();
 		}
 
-		public static unsafe void* Read<T>(void* pSrc, T[] data, int offset, int count)
+		public static unsafe void Read<T>(void* pSrc, T[] data, int offset, int count)
 			where T : struct
 		{
 			throw new NotImplementedException();
@@ -53,7 +53,7 @@ namespace Rasterizr.Util
 			throw new NotImplementedException();
 		}
 
-		public static unsafe void* Write<T>(void* pDest, T[] data, int offset, int count)
+		public static unsafe void Write<T>(void* pDest, T[] data, int offset, int count)
 			where T : struct
 		{
 			throw new NotImplementedException();

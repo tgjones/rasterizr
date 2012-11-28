@@ -66,6 +66,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 					//    DepthBuffer[pixel.X, pixel.Y, sampleIndex] = newDepth;
 				}
 			}
+			renderTarget.Invalidate();
 		}
 	}
 }

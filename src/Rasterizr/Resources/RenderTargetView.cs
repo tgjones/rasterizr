@@ -26,9 +26,6 @@ namespace Rasterizr.Resources
 			{
 				var texture = (Texture2D) Resource;
 				_colors[(y * texture.Description.Width) + x] = value.ToColor4();
-
-				// TODO: only do this at the end of the frame.
-				texture.SetData(_colors);
 			}
 		}
 
@@ -64,14 +61,19 @@ namespace Rasterizr.Resources
 			// Copy first line.
 			int height = texture.Description.Height;
 			int sizeToCopy = Utilities.SizeOf<Color4>() * width;
-			void* src = Interop.Fixed(_colors);
-			for (int y = 1; y < height; y++)
-			{
-				var dest = (void*) ((IntPtr) src + y * sizeToCopy);
-				Interop.memcpy(dest, src, sizeToCopy);
-			}
+			fixed (Color4* src = &_colors[0])
+				for (int y = 1; y < height; y++)
+				{
+					var dest = (void*)((IntPtr)src + y * sizeToCopy);
+					Interop.memcpy(dest, src, sizeToCopy);
+				}
 
-			texture.SetData(_colors);
+			Invalidate();
+		}
+
+		internal void Invalidate()
+		{
+			Resource.SetData(_colors);
 		}
 	}
 }
