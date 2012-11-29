@@ -61,11 +61,11 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 					{
 						// For multisampling, we test coverage and interpolate attributes in two separate steps.
 						// Check all samples to determine whether they are inside the triangle.
-						bool anyCoveredSamples = CalculateSampleCoverage(ref fragmentQuad.Fragment0);
-						anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragmentQuad.Fragment1);
-						anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragmentQuad.Fragment2);
-						anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragmentQuad.Fragment3);
-						if (!anyCoveredSamples)
+						bool covered0 = CalculateSampleCoverage(ref fragmentQuad.Fragment0);
+						bool covered1 = CalculateSampleCoverage(ref fragmentQuad.Fragment1);
+						bool covered2 = CalculateSampleCoverage(ref fragmentQuad.Fragment2);
+						bool covered3 = CalculateSampleCoverage(ref fragmentQuad.Fragment3);
+						if (!covered0 && !covered1 && !covered2 && !covered3)
 							continue;
 
 						// Otherwise, we do have at least one fragment with covered samples, so continue
@@ -79,18 +79,15 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 					}
 					else
 					{
-						BarycentricCoordinates fragment0Coordinates,
-							fragment1Coordinates = new BarycentricCoordinates(),
-							fragment2Coordinates = new BarycentricCoordinates(),
-							fragment3Coordinates = new BarycentricCoordinates();
+						BarycentricCoordinates fragment0Coordinates, fragment1Coordinates, fragment2Coordinates, fragment3Coordinates;
 
 						// For non-multisampling, we can re-use the same calculations for coverage and interpolation.
-						bool anyCoveredFragments = CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment0, out fragment0Coordinates);
-						anyCoveredFragments = anyCoveredFragments || CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment1, out fragment1Coordinates);
-						anyCoveredFragments = anyCoveredFragments || CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment2, out fragment2Coordinates);
-						anyCoveredFragments = anyCoveredFragments || CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment3, out fragment3Coordinates);
+						bool covered0 = CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment0, out fragment0Coordinates);
+						bool covered1 = CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment1, out fragment1Coordinates);
+						bool covered2 = CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment2, out fragment2Coordinates);
+						bool covered3 = CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment3, out fragment3Coordinates);
 
-						if (!anyCoveredFragments)
+						if (!covered0 && !covered1 && !covered2 && !covered3)
 							continue;
 
 						// Create pixel shader input.

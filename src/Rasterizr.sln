@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr", "Rasterizr\Rasterizr.csproj", "{5975A920-5CA3-4187-824A-1804A1ACB6D2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0E390F27-EBFB-43F9-AFD8-1E49E5BE4450} = {0E390F27-EBFB-43F9-AFD8-1E49E5BE4450}

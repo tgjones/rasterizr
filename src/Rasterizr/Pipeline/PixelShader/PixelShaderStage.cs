@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.Rasterizer;
 using SlimShader.Chunks.Xsgn;
