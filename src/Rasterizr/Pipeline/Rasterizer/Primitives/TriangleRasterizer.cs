@@ -57,25 +57,68 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 						Fragment3 = new Fragment(x + 1, y + 1, FragmentQuadLocation.BottomRight)
 					};
 
-					// Check all samples to determine whether they are inside the triangle.
-					bool anyCoveredSamples = CalculateSampleCoverage(ref fragmentQuad.Fragment0);
-					anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragmentQuad.Fragment1);
-					anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragmentQuad.Fragment2);
-					anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragmentQuad.Fragment3);
-					if (!anyCoveredSamples)
-						continue;
+					if (IsMultiSamplingEnabled)
+					{
+						// For multisampling, we test coverage and interpolate attributes in two separate steps.
+						// Check all samples to determine whether they are inside the triangle.
+						bool anyCoveredSamples = CalculateSampleCoverage(ref fragmentQuad.Fragment0);
+						anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragmentQuad.Fragment1);
+						anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragmentQuad.Fragment2);
+						anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragmentQuad.Fragment3);
+						if (!anyCoveredSamples)
+							continue;
 
-					// Otherwise, we do have at least one fragment with covered samples, so continue
-					// with interpolation. We need to interpolate values for all fragments in this quad,
-					// even though they may not all be covered, because we need all four fragments in order
-					// to calculate derivatives correctly.
-					InterpolateFragmentData(ref fragmentQuad.Fragment0);
-					InterpolateFragmentData(ref fragmentQuad.Fragment1);
-					InterpolateFragmentData(ref fragmentQuad.Fragment2);
-					InterpolateFragmentData(ref fragmentQuad.Fragment3);
+						// Otherwise, we do have at least one fragment with covered samples, so continue
+						// with interpolation. We need to interpolate values for all fragments in this quad,
+						// even though they may not all be covered, because we need all four fragments in order
+						// to calculate derivatives correctly.
+						InterpolateFragmentData(ref fragmentQuad.Fragment0);
+						InterpolateFragmentData(ref fragmentQuad.Fragment1);
+						InterpolateFragmentData(ref fragmentQuad.Fragment2);
+						InterpolateFragmentData(ref fragmentQuad.Fragment3);
+					}
+					else
+					{
+						BarycentricCoordinates fragment0Coordinates,
+							fragment1Coordinates = new BarycentricCoordinates(),
+							fragment2Coordinates = new BarycentricCoordinates(),
+							fragment3Coordinates = new BarycentricCoordinates();
+
+						// For non-multisampling, we can re-use the same calculations for coverage and interpolation.
+						bool anyCoveredFragments = CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment0, out fragment0Coordinates);
+						anyCoveredFragments = anyCoveredFragments || CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment1, out fragment1Coordinates);
+						anyCoveredFragments = anyCoveredFragments || CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment2, out fragment2Coordinates);
+						anyCoveredFragments = anyCoveredFragments || CalculateCoverageAndInterpolateFragmentData(ref fragmentQuad.Fragment3, out fragment3Coordinates);
+
+						if (!anyCoveredFragments)
+							continue;
+
+						// Create pixel shader input.
+						fragmentQuad.Fragment0.Data = CreatePixelShaderInput(ref fragment0Coordinates);
+						fragmentQuad.Fragment1.Data = CreatePixelShaderInput(ref fragment1Coordinates);
+						fragmentQuad.Fragment2.Data = CreatePixelShaderInput(ref fragment2Coordinates);
+						fragmentQuad.Fragment3.Data = CreatePixelShaderInput(ref fragment3Coordinates);
+					}
 
 					yield return fragmentQuad;
 				}
+		}
+
+		private bool CalculateCoverageAndInterpolateFragmentData(ref Fragment fragment, out BarycentricCoordinates coordinates)
+		{
+			// For non-multisampling, we can re-use the same calculations for coverage and interpolation.
+			var pixelCenter = new Vector2(fragment.X + 0.5f, fragment.Y + 0.5f);
+			CalculateBarycentricCoordinates(ref pixelCenter, out coordinates);
+
+			float depth;
+			if (!IsSampleInsideTriangle(ref coordinates, out depth))
+				return false;
+
+			fragment.Samples.Sample0.Covered = true;
+			fragment.Samples.Sample0.Depth = depth;
+			fragment.Samples.AnyCovered = true;
+
+			return true;
 		}
 
 		private static int NearestEvenNumber(int value)
@@ -93,15 +136,11 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			var pixelCenter = new Vector2(fragment.X + 0.5f, fragment.Y + 0.5f);
 
 			// Calculate alpha, beta, gamma for pixel center.
-			float alpha = ComputeFunction(pixelCenter.X, pixelCenter.Y, ref _p1, ref _p2)
-				/ ComputeFunction(_p0.X, _p0.Y, ref _p1, ref _p2);
-			float beta = ComputeFunction(pixelCenter.X, pixelCenter.Y, ref _p2, ref _p0)
-				/ ComputeFunction(_p1.X, _p1.Y, ref _p2, ref _p0);
-			float gamma = ComputeFunction(pixelCenter.X, pixelCenter.Y, ref _p0, ref _p1)
-				/ ComputeFunction(_p2.X, _p2.Y, ref _p0, ref _p1);
+			BarycentricCoordinates coordinates;
+			CalculateBarycentricCoordinates(ref pixelCenter, out coordinates);
 
 			// Create pixel shader input.
-			fragment.Data = CreatePixelShaderInput(beta, alpha, gamma);
+			fragment.Data = CreatePixelShaderInput(ref coordinates);
 		}
 
 		private bool CalculateSampleCoverage(ref Fragment fragment)
@@ -135,22 +174,17 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			return covered;
 		}
 
-		private bool IsSampleInsideTriangle(ref Vector2 samplePosition, out float depth)
+		private bool IsSampleInsideTriangle(ref BarycentricCoordinates coordinates, out float depth)
 		{
 			// TODO: Use fill convention.
 
-			// Calculate alpha, beta, gamma for this sample position.
-			float alpha = ComputeFunction(samplePosition.X, samplePosition.Y, ref _p1, ref _p2) / _alphaDenominator;
-			float beta = ComputeFunction(samplePosition.X, samplePosition.Y, ref _p2, ref _p0) / _betaDenominator;
-			float gamma = ComputeFunction(samplePosition.X, samplePosition.Y, ref _p0, ref _p1) / _gammaDenominator;
-
 			// Calculate depth.
 			// TODO: Does this only need to be calculated if the sample is inside the triangle?
-			depth = InterpolationUtility.Linear(alpha, beta, gamma, _p0.Z, _p1.Z, _p2.Z);
+			depth = InterpolationUtility.Linear(coordinates.Alpha, coordinates.Beta, coordinates.Gamma, _p0.Z, _p1.Z, _p2.Z);
 
 			// If any of these tests fails, the current pixel is not inside the triangle.
 			// TODO: Only need to test if > 1?
-			if (alpha < 0 || alpha > 1 || beta < 0 || beta > 1 || gamma < 0 || gamma > 1)
+			if (coordinates.IsOutsideTriangle)
 			{
 				depth = 0;
 				return false;
@@ -164,35 +198,52 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 					return true;
 				case FillMode.Wireframe:
 					const float wireframeThreshold = 0.00001f;
-					return alpha < wireframeThreshold || beta < wireframeThreshold || gamma < wireframeThreshold;
+					return coordinates.Alpha < wireframeThreshold || coordinates.Beta < wireframeThreshold || coordinates.Gamma < wireframeThreshold;
 				default:
 					throw new NotSupportedException();
 			}
 		}
 
-		private Vector4[] CreatePixelShaderInput(float beta, float alpha, float gamma)
+		private bool IsSampleInsideTriangle(ref Vector2 samplePosition, out float depth)
 		{
+			BarycentricCoordinates coordinates;
+			CalculateBarycentricCoordinates(ref samplePosition, out coordinates);
+			return IsSampleInsideTriangle(ref coordinates, out depth);
+		}
+
+		private void CalculateBarycentricCoordinates(ref Vector2 position, out BarycentricCoordinates coordinates)
+		{
+			// Calculate alpha, beta, gamma for pixel center.
+			coordinates.Alpha = ComputeFunction(position.X, position.Y, ref _p1, ref _p2) / _alphaDenominator;
+			coordinates.Beta = ComputeFunction(position.X, position.Y, ref _p2, ref _p0) / _betaDenominator;
+			coordinates.Gamma = ComputeFunction(position.X, position.Y, ref _p0, ref _p1) / _gammaDenominator;
+		}
+
+		private Vector4[] CreatePixelShaderInput(ref BarycentricCoordinates coordinates)
+		{
+			float w = InterpolationUtility.PrecalculateW(
+				coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
+				_p0.W, _p1.W, _p2.W);
+
 			// TODO: Cache as much of this as possible.
 			// Calculate interpolated attribute values for this fragment.
-			var result = new Vector4[PixelShaderInputSignture.Parameters.Count];
-			for (int i = 0; i < PixelShaderInputSignture.Parameters.Count; i++)
+			var result = new Vector4[OutputInputRegisterMappings.Length];
+			for (int i = 0; i < result.Length; i++)
 			{
-				var parameter = PixelShaderInputSignture.Parameters[i];
-
-				// Grab values from vertex shader outputs.
-				var outputParameterRegister = PreviousStageOutputSignature.Parameters.FindRegister(
-					parameter.SemanticName, parameter.SemanticIndex);
-
-				var v0Value = _primitive.Vertices[0].Data[outputParameterRegister];
-				var v1Value = _primitive.Vertices[1].Data[outputParameterRegister];
-				var v2Value = _primitive.Vertices[2].Data[outputParameterRegister];
+				var outputRegister = OutputInputRegisterMappings[i];
+				var v0Value = _primitive.Vertices[0].Data[outputRegister];
+				var v1Value = _primitive.Vertices[1].Data[outputRegister];
+				var v2Value = _primitive.Vertices[2].Data[outputRegister];
 
 				// Interpolate values.
 				const bool isPerspectiveCorrect = true; // TODO
 				Vector4 interpolatedValue = (isPerspectiveCorrect)
-					? InterpolationUtility.Perspective(alpha, beta, gamma, ref v0Value, ref v1Value, ref v2Value,
-						_p0.W, _p1.W, _p2.W)
-					: InterpolationUtility.Linear(alpha, beta, gamma, ref v0Value, ref v1Value, ref v2Value);
+					? InterpolationUtility.Perspective(
+					coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
+						ref v0Value, ref v1Value, ref v2Value,
+						_p0.W, _p1.W, _p2.W, w)
+					: InterpolationUtility.Linear(coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
+						ref v0Value, ref v1Value, ref v2Value);
 
 				// Set value onto pixel shader input.
 				result[i] = interpolatedValue;

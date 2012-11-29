@@ -49,8 +49,10 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 			rasterizer.PreviousStageOutputSignature = previousStageOutputSignature;
 			rasterizer.PixelShaderInputSignture = pixelShaderInputSignature;
+			rasterizer.IsMultiSamplingEnabled = State.Description.IsMultisampleEnabled;
 			rasterizer.MultiSampleCount = multiSampleCount;
 			rasterizer.FillMode = State.Description.FillMode;
+			rasterizer.Initialize();
 
 			foreach (var primitive in inputs)
 			{

@@ -64,9 +64,10 @@
     <Compile Include="Pipeline\Rasterizer\Fragment.cs" />
     <Compile Include="Pipeline\Rasterizer\FragmentQuad.cs" />
     <Compile Include="Pipeline\Rasterizer\FragmentQuadLocation.cs" />
-    <Compile Include="Pipeline\Rasterizer\InterpolationUtility.cs" />
+    <Compile Include="Pipeline\Rasterizer\Primitives\InterpolationUtility.cs" />
     <Compile Include="Pipeline\Rasterizer\MultiSamplingUtility.cs" />
     <Compile Include="Math\Box2D.cs" />
+    <Compile Include="Pipeline\Rasterizer\Primitives\BarycentricCoordinates.cs" />
     <Compile Include="Pipeline\Rasterizer\Primitives\PrimitiveRasterizer.cs" />
     <Compile Include="Pipeline\Rasterizer\Primitives\TriangleRasterizer.cs" />
     <Compile Include="Pipeline\Rasterizer\RasterizerState.cs" />

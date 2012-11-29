@@ -30,6 +30,7 @@ namespace Rasterizr.Pipeline
 		where T : ShaderBase
 	{
 		private T _shader;
+		private int _outputParametersCount;
 		private VirtualMachine _virtualMachine;
 
 		public T Shader
@@ -38,6 +39,7 @@ namespace Rasterizr.Pipeline
 			set
 			{
 				_shader = value;
+				_outputParametersCount = value.Bytecode.OutputSignature.Parameters.Count;
 				_virtualMachine = new VirtualMachine(value.Bytecode, NumShaderExecutionContexts);
 				OnShaderChanged(value);
 			}
@@ -61,12 +63,13 @@ namespace Rasterizr.Pipeline
 		protected void SetShaderInputs(int contextIndex, ushort primitiveIndex, Vector4[] inputs)
 		{
 			for (ushort i = 0; i < inputs.Length; i++)
-				_virtualMachine.SetRegister(contextIndex, OperandType.Input, new RegisterIndex(primitiveIndex, i), inputs[i].ToNumber4());
+				_virtualMachine.SetRegister(contextIndex, OperandType.Input, new RegisterIndex(primitiveIndex, i),
+					inputs[i].ToNumber4());
 		}
 
 		protected Vector4[] GetShaderOutputs(int contextIndex)
 		{
-			var outputs = new Vector4[Shader.Bytecode.OutputSignature.Parameters.Count];
+			var outputs = new Vector4[_outputParametersCount];
 			for (ushort i = 0; i < outputs.Length; i++)
 				outputs[i] = Vector4.FromNumber4(_virtualMachine.GetRegister(contextIndex, OperandType.Output, new RegisterIndex(i)));
 			return outputs;
