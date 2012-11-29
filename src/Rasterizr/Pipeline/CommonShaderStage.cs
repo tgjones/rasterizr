@@ -15,12 +15,27 @@ namespace Rasterizr.Pipeline
 			throw new System.NotImplementedException();
 		}
 
+		public void SetConstantBuffers(int startSlot, params Buffer[] constantBuffers)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public SamplerState[] GetSamplers(int startSlot, int count)
 		{
 			throw new System.NotImplementedException();
 		}
 
+		public void SetSamplers(int startSlot, params SamplerState[] samplers)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public ShaderResourceView[] GetShaderResources(int startSlot, int count)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void SetShaderResources(int startSlot, params ShaderResourceView[] shaderResources)
 		{
 			throw new System.NotImplementedException();
 		}

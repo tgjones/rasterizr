@@ -35,5 +35,11 @@ namespace Rasterizr.Resources
 		{
 			Utilities.ToByteArray(data, _data);
 		}
+
+		public void SetData<T>(ref T data)
+			where T : struct
+		{
+			Utilities.ToByteArray(ref data, _data);
+		}
 	}
 }

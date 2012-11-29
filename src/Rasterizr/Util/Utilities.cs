@@ -1,6 +1,6 @@
 ﻿namespace Rasterizr.Util
 {
-	internal static class Utilities
+	public static class Utilities
 	{
 		/// <summary>
 		/// Converts a structured array to an equivalent byte array.
@@ -22,6 +22,16 @@
 			{
 				fixed (byte* pBuffer = &destination[0])
 					Interop.Write(pBuffer, source, 0, source.Length);
+			}
+		}
+
+		public static void ToByteArray<T>(ref T source, byte[] destination)
+			where T : struct
+		{
+			unsafe
+			{
+				fixed (byte* pBuffer = &destination[0])
+					Interop.Write(pBuffer, ref source);
 			}
 		}
 
