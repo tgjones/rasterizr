@@ -43,13 +43,12 @@
     <Compile Include="Math\Vector4.cs" />
     <Compile Include="Pipeline\CommonShaderStage.cs" />
     <Compile Include="Pipeline\GeometryShader\GeometryShader.cs" />
-    <Compile Include="Pipeline\GeometryShader\GeometryShaderOutput.cs" />
     <Compile Include="Pipeline\GeometryShader\GeometryShaderStage.cs" />
     <Compile Include="Pipeline\InputAssembler\IndexedVertexBufferIndex.cs" />
     <Compile Include="Pipeline\InputAssembler\InputAssemblerPrimitiveOutput.cs" />
     <Compile Include="Pipeline\InputAssembler\InputAssemblerVertexOutput.cs" />
     <Compile Include="Pipeline\InputAssembler\InstancedVertexBufferIndex.cs" />
-    <Compile Include="Pipeline\InputAssembler\PrimitiveType.cs" />
+    <Compile Include="Pipeline\InputAssembler\PrimitiveAssembler.cs" />
     <Compile Include="Pipeline\InputAssembler\VertexBufferIndex.cs" />
     <Compile Include="Pipeline\OutputMerger\BlendOperation.cs" />
     <Compile Include="Pipeline\OutputMerger\BlendOption.cs" />
@@ -117,6 +116,7 @@
     <Compile Include="SwapChainDescription.cs" />
     <Compile Include="Resources\Texture2D.cs" />
     <Compile Include="Resources\Texture2DDescription.cs" />
+    <Compile Include="Util\ConversionExtensions.cs" />
     <Compile Include="Util\Interop.cs" />
     <Compile Include="Util\Utilities.cs" />
     <Compile Include="Pipeline\InputAssembler\VertexBufferBinding.cs" />

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Rasterizr.Math;
-using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
@@ -33,7 +32,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 			_viewports = viewports;
 		}
 
-		internal IEnumerable<FragmentQuad> Execute(IEnumerable<GeometryShaderOutput> inputs)
+		internal IEnumerable<FragmentQuad> Execute(IEnumerable<InputAssemblerPrimitiveOutput> inputs, PrimitiveTopology primitiveTopology)
 		{
 			foreach (var primitive in inputs)
 			{
@@ -43,21 +42,17 @@ namespace Rasterizr.Pipeline.Rasterizer
 					ToScreenCoordinates(ref primitive.Vertices[i].Position);
 				}
 
-				switch (primitive.PrimitiveType)
+				switch (primitiveTopology)
 				{
-					case PrimitiveType.Point:
+					case PrimitiveTopology.PointList:
 						break;
-					case PrimitiveType.Line:
+					case PrimitiveTopology.LineList:
+					case PrimitiveTopology.LineStrip :
 						break;
-					case PrimitiveType.Triangle:
+					case PrimitiveTopology.TriangleList:
+					case PrimitiveTopology.TriangleStrip :
 						foreach (var fragmentQuad in RasterizeTriangle(primitive))
 							yield return fragmentQuad;
-						break;
-					case PrimitiveType.PointWithAdjacency:
-						break;
-					case PrimitiveType.LineWithAdjacency:
-						break;
-					case PrimitiveType.TriangleWithAdjacency:
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -65,7 +60,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 			}
 		}
 
-		private IEnumerable<FragmentQuad> RasterizeTriangle(GeometryShaderOutput primitive)
+		private IEnumerable<FragmentQuad> RasterizeTriangle(InputAssemblerPrimitiveOutput primitive)
 		{
 			var screenBounds = GetTriangleScreenBounds(ref primitive);
 
@@ -115,7 +110,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 				}
 		}
 
-		private void InterpolateFragmentData(ref Fragment fragment, ref GeometryShaderOutput triangle,
+		private void InterpolateFragmentData(ref Fragment fragment, ref InputAssemblerPrimitiveOutput triangle,
 			ref Vector4 p0, ref Vector4 p2, ref Vector4 p1)
 		{
 			var pixelCenter = new Vector2(fragment.X + 0.5f, fragment.Y + 0.5f);
@@ -152,7 +147,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 			position.Z = viewport.MinDepth + position.Z * (viewport.MaxDepth - viewport.MinDepth);
 		}
 
-		private static Box2D GetTriangleScreenBounds(ref GeometryShaderOutput triangle)
+		private static Box2D GetTriangleScreenBounds(ref InputAssemblerPrimitiveOutput triangle)
 		{
 			float minX = float.MaxValue, minY = float.MaxValue;
 			float maxX = float.MinValue, maxY = float.MinValue;
@@ -185,7 +180,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 			return (pa.Y - pb.Y) * x + (pb.X - pa.X) * y + pa.X * pb.Y - pb.X * pa.Y;
 		}
 
-		private Number4[] CreatePixelShaderInput(ref GeometryShaderOutput triangle, float beta, float alpha, float gamma)
+		private Number4[] CreatePixelShaderInput(ref InputAssemblerPrimitiveOutput triangle, float beta, float alpha, float gamma)
 		{
 			// TODO: Cache as much of this as possible.
 			// Calculate interpolated attribute values for this fragment.
