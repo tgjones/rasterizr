@@ -29,18 +29,6 @@ namespace Rasterizr.Samples.BasicTriangle
 			var backBuffer = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0);
 			_renderTargetView = new RenderTargetView(device, backBuffer);
 
-			// Create DepthStencilView.
-			var depthStencilBuffer = new Texture2D(device, new Texture2DDescription
-			{
-				Format = Format.D32_Float,
-				ArraySize = 1,
-				MipLevels = 1,
-				Width = demoConfiguration.Width,
-				Height = demoConfiguration.Height,
-				BindFlags = BindFlags.DepthStencil
-			});
-			var depthStencilView = new DepthStencilView(device, depthStencilBuffer);
-
 			// Compile Vertex and Pixel shaders
 			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("MiniTri.fx", "VS", "vs_4_0");
 			var vertexShader = new VertexShader(device, vertexShaderByteCode);
@@ -72,7 +60,7 @@ namespace Rasterizr.Samples.BasicTriangle
 			_deviceContext.VertexShader.Shader = vertexShader;
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, demoConfiguration.Width, demoConfiguration.Height, 0.0f, 1.0f));
 			_deviceContext.PixelShader.Shader = pixelShader;
-			_deviceContext.OutputMerger.SetTargets(depthStencilView, _renderTargetView);
+			_deviceContext.OutputMerger.SetTargets(null, _renderTargetView);
 		}
 
 		protected override void Draw(DemoTime time)

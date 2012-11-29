@@ -39,6 +39,7 @@
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComparisonUtility.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector4.cs" />
     <Compile Include="Pipeline\CommonShaderStage.cs" />
@@ -55,7 +56,12 @@
     <Compile Include="Pipeline\OutputMerger\BlendState.cs" />
     <Compile Include="Pipeline\OutputMerger\BlendStateDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\ColorWriteMaskFlags.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilOperationDescription.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilState.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilStateDescription.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthWriteMask.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetBlendDescription.cs" />
+    <Compile Include="Pipeline\OutputMerger\StencilOperation.cs" />
     <Compile Include="Pipeline\PixelShader\Pixel.cs" />
     <Compile Include="Pipeline\PixelShader\PixelShader.cs" />
     <Compile Include="Pipeline\PixelShader\PixelShaderStage.cs" />
@@ -78,7 +84,7 @@
     <Compile Include="Pipeline\VertexShader\VertexShader.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderOutput.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderStage.cs" />
-    <Compile Include="Resources\Comparison.cs" />
+    <Compile Include="Comparison.cs" />
     <Compile Include="Resources\Filter.cs" />
     <Compile Include="Resources\RenderTargetViewDescription.cs" />
     <Compile Include="Resources\RenderTargetViewDimension.cs" />

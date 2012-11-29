@@ -1,4 +1,4 @@
-﻿namespace Rasterizr.Resources
+﻿namespace Rasterizr
 {
 	public enum Comparison
 	{
