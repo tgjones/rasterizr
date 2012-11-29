@@ -66,6 +66,9 @@
     <Compile Include="Pipeline\Rasterizer\FragmentQuadLocation.cs" />
     <Compile Include="Pipeline\Rasterizer\InterpolationUtility.cs" />
     <Compile Include="Pipeline\Rasterizer\MultiSamplingUtility.cs" />
+    <Compile Include="Math\Box2D.cs" />
+    <Compile Include="Pipeline\Rasterizer\Primitives\PrimitiveRasterizer.cs" />
+    <Compile Include="Pipeline\Rasterizer\Primitives\TriangleRasterizer.cs" />
     <Compile Include="Pipeline\Rasterizer\RasterizerState.cs" />
     <Compile Include="Pipeline\Rasterizer\RasterizerStateDescription.cs" />
     <Compile Include="Pipeline\Rasterizer\Sample.cs" />
@@ -135,6 +138,7 @@
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

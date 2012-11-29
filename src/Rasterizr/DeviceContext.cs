@@ -7,6 +7,7 @@ using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
+using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr
 {
@@ -54,10 +55,9 @@ namespace Rasterizr
 			_inputAssembler = new InputAssemblerStage();
 			_vertexShader = new VertexShaderStage();
 			_geometryShader = new GeometryShaderStage();
+			_rasterizer = new RasterizerStage(device);
 			_pixelShader = new PixelShaderStage();
 			_outputMerger = new OutputMergerStage(device);
-
-			_rasterizer = new RasterizerStage(device, _vertexShader, _pixelShader, _outputMerger);
 		}
 
 		public void ClearDepthStencilView(DepthStencilView depthStencilView, DepthStencilClearFlags clearFlags, float depth, byte stencil)
@@ -93,18 +93,24 @@ namespace Rasterizr
 
 			IEnumerable<InputAssemblerPrimitiveOutput> rasterizerInputs;
 			PrimitiveTopology rasterizerInputTopology;
+			OutputSignatureChunk rasterizerInputSignature;
 			if (_geometryShader.IsActive)
 			{
 				rasterizerInputs = _geometryShader.Execute(primitiveStream, _inputAssembler.PrimitiveTopology);
 				rasterizerInputTopology = _geometryShader.OutputTopology;
+				rasterizerInputSignature = _geometryShader.Shader.Bytecode.OutputSignature;
 			}
 			else
 			{
 				rasterizerInputs = primitiveStream;
 				rasterizerInputTopology = _inputAssembler.PrimitiveTopology;
+				rasterizerInputSignature = _vertexShader.Shader.Bytecode.OutputSignature;
 			}
 
-			var rasterizerOutputs = _rasterizer.Execute(rasterizerInputs, rasterizerInputTopology);
+			var rasterizerOutputs = _rasterizer.Execute(rasterizerInputs, rasterizerInputTopology,
+				rasterizerInputSignature, _pixelShader.Shader.Bytecode.InputSignature,
+				_outputMerger.MultiSampleCount);
+
 			var pixelShaderOutputs = _pixelShader.Execute(rasterizerOutputs);
 			_outputMerger.Execute(pixelShaderOutputs);
 		}
