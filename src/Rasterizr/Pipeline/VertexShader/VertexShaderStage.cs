@@ -18,9 +18,9 @@ namespace Rasterizr.Pipeline.VertexShader
 		{
 			foreach (var input in inputs)
 			{
-				SetShaderInputs(0, input.Data);
-				ExecuteShader();
-				var outputs = GetShaderOutputs();
+				SetShaderInputs(0, 0, input.Data);
+				VirtualMachine.Execute();
+				var outputs = GetShaderOutputs(0);
 
 				var result = new VertexShaderOutput
 				{

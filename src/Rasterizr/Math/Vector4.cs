@@ -24,6 +24,11 @@ namespace Rasterizr.Math
 			return new Vector4(value.Number0.Float, value.Number1.Float, value.Number2.Float, value.Number3.Float);
 		}
 
+		public Color4F ToColor4F()
+		{
+			return new Color4F(X, Y, Z, W);
+		}
+
 		public Number4 ToNumber4()
 		{
 			return new Number4(X, Y, Z, W);

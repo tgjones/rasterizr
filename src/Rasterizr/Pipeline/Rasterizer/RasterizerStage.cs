@@ -5,7 +5,6 @@ using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.VertexShader;
-using SlimShader;
 
 namespace Rasterizr.Pipeline.Rasterizer
 {
@@ -180,13 +179,13 @@ namespace Rasterizr.Pipeline.Rasterizer
 			return (pa.Y - pb.Y) * x + (pb.X - pa.X) * y + pa.X * pb.Y - pb.X * pa.Y;
 		}
 
-		private Number4[] CreatePixelShaderInput(ref InputAssemblerPrimitiveOutput triangle, float beta, float alpha, float gamma)
+		private Vector4[] CreatePixelShaderInput(ref InputAssemblerPrimitiveOutput triangle, float beta, float alpha, float gamma)
 		{
 			// TODO: Cache as much of this as possible.
 			// Calculate interpolated attribute values for this fragment.
 			var vertexShaderOutputSignature = _vertexShader.Shader.Bytecode.OutputSignature;
 			var pixelShaderInputSignature = _pixelShader.Shader.Bytecode.InputSignature;
-			var result = new Number4[pixelShaderInputSignature.Parameters.Count];
+			var result = new Vector4[pixelShaderInputSignature.Parameters.Count];
 			for (int i = 0; i < pixelShaderInputSignature.Parameters.Count; i++)
 			{
 				var parameter = pixelShaderInputSignature.Parameters[i];
@@ -200,7 +199,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 				// Interpolate values.
 				const bool isPerspectiveCorrect = true; // TODO
-				Number4 interpolatedValue = (isPerspectiveCorrect)
+				Vector4 interpolatedValue = (isPerspectiveCorrect)
 					? InterpolationUtility.Perspective(alpha, beta, gamma, ref v0Value, ref v1Value, ref v2Value,
 						triangle.Vertices[0].Position.W, triangle.Vertices[1].Position.W, triangle.Vertices[2].Position.W)
 					: InterpolationUtility.Linear(alpha, beta, gamma, ref v0Value, ref v1Value, ref v2Value);
@@ -230,6 +229,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 				anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragment, 2, ref p0, ref p1, ref p2, out fragment.Samples.Sample2);
 			if (multiSampleCount > 3)
 				anyCoveredSamples = anyCoveredSamples || CalculateSampleCoverage(ref fragment, 3, ref p0, ref p1, ref p2, out fragment.Samples.Sample3);
+			fragment.Samples.AnyCovered = anyCoveredSamples;
 			return anyCoveredSamples;
 		}
 

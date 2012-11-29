@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Rasterizr.Math;
 using Rasterizr.Resources;
 using SlimShader.Chunks.Shex;
@@ -39,9 +38,19 @@ namespace Rasterizr.Pipeline
 			set
 			{
 				_shader = value;
-				_virtualMachine = new VirtualMachine(value.Bytecode, 1);
+				_virtualMachine = new VirtualMachine(value.Bytecode, NumShaderExecutionContexts);
 				OnShaderChanged(value);
 			}
+		}
+
+		protected virtual int NumShaderExecutionContexts
+		{
+			get { return 1; }
+		}
+
+		protected VirtualMachine VirtualMachine
+		{
+			get { return _virtualMachine; }
 		}
 
 		protected virtual void OnShaderChanged(T shader)
@@ -49,27 +58,17 @@ namespace Rasterizr.Pipeline
 			
 		}
 
-		protected void SetShaderInputs(ushort primitiveIndex, Vector4[] inputs)
+		protected void SetShaderInputs(int contextIndex, ushort primitiveIndex, Vector4[] inputs)
 		{
 			for (ushort i = 0; i < inputs.Length; i++)
-				_virtualMachine.SetRegister(0, OperandType.Input, new RegisterIndex(primitiveIndex, i), inputs[i].ToNumber4());
+				_virtualMachine.SetRegister(contextIndex, OperandType.Input, new RegisterIndex(primitiveIndex, i), inputs[i].ToNumber4());
 		}
 
-		protected IEnumerable<ExecutionResponse> ExecuteShaderMultiple()
-		{
-			return _virtualMachine.Execute();
-		}
-
-		protected void ExecuteShader()
-		{
-			ExecuteShaderMultiple().ToList();
-		}
-
-		protected Vector4[] GetShaderOutputs()
+		protected Vector4[] GetShaderOutputs(int contextIndex)
 		{
 			var outputs = new Vector4[Shader.Bytecode.OutputSignature.Parameters.Count];
 			for (ushort i = 0; i < outputs.Length; i++)
-				outputs[i] = Vector4.FromNumber4(_virtualMachine.GetRegister(0, OperandType.Output, new RegisterIndex(i)));
+				outputs[i] = Vector4.FromNumber4(_virtualMachine.GetRegister(contextIndex, OperandType.Output, new RegisterIndex(i)));
 			return outputs;
 		}
 

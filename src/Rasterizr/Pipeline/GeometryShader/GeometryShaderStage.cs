@@ -40,7 +40,7 @@ namespace Rasterizr.Pipeline.GeometryShader
 			foreach (var input in inputs)
 			{
 				for (ushort i = 0; i < input.Vertices.Length; i++)
-					SetShaderInputs(i, input.Vertices[i].Data);
+					SetShaderInputs(0, i, input.Vertices[i].Data);
 
 				foreach (var primitive in PrimitiveAssembler.GetPrimitiveStream(GetVertices(), _outputTopology))
 					yield return primitive;
@@ -49,14 +49,14 @@ namespace Rasterizr.Pipeline.GeometryShader
 
 		private IEnumerable<VertexShaderOutput> GetVertices()
 		{
-			foreach (var executionResponse in ExecuteShaderMultiple())
+			foreach (var executionResponse in VirtualMachine.ExecuteMultiple())
 			{
 				switch (executionResponse)
 				{
 					case ExecutionResponse.Finished:
 						break;
 					case ExecutionResponse.Emit:
-						var outputs = GetShaderOutputs();
+						var outputs = GetShaderOutputs(0);
 						yield return new VertexShaderOutput
 						{
 							Position = outputs[_outputPositionRegister],

@@ -1,4 +1,4 @@
-﻿using SlimShader;
+﻿using Rasterizr.Math;
 
 namespace Rasterizr.Pipeline.Rasterizer
 {
@@ -8,7 +8,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 		public int Y;
 		public FragmentQuadLocation QuadLocation;
 		public Samples Samples;
-		public Number4[] Data;
+		public Vector4[] Data;
 
 		public Fragment(int x, int y, FragmentQuadLocation quadLocation)
 		{
