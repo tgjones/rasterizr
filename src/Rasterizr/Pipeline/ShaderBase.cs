@@ -1,4 +1,5 @@
-﻿using SlimShader;
+﻿using Rasterizr.Diagnostics;
+using SlimShader;
 
 namespace Rasterizr.Pipeline
 {

@@ -5,7 +5,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 {
 	public class DepthStencilView : ResourceView
 	{
-		public float this[int x, int y, int sampleIndex]
+		internal float this[int x, int y, int sampleIndex]
 		{
 			get
 			{

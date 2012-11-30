@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.VertexShader;
 using Buffer = Rasterizr.Resources.Buffer;
@@ -9,16 +10,37 @@ namespace Rasterizr.Pipeline.InputAssembler
 {
 	public class InputAssemblerStage
 	{
+		private readonly Device _device;
 		public const int VertexInputResourceSlotCount = 32;
 
 		private readonly VertexBufferBinding[] _vertexBufferBindings;
 		private IndexBufferBinding _indexBufferBinding;
+		private InputLayout _inputLayout;
+		private PrimitiveTopology _primitiveTopology;
 
-		public InputLayout InputLayout { get; set; }
-		public PrimitiveTopology PrimitiveTopology { get; set; }
-
-		public InputAssemblerStage()
+		public InputLayout InputLayout
 		{
+			get { return _inputLayout; }
+			set
+			{
+				_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetInputLayout, value);
+				_inputLayout = value;
+			}
+		}
+
+		public PrimitiveTopology PrimitiveTopology
+		{
+			get { return _primitiveTopology; }
+			set
+			{
+				_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetPrimitiveTopology, value);
+				_primitiveTopology = value;
+			}
+		}
+
+		public InputAssemblerStage(Device device)
+		{
+			_device = device;
 			_vertexBufferBindings = new VertexBufferBinding[VertexInputResourceSlotCount];
 		}
 
@@ -30,6 +52,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 
 		public void SetVertexBuffers(int startSlot, params VertexBufferBinding[] vertexBufferBindings)
 		{
+			_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetVertexBuffers, startSlot, vertexBufferBindings);
 			for (int i = 0; i < vertexBufferBindings.Length; i++)
 				_vertexBufferBindings[i + startSlot] = vertexBufferBindings[i];
 		}
@@ -43,6 +66,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 
 		public void SetIndexBuffer(Buffer indexBuffer, Format format, int offset)
 		{
+			_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetInputLayout, indexBuffer, format, offset);
 			if (format != Format.R16_UInt && format != Format.R32_UInt)
 				throw new ArgumentOutOfRangeException("format");
 			_indexBufferBinding = new IndexBufferBinding(indexBuffer, format, offset);

@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimShader.Compiler", "..\.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Samples.RotatingCube", "Rasterizr.Samples.RotatingCube\Rasterizr.Samples.RotatingCube.csproj", "{DCDE50AE-692D-4FBA-B15A-7666D426D22B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Diagnostics.Logging", "Rasterizr.Diagnostics.Logging\Rasterizr.Diagnostics.Logging.csproj", "{AF234621-D615-499B-803B-E60586283509}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -196,6 +198,16 @@ Global
 		{DCDE50AE-692D-4FBA-B15A-7666D426D22B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{DCDE50AE-692D-4FBA-B15A-7666D426D22B}.Release|x86.ActiveCfg = Release|x86
 		{DCDE50AE-692D-4FBA-B15A-7666D426D22B}.Release|x86.Build.0 = Release|x86
+		{AF234621-D615-499B-803B-E60586283509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF234621-D615-499B-803B-E60586283509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF234621-D615-499B-803B-E60586283509}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AF234621-D615-499B-803B-E60586283509}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AF234621-D615-499B-803B-E60586283509}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AF234621-D615-499B-803B-E60586283509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF234621-D615-499B-803B-E60586283509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF234621-D615-499B-803B-E60586283509}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AF234621-D615-499B-803B-E60586283509}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AF234621-D615-499B-803B-E60586283509}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

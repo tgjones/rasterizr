@@ -40,6 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparisonUtility.cs" />
+    <Compile Include="Diagnostics\GraphicsLogger.cs" />
+    <Compile Include="Diagnostics\GraphicsLoggerCollection.cs" />
+    <Compile Include="Diagnostics\OperationType.cs" />
+    <Compile Include="Diagnostics\TextWriterGraphicsLogger.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector4.cs" />
     <Compile Include="Pipeline\CommonShaderStage.cs" />
@@ -85,6 +89,7 @@
     <Compile Include="Pipeline\VertexShader\VertexShaderOutput.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderStage.cs" />
     <Compile Include="Comparison.cs" />
+    <Compile Include="RawSwapChain.cs" />
     <Compile Include="Resources\Filter.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDimension.cs" />

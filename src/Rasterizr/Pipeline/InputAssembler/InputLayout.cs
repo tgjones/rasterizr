@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Rasterizr.Diagnostics;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Pipeline.InputAssembler
@@ -33,6 +34,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			// TODO: Verify that shader bytecode matches input elements.
 			_elements = ProcessElements(elements);
 			_slots = ProcessSlots(elements);
+			device.Loggers.BeginOperation(OperationType.InputLayoutCreate, inputSignature, elements);
 		}
 
 		private ProcessedInputElement[] ProcessElements(InputElement[] elements)

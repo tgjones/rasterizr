@@ -54,7 +54,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 		{
 			// Arrange.
 			var device = new Device();
-			var inputAssembler = new InputAssemblerStage();
+			var inputAssembler = new InputAssemblerStage(device);
 			var vertices = new[]
 			{
 				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero),
@@ -79,7 +79,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 		{
 			// Arrange.
 			var device = new Device();
-			var inputAssembler = new InputAssemblerStage();
+			var inputAssembler = new InputAssemblerStage(device);
 			var vertices = new[]
 			{
 				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero),
@@ -107,7 +107,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 		{
 			// Arrange.
 			var device = new Device();
-			var inputAssembler = new InputAssemblerStage();
+			var inputAssembler = new InputAssemblerStage(device);
 			var inputSignature = GetTestVertexPositionNormalTextureInputSignature();
 			inputAssembler.InputLayout = new InputLayout(device, inputSignature, TestVertex.PositionNormalTexture.InputElements);
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
@@ -148,7 +148,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 		{
 			// Arrange.
 			var device = new Device();
-			var inputAssembler = new InputAssemblerStage();
+			var inputAssembler = new InputAssemblerStage(device);
 			var inputSignature = GetTestVertexPositionNormalTextureInputSignature();
 			var inputElements = TestVertex.PositionNormal.InputElements
 				.Union(new[] { new InputElement("TEXCOORD", 0, Format.R32G32_Float, 1, 0) })
@@ -199,7 +199,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 		{
 			// Arrange.
 			var device = new Device();
-			var inputAssembler = new InputAssemblerStage();
+			var inputAssembler = new InputAssemblerStage(device);
 			var inputSignature = GetTestVertexPositionNormalTextureInputSignature();
 			inputAssembler.InputLayout = new InputLayout(device, inputSignature, TestVertex.PositionNormalTexture.InputElements);
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
@@ -245,7 +245,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 		{
 			// Arrange.
 			var device = new Device();
-			var inputAssembler = new InputAssemblerStage();
+			var inputAssembler = new InputAssemblerStage(device);
 			var inputSignature = GetInstancedTestVertexPositionNormalInputSignature();
 			var inputElements = TestVertex.PositionNormal.InputElements
 				.Union(new[]

@@ -1,25 +1,30 @@
 ﻿using System.Collections.Generic;
+using Rasterizr.Diagnostics;
 using Rasterizr.Math;
-using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
-using Rasterizr.Resources;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr
 {
 	public class DeviceContext
 	{
+		private readonly Device _device;
 		private readonly InputAssemblerStage _inputAssembler;
 		private readonly VertexShaderStage _vertexShader;
 		private readonly GeometryShaderStage _geometryShader;
 		private readonly RasterizerStage _rasterizer;
 		private readonly PixelShaderStage _pixelShader;
 		private readonly OutputMergerStage _outputMerger;
+
+		protected Device Device
+		{
+			get { return _device; }
+		}
 
 		public InputAssemblerStage InputAssembler
 		{
@@ -53,7 +58,8 @@ namespace Rasterizr
 
 		public DeviceContext(Device device)
 		{
-			_inputAssembler = new InputAssemblerStage();
+			_device = device;
+			_inputAssembler = new InputAssemblerStage(device);
 			_vertexShader = new VertexShaderStage();
 			_geometryShader = new GeometryShaderStage();
 			_rasterizer = new RasterizerStage(device);
@@ -61,28 +67,34 @@ namespace Rasterizr
 			_outputMerger = new OutputMergerStage(device);
 		}
 
-		public void ClearDepthStencilView(DepthStencilView depthStencilView, DepthStencilClearFlags clearFlags, float depth, byte stencil)
+		public virtual void ClearDepthStencilView(DepthStencilView depthStencilView, DepthStencilClearFlags clearFlags, float depth, byte stencil)
 		{
+			_device.Loggers.BeginOperation(OperationType.DeviceContextClearDepthStencilView, depthStencilView, clearFlags, depth, stencil);
 			depthStencilView.Clear(clearFlags, depth, stencil);
 		}
 
-		public void ClearRenderTargetView(RenderTargetView renderTargetView, Color4F color)
+		public virtual void ClearRenderTargetView(RenderTargetView renderTargetView, Color4F color)
 		{
+			_device.Loggers.BeginOperation(OperationType.DeviceContextClearRenderTargetView, color);
 			renderTargetView.Clear(color);
 		}
 
 		public void Draw(int vertexCount, int startVertexLocation)
 		{
+			_device.Loggers.BeginOperation(OperationType.DeviceContextDraw, vertexCount, startVertexLocation);
 			DrawInternal(_inputAssembler.GetVertexStream(vertexCount, startVertexLocation));
 		}
 
 		public void DrawIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
 		{
+			_device.Loggers.BeginOperation(OperationType.DeviceContextDrawIndexed, indexCount, startIndexLocation, baseVertexLocation);
 			DrawInternal(_inputAssembler.GetVertexStreamIndexed(indexCount, startIndexLocation, baseVertexLocation));
 		}
 
 		public void DrawInstanced(int vertexCountPerInstance, int instanceCount, int startVertexLocation, int startInstanceLocation)
 		{
+			_device.Loggers.BeginOperation(OperationType.DeviceContextDrawInstanced, vertexCountPerInstance,
+				instanceCount, startVertexLocation, startInstanceLocation);
 			DrawInternal(_inputAssembler.GetVertexStreamInstanced(vertexCountPerInstance,
 				instanceCount, startVertexLocation, startInstanceLocation));
 		}
