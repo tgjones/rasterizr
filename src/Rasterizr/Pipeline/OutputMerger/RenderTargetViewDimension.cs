@@ -1,4 +1,4 @@
-﻿namespace Rasterizr.Resources
+﻿namespace Rasterizr.Pipeline.OutputMerger
 {
 	public enum RenderTargetViewDimension
 	{

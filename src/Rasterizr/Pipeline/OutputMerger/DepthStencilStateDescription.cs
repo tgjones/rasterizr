@@ -2,6 +2,21 @@
 {
 	public struct DepthStencilStateDescription
 	{
+		public static DepthStencilStateDescription Default
+		{
+			get { return new DepthStencilStateDescription(true, DepthWriteMask.All); }
+		}
+
+		public static DepthStencilStateDescription DepthRead
+		{
+			get { return new DepthStencilStateDescription(true, DepthWriteMask.Zero); }
+		}
+
+		public static DepthStencilStateDescription None
+		{
+			get { return new DepthStencilStateDescription(false, DepthWriteMask.Zero); }
+		}
+
 		public bool IsDepthEnabled;
 		public DepthWriteMask DepthWriteMask;
 		public Comparison DepthComparison;
@@ -11,18 +26,16 @@
 		public DepthStencilOperationDescription FrontFace;
 		public DepthStencilOperationDescription BackFace;
 
-		public static DepthStencilStateDescription Default
+		public DepthStencilStateDescription(bool isDepthEnabled, DepthWriteMask depthWriteMask)
 		{
-			get
-			{
-				return new DepthStencilStateDescription
-				{
-					IsDepthEnabled = true,
-					DepthWriteMask = DepthWriteMask.All,
-					DepthComparison = Comparison.Less,
-					IsStencilEnabled = false
-				};
-			}
+			IsDepthEnabled = isDepthEnabled;
+			DepthWriteMask = depthWriteMask;
+			DepthComparison = Comparison.Less;
+			IsStencilEnabled = false;
+			StencilReadMask = 0;
+			StencilWriteMask = 0;
+			FrontFace = new DepthStencilOperationDescription();
+			BackFace = new DepthStencilOperationDescription();
 		}
 	}
 }

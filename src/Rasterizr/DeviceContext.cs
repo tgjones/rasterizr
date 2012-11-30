@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Math;
+using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
@@ -62,7 +63,7 @@ namespace Rasterizr
 
 		public void ClearDepthStencilView(DepthStencilView depthStencilView, DepthStencilClearFlags clearFlags, float depth, byte stencil)
 		{
-
+			depthStencilView.Clear(clearFlags, depth, stencil);
 		}
 
 		public void ClearRenderTargetView(RenderTargetView renderTargetView, Color4F color)

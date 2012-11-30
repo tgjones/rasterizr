@@ -34,7 +34,7 @@ namespace Rasterizr.Tests.Util
 
 			// Act.
 			var byteArray = new byte[Utilities.SizeOf<TestStruct>()];
-			Utilities.ToByteArray(structArray, byteArray);
+			Utilities.ToByteArray(structArray, byteArray, 0);
 
 			// Assert.
 			var expectedByteArray = TestHelper.MergeByteArrays(
@@ -61,7 +61,7 @@ namespace Rasterizr.Tests.Util
 				}
 			};
 			var byteArray = new byte[Utilities.SizeOf<TestStruct>()];
-			Utilities.ToByteArray(structArray, byteArray);
+			Utilities.ToByteArray(structArray, byteArray, 0);
 
 			// Act.
 			var result = new TestStruct[2];

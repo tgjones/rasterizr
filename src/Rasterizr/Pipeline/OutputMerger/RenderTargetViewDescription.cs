@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Rasterizr.Resources
+namespace Rasterizr.Pipeline.OutputMerger
 {
 	[StructLayout(LayoutKind.Explicit)]
 	public struct RenderTargetViewDescription

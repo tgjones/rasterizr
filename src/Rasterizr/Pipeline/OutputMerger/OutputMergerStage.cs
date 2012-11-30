@@ -67,8 +67,6 @@ namespace Rasterizr.Pipeline.OutputMerger
 						_depthStencilView[pixel.X, pixel.Y, sampleIndex] = newDepth;
 				}
 			}
-			if (_depthStencilView != null)
-				_depthStencilView.Invalidate();
 			renderTarget.Invalidate();
 		}
 	}

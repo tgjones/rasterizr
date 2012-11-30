@@ -37,6 +37,8 @@ namespace Rasterizr.Pipeline.GeometryShader
 
 		internal IEnumerable<InputAssemblerPrimitiveOutput> Execute(IEnumerable<InputAssemblerPrimitiveOutput> inputs, PrimitiveTopology primitiveTopology)
 		{
+			SetShaderConstants();
+
 			foreach (var input in inputs)
 			{
 				for (ushort i = 0; i < input.Vertices.Length; i++)

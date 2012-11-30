@@ -8,8 +8,9 @@
 		/// <typeparam name="T"></typeparam>
 		/// <param name="source">The source.</param>
 		/// <param name="destination"></param>
+		/// <param name="destinationOffset"></param>
 		/// <returns></returns>
-		public static void ToByteArray<T>(T[] source, byte[] destination)
+		public static void ToByteArray<T>(T[] source, byte[] destination, int destinationOffset)
 			where T : struct
 		{
 			if (source == null)
@@ -20,29 +21,42 @@
 
 			unsafe
 			{
-				fixed (byte* pBuffer = &destination[0])
+				fixed (byte* pBuffer = &destination[destinationOffset])
 					Interop.Write(pBuffer, source, 0, source.Length);
 			}
 		}
 
-		public static void ToByteArray<T>(ref T source, byte[] destination)
+		public static void ToByteArray<T>(ref T source, byte[] destination, int destinationOffset)
 			where T : struct
 		{
 			unsafe
 			{
-				fixed (byte* pBuffer = &destination[0])
+				fixed (byte* pBuffer = &destination[destinationOffset])
 					Interop.Write(pBuffer, ref source);
 			}
 		}
 
-		public static void FromByteArray<T>(T[] destination, int destinationOffset, byte[] source, int sourceOffset, int count)
+		public static void FromByteArray<T>(T[] destination, int destinationOffset, byte[] source, int sourceOffset, int countInBytes)
 			where T : struct
 		{
 			unsafe
 			{
 				fixed (byte* pBuffer = &source[sourceOffset])
-					Interop.Read(pBuffer, destination, destinationOffset, count);
+					Interop.Read(pBuffer, destination, destinationOffset, countInBytes);
 			}
+		}
+
+		public static void FromByteArray<T>(out T destination, byte[] source, int sourceOffset, int countInBytes)
+			where T : struct
+		{
+			// TODO: Add Interop.Read that takes a single struct and count in bytes.
+			var destinationArray = new T[1];
+			unsafe
+			{
+				fixed (byte* pBuffer = &source[sourceOffset])
+					Interop.Read(pBuffer, destinationArray, 0, countInBytes);
+			}
+			destination = destinationArray[0];
 		}
 
 		/// <summary>

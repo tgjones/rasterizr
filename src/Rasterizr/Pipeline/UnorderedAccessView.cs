@@ -1,4 +1,6 @@
-﻿namespace Rasterizr.Resources
+﻿using Rasterizr.Resources;
+
+namespace Rasterizr.Pipeline
 {
 	public class UnorderedAccessView : ResourceView
 	{

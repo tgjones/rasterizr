@@ -46,7 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Pipeline\InputAssembler\InputAssemblerStageTests.cs" />
+    <Compile Include="Pipeline\OutputMerger\BlendStateTests.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilStateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\BufferTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="TestVertex.cs" />
     <Compile Include="Util\UtilitiesTests.cs" />

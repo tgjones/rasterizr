@@ -8,42 +8,17 @@ using SlimShader.VirtualMachine.Registers;
 
 namespace Rasterizr.Pipeline
 {
-	public abstract class CommonShaderStage
-	{
-		public Buffer[] GetConstantBuffers(int startSlot, int count)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public void SetConstantBuffers(int startSlot, params Buffer[] constantBuffers)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public SamplerState[] GetSamplers(int startSlot, int count)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public void SetSamplers(int startSlot, params SamplerState[] samplers)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public ShaderResourceView[] GetShaderResources(int startSlot, int count)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public void SetShaderResources(int startSlot, params ShaderResourceView[] shaderResources)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
-
-	public abstract class CommonShaderStage<T> : CommonShaderStage
+	public abstract class CommonShaderStage<T>
 		where T : ShaderBase
 	{
+		public const int ConstantBufferSlotCount = 14;
+		public const int SamplerSlotCount = 16;
+		public const int ShaderResourceSlotCount = 128;
+
+		private readonly Buffer[] _constantBuffers;
+		private readonly SamplerState[] _samplers;
+		private readonly ShaderResourceView[] _shaderResources;
+
 		private T _shader;
 		private int _outputParametersCount;
 		private VirtualMachine _virtualMachine;
@@ -70,9 +45,71 @@ namespace Rasterizr.Pipeline
 			get { return _virtualMachine; }
 		}
 
+		protected CommonShaderStage()
+		{
+			_constantBuffers = new Buffer[ConstantBufferSlotCount];
+			_samplers = new SamplerState[SamplerSlotCount];
+			_shaderResources = new ShaderResourceView[ShaderResourceSlotCount];
+		}
+
+		public void GetConstantBuffers(int startSlot, int count, Buffer[] constantBuffers)
+		{
+			for (int i = 0; i < count; i++)
+				constantBuffers[i] = _constantBuffers[i + startSlot];
+		}
+
+		public void SetConstantBuffers(int startSlot, params Buffer[] constantBuffers)
+		{
+			for (int i = 0; i < constantBuffers.Length; i++)
+				_constantBuffers[i + startSlot] = constantBuffers[i];
+		}
+
+		public void GetSamplers(int startSlot, int count, SamplerState[] samplers)
+		{
+			for (int i = 0; i < count; i++)
+				samplers[i] = _samplers[i + startSlot];
+		}
+
+		public void SetSamplers(int startSlot, params SamplerState[] samplers)
+		{
+			for (int i = 0; i < samplers.Length; i++)
+				_samplers[i + startSlot] = samplers[i];
+		}
+
+		public void GetShaderResources(int startSlot, int count, ShaderResourceView[] shaderResources)
+		{
+			for (int i = 0; i < count; i++)
+				shaderResources[i] = _shaderResources[i + startSlot];
+		}
+
+		public void SetShaderResources(int startSlot, params ShaderResourceView[] shaderResources)
+		{
+			for (int i = 0; i < shaderResources.Length; i++)
+				_shaderResources[i + startSlot] = shaderResources[i];
+		}
+
 		protected virtual void OnShaderChanged(T shader)
 		{
 			
+		}
+
+		protected void SetShaderConstants()
+		{
+			for (ushort i = 0; i < _shader.Bytecode.ResourceDefinition.ConstantBuffers.Count; i++)
+			{
+				ushort registerIndex = 0;
+				var constantBufferDefinition = _shader.Bytecode.ResourceDefinition.ConstantBuffers[i];
+				foreach (var variableDefinition in constantBufferDefinition.Variables)
+					for (ushort k = 0; k < variableDefinition.ShaderType.Rows; k++)
+					{
+						Vector4 value;
+						_constantBuffers[i].GetData(out value, 
+							(int) variableDefinition.StartOffset + k * variableDefinition.ShaderType.Columns * 4,
+							variableDefinition.ShaderType.Columns * 4);
+						_virtualMachine.SetRegister(0, OperandType.ConstantBuffer, 
+							new RegisterIndex(i, registerIndex++), value.ToNumber4());
+					}
+			}
 		}
 
 		protected void SetShaderInputs(int contextIndex, ushort primitiveIndex, Vector4[] inputs)

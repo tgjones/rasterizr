@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.Rasterizer;
 using SlimShader.Chunks.Xsgn;
 
@@ -28,6 +26,8 @@ namespace Rasterizr.Pipeline.PixelShader
 
 		internal IEnumerable<Pixel> Execute(IEnumerable<FragmentQuad> inputs)
 		{
+			SetShaderConstants();
+
 			// Process groups of four fragments together.
 			foreach (var input in inputs)
 			{

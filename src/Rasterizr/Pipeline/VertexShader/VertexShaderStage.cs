@@ -16,6 +16,8 @@ namespace Rasterizr.Pipeline.VertexShader
 
 		internal IEnumerable<VertexShaderOutput> Execute(IEnumerable<InputAssemblerVertexOutput> inputs)
 		{
+			SetShaderConstants();
+
 			foreach (var input in inputs)
 			{
 				SetShaderInputs(0, 0, input.Data);

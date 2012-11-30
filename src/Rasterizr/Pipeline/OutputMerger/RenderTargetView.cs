@@ -1,8 +1,9 @@
 ﻿using System;
 using Rasterizr.Math;
+using Rasterizr.Resources;
 using Rasterizr.Util;
 
-namespace Rasterizr.Resources
+namespace Rasterizr.Pipeline.OutputMerger
 {
 	public class RenderTargetView : ResourceView
 	{
@@ -46,7 +47,7 @@ namespace Rasterizr.Resources
 			
 		}
 
-		public unsafe void Clear(Color4F color)
+		internal unsafe void Clear(Color4F color)
 		{
 			// TODO: Use RenderTargetView description to access resource.
 			var typedColor = color.ToColor4();

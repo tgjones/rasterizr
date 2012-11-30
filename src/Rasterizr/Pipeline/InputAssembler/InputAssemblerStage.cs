@@ -22,23 +22,16 @@ namespace Rasterizr.Pipeline.InputAssembler
 			_vertexBufferBindings = new VertexBufferBinding[VertexInputResourceSlotCount];
 		}
 
-		public void SetVertexBuffers(int startSlot, params VertexBufferBinding[] vertexBufferBindings)
-		{
-			for (int i = 0; i < vertexBufferBindings.Length; i++)
-				_vertexBufferBindings[i + startSlot] = vertexBufferBindings[i];
-		}
-
-		public void SetIndexBuffer(Buffer indexBuffer, Format format, int offset)
-		{
-			if (format != Format.R16_UInt && format != Format.R32_UInt)
-				throw new ArgumentOutOfRangeException("format");
-			_indexBufferBinding = new IndexBufferBinding(indexBuffer, format, offset);
-		}
-
 		public void GetVertexBuffers(int startSlot, int numBuffers, VertexBufferBinding[] vertexBufferBindings)
 		{
 			for (int i = 0; i < numBuffers; i++)
 				vertexBufferBindings[i] = _vertexBufferBindings[i + startSlot];
+		}
+
+		public void SetVertexBuffers(int startSlot, params VertexBufferBinding[] vertexBufferBindings)
+		{
+			for (int i = 0; i < vertexBufferBindings.Length; i++)
+				_vertexBufferBindings[i + startSlot] = vertexBufferBindings[i];
 		}
 
 		public void GetIndexBuffer(out Buffer indexBuffer, out Format format, out int offset)
@@ -46,6 +39,13 @@ namespace Rasterizr.Pipeline.InputAssembler
 			indexBuffer = _indexBufferBinding.Buffer;
 			format = _indexBufferBinding.Format;
 			offset = _indexBufferBinding.Offset;
+		}
+
+		public void SetIndexBuffer(Buffer indexBuffer, Format format, int offset)
+		{
+			if (format != Format.R16_UInt && format != Format.R32_UInt)
+				throw new ArgumentOutOfRangeException("format");
+			_indexBufferBinding = new IndexBufferBinding(indexBuffer, format, offset);
 		}
 
 		internal IEnumerable<InputAssemblerVertexOutput> GetVertexStream(
