@@ -33,10 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ListExtensions.cs" />
+    <Compile Include="ObjectModel\TracefileEvent.cs" />
+    <Compile Include="ObjectModel\TracefileEventArgumentCollection.cs" />
+    <Compile Include="ObjectModel\TracefileFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Replayer.cs" />
-    <Compile Include="Tracefile.cs" />
+    <Compile Include="Serialization\BytecodeContainerConverter.cs" />
+    <Compile Include="ObjectModel\SerializedVertexBufferBinding.cs" />
+    <Compile Include="Serialization\DeviceChildConverter.cs" />
+    <Compile Include="Serialization\TracefileEventArgumentCollectionConverter.cs" />
+    <Compile Include="Serialization\VertexBufferBindingConverter.cs" />
+    <Compile Include="ObjectModel\Tracefile.cs" />
     <Compile Include="TracefileGraphicsLogger.cs" />
   </ItemGroup>
   <ItemGroup>

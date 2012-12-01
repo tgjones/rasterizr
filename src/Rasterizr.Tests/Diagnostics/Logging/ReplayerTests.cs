@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using NUnit.Framework;
 using Rasterizr.Diagnostics.Logging;
+using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
@@ -22,7 +23,9 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			var stringWriter = new StringWriter();
 			var logger = new TracefileGraphicsLogger(stringWriter);
 			var expectedData = RenderScene(logger);
-			var logReader = new StringReader(stringWriter.ToString());
+			logger.Flush();
+			var loggedJson = stringWriter.ToString();
+			var logReader = new StringReader(loggedJson);
 			var tracefile = Tracefile.FromTextReader(logReader);
 
 			// Act.

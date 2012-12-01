@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using Rasterizr.Diagnostics.Logging.ObjectModel;
 
 namespace Rasterizr.Diagnostics.Logging
 {
@@ -30,19 +31,14 @@ namespace Rasterizr.Diagnostics.Logging
 			}
 
 			var arguments = (methodArguments != null)
-				? methodArguments.Select(x =>
-				{
-					if (x is DeviceChild)
-						return ((DeviceChild) x).ID;
-					return x;
-				}).ToList()
+				? methodArguments.ToList()
 				: null;
 
 			_currentFrame.Events.Add(new TracefileEvent
 			{
 				Number = ++_operationNumber,
 				OperationType = type,
-				Arguments = arguments
+				Arguments = new TracefileEventArgumentCollection(arguments)
 			});
 
 			if (type == OperationType.SwapChainPresent)
@@ -53,10 +49,9 @@ namespace Rasterizr.Diagnostics.Logging
 			}
 		}
 
-		public void Close()
+		public void Flush()
 		{
 			_tracefile.Save(_textWriter);
-			_textWriter.Dispose();
 		}
 	}
 }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using Rasterizr.Diagnostics.Logging.ObjectModel;
+using Rasterizr.Diagnostics.Logging.Serialization;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
@@ -57,22 +60,37 @@ namespace Rasterizr.Diagnostics.Logging
 						_deviceContext.DrawIndexed(args.Get<int>(0), args.Get<int>(1), args.Get<int>(2));
 						break;
 					case OperationType.InputAssemblerStageSetInputLayout:
-						_deviceContext.InputAssembler.InputLayout = args.Get<InputLayout>(0);
+						_deviceContext.InputAssembler.InputLayout = _device.GetDeviceChild<InputLayout>(args.Get<int>(0));
 						break;
 					case OperationType.InputAssemblerStageSetPrimitiveTopology:
 						_deviceContext.InputAssembler.PrimitiveTopology = args.Get<PrimitiveTopology>(0);
 						break;
 					case OperationType.InputAssemblerStageSetVertexBuffers:
-						_deviceContext.InputAssembler.SetVertexBuffers(args.Get<int>(0), args.Get<VertexBufferBinding[]>(1));
+						_deviceContext.InputAssembler.SetVertexBuffers(args.Get<int>(0),
+							args.Get<SerializedVertexBufferBinding[]>(1)
+								.Select(x => new VertexBufferBinding
+								{
+									Buffer = _device.GetDeviceChild<Buffer>(x.Buffer),
+									Offset = x.Offset,
+									Stride = x.Stride
+								}).ToArray());
 						break;
 					case OperationType.InputAssemblerStageSetIndexBuffer:
-						_deviceContext.InputAssembler.SetIndexBuffer(args.Get<Buffer>(0), args.Get<Format>(1), args.Get<int>(2));
+						_deviceContext.InputAssembler.SetIndexBuffer(_device.GetDeviceChild<Buffer>(args.Get<int>(0)),
+							args.Get<Format>(1), args.Get<int>(2));
 						break;
 					case OperationType.VertexShaderStageSetShader:
-						_deviceContext.VertexShader.Shader = new VertexShader(_device, BytecodeContainer.Parse(args.Get<byte[]>(0)));
+						_deviceContext.VertexShader.Shader = _device.GetDeviceChild<VertexShader>(args.Get<int>(0));
+						break;
+					case OperationType.VertexShaderCreate :
+						new VertexShader(_device, BytecodeContainer.Parse(args.Get<byte[]>(0)));
 						break;
 					case OperationType.PixelShaderStageSetShader:
-						_deviceContext.PixelShader.Shader = new PixelShader(_device, BytecodeContainer.Parse(args.Get<byte[]>(0)));
+						_deviceContext.PixelShader.Shader = new PixelShader(_device, 
+							BytecodeContainer.Parse(args.Get<byte[]>(0)));
+						break;
+					case OperationType.PixelShaderCreate :
+						new PixelShader(_device, BytecodeContainer.Parse(args.Get<byte[]>(0)));
 						break;
 					case OperationType.SwapChainPresent:
 						_swapChain.Present();

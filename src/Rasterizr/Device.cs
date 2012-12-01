@@ -5,9 +5,9 @@ namespace Rasterizr
 {
 	public class Device
 	{
+		private readonly Dictionary<int, DeviceChild> _deviceChildMap;
 		private readonly GraphicsLoggerCollection _loggers;
 		private readonly DeviceContext _immediateContext;
-		private readonly Dictionary<int, DeviceChild> _deviceChildMap;
 		private int _id;
 
 		internal GraphicsLoggerCollection Loggers
@@ -22,11 +22,11 @@ namespace Rasterizr
 
 		public Device(params GraphicsLogger[] loggers)
 		{
+			_deviceChildMap = new Dictionary<int, DeviceChild>();
 			if (loggers == null)
 				loggers = new GraphicsLogger[0];
 			_loggers = new GraphicsLoggerCollection(loggers);
 			_immediateContext = new DeviceContext(this);
-			_deviceChildMap = new Dictionary<int, DeviceChild>();
 			_loggers.BeginOperation(OperationType.DeviceCreate);
 		}
 
