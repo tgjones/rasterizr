@@ -2,9 +2,7 @@
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
-using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
-using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.Samples.Common;
@@ -31,10 +29,10 @@ namespace Rasterizr.Samples.BasicTriangle
 
 			// Compile Vertex and Pixel shaders
 			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("MiniTri.fx", "VS", "vs_4_0");
-			var vertexShader = new VertexShader(device, vertexShaderByteCode);
+			var vertexShader = device.CreateVertexShader(vertexShaderByteCode);
 
 			var pixelShaderByteCode = ShaderCompiler.CompileFromFile("MiniTri.fx", "PS", "ps_4_0");
-			var pixelShader = new PixelShader(device, pixelShaderByteCode);
+			var pixelShader = device.CreatePixelShader(pixelShaderByteCode);
 
 			// Layout from VertexShader input signature
 			var layout = device.CreateInputLayout(

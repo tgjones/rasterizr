@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Diagnostics;
+using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
+using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
+using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
 using Rasterizr.Util;
 
@@ -87,10 +90,22 @@ namespace Rasterizr
 			return new DepthStencilView(this, resource, description);
 		}
 
+		public GeometryShader CreateGeometryShader(byte[] shaderBytecode)
+		{
+			Loggers.BeginOperation(OperationType.CreateGeometryShader, shaderBytecode);
+			return new GeometryShader(this, shaderBytecode);
+		}
+
 		public InputLayout CreateInputLayout(InputElement[] elements, byte[] shaderBytecodeWithInputSignature)
 		{
 			Loggers.BeginOperation(OperationType.InputLayoutCreate, elements, shaderBytecodeWithInputSignature);
 			return new InputLayout(this, elements, shaderBytecodeWithInputSignature);
+		}
+
+		public PixelShader CreatePixelShader(byte[] shaderBytecode)
+		{
+			Loggers.BeginOperation(OperationType.CreatePixelShader, shaderBytecode);
+			return new PixelShader(this, shaderBytecode);
 		}
 
 		public RasterizerState CreateRasterizerState(RasterizerStateDescription description)
@@ -121,6 +136,12 @@ namespace Rasterizr
 		{
 			Loggers.BeginOperation(OperationType.CreateTexture3D, description);
 			return new Texture3D(this, description);
+		}
+
+		public VertexShader CreateVertexShader(byte[] shaderBytecode)
+		{
+			Loggers.BeginOperation(OperationType.CreateVertexShader, shaderBytecode);
+			return new VertexShader(this, shaderBytecode);
 		}
 
 		#endregion

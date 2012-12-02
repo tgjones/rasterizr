@@ -98,7 +98,7 @@ namespace Rasterizr.Diagnostics.Logging
 					case OperationType.PixelShaderStageSetShader:
 						_deviceContext.PixelShader.Shader = _device.GetDeviceChild<PixelShader>(args.Get<int>(0));
 						break;
-					case OperationType.PixelShaderCreate:
+					case OperationType.CreatePixelShader:
 						new PixelShader(_device, args.Get<byte[]>(0));
 						break;
 					case OperationType.RasterizerStateCreate :
@@ -113,7 +113,7 @@ namespace Rasterizr.Diagnostics.Logging
 					case OperationType.VertexShaderStageSetShader:
 						_deviceContext.VertexShader.Shader = _device.GetDeviceChild<VertexShader>(args.Get<int>(0));
 						break;
-					case OperationType.VertexShaderCreate :
+					case OperationType.CreateVertexShader :
 						new VertexShader(_device, args.Get<byte[]>(0));
 						break;
 					default:

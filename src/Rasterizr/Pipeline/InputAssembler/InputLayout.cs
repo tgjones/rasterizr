@@ -31,9 +31,9 @@ namespace Rasterizr.Pipeline.InputAssembler
 			: base(device)
 		{
 			// TODO: Verify that shader bytecode matches input elements.
+			_inputSignature = BytecodeContainer.Parse(shaderBytecodeWithInputSignature).InputSignature;
 			_elements = ProcessElements(elements);
 			_slots = ProcessSlots(elements);
-			_inputSignature = BytecodeContainer.Parse(shaderBytecodeWithInputSignature).InputSignature;
 		}
 
 		private ProcessedInputElement[] ProcessElements(InputElement[] elements)

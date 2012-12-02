@@ -6,6 +6,9 @@
 		CreateBuffer,
 		CreateDepthStencilState,
 		CreateDepthStencilView,
+		CreateGeometryShader,
+		CreatePixelShader,
+		CreateVertexShader,
 		DeviceContextClearDepthStencilView,
 		DeviceContextClearRenderTargetView,
 		DeviceContextDraw,
@@ -17,7 +20,6 @@
 		InputAssemblerStageSetPrimitiveTopology,
 		InputAssemblerStageSetVertexBuffers,
 		InputLayoutCreate,
-		PixelShaderCreate,
 		PixelShaderStageSetShader,
 		RasterizerStateCreate,
 		CreateRenderTargetView,
@@ -26,7 +28,6 @@
 		CreateTexture1D,
 		CreateTexture2D,
 		CreateTexture3D,
-		VertexShaderCreate,
 		VertexShaderStageSetShader,
 	}
 }

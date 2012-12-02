@@ -2,7 +2,7 @@
 {
 	public class GeometryShader : ShaderBase
 	{
-		public GeometryShader(Device device, byte[] shaderBytecode)
+		internal GeometryShader(Device device, byte[] shaderBytecode)
 			: base(device, shaderBytecode)
 		{
 
