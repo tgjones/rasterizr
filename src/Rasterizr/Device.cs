@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Diagnostics;
+using Rasterizr.Pipeline.OutputMerger;
+using Rasterizr.Pipeline.Rasterizer;
+using Rasterizr.Resources;
+using Rasterizr.Util;
 
 namespace Rasterizr
 {
@@ -43,5 +47,75 @@ namespace Rasterizr
 			_id++;
 			return id;
 		}
+
+		#region Create methods
+
+		public BlendState CreateBlendState(BlendStateDescription description)
+		{
+			Loggers.BeginOperation(OperationType.CreateBlendState, description);
+			return new BlendState(this, description);
+		}
+
+		public Buffer CreateBuffer<T>(BufferDescription description, T[] data)
+			where T : struct
+		{
+			return CreateBuffer(description, Utilities.ToByteArray(data));
+		}
+
+		public Buffer CreateBuffer(BufferDescription description, byte[] data = null)
+		{
+			Loggers.BeginOperation(OperationType.CreateBuffer, description, data);
+
+			if (description.SizeInBytes == 0 && data != null)
+				description.SizeInBytes = data.Length;
+
+			var buffer = new Buffer(this, description);
+			buffer.SetData(data);
+			return buffer;
+		}
+
+		public DepthStencilState CreateDepthStencilState(DepthStencilStateDescription description)
+		{
+			Loggers.BeginOperation(OperationType.CreateDepthStencilState, description);
+			return new DepthStencilState(this, description);
+		}
+
+		public DepthStencilView CreateDepthStencilView(Resource resource, DepthStencilViewDescription? description = null)
+		{
+			Loggers.BeginOperation(OperationType.CreateDepthStencilView, resource, description);
+			return new DepthStencilView(this, resource, description);
+		}
+
+		public RasterizerState CreateRasterizerState(RasterizerStateDescription description)
+		{
+			Loggers.BeginOperation(OperationType.RasterizerStateCreate, description);
+			return new RasterizerState(this, description);
+		}
+
+		public RenderTargetView CreateRenderTargetView(Resource resource, RenderTargetViewDescription? description = null)
+		{
+			Loggers.BeginOperation(OperationType.CreateRenderTargetView, resource, description);
+			return new RenderTargetView(this, resource, description);
+		}
+
+		public Texture1D CreateTexture1D(Texture1DDescription description)
+		{
+			Loggers.BeginOperation(OperationType.CreateTexture1D, description);
+			return new Texture1D(this, description);
+		}
+
+		public Texture2D CreateTexture2D(Texture2DDescription description)
+		{
+			Loggers.BeginOperation(OperationType.CreateTexture2D, description);
+			return new Texture2D(this, description);
+		}
+
+		public Texture3D CreateTexture3D(Texture3DDescription description)
+		{
+			Loggers.BeginOperation(OperationType.CreateTexture3D, description);
+			return new Texture3D(this, description);
+		}
+
+		#endregion
 	}
 }

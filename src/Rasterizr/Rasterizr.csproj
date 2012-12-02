@@ -63,6 +63,9 @@
     <Compile Include="Pipeline\OutputMerger\DepthStencilOperationDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\DepthStencilState.cs" />
     <Compile Include="Pipeline\OutputMerger\DepthStencilStateDescription.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilViewDescription.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilViewDimension.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilViewFlags.cs" />
     <Compile Include="Pipeline\OutputMerger\DepthWriteMask.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetBlendDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\StencilOperation.cs" />

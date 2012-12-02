@@ -54,7 +54,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 
 			// Create RenderTargetView from the backbuffer.
 			var backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
-			var renderTargetView = new RenderTargetView(device, backBuffer);
+			var renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 			// Compile Vertex and Pixel shaders
 			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Assets/MiniTri.fx", "VS", "vs_4_0");
@@ -73,7 +73,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 				});
 
 			// Instantiate Vertex buffer from vertex data
-			var vertices = Buffer.Create(device, BindFlags.VertexBuffer, new[]
+			var vertices = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), new[]
 			{
 				new Vector4(0.0f, 0.5f, 0.5f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
 				new Vector4(0.5f, -0.5f, 0.5f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),

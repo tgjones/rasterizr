@@ -1,6 +1,5 @@
 ﻿using System;
 using Rasterizr.Math;
-using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
@@ -24,10 +23,10 @@ namespace Rasterizr.Samples.BasicWindow
 
 			// Create RenderTargetView from the backbuffer.
 			var backBuffer = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0);
-			_renderTargetView = new RenderTargetView(device, backBuffer);
+			_renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 			// Create DepthStencilView.
-			var depthStencilBuffer = new Texture2D(device, new Texture2DDescription
+			var depthStencilBuffer = device.CreateTexture2D(new Texture2DDescription
 			{
 				Format = Format.D32_Float,
 				ArraySize = 1,
@@ -36,7 +35,7 @@ namespace Rasterizr.Samples.BasicWindow
 				Height = demoConfiguration.Height,
 				BindFlags = BindFlags.DepthStencil
 			});
-			var depthStencilView = new DepthStencilView(device, depthStencilBuffer);
+			var depthStencilView = device.CreateDepthStencilView(depthStencilBuffer);
 
 			// Prepare all the stages.
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, demoConfiguration.Width, demoConfiguration.Height, 0.0f, 1.0f));

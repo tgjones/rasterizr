@@ -60,7 +60,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero),
 				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero)
 			};
-			var vertexBuffer = Buffer.Create(device, BindFlags.VertexBuffer, vertices);
+			var vertexBuffer = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
 
 			// Act.
 			inputAssembler.SetVertexBuffers(0, new[]
@@ -85,8 +85,8 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero),
 				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero)
 			};
-			var vertexBuffer1 = Buffer.Create(device, BindFlags.VertexBuffer, vertices);
-			var vertexBuffer2 = Buffer.Create(device, BindFlags.VertexBuffer, vertices);
+			var vertexBuffer1 = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
+			var vertexBuffer2 = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
 
 			// Act.
 			inputAssembler.SetVertexBuffers(0, new[]
@@ -116,7 +116,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 				new TestVertex.PositionNormalTexture(new Point3D(1, 2, 3), new Vector3D(3, 2, 1), new Point2D(3, 4)),
 				new TestVertex.PositionNormalTexture(new Point3D(4, 5, 6), new Vector3D(4, 6, 8), new Point2D(0.5f, 0.3f))
 			};
-			var vertexBuffer = Buffer.Create(device, BindFlags.VertexBuffer, vertices);
+			var vertexBuffer = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
 			inputAssembler.SetVertexBuffers(0, new[]
 			{
 				new VertexBufferBinding(vertexBuffer, 0, TestVertex.PositionNormalTexture.SizeInBytes)
@@ -167,9 +167,9 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			};
 			inputAssembler.SetVertexBuffers(0, new[]
 			{
-				new VertexBufferBinding(Buffer.Create(device, BindFlags.VertexBuffer, positionsAndNormals),
+				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), positionsAndNormals),
 					0, TestVertex.PositionNormal.SizeInBytes),
-				new VertexBufferBinding(Buffer.Create(device, BindFlags.VertexBuffer, texCoords),
+				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), texCoords),
 					0, Point2D.SizeInBytes)
 			});
 
@@ -211,12 +211,12 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 				new TestVertex.PositionNormalTexture(new Point3D(1, 2, 3), new Vector3D(3, 2, 1), new Point2D(3, 4)),
 				new TestVertex.PositionNormalTexture(new Point3D(4, 5, 6), new Vector3D(4, 6, 8), new Point2D(0.5f, 0.3f))
 			};
-			var vertexBuffer = Buffer.Create(device, BindFlags.VertexBuffer, vertices);
+			var vertexBuffer = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
 			inputAssembler.SetVertexBuffers(0, new[]
 			{
 				new VertexBufferBinding(vertexBuffer, 0, TestVertex.PositionNormalTexture.SizeInBytes)
 			});
-			var indexBuffer = Buffer.Create(device, BindFlags.IndexBuffer, new ushort[] { 2, 16, 1, 0 });
+			var indexBuffer = device.CreateBuffer(new BufferDescription(BindFlags.IndexBuffer), new ushort[] { 2, 16, 1, 0 });
 			inputAssembler.SetIndexBuffer(indexBuffer, Format.R16_UInt, 2);
 
 			// Act.
@@ -291,11 +291,11 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			};
 			inputAssembler.SetVertexBuffers(0, new[]
 			{
-				new VertexBufferBinding(Buffer.Create(device, BindFlags.VertexBuffer, positionsAndNormals),
+				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), positionsAndNormals),
 					0, TestVertex.PositionNormal.SizeInBytes),
-				new VertexBufferBinding(Buffer.Create(device, BindFlags.VertexBuffer, instancePositions),
+				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), instancePositions),
 					0, Point3D.SizeInBytes * 2),
-				new VertexBufferBinding(Buffer.Create(device, BindFlags.VertexBuffer, instanceColors),
+				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), instanceColors),
 					0, Color3F.SizeInBytes)
 			});
 

@@ -34,13 +34,13 @@ namespace Rasterizr.Diagnostics.Logging
 				var args = @event.Arguments;
 				switch (@event.OperationType)
 				{
-					case OperationType.BlendStateCreate :
+					case OperationType.CreateBlendState :
 						new BlendState(_device, args.Get<BlendStateDescription>(0));
 						break;
-					case OperationType.BufferCreate :
+					case OperationType.CreateBuffer :
 						new Buffer(_device, args.Get<BufferDescription>(0));
 						break;
-					case OperationType.DepthStencilStateCreate :
+					case OperationType.CreateDepthStencilState :
 						new DepthStencilState(_device, args.Get<DepthStencilStateDescription>(0));
 						break;
 					case OperationType.DeviceCreate:
@@ -91,7 +91,7 @@ namespace Rasterizr.Diagnostics.Logging
 					case OperationType.InputLayoutCreate :
 						new InputLayout(_device, args.Get<byte[]>(0), args.Get<InputElement[]>(1));
 						break;
-					case OperationType.RenderTargetViewCreate :
+					case OperationType.CreateRenderTargetView :
 						new RenderTargetView(_device, _device.GetDeviceChild<Texture2D>(args.Get<int>(0)),
 							args.Get<RenderTargetViewDescription>(1));
 						break;
@@ -107,7 +107,7 @@ namespace Rasterizr.Diagnostics.Logging
 					case OperationType.SwapChainPresent:
 						_swapChain.Present();
 						break;
-					case OperationType.Texture2DCreate:
+					case OperationType.CreateTexture2D:
 						new Texture2D(_device, args.Get<Texture2DDescription>(0));
 						break;
 					case OperationType.VertexShaderStageSetShader:

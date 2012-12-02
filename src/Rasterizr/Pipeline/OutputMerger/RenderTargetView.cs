@@ -1,5 +1,4 @@
 ﻿using System;
-using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Resources;
 using Rasterizr.Util;
@@ -31,22 +30,18 @@ namespace Rasterizr.Pipeline.OutputMerger
 			}
 		}
 
-		public RenderTargetView(Device device, Texture2D resource, RenderTargetViewDescription description)
+		internal RenderTargetView(Device device, Resource resource, RenderTargetViewDescription? description)
 			: base(device, resource)
 		{
-			device.Loggers.BeginOperation(OperationType.RenderTargetViewCreate, resource, description);
-			_description = description;
-			_colors = new Color4[resource.Description.Width * resource.Description.Height];
-		}
-
-		public RenderTargetView(Device device, Texture2D resource)
-			: this(device, resource, new RenderTargetViewDescription
-			{
-				Format = Format.Unknown,
-				Dimension = RenderTargetViewDimension.Unknown
-			})
-		{
-			
+			if (description == null)
+				description = new RenderTargetViewDescription
+				{
+					Format = Format.Unknown,
+					Dimension = RenderTargetViewDimension.Unknown
+				};
+			_description = description.Value;
+			var texture = (Texture2D) resource;
+			_colors = new Color4[texture.Description.Width * texture.Description.Height];
 		}
 
 		internal unsafe void Clear(Color4F color)

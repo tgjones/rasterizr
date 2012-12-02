@@ -2,10 +2,10 @@
 {
 	public enum OperationType
 	{
-		BlendStateCreate,
-		BufferCreate,
-		DepthStencilStateCreate,
-		DepthStencilViewCreate,
+		CreateBlendState,
+		CreateBuffer,
+		CreateDepthStencilState,
+		CreateDepthStencilView,
 		DeviceContextClearDepthStencilView,
 		DeviceContextClearRenderTargetView,
 		DeviceContextDraw,
@@ -20,10 +20,12 @@
 		PixelShaderCreate,
 		PixelShaderStageSetShader,
 		RasterizerStateCreate,
-		RenderTargetViewCreate,
+		CreateRenderTargetView,
 		SwapChainCreate,
 		SwapChainPresent,
-		Texture2DCreate,
+		CreateTexture1D,
+		CreateTexture2D,
+		CreateTexture3D,
 		VertexShaderCreate,
 		VertexShaderStageSetShader,
 	}

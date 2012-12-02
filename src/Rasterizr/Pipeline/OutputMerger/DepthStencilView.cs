@@ -5,6 +5,13 @@ namespace Rasterizr.Pipeline.OutputMerger
 {
 	public class DepthStencilView : ResourceView
 	{
+		private readonly DepthStencilViewDescription _description;
+
+		public DepthStencilViewDescription Description
+		{
+			get { return _description; }
+		}
+
 		internal float this[int x, int y, int sampleIndex]
 		{
 			get
@@ -22,10 +29,16 @@ namespace Rasterizr.Pipeline.OutputMerger
 			}
 		}
 
-		public DepthStencilView(Device device, Texture2D resource)
+		internal DepthStencilView(Device device, Resource resource, DepthStencilViewDescription? description)
 			: base(device, resource)
 		{
-			
+			if (description == null)
+				description = new DepthStencilViewDescription
+				{
+					Format = Format.Unknown,
+					Dimension = DepthStencilViewDimension.Unknown
+				};
+			_description = description.Value;
 		}
 
 		internal void Clear(DepthStencilClearFlags clearFlags, float depth, byte stencil)

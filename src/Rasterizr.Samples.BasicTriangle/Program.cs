@@ -9,7 +9,6 @@ using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.Samples.Common;
 using SlimShader.Compiler;
-using Buffer = Rasterizr.Resources.Buffer;
 
 namespace Rasterizr.Samples.BasicTriangle
 {
@@ -28,7 +27,7 @@ namespace Rasterizr.Samples.BasicTriangle
 
 			// Create RenderTargetView from the backbuffer.
 			var backBuffer = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0);
-			_renderTargetView = new RenderTargetView(device, backBuffer);
+			_renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 			// Compile Vertex and Pixel shaders
 			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("MiniTri.fx", "VS", "vs_4_0");
@@ -47,7 +46,7 @@ namespace Rasterizr.Samples.BasicTriangle
 				});
 
 			// Instantiate Vertex buffer from vertex data
-			var vertices = Buffer.Create(device, BindFlags.VertexBuffer, new[]
+			var vertices = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), new[]
 			{
 				new Vector4(0.0f, 0.5f, 0.5f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
 				new Vector4(0.5f, -0.5f, 0.5f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),

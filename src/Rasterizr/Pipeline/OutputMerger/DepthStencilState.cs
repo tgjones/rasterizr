@@ -1,6 +1,4 @@
-﻿using Rasterizr.Diagnostics;
-
-namespace Rasterizr.Pipeline.OutputMerger
+﻿namespace Rasterizr.Pipeline.OutputMerger
 {
 	public class DepthStencilState : DeviceChild
 	{
@@ -11,10 +9,9 @@ namespace Rasterizr.Pipeline.OutputMerger
 			get { return _description; }
 		}
 
-		public DepthStencilState(Device device, DepthStencilStateDescription description)
+		internal DepthStencilState(Device device, DepthStencilStateDescription description)
 			: base(device)
 		{
-			device.Loggers.BeginOperation(OperationType.DepthStencilStateCreate, description);
 			_description = description;
 		}
 

@@ -35,10 +35,10 @@ namespace Rasterizr.Samples.RotatingCube
 
 			// Create RenderTargetView from the backbuffer.
 			var backBuffer = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0);
-			_renderTargetView = new RenderTargetView(device, backBuffer);
+			_renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 			// Create the depth buffer
-			var depthBuffer = new Texture2D(device, new Texture2DDescription
+			var depthBuffer = device.CreateTexture2D(new Texture2DDescription
 			{
 				Format = Format.D32_Float_S8X24_UInt,
 				ArraySize = 1,
@@ -49,7 +49,7 @@ namespace Rasterizr.Samples.RotatingCube
 			});
 
 			// Create the depth buffer view
-			_depthView = new DepthStencilView(device, depthBuffer);
+			_depthView = device.CreateDepthStencilView(depthBuffer);
 
 			// Compile Vertex and Pixel shaders
 			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("MiniCube.fx", "VS", "vs_4_0");
@@ -68,7 +68,7 @@ namespace Rasterizr.Samples.RotatingCube
 				});
 
 			// Instantiate Vertex buffer from vertex data
-			var vertices = Buffer.Create(device, BindFlags.VertexBuffer, new[]
+			var vertices = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), new[]
 			{
 				new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f), // Front
 				new Vector4(-1.0f, 1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
@@ -110,11 +110,11 @@ namespace Rasterizr.Samples.RotatingCube
 				new Vector4(1.0f, -1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
 				new Vector4(1.0f, -1.0f, -1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
 				new Vector4(1.0f, 1.0f, -1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-				new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
+				new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f)
 			});
 
 			// Create Constant Buffer
-			_constantBuffer = new Buffer(device, new BufferDescription
+			_constantBuffer = device.CreateBuffer(new BufferDescription
 			{
 				SizeInBytes = Utilities.SizeOf<Matrix3D>(),
 				BindFlags = BindFlags.ConstantBuffer
@@ -138,16 +138,14 @@ namespace Rasterizr.Samples.RotatingCube
 				demoConfiguration.Width / (float)demoConfiguration.Height, 0.1f, 100.0f);
 
 			var worldViewProj = Matrix3D.CreateRotationX(0)
-				* Matrix3D.CreateRotationY((float)(1))
-				* Matrix3D.CreateRotationZ((float)(3)) * _view * _projection;
+				* Matrix3D.CreateRotationY(1)
+				* Matrix3D.CreateRotationZ(3) * _view * _projection;
 			worldViewProj = Matrix3D.Transpose(worldViewProj);
 			_constantBuffer.SetData(ref worldViewProj);
 		}
 
 		protected override void Draw(DemoTime time)
 		{
-			var viewProj = _view * _projection;
-
 			// Clear views
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
 			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4F(0, 0, 0, 1));

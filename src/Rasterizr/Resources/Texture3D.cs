@@ -9,7 +9,7 @@
 			get { return _description; }
 		}
 
-		public Texture3D(Device device, Texture3DDescription description)
+		internal Texture3D(Device device, Texture3DDescription description)
 			: base(device, description.Width * description.Height * description.Depth, description.Format)
 		{
 			_description = description;
