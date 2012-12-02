@@ -11,6 +11,7 @@ namespace Rasterizr.Pipeline
 	public abstract class CommonShaderStage<T>
 		where T : ShaderBase
 	{
+		private readonly Device _device;
 		public const int ConstantBufferSlotCount = 14;
 		public const int SamplerSlotCount = 16;
 		public const int ShaderResourceSlotCount = 128;
@@ -22,6 +23,11 @@ namespace Rasterizr.Pipeline
 		private T _shader;
 		private int _outputParametersCount;
 		private VirtualMachine _virtualMachine;
+
+		protected Device Device
+		{
+			get { return _device; }
+		}
 
 		public T Shader
 		{
@@ -45,8 +51,9 @@ namespace Rasterizr.Pipeline
 			get { return _virtualMachine; }
 		}
 
-		protected CommonShaderStage()
+		protected CommonShaderStage(Device device)
 		{
+			_device = device;
 			_constantBuffers = new Buffer[ConstantBufferSlotCount];
 			_samplers = new SamplerState[SamplerSlotCount];
 			_shaderResources = new ShaderResourceView[ShaderResourceSlotCount];

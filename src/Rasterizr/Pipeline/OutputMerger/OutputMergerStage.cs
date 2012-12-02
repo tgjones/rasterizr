@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.PixelShader;
 
@@ -6,6 +7,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 {
 	public class OutputMergerStage
 	{
+		private readonly Device _device;
 		private RenderTargetView[] _renderTargetViews;
 		private DepthStencilView _depthStencilView;
 
@@ -24,6 +26,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 
 		public OutputMergerStage(Device device)
 		{
+			_device = device;
 			DepthStencilState = new DepthStencilState(device, DepthStencilStateDescription.Default);
 			BlendState = new BlendState(device, BlendStateDescription.Default);
 		}
@@ -36,6 +39,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 
 		public void SetTargets(DepthStencilView depthStencilView, params RenderTargetView[] renderTargetViews)
 		{
+			_device.Loggers.BeginOperation(OperationType.OutputMergerStageSetTargets, depthStencilView, renderTargetViews);
 			_depthStencilView = depthStencilView;
 			_renderTargetViews = renderTargetViews;
 		}

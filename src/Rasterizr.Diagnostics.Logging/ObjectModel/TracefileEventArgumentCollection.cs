@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Rasterizr.Diagnostics.Logging.ObjectModel
 {
@@ -20,6 +22,9 @@ namespace Rasterizr.Diagnostics.Logging.ObjectModel
 		public T Get<T>(int index)
 		{
 			var type = typeof(T);
+			if (this[index] == null)
+				return default(T);
+
 			if (this[index].GetType() != type)
 			{
 				if (type.IsEnum)

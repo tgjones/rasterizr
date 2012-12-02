@@ -20,7 +20,7 @@ namespace Rasterizr.Diagnostics.Logging
 			_tracefile = new Tracefile();
 		}
 
-		protected internal override void BeginOperation(OperationType type, params object[] methodArguments)
+		protected override void BeginOperation(OperationType type, params object[] methodArguments)
 		{
 			if (!_writtenBeginFrame)
 			{

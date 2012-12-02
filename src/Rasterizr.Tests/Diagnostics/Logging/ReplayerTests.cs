@@ -4,9 +4,7 @@ using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
-using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
-using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
 using SlimShader.Compiler;
 
@@ -57,10 +55,10 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 
 			// Compile Vertex and Pixel shaders
 			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Assets/MiniTri.fx", "VS", "vs_4_0");
-			var vertexShader = new VertexShader(device, vertexShaderByteCode);
+			var vertexShader = device.CreateVertexShader(vertexShaderByteCode);
 
 			var pixelShaderByteCode = ShaderCompiler.CompileFromFile("Assets/MiniTri.fx", "PS", "ps_4_0");
-			var pixelShader = new PixelShader(device, pixelShaderByteCode);
+			var pixelShader = device.CreatePixelShader(pixelShaderByteCode);
 
 			// Layout from VertexShader input signature
 			var layout = device.CreateInputLayout(

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer.Primitives;
@@ -9,6 +10,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 {
 	public class RasterizerStage
 	{
+		private readonly Device _device;
 		private Viewport[] _viewports;
 
 		private readonly TriangleRasterizer _triangleRasterizer;
@@ -17,6 +19,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 		public RasterizerStage(Device device)
 		{
+			_device = device;
 			_triangleRasterizer = new TriangleRasterizer();
 
 			State = new RasterizerState(device, RasterizerStateDescription.Default);
@@ -24,6 +27,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 		public void SetViewports(params Viewport[] viewports)
 		{
+			_device.Loggers.BeginOperation(OperationType.RasterizerStageSetViewports, viewports);
 			_viewports = viewports;
 		}
 

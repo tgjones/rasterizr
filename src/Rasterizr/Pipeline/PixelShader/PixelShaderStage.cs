@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.Rasterizer;
 using SlimShader.Chunks.Xsgn;
 
@@ -14,8 +15,15 @@ namespace Rasterizr.Pipeline.PixelShader
 			get { return 4; }
 		}
 
+		public PixelShaderStage(Device device)
+			: base(device)
+		{
+		}
+
 		protected override void OnShaderChanged(PixelShader shader)
 		{
+			Device.Loggers.BeginOperation(OperationType.PixelShaderStageSetShader, shader);
+
 			var outputColorRegister = GetSystemValueRegister(Name.Target);
 			if (outputColorRegister == null)
 				throw new ArgumentException("Shader doesn't contain output color", "shader");

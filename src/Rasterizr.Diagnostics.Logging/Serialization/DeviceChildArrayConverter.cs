@@ -1,21 +1,18 @@
 ﻿using System;
+using System.Linq;
 using Newtonsoft.Json;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
-using Rasterizr.Pipeline.InputAssembler;
 
 namespace Rasterizr.Diagnostics.Logging.Serialization
 {
-	public class VertexBufferBindingConverter : JsonConverter
+	public class DeviceChildArrayConverter : JsonConverter
 	{
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-			var binding = (VertexBufferBinding) value;
-			serializer.Serialize(writer, new SerializedVertexBufferBinding
-			{
-				Buffer = binding.Buffer.ID,
-				Offset = binding.Offset,
-				Stride = binding.Stride
-			});
+			var originalTypeNameHandling = serializer.TypeNameHandling;
+			serializer.TypeNameHandling = TypeNameHandling.Objects;
+			serializer.Serialize(writer, new SerializedDeviceChildArray(((DeviceChild[]) value).Select(x => x.ID).ToArray()));
+			serializer.TypeNameHandling = originalTypeNameHandling;
 		}
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -25,7 +22,7 @@ namespace Rasterizr.Diagnostics.Logging.Serialization
 
 		public override bool CanConvert(Type objectType)
 		{
-			return typeof(VertexBufferBinding).IsAssignableFrom(objectType);
+			return typeof(DeviceChild[]).IsAssignableFrom(objectType);
 		}
 	}
 }

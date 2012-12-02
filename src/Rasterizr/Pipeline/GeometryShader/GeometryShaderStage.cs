@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Util;
@@ -23,8 +24,16 @@ namespace Rasterizr.Pipeline.GeometryShader
 			get { return Shader != null; }
 		}
 
+		public GeometryShaderStage(Device device)
+			: base(device)
+		{
+
+		}
+
 		protected override void OnShaderChanged(GeometryShader shader)
 		{
+			Device.Loggers.BeginOperation(OperationType.GeometryShaderStageSetShader, shader);
+
 			var outputPositionRegister = GetSystemValueRegister(Name.Position);
 			if (outputPositionRegister == null)
 				throw new ArgumentException("Shader doesn't contain output position", "shader");

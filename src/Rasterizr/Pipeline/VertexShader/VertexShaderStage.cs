@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.InputAssembler;
 using SlimShader.Chunks.Xsgn;
 
@@ -8,8 +9,15 @@ namespace Rasterizr.Pipeline.VertexShader
 	{
 		private int? _outputPositionRegister;
 
+		public VertexShaderStage(Device device)
+			: base(device)
+		{
+
+		}
+
 		protected override void OnShaderChanged(VertexShader shader)
 		{
+			Device.Loggers.BeginOperation(OperationType.VertexShaderStageSetShader, shader);
 			_outputPositionRegister = GetSystemValueRegister(Name.Position);
 			base.OnShaderChanged(shader);
 		}

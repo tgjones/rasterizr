@@ -19,6 +19,7 @@ namespace Rasterizr.Diagnostics.Logging.ObjectModel
 				Converters = new List<JsonConverter>
 				{
 					new DeviceChildConverter(),
+					new DeviceChildArrayConverter(),
 					new VertexBufferBindingConverter()
 				}
 			};

@@ -60,10 +60,10 @@ namespace Rasterizr
 		{
 			_device = device;
 			_inputAssembler = new InputAssemblerStage(device);
-			_vertexShader = new VertexShaderStage();
-			_geometryShader = new GeometryShaderStage();
+			_vertexShader = new VertexShaderStage(device);
+			_geometryShader = new GeometryShaderStage(device);
 			_rasterizer = new RasterizerStage(device);
-			_pixelShader = new PixelShaderStage();
+			_pixelShader = new PixelShaderStage(device);
 			_outputMerger = new OutputMergerStage(device);
 		}
 

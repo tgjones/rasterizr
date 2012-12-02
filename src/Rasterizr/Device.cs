@@ -38,7 +38,7 @@ namespace Rasterizr
 			_immediateContext = new DeviceContext(this);
 		}
 
-		internal T GetDeviceChild<T>(int id)
+		public T GetDeviceChild<T>(int id)
 			where T : DeviceChild
 		{
 			return (T) _deviceChildMap[id];
