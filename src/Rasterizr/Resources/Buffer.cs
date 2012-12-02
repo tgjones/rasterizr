@@ -1,4 +1,5 @@
-﻿using Rasterizr.Util;
+﻿using Rasterizr.Diagnostics;
+using Rasterizr.Util;
 
 namespace Rasterizr.Resources
 {
@@ -21,7 +22,7 @@ namespace Rasterizr.Resources
 		public Buffer(Device device, BufferDescription description)
 			: base(device, description.SizeInBytes)
 		{
-
+			device.Loggers.BeginOperation(OperationType.BufferCreate, description);
 		}
 	}
 }

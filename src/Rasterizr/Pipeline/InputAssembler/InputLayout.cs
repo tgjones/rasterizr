@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rasterizr.Diagnostics;
+using SlimShader;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Pipeline.InputAssembler
@@ -27,14 +28,14 @@ namespace Rasterizr.Pipeline.InputAssembler
 			get { return _slots; }
 		}
 
-		public InputLayout(Device device, InputSignatureChunk inputSignature, InputElement[] elements)
+		public InputLayout(Device device, byte[] shaderBytecodeWithInputSignature, InputElement[] elements)
 			: base(device)
 		{
-			_inputSignature = inputSignature;
+			_inputSignature = BytecodeContainer.Parse(shaderBytecodeWithInputSignature).InputSignature;
 			// TODO: Verify that shader bytecode matches input elements.
 			_elements = ProcessElements(elements);
 			_slots = ProcessSlots(elements);
-			device.Loggers.BeginOperation(OperationType.InputLayoutCreate, inputSignature, elements);
+			device.Loggers.BeginOperation(OperationType.InputLayoutCreate, shaderBytecodeWithInputSignature, elements);
 		}
 
 		private ProcessedInputElement[] ProcessElements(InputElement[] elements)

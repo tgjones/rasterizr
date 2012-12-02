@@ -18,9 +18,7 @@ namespace Rasterizr.Diagnostics.Logging.ObjectModel
 				TypeNameHandling = TypeNameHandling.Auto,
 				Converters = new List<JsonConverter>
 				{
-					new BytecodeContainerConverter(),
 					new DeviceChildConverter(),
-					new TracefileEventArgumentCollectionConverter(),
 					new VertexBufferBindingConverter()
 				}
 			};

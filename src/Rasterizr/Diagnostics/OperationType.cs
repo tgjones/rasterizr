@@ -2,23 +2,29 @@
 {
 	public enum OperationType
 	{
-		DeviceCreate,
-		SwapChainCreate,
+		BlendStateCreate,
+		BufferCreate,
+		DepthStencilStateCreate,
 		DepthStencilViewCreate,
 		DeviceContextClearDepthStencilView,
 		DeviceContextClearRenderTargetView,
 		DeviceContextDraw,
 		DeviceContextDrawIndexed,
 		DeviceContextDrawInstanced,
+		DeviceCreate,
+		InputAssemblerStageSetIndexBuffer,
 		InputAssemblerStageSetInputLayout,
 		InputAssemblerStageSetPrimitiveTopology,
 		InputAssemblerStageSetVertexBuffers,
-		InputAssemblerStageSetIndexBuffer,
 		InputLayoutCreate,
-		VertexShaderCreate,
-		VertexShaderStageSetShader,
 		PixelShaderCreate,
 		PixelShaderStageSetShader,
-		SwapChainPresent
+		RasterizerStateCreate,
+		RenderTargetViewCreate,
+		SwapChainCreate,
+		SwapChainPresent,
+		Texture2DCreate,
+		VertexShaderCreate,
+		VertexShaderStageSetShader,
 	}
 }

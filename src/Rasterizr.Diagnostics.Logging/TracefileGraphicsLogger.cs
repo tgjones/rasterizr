@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
+using Rasterizr.Pipeline.InputAssembler;
 
 namespace Rasterizr.Diagnostics.Logging
 {
@@ -31,7 +32,7 @@ namespace Rasterizr.Diagnostics.Logging
 			}
 
 			var arguments = (methodArguments != null)
-				? methodArguments.ToList()
+				? methodArguments.Select(ConvertArgument).ToList()
 				: null;
 
 			_currentFrame.Events.Add(new TracefileEvent
@@ -47,6 +48,18 @@ namespace Rasterizr.Diagnostics.Logging
 				_writtenBeginFrame = false;
 				_operationNumber = 0;
 			}
+		}
+
+		private object ConvertArgument(object arg)
+		{
+			if (arg is VertexBufferBinding[])
+				return ((VertexBufferBinding[]) arg).Select(x => new SerializedVertexBufferBinding
+				{
+					Buffer = x.Buffer.ID,
+					Offset = x.Offset,
+					Stride = x.Stride
+				});
+			return arg;
 		}
 
 		public void Flush()

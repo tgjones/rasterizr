@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
-using Rasterizr.Diagnostics.Logging.Serialization;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
+using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
-using SlimShader;
+using Rasterizr.Resources;
 using Buffer = Rasterizr.Resources.Buffer;
 
 namespace Rasterizr.Diagnostics.Logging
@@ -34,6 +34,15 @@ namespace Rasterizr.Diagnostics.Logging
 				var args = @event.Arguments;
 				switch (@event.OperationType)
 				{
+					case OperationType.BlendStateCreate :
+						new BlendState(_device, args.Get<BlendStateDescription>(0));
+						break;
+					case OperationType.BufferCreate :
+						new Buffer(_device, args.Get<BufferDescription>(0));
+						break;
+					case OperationType.DepthStencilStateCreate :
+						new DepthStencilState(_device, args.Get<DepthStencilStateDescription>(0));
+						break;
 					case OperationType.DeviceCreate:
 						_device = new Device();
 						_deviceContext = _device.ImmediateContext;
@@ -79,21 +88,33 @@ namespace Rasterizr.Diagnostics.Logging
 						_deviceContext.InputAssembler.SetIndexBuffer(_device.GetDeviceChild<Buffer>(args.Get<int>(0)),
 							args.Get<Format>(1), args.Get<int>(2));
 						break;
+					case OperationType.InputLayoutCreate :
+						new InputLayout(_device, args.Get<byte[]>(0), args.Get<InputElement[]>(1));
+						break;
+					case OperationType.RenderTargetViewCreate :
+						new RenderTargetView(_device, _device.GetDeviceChild<Texture2D>(args.Get<int>(0)),
+							args.Get<RenderTargetViewDescription>(1));
+						break;
+					case OperationType.PixelShaderStageSetShader:
+						_deviceContext.PixelShader.Shader = _device.GetDeviceChild<PixelShader>(args.Get<int>(0));
+						break;
+					case OperationType.PixelShaderCreate:
+						new PixelShader(_device, args.Get<byte[]>(0));
+						break;
+					case OperationType.RasterizerStateCreate :
+						new RasterizerState(_device, args.Get<RasterizerStateDescription>(0));
+						break;
+					case OperationType.SwapChainPresent:
+						_swapChain.Present();
+						break;
+					case OperationType.Texture2DCreate:
+						new Texture2D(_device, args.Get<Texture2DDescription>(0));
+						break;
 					case OperationType.VertexShaderStageSetShader:
 						_deviceContext.VertexShader.Shader = _device.GetDeviceChild<VertexShader>(args.Get<int>(0));
 						break;
 					case OperationType.VertexShaderCreate :
-						new VertexShader(_device, BytecodeContainer.Parse(args.Get<byte[]>(0)));
-						break;
-					case OperationType.PixelShaderStageSetShader:
-						_deviceContext.PixelShader.Shader = new PixelShader(_device, 
-							BytecodeContainer.Parse(args.Get<byte[]>(0)));
-						break;
-					case OperationType.PixelShaderCreate :
-						new PixelShader(_device, BytecodeContainer.Parse(args.Get<byte[]>(0)));
-						break;
-					case OperationType.SwapChainPresent:
-						_swapChain.Present();
+						new VertexShader(_device, args.Get<byte[]>(0));
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

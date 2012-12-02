@@ -18,7 +18,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 	{
 		[Test]
 		public void EndToEndTest()
-		{
+		{	
 			// Arrange.
 			var stringWriter = new StringWriter();
 			var logger = new TracefileGraphicsLogger(stringWriter);
@@ -65,7 +65,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 
 			// Layout from VertexShader input signature
 			var layout = new InputLayout(device,
-				vertexShaderByteCode.InputSignature,
+				vertexShaderByteCode,
 				new[]
 				{
 					new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0),

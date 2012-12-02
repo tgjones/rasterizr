@@ -1,10 +1,8 @@
-﻿using SlimShader;
-
-namespace Rasterizr.Pipeline.GeometryShader
+﻿namespace Rasterizr.Pipeline.GeometryShader
 {
 	public class GeometryShader : ShaderBase
 	{
-		public GeometryShader(Device device, BytecodeContainer shaderBytecode)
+		public GeometryShader(Device device, byte[] shaderBytecode)
 			: base(device, shaderBytecode)
 		{
 

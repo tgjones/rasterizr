@@ -1,5 +1,4 @@
-﻿using Rasterizr.Diagnostics;
-using SlimShader;
+﻿using SlimShader;
 
 namespace Rasterizr.Pipeline
 {
@@ -12,10 +11,10 @@ namespace Rasterizr.Pipeline
 			get { return _shaderBytecode; }
 		}
 
-		public ShaderBase(Device device, BytecodeContainer shaderBytecode)
+		public ShaderBase(Device device, byte[] shaderBytecode)
 			: base(device)
 		{
-			_shaderBytecode = shaderBytecode;
+			_shaderBytecode = BytecodeContainer.Parse(shaderBytecode);
 		}
 	}
 }

@@ -4,8 +4,6 @@ using Nexus;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Resources;
-using SlimShader.Chunks.Common;
-using SlimShader.Chunks.Xsgn;
 using PrimitiveTopology = Rasterizr.Pipeline.InputAssembler.PrimitiveTopology;
 
 namespace Rasterizr.Tests.Pipeline.InputAssembler
@@ -13,40 +11,42 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 	[TestFixture]
 	public class InputAssemblerStageTests
 	{
-		private static InputSignatureChunk GetTestVertexPositionNormalTextureInputSignature()
+		private static byte[] GetTestVertexPositionNormalTextureShaderBytecode()
 		{
-			return new InputSignatureChunk
-			{
-				Parameters =
-				{
-					new SignatureParameterDescription("SV_Position", 0, Name.Position, RegisterComponentType.Float32,
-						0, ComponentMask.Xyz, ComponentMask.Xyz),
-					new SignatureParameterDescription("NORMAL", 0, Name.Undefined, RegisterComponentType.Float32,
-						1, ComponentMask.Xyz, ComponentMask.Xyz),
-					new SignatureParameterDescription("TEXCOORD", 0, Name.Undefined, RegisterComponentType.Float32,
-						2, ComponentMask.Xy, ComponentMask.Xy)
-				}
-			};
+			//return new InputSignatureChunk
+			//{
+			//    Parameters =
+			//    {
+			//        new SignatureParameterDescription("SV_Position", 0, Name.Position, RegisterComponentType.Float32,
+			//            0, ComponentMask.Xyz, ComponentMask.Xyz),
+			//        new SignatureParameterDescription("NORMAL", 0, Name.Undefined, RegisterComponentType.Float32,
+			//            1, ComponentMask.Xyz, ComponentMask.Xyz),
+			//        new SignatureParameterDescription("TEXCOORD", 0, Name.Undefined, RegisterComponentType.Float32,
+			//            2, ComponentMask.Xy, ComponentMask.Xy)
+			//    }
+			//};
+			throw new System.NotImplementedException();
 		}
 
-		private static InputSignatureChunk GetInstancedTestVertexPositionNormalInputSignature()
+		private static byte[] GetInstancedTestVertexPositionNormalShaderBytecode()
 		{
-			return new InputSignatureChunk
-			{
-				Parameters =
-				{
-					new SignatureParameterDescription("SV_Position", 0, Name.Position, RegisterComponentType.Float32,
-						0, ComponentMask.Xyz, ComponentMask.Xyz),
-					new SignatureParameterDescription("NORMAL", 0, Name.Undefined, RegisterComponentType.Float32,
-						1, ComponentMask.Xyz, ComponentMask.Xyz),
-					new SignatureParameterDescription("INSTANCEPOS", 0, Name.Undefined, RegisterComponentType.Float32,
-						2, ComponentMask.Xyz, ComponentMask.Xyz),
-					new SignatureParameterDescription("INSTANCESCALE", 0, Name.Undefined, RegisterComponentType.Float32,
-						3, ComponentMask.Xyz, ComponentMask.Xyz),
-					new SignatureParameterDescription("INSTANCECOLOR", 0, Name.Undefined, RegisterComponentType.Float32,
-						4, ComponentMask.Xyz, ComponentMask.Xyz)
-				}
-			};
+			//return new InputSignatureChunk
+			//{
+			//    Parameters =
+			//    {
+			//        new SignatureParameterDescription("SV_Position", 0, Name.Position, RegisterComponentType.Float32,
+			//            0, ComponentMask.Xyz, ComponentMask.Xyz),
+			//        new SignatureParameterDescription("NORMAL", 0, Name.Undefined, RegisterComponentType.Float32,
+			//            1, ComponentMask.Xyz, ComponentMask.Xyz),
+			//        new SignatureParameterDescription("INSTANCEPOS", 0, Name.Undefined, RegisterComponentType.Float32,
+			//            2, ComponentMask.Xyz, ComponentMask.Xyz),
+			//        new SignatureParameterDescription("INSTANCESCALE", 0, Name.Undefined, RegisterComponentType.Float32,
+			//            3, ComponentMask.Xyz, ComponentMask.Xyz),
+			//        new SignatureParameterDescription("INSTANCECOLOR", 0, Name.Undefined, RegisterComponentType.Float32,
+			//            4, ComponentMask.Xyz, ComponentMask.Xyz)
+			//    }
+			//};
+			throw new System.NotImplementedException();
 		}
 
 		[Test]
@@ -108,7 +108,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			// Arrange.
 			var device = new Device();
 			var inputAssembler = new InputAssemblerStage(device);
-			var inputSignature = GetTestVertexPositionNormalTextureInputSignature();
+			var inputSignature = GetTestVertexPositionNormalTextureShaderBytecode();
 			inputAssembler.InputLayout = new InputLayout(device, inputSignature, TestVertex.PositionNormalTexture.InputElements);
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 			var vertices = new[]
@@ -149,7 +149,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			// Arrange.
 			var device = new Device();
 			var inputAssembler = new InputAssemblerStage(device);
-			var inputSignature = GetTestVertexPositionNormalTextureInputSignature();
+			var inputSignature = GetTestVertexPositionNormalTextureShaderBytecode();
 			var inputElements = TestVertex.PositionNormal.InputElements
 				.Union(new[] { new InputElement("TEXCOORD", 0, Format.R32G32_Float, 1, 0) })
 				.ToArray();
@@ -170,7 +170,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 				new VertexBufferBinding(Buffer.Create(device, BindFlags.VertexBuffer, positionsAndNormals),
 					0, TestVertex.PositionNormal.SizeInBytes),
 				new VertexBufferBinding(Buffer.Create(device, BindFlags.VertexBuffer, texCoords),
-					0, Point2D.SizeInBytes),
+					0, Point2D.SizeInBytes)
 			});
 
 			// Act.
@@ -200,7 +200,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			// Arrange.
 			var device = new Device();
 			var inputAssembler = new InputAssemblerStage(device);
-			var inputSignature = GetTestVertexPositionNormalTextureInputSignature();
+			var inputSignature = GetTestVertexPositionNormalTextureShaderBytecode();
 			inputAssembler.InputLayout = new InputLayout(device, inputSignature, TestVertex.PositionNormalTexture.InputElements);
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 			var vertices = new[]
@@ -246,7 +246,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			// Arrange.
 			var device = new Device();
 			var inputAssembler = new InputAssemblerStage(device);
-			var inputSignature = GetInstancedTestVertexPositionNormalInputSignature();
+			var inputSignature = GetInstancedTestVertexPositionNormalShaderBytecode();
 			var inputElements = TestVertex.PositionNormal.InputElements
 				.Union(new[]
 				{
@@ -280,7 +280,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 				new Point3D(3, 3, 3),
 
 				new Point3D(12, 15, 8),
-				new Point3D(0.5f, 0.5f, 0.5f),
+				new Point3D(0.5f, 0.5f, 0.5f)
 			};
 			var instanceColors = new[]
 			{
@@ -296,7 +296,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 				new VertexBufferBinding(Buffer.Create(device, BindFlags.VertexBuffer, instancePositions),
 					0, Point3D.SizeInBytes * 2),
 				new VertexBufferBinding(Buffer.Create(device, BindFlags.VertexBuffer, instanceColors),
-					0, Color3F.SizeInBytes),
+					0, Color3F.SizeInBytes)
 			});
 
 			// Act.

@@ -1,4 +1,5 @@
 ﻿using System;
+using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Resources;
 using Rasterizr.Util;
@@ -33,6 +34,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 		public RenderTargetView(Device device, Texture2D resource, RenderTargetViewDescription description)
 			: base(device, resource)
 		{
+			device.Loggers.BeginOperation(OperationType.RenderTargetViewCreate, resource, description);
 			_description = description;
 			_colors = new Color4[resource.Description.Width * resource.Description.Height];
 		}

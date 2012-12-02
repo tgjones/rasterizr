@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.PixelShader;
-using Rasterizr.Resources;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {

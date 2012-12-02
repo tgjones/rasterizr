@@ -75,7 +75,7 @@ namespace Rasterizr
 
 		public virtual void ClearRenderTargetView(RenderTargetView renderTargetView, Color4F color)
 		{
-			_device.Loggers.BeginOperation(OperationType.DeviceContextClearRenderTargetView, color);
+			_device.Loggers.BeginOperation(OperationType.DeviceContextClearRenderTargetView, renderTargetView, color);
 			renderTargetView.Clear(color);
 		}
 

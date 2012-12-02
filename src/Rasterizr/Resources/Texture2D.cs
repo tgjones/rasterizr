@@ -1,4 +1,6 @@
-﻿namespace Rasterizr.Resources
+﻿using Rasterizr.Diagnostics;
+
+namespace Rasterizr.Resources
 {
 	public class Texture2D : TextureBase
 	{
@@ -18,6 +20,7 @@
 		public Texture2D(Device device, Texture2DDescription description)
 			: base(device, description.Width * description.Height, description.Format)
 		{
+			device.Loggers.BeginOperation(OperationType.Texture2DCreate, description);
 			_description = description;
 		}
 	}

@@ -1,6 +1,4 @@
-﻿using Rasterizr.Diagnostics;
-
-namespace Rasterizr
+﻿namespace Rasterizr
 {
 	public abstract class DeviceChild
 	{

@@ -1,6 +1,5 @@
 ﻿using System;
 using Rasterizr.Math;
-using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
@@ -40,7 +39,7 @@ namespace Rasterizr.Samples.BasicTriangle
 
 			// Layout from VertexShader input signature
 			var layout = new InputLayout(device,
-				vertexShaderByteCode.InputSignature,
+				vertexShaderByteCode,
 				new[]
 				{
 					new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0),

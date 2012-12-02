@@ -1,4 +1,6 @@
-﻿namespace Rasterizr.Pipeline.Rasterizer
+﻿using Rasterizr.Diagnostics;
+
+namespace Rasterizr.Pipeline.Rasterizer
 {
 	public class RasterizerState : DeviceChild
 	{
@@ -12,6 +14,7 @@
 		public RasterizerState(Device device, RasterizerStateDescription description)
 			: base(device)
 		{
+			device.Loggers.BeginOperation(OperationType.RasterizerStateCreate, description);
 			_description = description;
 		}
 	}

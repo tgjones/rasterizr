@@ -1,4 +1,5 @@
 ﻿using System;
+using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 
 namespace Rasterizr.Pipeline.OutputMerger
@@ -15,7 +16,9 @@ namespace Rasterizr.Pipeline.OutputMerger
 		public BlendState(Device device, BlendStateDescription description)
 			: base(device)
 		{
+			device.Loggers.BeginOperation(OperationType.BlendStateCreate, description);
 			_description = description;
+
 		}
 
 		internal Color4F DoBlend(int renderTargetIndex, Color4F source, Color4F destination, Color4F blendFactor)

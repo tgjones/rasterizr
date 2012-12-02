@@ -1,11 +1,10 @@
 ﻿using Rasterizr.Diagnostics;
-using SlimShader;
 
 namespace Rasterizr.Pipeline.VertexShader
 {
 	public class VertexShader : ShaderBase
 	{
-		public VertexShader(Device device, BytecodeContainer shaderBytecode)
+		public VertexShader(Device device, byte[] shaderBytecode)
 			: base(device, shaderBytecode)
 		{
 			device.Loggers.BeginOperation(OperationType.VertexShaderCreate, shaderBytecode);

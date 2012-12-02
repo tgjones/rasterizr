@@ -26,8 +26,8 @@ namespace Rasterizr
 			if (loggers == null)
 				loggers = new GraphicsLogger[0];
 			_loggers = new GraphicsLoggerCollection(loggers);
-			_immediateContext = new DeviceContext(this);
 			_loggers.BeginOperation(OperationType.DeviceCreate);
+			_immediateContext = new DeviceContext(this);
 		}
 
 		internal T GetDeviceChild<T>(int id)
