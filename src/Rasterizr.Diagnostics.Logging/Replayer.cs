@@ -89,7 +89,7 @@ namespace Rasterizr.Diagnostics.Logging
 							args.Get<Format>(1), args.Get<int>(2));
 						break;
 					case OperationType.InputLayoutCreate :
-						new InputLayout(_device, args.Get<byte[]>(0), args.Get<InputElement[]>(1));
+						new InputLayout(_device, args.Get<InputElement[]>(0), args.Get<byte[]>(1));
 						break;
 					case OperationType.CreateRenderTargetView :
 						new RenderTargetView(_device, _device.GetDeviceChild<Texture2D>(args.Get<int>(0)),

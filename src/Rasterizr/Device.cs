@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Diagnostics;
+using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Resources;
@@ -84,6 +85,12 @@ namespace Rasterizr
 		{
 			Loggers.BeginOperation(OperationType.CreateDepthStencilView, resource, description);
 			return new DepthStencilView(this, resource, description);
+		}
+
+		public InputLayout CreateInputLayout(InputElement[] elements, byte[] shaderBytecodeWithInputSignature)
+		{
+			Loggers.BeginOperation(OperationType.InputLayoutCreate, elements, shaderBytecodeWithInputSignature);
+			return new InputLayout(this, elements, shaderBytecodeWithInputSignature);
 		}
 
 		public RasterizerState CreateRasterizerState(RasterizerStateDescription description)

@@ -109,7 +109,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			var device = new Device();
 			var inputAssembler = new InputAssemblerStage(device);
 			var inputSignature = GetTestVertexPositionNormalTextureShaderBytecode();
-			inputAssembler.InputLayout = new InputLayout(device, inputSignature, TestVertex.PositionNormalTexture.InputElements);
+			inputAssembler.InputLayout = device.CreateInputLayout(TestVertex.PositionNormalTexture.InputElements, inputSignature);
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 			var vertices = new[]
 			{
@@ -153,7 +153,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			var inputElements = TestVertex.PositionNormal.InputElements
 				.Union(new[] { new InputElement("TEXCOORD", 0, Format.R32G32_Float, 1, 0) })
 				.ToArray();
-			inputAssembler.InputLayout = new InputLayout(device, inputSignature, inputElements);
+			inputAssembler.InputLayout = device.CreateInputLayout(inputElements, inputSignature);
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 			var positionsAndNormals = new[]
 			{
@@ -201,7 +201,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			var device = new Device();
 			var inputAssembler = new InputAssemblerStage(device);
 			var inputSignature = GetTestVertexPositionNormalTextureShaderBytecode();
-			inputAssembler.InputLayout = new InputLayout(device, inputSignature, TestVertex.PositionNormalTexture.InputElements);
+			inputAssembler.InputLayout = device.CreateInputLayout(TestVertex.PositionNormalTexture.InputElements, inputSignature);
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 			var vertices = new[]
 			{
@@ -258,7 +258,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 						InputClassification.PerInstanceData, 2)
 				})
 				.ToArray();
-			inputAssembler.InputLayout = new InputLayout(device, inputSignature, inputElements);
+			inputAssembler.InputLayout = device.CreateInputLayout(inputElements, inputSignature);
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 			var positionsAndNormals = new[]
 			{

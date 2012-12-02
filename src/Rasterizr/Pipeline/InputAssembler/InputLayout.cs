@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rasterizr.Diagnostics;
 using SlimShader;
 using SlimShader.Chunks.Xsgn;
 
@@ -9,14 +8,9 @@ namespace Rasterizr.Pipeline.InputAssembler
 {
 	public class InputLayout : DeviceChild
 	{
-		private readonly InputSignatureChunk _inputSignature;
 		private readonly ProcessedInputElement[] _elements;
 		private readonly InputSlotElement[] _slots;
-
-		public int ShaderInputParameterCount
-		{
-			get { return _inputSignature.Parameters.Count; }
-		}
+		private readonly InputSignatureChunk _inputSignature;
 
 		public ProcessedInputElement[] Elements
 		{
@@ -28,14 +22,18 @@ namespace Rasterizr.Pipeline.InputAssembler
 			get { return _slots; }
 		}
 
-		public InputLayout(Device device, byte[] shaderBytecodeWithInputSignature, InputElement[] elements)
+		public int ShaderInputParameterCount
+		{
+			get { return _inputSignature.Parameters.Count; }
+		}
+
+		internal InputLayout(Device device, InputElement[] elements, byte[] shaderBytecodeWithInputSignature)
 			: base(device)
 		{
-			_inputSignature = BytecodeContainer.Parse(shaderBytecodeWithInputSignature).InputSignature;
 			// TODO: Verify that shader bytecode matches input elements.
 			_elements = ProcessElements(elements);
 			_slots = ProcessSlots(elements);
-			device.Loggers.BeginOperation(OperationType.InputLayoutCreate, shaderBytecodeWithInputSignature, elements);
+			_inputSignature = BytecodeContainer.Parse(shaderBytecodeWithInputSignature).InputSignature;
 		}
 
 		private ProcessedInputElement[] ProcessElements(InputElement[] elements)

@@ -4,7 +4,6 @@ using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
-using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
@@ -64,13 +63,12 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			var pixelShader = new PixelShader(device, pixelShaderByteCode);
 
 			// Layout from VertexShader input signature
-			var layout = new InputLayout(device,
-				vertexShaderByteCode,
+			var layout = device.CreateInputLayout(
 				new[]
 				{
 					new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0),
 					new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 0)
-				});
+				}, vertexShaderByteCode);
 
 			// Instantiate Vertex buffer from vertex data
 			var vertices = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), new[]
