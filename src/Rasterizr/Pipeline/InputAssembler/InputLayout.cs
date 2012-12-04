@@ -22,11 +22,6 @@ namespace Rasterizr.Pipeline.InputAssembler
 			get { return _slots; }
 		}
 
-		public int ShaderInputParameterCount
-		{
-			get { return _inputSignature.Parameters.Count; }
-		}
-
 		internal InputLayout(Device device, InputElement[] elements, byte[] shaderBytecodeWithInputSignature)
 			: this(device, elements, BytecodeContainer.Parse(shaderBytecodeWithInputSignature).InputSignature)
 		{

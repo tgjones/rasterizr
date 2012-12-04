@@ -4,6 +4,7 @@ using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.VertexShader;
+using SlimShader.Chunks.Xsgn;
 using Buffer = Rasterizr.Resources.Buffer;
 
 namespace Rasterizr.Pipeline.InputAssembler
@@ -73,6 +74,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 		}
 
 		internal IEnumerable<InputAssemblerVertexOutput> GetVertexStream(
+			InputSignatureChunk vertexShaderInputSignature,
 			int vertexCount, 
 			int startVertexLocation)
 		{
@@ -80,10 +82,11 @@ namespace Rasterizr.Pipeline.InputAssembler
 				.Select(x => new VertexBufferIndex(x, startVertexLocation))
 				.ToArray();
 
-			return GetVertexStreamInternal(vertexCount, 0, startVertexLocation, vertexBufferIndices);
+			return GetVertexStreamInternal(vertexShaderInputSignature, vertexCount, 0, startVertexLocation, vertexBufferIndices);
 		}
 
 		internal IEnumerable<InputAssemblerVertexOutput> GetVertexStreamIndexed(
+			InputSignatureChunk vertexShaderInputSignature,
 			int indexCount, 
 			int startIndexLocation, 
 			int baseVertexLocation)
@@ -92,10 +95,11 @@ namespace Rasterizr.Pipeline.InputAssembler
 				.Select(x => new IndexedVertexBufferIndex(_indexBufferBinding, startIndexLocation, x, baseVertexLocation))
 				.ToArray();
 
-			return GetVertexStreamInternal(indexCount, 0, startIndexLocation, vertexBufferIndices);
+			return GetVertexStreamInternal(vertexShaderInputSignature, indexCount, 0, startIndexLocation, vertexBufferIndices);
 		}
 
 		internal IEnumerable<InputAssemblerVertexOutput> GetVertexStreamInstanced(
+			InputSignatureChunk vertexShaderInputSignature,
 			int vertexCountPerInstance, 
 			int instanceCount, 
 			int startVertexLocation, 
@@ -121,7 +125,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 				foreach (var perVertexBufferIndex in perVertexBufferIndices)
 					perVertexBufferIndex.Reset();
 
-				foreach (var result in GetVertexStreamInternal(vertexCountPerInstance, i, startVertexLocation, vertexBufferIndices))
+				foreach (var result in GetVertexStreamInternal(vertexShaderInputSignature, vertexCountPerInstance, i, startVertexLocation, vertexBufferIndices))
 					yield return result;
 
 				foreach (var vertexBufferIndex in perInstanceBufferIndices)
@@ -130,6 +134,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 		}
 
 		internal IEnumerable<InputAssemblerVertexOutput> GetVertexStreamIndexedInstanced(
+			InputSignatureChunk vertexShaderInputSignature,
 			int indexCountPerInstance, 
 			int instanceCount, 
 			int startIndexLocation, 
@@ -140,24 +145,45 @@ namespace Rasterizr.Pipeline.InputAssembler
 		}
 
 		private IEnumerable<InputAssemblerVertexOutput> GetVertexStreamInternal(
-			int vertexCount, 
-			int instanceID,
-			int vertexID, 
+			InputSignatureChunk vertexShaderInputSignature,
+			int vertexCount, int instanceID, int vertexID, 
 			VertexBufferIndex[] vertexBufferIndices)
 		{
+			var inputParameterCount = vertexShaderInputSignature.Parameters.Count;
+			Dictionary<int, InputLayout.ProcessedInputElement> inputElementsKeyedByRegister = null;
+			if (InputLayout != null)
+				inputElementsKeyedByRegister = InputLayout.Elements.ToDictionary(x => x.RegisterIndex);
+
 			for (int i = 0; i < vertexCount; i++)
 			{
 				var output = new InputAssemblerVertexOutput();
 				output.VertexID = vertexID++;
 				output.InstanceID = instanceID;
-				output.Data = new Vector4[InputLayout.ShaderInputParameterCount];
+				output.Data = new Vector4[inputParameterCount];
 				
 				// TODO: Support non-32-bit formats.
-				foreach (var inputElement in InputLayout.Elements)
-					vertexBufferIndices[inputElement.InputSlot].GetData(
-						output.Data, inputElement.RegisterIndex,
-						inputElement.AlignedByteOffset,
-						FormatHelper.SizeOfInBytes(inputElement.Format));
+				foreach (var parameter in vertexShaderInputSignature.Parameters)
+				{
+					switch (parameter.SystemValueType)
+					{
+						case Name.Undefined:
+						case Name.Position:
+							if (inputElementsKeyedByRegister == null)
+								throw new Exception("InputLayout must be set in order to use these system value types.");
+							var inputElement = inputElementsKeyedByRegister[(int) parameter.Register];
+							vertexBufferIndices[inputElement.InputSlot].GetData(
+								output.Data, inputElement.RegisterIndex,
+								inputElement.AlignedByteOffset,
+								FormatHelper.SizeOfInBytes(inputElement.Format));
+							break;
+						case Name.VertexID:
+							output.Data[parameter.Register] = new Vector4(output.VertexID, 0, 0, 0);
+							break;
+						case Name.InstanceID:
+							output.Data[parameter.Register] = new Vector4(output.InstanceID, 0, 0, 0);
+							break;
+					}
+				}
 
 				yield return output;
 

@@ -82,20 +82,20 @@ namespace Rasterizr
 		public void Draw(int vertexCount, int startVertexLocation)
 		{
 			_device.Loggers.BeginOperation(OperationType.DeviceContextDraw, vertexCount, startVertexLocation);
-			DrawInternal(_inputAssembler.GetVertexStream(vertexCount, startVertexLocation));
+			DrawInternal(_inputAssembler.GetVertexStream(_vertexShader.Shader.Bytecode.InputSignature, vertexCount, startVertexLocation));
 		}
 
 		public void DrawIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
 		{
 			_device.Loggers.BeginOperation(OperationType.DeviceContextDrawIndexed, indexCount, startIndexLocation, baseVertexLocation);
-			DrawInternal(_inputAssembler.GetVertexStreamIndexed(indexCount, startIndexLocation, baseVertexLocation));
+			DrawInternal(_inputAssembler.GetVertexStreamIndexed(_vertexShader.Shader.Bytecode.InputSignature, indexCount, startIndexLocation, baseVertexLocation));
 		}
 
 		public void DrawInstanced(int vertexCountPerInstance, int instanceCount, int startVertexLocation, int startInstanceLocation)
 		{
 			_device.Loggers.BeginOperation(OperationType.DeviceContextDrawInstanced, vertexCountPerInstance,
 				instanceCount, startVertexLocation, startInstanceLocation);
-			DrawInternal(_inputAssembler.GetVertexStreamInstanced(vertexCountPerInstance,
+			DrawInternal(_inputAssembler.GetVertexStreamInstanced(_vertexShader.Shader.Bytecode.InputSignature, vertexCountPerInstance,
 				instanceCount, startVertexLocation, startInstanceLocation));
 		}
 
