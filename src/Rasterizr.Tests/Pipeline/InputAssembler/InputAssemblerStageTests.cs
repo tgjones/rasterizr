@@ -413,55 +413,6 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 		}
 
 		[Test]
-		public void CanGetVertexStreamWithNoBuffersBound()
-		{
-			// Arrange.
-			var device = new Device();
-			var inputAssembler = new InputAssemblerStage(device);
-			inputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-			var inputSignature = new InputSignatureChunk
-			{
-				Parameters =
-			    {
-			        new SignatureParameterDescription("SV_VertexID", 0, Name.VertexID, RegisterComponentType.UInt32,
-			            0, ComponentMask.X, ComponentMask.X),
-					new SignatureParameterDescription("SV_InstanceID", 0, Name.InstanceID, RegisterComponentType.UInt32,
-			            1, ComponentMask.X, ComponentMask.X),
-			    }
-			};
-
-			// Act.
-			var vertexStream = inputAssembler.GetVertexStream(inputSignature, 3, 0).ToList();
-
-			// Assert.
-			Assert.That(vertexStream, Has.Count.EqualTo(3));
-
-			Assert.That(vertexStream[0].InstanceID, Is.EqualTo(0));
-			Assert.That(vertexStream[0].VertexID, Is.EqualTo(0));
-			Assert.That(vertexStream[0].Data, Is.EqualTo(new[]
-				{
-					new Vector4(0.0f, 0, 0, 0),
-					new Vector4(0.0f, 0, 0, 0)
-				}));
-
-			Assert.That(vertexStream[1].InstanceID, Is.EqualTo(0));
-			Assert.That(vertexStream[1].VertexID, Is.EqualTo(1));
-			Assert.That(vertexStream[1].Data, Is.EqualTo(new[]
-				{
-					new Vector4(1.0f, 0, 0, 0),
-					new Vector4(0.0f, 0, 0, 0)
-				}));
-
-			Assert.That(vertexStream[2].InstanceID, Is.EqualTo(0));
-			Assert.That(vertexStream[2].VertexID, Is.EqualTo(2));
-			Assert.That(vertexStream[2].Data, Is.EqualTo(new[]
-				{
-					new Vector4(2.0f, 0, 0, 0),
-					new Vector4(0.0f, 0, 0, 0)
-				}));
-		}
-
-		[Test]
 		public void CanGetVertexStreamForTriangleListWithNoBuffersBound()
 		{
 			// Arrange.
