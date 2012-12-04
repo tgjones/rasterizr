@@ -28,10 +28,22 @@ namespace Rasterizr.Pipeline.InputAssembler
 		}
 
 		internal InputLayout(Device device, InputElement[] elements, byte[] shaderBytecodeWithInputSignature)
+			: this(device, elements, BytecodeContainer.Parse(shaderBytecodeWithInputSignature).InputSignature)
+		{
+			
+		}
+
+		/// <summary>
+		/// Only used in unit tests.
+		/// </summary>
+		/// <param name="device"></param>
+		/// <param name="elements"></param>
+		/// <param name="inputSignature"></param>
+		internal InputLayout(Device device, InputElement[] elements, InputSignatureChunk inputSignature)
 			: base(device)
 		{
 			// TODO: Verify that shader bytecode matches input elements.
-			_inputSignature = BytecodeContainer.Parse(shaderBytecodeWithInputSignature).InputSignature;
+			_inputSignature = inputSignature;
 			_elements = ProcessElements(elements);
 			_slots = ProcessSlots(elements);
 		}
@@ -49,7 +61,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 
 				result[i] = new ProcessedInputElement
 				{
-					RegisterIndex = (int) _inputSignature.Parameters.FindRegister(element.SemanticName, (uint) element.SemanticIndex),
+					RegisterIndex = (int)_inputSignature.Parameters.FindRegister(element.SemanticName, (uint)element.SemanticIndex),
 					Format = element.Format,
 					InputSlot = element.InputSlot,
 					AlignedByteOffset = slotOffsets[element.InputSlot],

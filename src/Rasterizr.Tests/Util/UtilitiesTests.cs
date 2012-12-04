@@ -65,7 +65,7 @@ namespace Rasterizr.Tests.Util
 
 			// Act.
 			var result = new TestStruct[2];
-			Utilities.FromByteArray(result, 0, byteArray, 0, 2);
+			Utilities.FromByteArray(result, 0, byteArray, 0, 2 * Utilities.SizeOf<TestStruct>());
 
 			// Assert.
 			Assert.That(result, Is.EqualTo(structArray));
