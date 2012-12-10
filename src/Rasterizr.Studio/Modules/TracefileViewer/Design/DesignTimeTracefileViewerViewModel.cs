@@ -8,6 +8,8 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.Design
 		public DesignTimeTracefileViewerViewModel()
 			: base("test.trace", new DesignTimeTracefile())
 		{
+			HasHoverPixel = true;
+			HasSelectedPixel = true;
 		}
 	}
 }

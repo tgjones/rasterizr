@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
+using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
@@ -20,7 +21,10 @@ namespace Rasterizr.Studio.Modules.TracefileViewer
 			using (var reader = new StreamReader(File.OpenRead(path)))
 			{
 				var tracefile = Tracefile.FromTextReader(reader);
-				return new TracefileViewerViewModel(path, tracefile);
+				var result = new TracefileViewerViewModel(path, tracefile);
+				IoC.BuildUp(result);
+				result.SelectedFrame = result.Frames[0];
+				return result;
 			}
 		}
 	}

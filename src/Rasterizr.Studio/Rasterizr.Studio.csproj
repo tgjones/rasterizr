@@ -80,7 +80,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Controls\NearestNeighborImage.cs" />
     <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
+    <Compile Include="Framework\Controls\ZoomBorder.cs" />
     <Compile Include="Framework\Converters\Color4FToBrushConverter.cs" />
     <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeSelectionService.cs" />
     <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeTracefile.cs" />
@@ -161,6 +163,10 @@
     <ProjectReference Include="..\Rasterizr.Diagnostics.Logging\Rasterizr.Diagnostics.Logging.csproj">
       <Project>{AF234621-D615-499B-803B-E60586283509}</Project>
       <Name>Rasterizr.Diagnostics.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rasterizr.Platform.Wpf\Rasterizr.Platform.Wpf.csproj">
+      <Project>{4633E75B-1C03-4588-BD29-8BE9A111AD1A}</Project>
+      <Name>Rasterizr.Platform.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rasterizr\Rasterizr.csproj">
       <Project>{5975A920-5CA3-4187-824A-1804A1ACB6D2}</Project>

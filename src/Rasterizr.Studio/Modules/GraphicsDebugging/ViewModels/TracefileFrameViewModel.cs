@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
+using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
+using Rasterizr.Platform.Wpf;
 
 namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 {
@@ -40,7 +42,14 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 
 			Task.Factory.StartNew(() =>
 			{
-				// TODO: Generate image.
+				WpfSwapChain swapChain = null;
+				var replayer = new Replayer(frame, (d, desc) =>
+				{
+					Execute.OnUIThread(() => swapChain = new WpfSwapChain(d, desc.Width, desc.Height));
+					return swapChain;
+				});
+				replayer.Replay();
+				Image = swapChain.Bitmap;
 			});
 		}
 	}

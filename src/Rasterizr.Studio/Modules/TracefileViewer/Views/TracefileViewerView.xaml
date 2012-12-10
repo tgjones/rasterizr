@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="clr-namespace:Rasterizr.Studio.Modules.TracefileViewer.Design"
+             xmlns:local="clr-namespace:Rasterizr.Studio.Framework.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance Type={x:Type dd:DesignTimeTracefileViewerViewModel}, IsDesignTimeCreatable=True}"
@@ -12,7 +13,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="150" />
+			<RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+		<local:ZoomBorder x:Name="ZoomBorder" ClipToBounds="True">
+			<local:NearestNeighborImage x:Name="FrameImage"
+										Source="{Binding SelectedFrame.Image}" 
+										Stretch="None"
+										MouseMove="OnFrameImageMouseMove"
+										MouseDown="OnFrameImageMouseDown"
+										MouseLeave="OnFrameImageMouseLeave" />
+		</local:ZoomBorder>
         <Expander Grid.Row="1" Header="Frame List" IsExpanded="True">
             <ListBox ItemsSource="{Binding Frames}" SelectedItem="{Binding SelectedFrame}">
                 <ListBox.ItemsPanel>
@@ -22,10 +32,36 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-						<TextBlock Text="{Binding Number}" />
+						<Image Source="{Binding Image}" ToolTip="{Binding Number, StringFormat='Frame {0}'}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Expander>
+		<StatusBar Grid.Row="2">
+			<StatusBar.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+					</Grid>
+				</ItemsPanelTemplate>
+			</StatusBar.ItemsPanel>
+			<StatusBarItem Grid.Column="0">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock>Zoom:&#160;</TextBlock>
+					<TextBlock Text="{Binding Zoom, ElementName=ZoomBorder}" />
+					<TextBlock>%</TextBlock>
+				</StackPanel>
+			</StatusBarItem>
+			<StatusBarItem Grid.Column="1"
+						   Visibility="{Binding HasHoverPixel, Converter={StaticResource BooleanToVisibilityConverter}}"
+						   Content="{Binding HoverPixelDescription, FallbackValue='Hover pixel'}" />
+			<StatusBarItem Grid.Column="2" HorizontalAlignment="Right"
+						   Visibility="{Binding HasSelectedPixel, Converter={StaticResource BooleanToVisibilityConverter}}"
+						   Content="{Binding SelectedPixelDescription, FallbackValue='Selected pixel'}" />
+		</StatusBar>
     </Grid>
 </UserControl>
