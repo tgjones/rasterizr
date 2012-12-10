@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Windows.Media;
-using Rasterizr.Math;
-using Color = Rasterizr.Math.Color4;
+using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels;
 
 namespace Rasterizr.Studio.Framework.Converters
 {
-	public class Color4FToBrushConverter : IValueConverter
+	public class ColorToBrushConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
-			var color = ((Color4F) value).ToColor4();
-			return new SolidColorBrush(System.Windows.Media.Color.FromArgb(
+			if (value == null)
+				return null;
+
+			var color = ((ColorViewModel) value).Color.ToColor4();
+			return new SolidColorBrush(Color.FromArgb(
 				color.A, color.R, color.G, color.B));
 		}
 

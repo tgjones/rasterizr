@@ -20,8 +20,8 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 			get { return PaneLocation.Left; }
 		}
 
-		private Color4F _finalFrameBufferColor;
-		public Color4F FinalFrameBufferColor
+		private ColorViewModel _finalFrameBufferColor;
+		public ColorViewModel FinalFrameBufferColor
 		{
 			get { return _finalFrameBufferColor; }
 			set
@@ -49,7 +49,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 			_pixelEvents.Clear();
 			
 			// TODO: Fire async request to get pixel history.
-			FinalFrameBufferColor = new Color4F(0, 1, 0, 1);
+			FinalFrameBufferColor = new ColorViewModel(new Color4F(0, 1, 0, 1));
 		}
 	}
 }

@@ -83,7 +83,7 @@
     <Compile Include="Framework\Controls\NearestNeighborImage.cs" />
     <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
     <Compile Include="Framework\Controls\ZoomBorder.cs" />
-    <Compile Include="Framework\Converters\Color4FToBrushConverter.cs" />
+    <Compile Include="Framework\Converters\ColorToBrushConverter.cs" />
     <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeSelectionService.cs" />
     <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeTracefile.cs" />
     <Compile Include="Modules\GraphicsDebugging\ISelectionService.cs" />
@@ -102,6 +102,7 @@
       <DependentUpon>GraphicsEventListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeGraphicsPixelHistoryViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\ViewModels\ColorViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\GraphicsPixelHistoryViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\PixelHistoryEventViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Views\GraphicsPixelHistoryView.xaml.cs">

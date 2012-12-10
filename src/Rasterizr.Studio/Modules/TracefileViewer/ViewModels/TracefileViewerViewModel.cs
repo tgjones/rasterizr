@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using Caliburn.Micro;
 using Gemini.Framework;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Math;
@@ -85,6 +84,7 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 				_selectedPixel = value;
 				NotifyOfPropertyChange(() => SelectedPixelDescription);
 				HasSelectedPixel = true;
+				_selectionService.SelectedPixel = value;
 			}
 		}
 

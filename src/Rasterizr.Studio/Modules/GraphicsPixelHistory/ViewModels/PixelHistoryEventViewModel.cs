@@ -6,10 +6,10 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
 	public class PixelHistoryEventViewModel : PropertyChangedBase
 	{
-		private readonly Color4F _color;
+		private readonly ColorViewModel _color;
 		private readonly TracefileEventViewModel _event;
 
-		public Color4F Color
+		public ColorViewModel Color
 		{
 			get { return _color; }
 		}
@@ -19,7 +19,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 			get { return _event; }
 		}
 
-		public PixelHistoryEventViewModel(Color4F color, TracefileEventViewModel @event)
+		public PixelHistoryEventViewModel(ColorViewModel color, TracefileEventViewModel @event)
 		{
 			_color = color;
 			_event = @event;

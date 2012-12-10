@@ -9,7 +9,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.Design
 		public DesignTimeGraphicsPixelHistoryViewModel()
 			: base(new DesignTimeSelectionService())
 		{
-			FinalFrameBufferColor = new Color4F(0, 0, 1, 1);
+			FinalFrameBufferColor = new ColorViewModel(new Color4F(0, 0, 1, 1));
 		}
 	}
 }
