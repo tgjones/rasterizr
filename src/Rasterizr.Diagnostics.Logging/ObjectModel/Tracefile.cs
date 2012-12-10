@@ -40,6 +40,7 @@ namespace Rasterizr.Diagnostics.Logging.ObjectModel
 		public void Save(TextWriter textWriter)
 		{
 			textWriter.Write(JsonConvert.SerializeObject(this, SerializerSettings));
+			textWriter.Flush();
 		}
 	}
 }

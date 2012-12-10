@@ -1,0 +1,209 @@
+{
+  "Frames": [
+    {
+      "Number": 1,
+      "Events": [
+        {
+          "Number": 1,
+          "OperationType": 12,
+          "Arguments": []
+        },
+        {
+          "Number": 2,
+          "OperationType": 24,
+          "Arguments": [
+            {
+              "$type": "Rasterizr.SwapChainDescription, Rasterizr",
+              "Width": 200,
+              "Height": 100,
+              "Format": 30,
+              "SampleDescription": {
+                "Count": 1
+              }
+            }
+          ]
+        },
+        {
+          "Number": 3,
+          "OperationType": 23,
+          "Arguments": [
+            3,
+            null
+          ]
+        },
+        {
+          "Number": 4,
+          "OperationType": 6,
+          "Arguments": [
+            {
+              "$type": "System.Byte[], mscorlib",
+              "$value": "RFhCQ76ruhQsaV+BiczfSPuffrABAAAAHAIAAAUAAAA0AAAAjAAAANwAAAAwAQAAoAEAAFJERUZQAAAAAAAAAAAAAAAAAAAAHAAAAAAE/v8AAQAAHAAAAE1pY3Jvc29mdCAoUikgSExTTCBTaGFkZXIgQ29tcGlsZXIgOS4yOS45NTIuMzExMQCrq6tJU0dOSAAAAAIAAAAIAAAAOAAAAAAAAAAAAAAAAwAAAAAAAAAPDwAAQQAAAAAAAAAAAAAAAwAAAAEAAAAPDwAAUE9TSVRJT04AQ09MT1IAq09TR05MAAAAAgAAAAgAAAA4AAAAAAAAAAEAAAADAAAAAAAAAA8AAABEAAAAAAAAAAAAAAADAAAAAQAAAA8AAABTVl9QT1NJVElPTgBDT0xPUgCrq1NIRFJoAAAAQAABABoAAABfAAAD8hAQAAAAAABfAAAD8hAQAAEAAABnAAAE8iAQAAAAAAABAAAAZQAAA/IgEAABAAAANgAABfIgEAAAAAAARh4QAAAAAAA2AAAF8iAQAAEAAABGHhAAAQAAAD4AAAFTVEFUdAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            }
+          ]
+        },
+        {
+          "Number": 5,
+          "OperationType": 5,
+          "Arguments": [
+            {
+              "$type": "System.Byte[], mscorlib",
+              "$value": "RFhCQ5YYYsHfuRkLaQPHigpdUTIBAAAA0AEAAAUAAAA0AAAAjAAAAOAAAAAUAQAAVAEAAFJERUZQAAAAAAAAAAAAAAAAAAAAHAAAAAAE//8AAQAAHAAAAE1pY3Jvc29mdCAoUikgSExTTCBTaGFkZXIgQ29tcGlsZXIgOS4yOS45NTIuMzExMQCrq6tJU0dOTAAAAAIAAAAIAAAAOAAAAAAAAAABAAAAAwAAAAAAAAAPAAAARAAAAAAAAAAAAAAAAwAAAAEAAAAPDwAAU1ZfUE9TSVRJT04AQ09MT1IAq6tPU0dOLAAAAAEAAAAIAAAAIAAAAAAAAAAAAAAAAwAAAAAAAAAPAAAAU1ZfVGFyZ2V0AKurU0hEUjgAAABAAAAADgAAAGIQAAPyEBAAAQAAAGUAAAPyIBAAAAAAADYAAAXyIBAAAAAAAEYeEAABAAAAPgAAAVNUQVR0AAAAAgAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+            }
+          ]
+        },
+        {
+          "Number": 6,
+          "OperationType": 18,
+          "Arguments": [
+            {
+              "$type": "Rasterizr.Pipeline.InputAssembler.InputElement[], Rasterizr",
+              "$values": [
+                {
+                  "SemanticName": "POSITION",
+                  "SemanticIndex": 0,
+                  "Format": 2,
+                  "InputSlot": 0,
+                  "AlignedByteOffset": -1,
+                  "InputSlotClass": 0,
+                  "InstanceDataStepRate": 0
+                },
+                {
+                  "SemanticName": "COLOR",
+                  "SemanticIndex": 0,
+                  "Format": 2,
+                  "InputSlot": 0,
+                  "AlignedByteOffset": -1,
+                  "InputSlotClass": 0,
+                  "InstanceDataStepRate": 0
+                }
+              ]
+            },
+            {
+              "$type": "System.Byte[], mscorlib",
+              "$value": "RFhCQ76ruhQsaV+BiczfSPuffrABAAAAHAIAAAUAAAA0AAAAjAAAANwAAAAwAQAAoAEAAFJERUZQAAAAAAAAAAAAAAAAAAAAHAAAAAAE/v8AAQAAHAAAAE1pY3Jvc29mdCAoUikgSExTTCBTaGFkZXIgQ29tcGlsZXIgOS4yOS45NTIuMzExMQCrq6tJU0dOSAAAAAIAAAAIAAAAOAAAAAAAAAAAAAAAAwAAAAAAAAAPDwAAQQAAAAAAAAAAAAAAAwAAAAEAAAAPDwAAUE9TSVRJT04AQ09MT1IAq09TR05MAAAAAgAAAAgAAAA4AAAAAAAAAAEAAAADAAAAAAAAAA8AAABEAAAAAAAAAAAAAAADAAAAAQAAAA8AAABTVl9QT1NJVElPTgBDT0xPUgCrq1NIRFJoAAAAQAABABoAAABfAAAD8hAQAAAAAABfAAAD8hAQAAEAAABnAAAE8iAQAAAAAAABAAAAZQAAA/IgEAABAAAANgAABfIgEAAAAAAARh4QAAAAAAA2AAAF8iAQAAEAAABGHhAAAQAAAD4AAAFTVEFUdAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            }
+          ]
+        },
+        {
+          "Number": 7,
+          "OperationType": 1,
+          "Arguments": [
+            {
+              "$type": "Rasterizr.Resources.BufferDescription, Rasterizr",
+              "SizeInBytes": 0,
+              "BindFlags": 1
+            },
+            {
+              "$type": "System.Byte[], mscorlib",
+              "$value": "AAAAAAAAAD8AAAA/AACAPwAAgD8AAAAAAAAAAAAAgD8AAAA/AAAAvwAAAD8AAIA/AAAAAAAAgD8AAAAAAACAPwAAAL8AAAC/AAAAPwAAgD8AAAAAAAAAAAAAgD8AAIA/"
+            }
+          ]
+        },
+        {
+          "Number": 8,
+          "OperationType": 15,
+          "Arguments": [
+            7
+          ]
+        },
+        {
+          "Number": 9,
+          "OperationType": 16,
+          "Arguments": [
+            4
+          ]
+        },
+        {
+          "Number": 10,
+          "OperationType": 17,
+          "Arguments": [
+            0,
+            {
+              "$type": "Rasterizr.Diagnostics.Logging.ObjectModel.SerializedVertexBufferBinding[], Rasterizr.Diagnostics.Logging",
+              "$values": [
+                {
+                  "Buffer": 8,
+                  "Offset": 0,
+                  "Stride": 32
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Number": 11,
+          "OperationType": 29,
+          "Arguments": [
+            5
+          ]
+        },
+        {
+          "Number": 12,
+          "OperationType": 21,
+          "Arguments": [
+            {
+              "$type": "Rasterizr.Pipeline.Rasterizer.Viewport[], Rasterizr",
+              "$values": [
+                {
+                  "TopLeftX": 0.0,
+                  "TopLeftY": 0.0,
+                  "Width": 200.0,
+                  "Height": 100.0,
+                  "MinDepth": 0.0,
+                  "MaxDepth": 1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Number": 13,
+          "OperationType": 20,
+          "Arguments": [
+            6
+          ]
+        },
+        {
+          "Number": 14,
+          "OperationType": 19,
+          "Arguments": [
+            null,
+            {
+              "$type": "Rasterizr.Diagnostics.Logging.ObjectModel.SerializedDeviceChildArray, Rasterizr.Diagnostics.Logging",
+              "IDs": [
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "Number": 15,
+          "OperationType": 8,
+          "Arguments": [
+            4,
+            {
+              "$type": "Rasterizr.Math.Color4F, Rasterizr",
+              "R": 0.0,
+              "G": 0.0,
+              "B": 0.0,
+              "A": 1.0
+            }
+          ]
+        },
+        {
+          "Number": 16,
+          "OperationType": 9,
+          "Arguments": [
+            3,
+            0
+          ]
+        },
+        {
+          "Number": 17,
+          "OperationType": 25,
+          "Arguments": []
+        }
+      ]
+    }
+  ]
+}
