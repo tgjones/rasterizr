@@ -44,7 +44,12 @@
     <Compile Include="Diagnostics\GraphicsLoggerCollection.cs" />
     <Compile Include="Diagnostics\OperationType.cs" />
     <Compile Include="Diagnostics\TextWriterGraphicsLogger.cs" />
+    <Compile Include="Math\Color3.cs" />
+    <Compile Include="Math\Color3F.cs" />
+    <Compile Include="Math\Color4.cs" />
+    <Compile Include="Math\Point.cs" />
     <Compile Include="Math\Vector2.cs" />
+    <Compile Include="Math\Vector3.cs" />
     <Compile Include="Math\Vector4.cs" />
     <Compile Include="Pipeline\CommonShaderStage.cs" />
     <Compile Include="Pipeline\GeometryShader\GeometryShader.cs" />

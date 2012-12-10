@@ -5,6 +5,11 @@ namespace Rasterizr.Math
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Vector2
 	{
+		public static int SizeInBytes
+		{
+			get { return sizeof(float) * 2; }
+		}
+
 		public float X;
 		public float Y;
 

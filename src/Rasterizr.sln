@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr", "Rasterizr\Rasterizr.csproj", "{5975A920-5CA3-4187-824A-1804A1ACB6D2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0E390F27-EBFB-43F9-AFD8-1E49E5BE4450} = {0E390F27-EBFB-43F9-AFD8-1E49E5BE4450}
@@ -37,6 +37,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Samples.RotatingCube", "Rasterizr.Samples.RotatingCube\Rasterizr.Samples.RotatingCube.csproj", "{DCDE50AE-692D-4FBA-B15A-7666D426D22B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Diagnostics.Logging", "Rasterizr.Diagnostics.Logging\Rasterizr.Diagnostics.Logging.csproj", "{AF234621-D615-499B-803B-E60586283509}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Studio", "Rasterizr.Studio\Rasterizr.Studio.csproj", "{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Toolkit", "Rasterizr.Toolkit\Rasterizr.Toolkit.csproj", "{C7886048-659E-44CA-8921-2416CCE3A795}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -208,6 +212,26 @@ Global
 		{AF234621-D615-499B-803B-E60586283509}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AF234621-D615-499B-803B-E60586283509}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AF234621-D615-499B-803B-E60586283509}.Release|x86.ActiveCfg = Release|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{32896243-BB1D-4A46-B2CC-D50E69A0FF3C}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C7886048-659E-44CA-8921-2416CCE3A795}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

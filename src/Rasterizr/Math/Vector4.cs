@@ -3,9 +3,14 @@ using SlimShader;
 
 namespace Rasterizr.Math
 {
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	[StructLayout(LayoutKind.Sequential)]
 	public struct Vector4
 	{
+		public static int SizeInBytes
+		{
+			get { return sizeof(float) * 4; }
+		}
+
 		public float X;
 		public float Y;
 		public float Z;

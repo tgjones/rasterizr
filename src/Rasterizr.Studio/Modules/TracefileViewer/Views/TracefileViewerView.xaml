@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Rasterizr.Studio.Modules.TracefileViewer.Views.TracefileViewerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dd="clr-namespace:Rasterizr.Studio.Modules.TracefileViewer.Design"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600"
+             d:DataContext="{d:DesignInstance Type={x:Type dd:DesignTimeTracefileViewerViewModel}, IsDesignTimeCreatable=True}"
+             Background="{x:Static SystemColors.ControlLightLightBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="150" />
+        </Grid.RowDefinitions>
+        <Expander Grid.Row="1" Header="Frame List" IsExpanded="True">
+            <ListBox ItemsSource="{Binding Frames}" SelectedItem="{Binding SelectedFrame}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+						<TextBlock Text="{Binding Number}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Expander>
+    </Grid>
+</UserControl>
