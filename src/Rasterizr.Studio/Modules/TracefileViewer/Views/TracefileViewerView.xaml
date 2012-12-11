@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance Type={x:Type dd:DesignTimeTracefileViewerViewModel}, IsDesignTimeCreatable=True}"
-             Background="{x:Static SystemColors.ControlLightLightBrush}">
+             Background="{x:Static SystemColors.ControlLightBrush}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

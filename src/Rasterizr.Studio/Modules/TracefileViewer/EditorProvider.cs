@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
+using Rasterizr.Studio.Modules.GraphicsDebugging;
 using Rasterizr.Studio.Modules.TracefileViewer.ViewModels;
 
 namespace Rasterizr.Studio.Modules.TracefileViewer
@@ -11,6 +12,14 @@ namespace Rasterizr.Studio.Modules.TracefileViewer
 	[Export(typeof(IEditorProvider))]
 	public class EditorProvider : IEditorProvider
 	{
+		private readonly ISelectionService _selectionService;
+
+		[ImportingConstructor]
+		public EditorProvider(ISelectionService selectionService)
+		{
+			_selectionService = selectionService;
+		}
+
 		public bool Handles(string path)
 		{
 			return Path.GetExtension(path).ToLower() == ".rlog";
@@ -21,8 +30,7 @@ namespace Rasterizr.Studio.Modules.TracefileViewer
 			using (var reader = new StreamReader(File.OpenRead(path)))
 			{
 				var tracefile = Tracefile.FromTextReader(reader);
-				var result = new TracefileViewerViewModel(path, tracefile);
-				IoC.BuildUp(result);
+				var result = new TracefileViewerViewModel(_selectionService, path, tracefile);
 				result.SelectedFrame = result.Frames[0];
 				return result;
 			}

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
@@ -27,7 +28,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 
 			// Act.
 			RawSwapChain swapChain = null;
-			var replayer = new Replayer(tracefile.Frames[0], (d, desc) =>
+			var replayer = new Replayer(tracefile.Frames[0], tracefile.Frames[0].Events.Last(), (d, desc) =>
 			{
 				swapChain = new RawSwapChain(d, desc.Width, desc.Height);
 				return swapChain;

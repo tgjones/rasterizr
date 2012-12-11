@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -9,8 +10,9 @@ using Rasterizr.Platform.Wpf;
 
 namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 {
-	public class TracefileFrameViewModel : PropertyChangedBase
+	public class TracefileFrameViewModel : PropertyChangedBase, IDisposable
 	{
+		private readonly ISelectionService _selectionService;
 		private readonly TracefileFrame _frame;
 		private readonly IList<TracefileEventViewModel> _events;
 
@@ -35,15 +37,26 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 			get { return _events; }
 		}
 
-		public TracefileFrameViewModel(TracefileFrame frame)
+		public TracefileFrameViewModel(ISelectionService selectionService, TracefileFrame frame)
 		{
+			_selectionService = selectionService;
 			_frame = frame;
 			_events = _frame.Events.Select(x => new TracefileEventViewModel(x)).ToList();
 
+			_selectionService.SelectedEventChanged += OnSelectedEventChanged;
+		}
+
+		private void OnSelectedEventChanged(object sender, TracefileEventChangedEventArgs e)
+		{
+			RefreshImage();
+		}
+
+		private void RefreshImage()
+		{
 			Task.Factory.StartNew(() =>
 			{
 				WpfSwapChain swapChain = null;
-				var replayer = new Replayer(frame, (d, desc) =>
+				var replayer = new Replayer(_frame, _selectionService.SelectedEvent.Model, (d, desc) =>
 				{
 					Execute.OnUIThread(() => swapChain = new WpfSwapChain(d, desc.Width, desc.Height));
 					return swapChain;
@@ -51,6 +64,11 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 				replayer.Replay();
 				Image = swapChain.Bitmap;
 			});
+		}
+
+		public void Dispose()
+		{
+			_selectionService.SelectedEventChanged -= OnSelectedEventChanged;
 		}
 	}
 }

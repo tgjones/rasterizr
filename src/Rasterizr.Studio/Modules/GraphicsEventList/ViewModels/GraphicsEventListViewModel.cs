@@ -28,13 +28,11 @@ namespace Rasterizr.Studio.Modules.GraphicsEventList.ViewModels
 			get { return _events; }
 		}
 
-		private TracefileEventViewModel _selectedEvent;
 		public TracefileEventViewModel SelectedEvent
 		{
-			get { return _selectedEvent; }
+			get { return _selectionService.SelectedEvent; }
 			set
 			{
-				_selectedEvent = value;
 				_selectionService.SelectedEvent = value;
 				NotifyOfPropertyChange(() => SelectedEvent);
 			}
@@ -46,12 +44,14 @@ namespace Rasterizr.Studio.Modules.GraphicsEventList.ViewModels
 			_selectionService = selectionService;
 			_events = new BindableCollection<TracefileEventViewModel>();
 			selectionService.SelectedFrameChanged += OnSelectedFrameChanged;
+			OnSelectedFrameChanged(this, new TracefileFrameChangedEventArgs(selectionService.SelectedFrame));
 		}
 
 		private void OnSelectedFrameChanged(object sender, TracefileFrameChangedEventArgs e)
 		{
 			_events.Clear();
-			_events.AddRange(e.TracefileFrameViewModel.Events);
+			if (e.TracefileFrameViewModel != null)
+				_events.AddRange(e.TracefileFrameViewModel.Events);
 		}
 	}
 }

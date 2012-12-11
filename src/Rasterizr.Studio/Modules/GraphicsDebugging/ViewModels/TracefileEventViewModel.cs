@@ -8,6 +8,11 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 	{
 		private readonly TracefileEvent _tracefileEvent;
 
+		internal TracefileEvent Model
+		{
+			get { return _tracefileEvent; }
+		}
+
 		public int Number
 		{
 			get { return _tracefileEvent.Number; }

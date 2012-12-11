@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type={x:Type dd:DesignTimeGraphicsEventListViewModel}, IsDesignTimeCreatable=True}">
     <Grid>
-        <ListBox ItemsSource="{Binding Events}">
+        <ListBox ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

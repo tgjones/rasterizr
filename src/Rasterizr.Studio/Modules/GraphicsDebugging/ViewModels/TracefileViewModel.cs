@@ -15,10 +15,10 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 			get { return _frames; }
 		}
 
-		public TracefileViewModel(Tracefile tracefile)
+		public TracefileViewModel(ISelectionService selectionService, Tracefile tracefile)
 		{
 			_tracefile = tracefile;
-			_frames = _tracefile.Frames.Select(x => new TracefileFrameViewModel(x)).ToList();
+			_frames = _tracefile.Frames.Select(x => new TracefileFrameViewModel(selectionService, x)).ToList();
 		}
 	}
 }

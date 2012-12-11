@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Linq;
 using Rasterizr.Math;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 
@@ -22,7 +23,9 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging
 			set
 			{
 				_selectedFrame = value;
+				_selectedEvent = value.Events.Last();
 				OnSelectedFrameChanged(new TracefileFrameChangedEventArgs(value));
+				OnSelectedEventChanged(new TracefileEventChangedEventArgs(_selectedEvent));
 			}
 		}
 

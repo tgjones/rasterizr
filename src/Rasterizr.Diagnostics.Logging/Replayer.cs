@@ -15,20 +15,24 @@ namespace Rasterizr.Diagnostics.Logging
 	public class Replayer
 	{
 		private readonly TracefileFrame _frame;
+		private readonly TracefileEvent _lastEvent;
 		private readonly Func<Device, SwapChainDescription, SwapChain> _createSwapChainCallback;
 
 		private SwapChain _swapChain;
 		private Device _device;
 		private DeviceContext _deviceContext;
 
-		public Replayer(TracefileFrame frame, Func<Device, SwapChainDescription, SwapChain> createSwapChainCallback)
+		public Replayer(TracefileFrame frame, TracefileEvent lastEvent, Func<Device, SwapChainDescription, SwapChain> createSwapChainCallback)
 		{
 			_frame = frame;
+			_lastEvent = lastEvent;
 			_createSwapChainCallback = createSwapChainCallback;
 		}
 
 		public void Replay()
 		{
+			bool presented = false;
+
 			foreach (var @event in _frame.Events)
 			{
 				var args = @event.Arguments;
@@ -117,6 +121,7 @@ namespace Rasterizr.Diagnostics.Logging
 						break;
 					case OperationType.SwapChainPresent:
 						_swapChain.Present();
+						presented = true;
 						break;
 					case OperationType.CreateTexture2D:
 						_device.CreateTexture2D(args.Get<Texture2DDescription>(0));
@@ -130,7 +135,13 @@ namespace Rasterizr.Diagnostics.Logging
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
+
+				if (@event == _lastEvent)
+					break;
 			}
+
+			if (!presented)
+				_swapChain.Present();
 		}
 	}
 }
