@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Math;
@@ -22,11 +23,19 @@ namespace Rasterizr.Diagnostics.Logging
 		private Device _device;
 		private DeviceContext _deviceContext;
 
+		private readonly TracefileGraphicsLogger _logger;
+
+		public TracefileGraphicsLogger Logger
+		{
+			get { return _logger; }
+		}
+
 		public Replayer(TracefileFrame frame, TracefileEvent lastEvent, Func<Device, SwapChainDescription, SwapChain> createSwapChainCallback)
 		{
 			_frame = frame;
 			_lastEvent = lastEvent;
 			_createSwapChainCallback = createSwapChainCallback;
+			_logger = new TracefileGraphicsLogger(new StringWriter());
 		}
 
 		public void Replay()
@@ -48,7 +57,7 @@ namespace Rasterizr.Diagnostics.Logging
 						_device.CreateDepthStencilState(args.Get<DepthStencilStateDescription>(0));
 						break;
 					case OperationType.DeviceCreate:
-						_device = new Device();
+						_device = new Device(_logger);
 						_deviceContext = _device.ImmediateContext;
 						break;
 					case OperationType.SwapChainCreate:

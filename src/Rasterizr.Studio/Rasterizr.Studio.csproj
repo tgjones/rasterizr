@@ -147,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Modules\GraphicsDebugging\Views\GraphicsDebuggingTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\GraphicsEventList\Views\GraphicsEventListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

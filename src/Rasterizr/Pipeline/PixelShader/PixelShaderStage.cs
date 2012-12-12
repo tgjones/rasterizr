@@ -47,23 +47,24 @@ namespace Rasterizr.Pipeline.PixelShader
 				VirtualMachine.Execute();
 
 				if (input.Fragment0.Samples.AnyCovered)
-					yield return GetPixel(input.Fragment0.X, input.Fragment0.Y, input.Fragment0.Samples, 0);
+					yield return GetPixel(input.Fragment0.X, input.Fragment0.Y, input.Fragment0.Samples, 0, input.Fragment0.PrimitiveID);
 				if (input.Fragment1.Samples.AnyCovered)
-					yield return GetPixel(input.Fragment1.X, input.Fragment1.Y, input.Fragment1.Samples, 1);
+					yield return GetPixel(input.Fragment1.X, input.Fragment1.Y, input.Fragment1.Samples, 1, input.Fragment1.PrimitiveID);
 				if (input.Fragment2.Samples.AnyCovered)
-					yield return GetPixel(input.Fragment2.X, input.Fragment2.Y, input.Fragment2.Samples, 2);
+					yield return GetPixel(input.Fragment2.X, input.Fragment2.Y, input.Fragment2.Samples, 2, input.Fragment2.PrimitiveID);
 				if (input.Fragment3.Samples.AnyCovered)
-					yield return GetPixel(input.Fragment3.X, input.Fragment3.Y, input.Fragment3.Samples, 3);
+					yield return GetPixel(input.Fragment3.X, input.Fragment3.Y, input.Fragment3.Samples, 3, input.Fragment3.PrimitiveID);
 			}
 		}
 
-		private Pixel GetPixel(int x, int y, Samples samples, int contextIndex)
+		private Pixel GetPixel(int x, int y, Samples samples, int contextIndex, int primitiveID)
 		{
 			var outputs = GetShaderOutputs(contextIndex);
 			return new Pixel(x, y)
 			{
 				Samples = samples,
-				Color = outputs[_outputColorRegister].ToColor4F()
+				Color = outputs[_outputColorRegister].ToColor4F(),
+				PrimitiveID = primitiveID
 			};
 		}
 	}

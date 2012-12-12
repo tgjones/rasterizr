@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Pipeline.InputAssembler;
@@ -60,6 +61,25 @@ namespace Rasterizr.Diagnostics.Logging
 					Stride = x.Stride
 				});
 			return arg;
+		}
+
+		protected override void AddPixelHistoryEvent(PixelHistoryEvent @event)
+		{
+			var lastEvent = _currentFrame.Events.Last();
+			lastEvent.PixelHistoryEvents.Add(@event);
+		}
+
+		public IEnumerable<TracefileEvent> GetEvents(int frame, int x, int y)
+		{
+			return _tracefile.Frames.Single(f => f.Number == frame).Events
+				.Where(e => e.PixelHistoryEvents.Any(phe => phe.Matches(x, y)))
+				.Select(e => new TracefileEvent
+				{
+					Arguments = e.Arguments,
+					Number = e.Number,
+					OperationType = e.OperationType,
+					PixelHistoryEvents = e.PixelHistoryEvents.Where(phe => phe.Matches(x, y)).ToList()
+				});
 		}
 
 		public void Flush()

@@ -38,5 +38,10 @@ namespace Rasterizr.Diagnostics
 			if (type == OperationType.SwapChainPresent)
 				_writtenBeginFrame = false;
 		}
+
+		protected internal override void AddPixelHistoryEvent(PixelHistoryEvent @event)
+		{
+			_writer.WriteLine("  - Pixel history event");
+		}
 	}
 }

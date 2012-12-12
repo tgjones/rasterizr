@@ -48,13 +48,13 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 				for (int x = startX; x <= screenBounds.MaxX; x += 2)
 				{
 					// First check whether any fragments in this quad are covered. If not, we don't
-					// need to any (expensive) interpolation of attributes.
+					// need to do any (expensive) interpolation of attributes.
 					var fragmentQuad = new FragmentQuad
 					{
-						Fragment0 = new Fragment(x, y, FragmentQuadLocation.TopLeft),
-						Fragment1 = new Fragment(x + 1, y, FragmentQuadLocation.TopRight),
-						Fragment2 = new Fragment(x, y + 1, FragmentQuadLocation.BottomLeft),
-						Fragment3 = new Fragment(x + 1, y + 1, FragmentQuadLocation.BottomRight)
+						Fragment0 = new Fragment(_primitive.PrimitiveID, x, y, FragmentQuadLocation.TopLeft),
+						Fragment1 = new Fragment(_primitive.PrimitiveID, x + 1, y, FragmentQuadLocation.TopRight),
+						Fragment2 = new Fragment(_primitive.PrimitiveID, x, y + 1, FragmentQuadLocation.BottomLeft),
+						Fragment3 = new Fragment(_primitive.PrimitiveID, x + 1, y + 1, FragmentQuadLocation.BottomRight)
 					};
 
 					if (IsMultiSamplingEnabled)

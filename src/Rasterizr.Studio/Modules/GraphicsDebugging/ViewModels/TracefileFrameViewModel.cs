@@ -16,6 +16,11 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 		private readonly TracefileFrame _frame;
 		private readonly IList<TracefileEventViewModel> _events;
 
+		internal TracefileFrame Model
+		{
+			get { return _frame; }
+		}
+
 		public int Number
 		{
 			get { return _frame.Number; }
@@ -47,11 +52,6 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 		}
 
 		private void OnSelectedEventChanged(object sender, TracefileEventChangedEventArgs e)
-		{
-			RefreshImage();
-		}
-
-		private void RefreshImage()
 		{
 			Task.Factory.StartNew(() =>
 			{

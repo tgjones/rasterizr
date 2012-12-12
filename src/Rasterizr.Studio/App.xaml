@@ -8,6 +8,7 @@
 				<ResourceDictionary>
 					<gemini:AppBootstrapper x:Key="bootstrapper" />
 				</ResourceDictionary>
+				<ResourceDictionary Source="Modules/GraphicsDebugging/Views/GraphicsDebuggingTemplates.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 		</ResourceDictionary>

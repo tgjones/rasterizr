@@ -56,15 +56,31 @@ namespace Rasterizr.Pipeline.OutputMerger
 					if (!pixel.Samples[sampleIndex].Covered)
 						continue;
 
+					var pixelHistoryEvent = new DrawEvent
+					{
+						PrimitiveID = pixel.PrimitiveID,
+						X = pixel.X,
+						Y = pixel.Y,
+						PixelShader = pixel.Color
+					};
+
 					float newDepth = pixel.Samples[sampleIndex].Depth;
 					if (_depthStencilView != null && !DepthStencilState.DepthTestPasses(newDepth, _depthStencilView[pixel.X, pixel.Y, sampleIndex]))
+					{
+						pixelHistoryEvent.ExclusionReason = PixelExclusionReason.FailedDepthTest;
+						_device.Loggers.AddPixelHistoryEvent(pixelHistoryEvent);
 						continue;
+					}
 
 					// Use blend state to calculate final color.
+					var previous = renderTarget[pixel.X, pixel.Y, sampleIndex];
 					Color4F finalColor = BlendState.DoBlend(renderTargetIndex, pixel.Color,
-						renderTarget[pixel.X, pixel.Y, sampleIndex],
-						BlendFactor);
+						previous, BlendFactor);
 					renderTarget[pixel.X, pixel.Y, sampleIndex] = finalColor;
+
+					pixelHistoryEvent.Previous = previous;
+					pixelHistoryEvent.Result = finalColor;
+					_device.Loggers.AddPixelHistoryEvent(pixelHistoryEvent);
 
 					if (_depthStencilView != null && DepthStencilState.Description.IsDepthEnabled)
 						_depthStencilView[pixel.X, pixel.Y, sampleIndex] = newDepth;

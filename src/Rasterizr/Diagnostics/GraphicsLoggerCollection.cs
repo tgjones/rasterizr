@@ -16,5 +16,11 @@ namespace Rasterizr.Diagnostics
 			foreach (var logger in this)
 				logger.BeginOperation(type, methodArguments);
 		}
+
+		internal void AddPixelHistoryEvent(PixelHistoryEvent @event)
+		{
+			foreach (var logger in this)
+				logger.AddPixelHistoryEvent(@event);
+		}
 	}
 }

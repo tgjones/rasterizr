@@ -1,28 +1,89 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Caliburn.Micro;
+using Rasterizr.Diagnostics;
+using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Math;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
-	public class PixelHistoryEventViewModel : PropertyChangedBase
+	public abstract class PixelHistoryEventViewModelBase : PropertyChangedBase
 	{
-		private readonly ColorViewModel _color;
-		private readonly TracefileEventViewModel _event;
+		
+	}
 
-		public ColorViewModel Color
+	public class SimplePixelHistoryEventViewModel : PixelHistoryEventViewModelBase
+	{
+		private readonly ColorViewModel _result;
+
+		public ColorViewModel Result
 		{
-			get { return _color; }
+			get { return _result; }
 		}
 
-		public TracefileEventViewModel Event
+		public SimplePixelHistoryEventViewModel(Color4F result)
 		{
-			get { return _event; }
+			_result = new ColorViewModel(result);
+		}
+	}
+
+	public class DrawPixelHistoryEventViewModel : PixelHistoryEventViewModelBase
+	{
+		private readonly DrawEvent _event;
+
+		public string Name
+		{
+			get { return string.Format("Triangle {0}", _event.PrimitiveID); }
 		}
 
-		public PixelHistoryEventViewModel(ColorViewModel color, TracefileEventViewModel @event)
+		public PixelExclusionReason ExclusionReason
 		{
-			_color = color;
+			get { return _event.ExclusionReason; }
+		}
+
+		public ColorViewModel Previous
+		{
+			get { return new ColorViewModel(_event.Previous); }
+		}
+
+		public ColorViewModel PixelShader
+		{
+			get { return new ColorViewModel(_event.PixelShader); }
+		}
+
+		public ColorViewModel Result
+		{
+			get { return new ColorViewModel(_event.Result); }
+		}
+
+		public DrawPixelHistoryEventViewModel(DrawEvent @event)
+		{
 			_event = @event;
+		}
+	}
+
+	public class PixelHistoryEventViewModel : TracefileEventViewModel
+	{
+		private readonly IEnumerable<PixelHistoryEventViewModelBase> _pixelHistoryEvents;
+
+		public IEnumerable<PixelHistoryEventViewModelBase> PixelHistoryEvents
+		{
+			get { return _pixelHistoryEvents; }
+		}
+
+		public PixelHistoryEventViewModel(TracefileEvent tracefileEvent)
+			: base(tracefileEvent)
+		{
+			_pixelHistoryEvents = tracefileEvent.PixelHistoryEvents.Select<PixelHistoryEvent, PixelHistoryEventViewModelBase>(x =>
+			{
+				if (x is ClearRenderTargetEvent)
+					return new SimplePixelHistoryEventViewModel(((ClearRenderTargetEvent) x).Result);
+				if (x is DrawEvent)
+					return new DrawPixelHistoryEventViewModel((DrawEvent) x);
+				throw new ArgumentOutOfRangeException();
+			});
 		}
 	}
 }

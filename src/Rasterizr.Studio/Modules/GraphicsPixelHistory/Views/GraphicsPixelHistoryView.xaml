@@ -52,12 +52,92 @@
 					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 				<Border Grid.Column="0"
-						CornerRadius="5" Background="{Binding FinalFrameBufferColor, FallbackValue=Red, Converter={StaticResource ColorToBrushConverter}}"
+						CornerRadius="5" 
+						Background="{Binding FinalFrameBufferColor, FallbackValue=Red, Converter={StaticResource ColorToBrushConverter}}"
 						Width="70" Height="70"
 						HorizontalAlignment="Left" />
-				<ContentPresenter Grid.Column="1"
-								  Content="{Binding FinalFrameBufferColor}" />
+				<ContentPresenter Grid.Column="1" Content="{Binding FinalFrameBufferColor}" />
 			</Grid>
 		</StackPanel>
+		<TreeView Grid.Row="1" ItemsSource="{Binding PixelEvents}">
+			<TreeView.Resources>
+				<HierarchicalDataTemplate DataType="{x:Type vm:PixelHistoryEventViewModel}" ItemsSource="{Binding PixelHistoryEvents}">
+					<ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource EventTemplate}" />
+				</HierarchicalDataTemplate>
+				<DataTemplate DataType="{x:Type vm:SimplePixelHistoryEventViewModel}">
+					<StackPanel Orientation="Vertical">
+						<Label Content="Result" />
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="55" />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+							<Border Grid.Column="0"
+								CornerRadius="5" 
+								Background="{Binding Result, FallbackValue=Red, Converter={StaticResource ColorToBrushConverter}}"
+								Width="50" Height="50"
+								HorizontalAlignment="Left" />
+							<ContentPresenter Grid.Column="1" Content="{Binding Result}" />
+						</Grid>
+					</StackPanel>
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type vm:DrawPixelHistoryEventViewModel}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<StackPanel Grid.Column="0" Orientation="Vertical">
+							<Label Content="Previous" />
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition />
+									<ColumnDefinition Width="55" />
+								</Grid.ColumnDefinitions>
+								<ContentPresenter Grid.Column="0" Content="{Binding Previous}" />
+								<Border Grid.Column="1"
+								CornerRadius="5" 
+								Background="{Binding Previous, FallbackValue=Red, Converter={StaticResource ColorToBrushConverter}}"
+								Width="50" Height="50"
+								HorizontalAlignment="Left" />
+							</Grid>
+							<Label Content="Pixel Shader" />
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition />
+									<ColumnDefinition Width="55" />
+								</Grid.ColumnDefinitions>
+								<ContentPresenter Grid.Column="0" Content="{Binding PixelShader}" />
+								<Border Grid.Column="1"
+									CornerRadius="5" 
+									Background="{Binding PixelShader, FallbackValue=Red, Converter={StaticResource ColorToBrushConverter}}"
+									Width="50" Height="50"
+									HorizontalAlignment="Left" />
+							</Grid>
+						</StackPanel>
+						<StackPanel Grid.Column="1" Orientation="Vertical">
+							<Label Content="Result" />
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="55" />
+									<ColumnDefinition />
+								</Grid.ColumnDefinitions>
+								<Border Grid.Column="0"
+									CornerRadius="5" 
+									Background="{Binding Result, FallbackValue=Red, Converter={StaticResource ColorToBrushConverter}}"
+									Width="50" Height="60"
+									HorizontalAlignment="Left" />
+								<ContentPresenter Grid.Column="1" Content="{Binding Result}" />
+							</Grid>
+						</StackPanel>
+					</Grid>
+				</DataTemplate>
+			</TreeView.Resources>
+			<TreeView.ItemContainerStyle>
+				<Style>
+					<Setter Property="TreeViewItem.IsExpanded" Value="True"/>
+				</Style>
+			</TreeView.ItemContainerStyle>
+		</TreeView>
 	</Grid>
 </UserControl>

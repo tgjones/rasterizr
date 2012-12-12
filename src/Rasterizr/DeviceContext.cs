@@ -76,6 +76,7 @@ namespace Rasterizr
 		public virtual void ClearRenderTargetView(RenderTargetView renderTargetView, Color4F color)
 		{
 			_device.Loggers.BeginOperation(OperationType.DeviceContextClearRenderTargetView, renderTargetView, color);
+			_device.Loggers.AddPixelHistoryEvent(new ClearRenderTargetEvent(color));
 			renderTargetView.Clear(color);
 		}
 

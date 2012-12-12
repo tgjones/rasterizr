@@ -43,6 +43,7 @@
     <Compile Include="Diagnostics\GraphicsLogger.cs" />
     <Compile Include="Diagnostics\GraphicsLoggerCollection.cs" />
     <Compile Include="Diagnostics\OperationType.cs" />
+    <Compile Include="Diagnostics\PixelHistoryEvent.cs" />
     <Compile Include="Diagnostics\TextWriterGraphicsLogger.cs" />
     <Compile Include="Math\Color3.cs" />
     <Compile Include="Math\Color3F.cs" />

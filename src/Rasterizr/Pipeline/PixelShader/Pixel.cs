@@ -9,6 +9,7 @@ namespace Rasterizr.Pipeline.PixelShader
 		public int Y;
 		public Color4F Color;
 		public Samples Samples;
+		public int PrimitiveID;
 
 		public Pixel(int x, int y)
 		{
@@ -16,6 +17,7 @@ namespace Rasterizr.Pipeline.PixelShader
 			Y = y;
 			Color = new Color4F();
 			Samples = new Samples();
+			PrimitiveID = 0;
 		}
 	}
 }
