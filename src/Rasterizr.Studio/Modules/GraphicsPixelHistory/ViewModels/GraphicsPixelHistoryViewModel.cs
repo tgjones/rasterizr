@@ -62,7 +62,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 				{
 					Execute.OnUIThread(() => swapChain = new WpfSwapChain(d, desc.Width, desc.Height));
 					return swapChain;
-				});
+				}, true);
 				replayer.Replay();
 
 				var events = replayer.Logger.GetEvents(_selectionService.SelectedFrame.Number, e.SelectedPixel.X, e.SelectedPixel.Y);

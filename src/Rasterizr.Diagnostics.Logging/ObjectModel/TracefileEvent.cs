@@ -9,13 +9,12 @@ namespace Rasterizr.Diagnostics.Logging.ObjectModel
 		public OperationType OperationType { get; set; }
 		public TracefileEventArgumentCollection Arguments { get; set; }
 
-		[JsonIgnore]
-		public List<PixelHistoryEvent> PixelHistoryEvents { get; set; }
+		public List<PixelEvent> PixelEvents { get; set; }
 
 		public TracefileEvent()
 		{
 			Arguments = new TracefileEventArgumentCollection();
-			PixelHistoryEvents = new List<PixelHistoryEvent>();
+			PixelEvents = new List<PixelEvent>();
 		}
 	}
 }

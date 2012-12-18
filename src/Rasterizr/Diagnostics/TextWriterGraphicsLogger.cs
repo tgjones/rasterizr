@@ -39,7 +39,7 @@ namespace Rasterizr.Diagnostics
 				_writtenBeginFrame = false;
 		}
 
-		protected internal override void AddPixelHistoryEvent(PixelHistoryEvent @event)
+		protected internal override void AddPixelEvent(PixelEvent @event)
 		{
 			_writer.WriteLine("  - Pixel history event");
 		}

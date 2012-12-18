@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ObjectModel\PixelEventCollection.cs" />
     <Compile Include="ObjectModel\SerializedDeviceChildArray.cs" />
     <Compile Include="ObjectModel\TracefileEvent.cs" />
     <Compile Include="ObjectModel\TracefileEventArgumentCollection.cs" />

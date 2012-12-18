@@ -6,7 +6,8 @@
         {
           "Number": 1,
           "OperationType": 12,
-          "Arguments": []
+          "Arguments": [],
+          "PixelEvents": []
         },
         {
           "Number": 2,
@@ -21,7 +22,8 @@
                 "Count": 1
               }
             }
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 3,
@@ -29,7 +31,8 @@
           "Arguments": [
             3,
             null
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 4,
@@ -39,7 +42,8 @@
               "$type": "System.Byte[], mscorlib",
               "$value": "RFhCQ76ruhQsaV+BiczfSPuffrABAAAAHAIAAAUAAAA0AAAAjAAAANwAAAAwAQAAoAEAAFJERUZQAAAAAAAAAAAAAAAAAAAAHAAAAAAE/v8AAQAAHAAAAE1pY3Jvc29mdCAoUikgSExTTCBTaGFkZXIgQ29tcGlsZXIgOS4yOS45NTIuMzExMQCrq6tJU0dOSAAAAAIAAAAIAAAAOAAAAAAAAAAAAAAAAwAAAAAAAAAPDwAAQQAAAAAAAAAAAAAAAwAAAAEAAAAPDwAAUE9TSVRJT04AQ09MT1IAq09TR05MAAAAAgAAAAgAAAA4AAAAAAAAAAEAAAADAAAAAAAAAA8AAABEAAAAAAAAAAAAAAADAAAAAQAAAA8AAABTVl9QT1NJVElPTgBDT0xPUgCrq1NIRFJoAAAAQAABABoAAABfAAAD8hAQAAAAAABfAAAD8hAQAAEAAABnAAAE8iAQAAAAAAABAAAAZQAAA/IgEAABAAAANgAABfIgEAAAAAAARh4QAAAAAAA2AAAF8iAQAAEAAABGHhAAAQAAAD4AAAFTVEFUdAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
             }
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 5,
@@ -49,7 +53,8 @@
               "$type": "System.Byte[], mscorlib",
               "$value": "RFhCQ5YYYsHfuRkLaQPHigpdUTIBAAAA0AEAAAUAAAA0AAAAjAAAAOAAAAAUAQAAVAEAAFJERUZQAAAAAAAAAAAAAAAAAAAAHAAAAAAE//8AAQAAHAAAAE1pY3Jvc29mdCAoUikgSExTTCBTaGFkZXIgQ29tcGlsZXIgOS4yOS45NTIuMzExMQCrq6tJU0dOTAAAAAIAAAAIAAAAOAAAAAAAAAABAAAAAwAAAAAAAAAPAAAARAAAAAAAAAAAAAAAAwAAAAEAAAAPDwAAU1ZfUE9TSVRJT04AQ09MT1IAq6tPU0dOLAAAAAEAAAAIAAAAIAAAAAAAAAAAAAAAAwAAAAAAAAAPAAAAU1ZfVGFyZ2V0AKurU0hEUjgAAABAAAAADgAAAGIQAAPyEBAAAQAAAGUAAAPyIBAAAAAAADYAAAXyIBAAAAAAAEYeEAABAAAAPgAAAVNUQVR0AAAAAgAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
             }
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 6,
@@ -82,7 +87,8 @@
               "$type": "System.Byte[], mscorlib",
               "$value": "RFhCQ76ruhQsaV+BiczfSPuffrABAAAAHAIAAAUAAAA0AAAAjAAAANwAAAAwAQAAoAEAAFJERUZQAAAAAAAAAAAAAAAAAAAAHAAAAAAE/v8AAQAAHAAAAE1pY3Jvc29mdCAoUikgSExTTCBTaGFkZXIgQ29tcGlsZXIgOS4yOS45NTIuMzExMQCrq6tJU0dOSAAAAAIAAAAIAAAAOAAAAAAAAAAAAAAAAwAAAAAAAAAPDwAAQQAAAAAAAAAAAAAAAwAAAAEAAAAPDwAAUE9TSVRJT04AQ09MT1IAq09TR05MAAAAAgAAAAgAAAA4AAAAAAAAAAEAAAADAAAAAAAAAA8AAABEAAAAAAAAAAAAAAADAAAAAQAAAA8AAABTVl9QT1NJVElPTgBDT0xPUgCrq1NIRFJoAAAAQAABABoAAABfAAAD8hAQAAAAAABfAAAD8hAQAAEAAABnAAAE8iAQAAAAAAABAAAAZQAAA/IgEAABAAAANgAABfIgEAAAAAAARh4QAAAAAAA2AAAF8iAQAAEAAABGHhAAAQAAAD4AAAFTVEFUdAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
             }
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 7,
@@ -97,21 +103,24 @@
               "$type": "System.Byte[], mscorlib",
               "$value": "AAAAAAAAAD8AAAA/AACAPwAAgD8AAAAAAAAAAAAAgD8AAAA/AAAAvwAAAD8AAIA/AAAAAAAAgD8AAAAAAACAPwAAAL8AAAC/AAAAPwAAgD8AAAAAAAAAAAAAgD8AAIA/"
             }
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 8,
           "OperationType": 15,
           "Arguments": [
             7
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 9,
           "OperationType": 16,
           "Arguments": [
             4
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 10,
@@ -128,14 +137,16 @@
                 }
               ]
             }
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 11,
           "OperationType": 29,
           "Arguments": [
             5
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 12,
@@ -154,14 +165,16 @@
                 }
               ]
             }
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 13,
           "OperationType": 20,
           "Arguments": [
             6
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 14,
@@ -174,7 +187,8 @@
                 4
               ]
             }
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 15,
@@ -188,7 +202,8 @@
               "B": 0.0,
               "A": 1.0
             }
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 16,
@@ -196,12 +211,14 @@
           "Arguments": [
             3,
             0
-          ]
+          ],
+          "PixelEvents": []
         },
         {
           "Number": 17,
           "OperationType": 25,
-          "Arguments": []
+          "Arguments": [],
+          "PixelEvents": []
         }
       ]
     }

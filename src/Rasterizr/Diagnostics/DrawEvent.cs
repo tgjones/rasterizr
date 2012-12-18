@@ -3,27 +3,7 @@ using Rasterizr.Pipeline.InputAssembler;
 
 namespace Rasterizr.Diagnostics
 {
-	public abstract class PixelHistoryEvent
-	{
-		public abstract bool Matches(int x, int y);
-	}
-
-	public class ClearRenderTargetEvent : PixelHistoryEvent
-	{
-		public Color4F Result { get; private set; }
-
-		public ClearRenderTargetEvent(Color4F result)
-		{
-			Result = result;
-		}
-
-		public override bool Matches(int x, int y)
-		{
-			return true;
-		}
-	}
-
-	public class DrawEvent : PixelHistoryEvent
+	public class DrawEvent : PixelEvent
 	{
 		public PrimitiveTopology PrimitiveTopology { get; set; }
 		public int PrimitiveID { get; set; }
@@ -38,13 +18,5 @@ namespace Rasterizr.Diagnostics
 		{
 			return X == x && Y == y;
 		}
-	}
-
-	public enum PixelExclusionReason
-	{
-		NotExcluded,
-		FailedDepthTest,
-		FailedScissorTest,
-		FailedStencilTest
 	}
 }

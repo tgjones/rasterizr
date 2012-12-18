@@ -40,10 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparisonUtility.cs" />
+    <Compile Include="Diagnostics\ClearRenderTargetEvent.cs" />
+    <Compile Include="Diagnostics\DrawEvent.cs" />
     <Compile Include="Diagnostics\GraphicsLogger.cs" />
     <Compile Include="Diagnostics\GraphicsLoggerCollection.cs" />
     <Compile Include="Diagnostics\OperationType.cs" />
-    <Compile Include="Diagnostics\PixelHistoryEvent.cs" />
+    <Compile Include="Diagnostics\PixelEvent.cs" />
+    <Compile Include="Diagnostics\PixelExclusionReason.cs" />
     <Compile Include="Diagnostics\TextWriterGraphicsLogger.cs" />
     <Compile Include="Math\Color3.cs" />
     <Compile Include="Math\Color3F.cs" />

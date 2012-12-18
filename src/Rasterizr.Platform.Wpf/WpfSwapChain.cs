@@ -26,7 +26,7 @@ namespace Rasterizr.Platform.Wpf
 			{
 				Width = width,
 				Height = height,
-				Format = Format.R8G8B8A8_UInt,
+				Format = Format.B8G8R8A8_UNorm,
 				SampleDescription = new SampleDescription(1)
 			})
 		{
@@ -39,7 +39,7 @@ namespace Rasterizr.Platform.Wpf
 			{
 				_bitmap.Lock();
 				_bitmap.WritePixels(new Int32Rect(0, 0, _bitmap.PixelWidth, _bitmap.PixelHeight),
-				                    colors, Description.Width*_bitmap.Format.BitsPerPixel/8, 0);
+					colors, Description.Width * _bitmap.Format.BitsPerPixel / 8, 0);
 				_bitmap.Unlock();
 			}));
 		}

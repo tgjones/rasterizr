@@ -30,12 +30,14 @@ namespace Rasterizr.Diagnostics.Logging
 			get { return _logger; }
 		}
 
-		public Replayer(TracefileFrame frame, TracefileEvent lastEvent, Func<Device, SwapChainDescription, SwapChain> createSwapChainCallback)
+		public Replayer(TracefileFrame frame, TracefileEvent lastEvent, 
+			Func<Device, SwapChainDescription, SwapChain> createSwapChainCallback, 
+			bool includePixelEvents)
 		{
 			_frame = frame;
 			_lastEvent = lastEvent;
 			_createSwapChainCallback = createSwapChainCallback;
-			_logger = new TracefileGraphicsLogger(new StringWriter());
+			_logger = new TracefileGraphicsLogger(new StringWriter(), includePixelEvents);
 		}
 
 		public void Replay()

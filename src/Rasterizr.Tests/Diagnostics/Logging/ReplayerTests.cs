@@ -19,7 +19,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 		{	
 			// Arrange.
 			var stringWriter = new StringWriter();
-			var logger = new TracefileGraphicsLogger(stringWriter);
+			var logger = new TracefileGraphicsLogger(stringWriter, false);
 			var expectedData = RenderScene(logger);
 			logger.Flush();
 			var loggedJson = stringWriter.ToString();
@@ -32,7 +32,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			{
 				swapChain = new RawSwapChain(d, desc.Width, desc.Height);
 				return swapChain;
-			});
+			}, false);
 			replayer.Replay();
 			var actualData = swapChain.Data;
 

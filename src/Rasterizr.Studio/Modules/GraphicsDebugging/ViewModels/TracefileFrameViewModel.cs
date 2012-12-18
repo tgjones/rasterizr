@@ -60,7 +60,7 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 				{
 					Execute.OnUIThread(() => swapChain = new WpfSwapChain(d, desc.Width, desc.Height));
 					return swapChain;
-				});
+				}, false);
 				replayer.Replay();
 				Image = swapChain.Bitmap;
 			});

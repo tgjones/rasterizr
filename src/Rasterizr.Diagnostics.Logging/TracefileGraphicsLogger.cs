@@ -9,15 +9,17 @@ namespace Rasterizr.Diagnostics.Logging
 	public class TracefileGraphicsLogger : GraphicsLogger
 	{
 		private readonly TextWriter _textWriter;
+		private readonly bool _includePixelEvents;
 		private readonly Tracefile _tracefile;
 		private TracefileFrame _currentFrame;
 		private bool _writtenBeginFrame;
 		private int _frameNumber;
 		private int _operationNumber;
 
-		public TracefileGraphicsLogger(TextWriter textWriter)
+		public TracefileGraphicsLogger(TextWriter textWriter, bool includePixelEvents)
 		{
 			_textWriter = textWriter;
+			_includePixelEvents = includePixelEvents;
 			_tracefile = new Tracefile();
 		}
 
@@ -63,22 +65,24 @@ namespace Rasterizr.Diagnostics.Logging
 			return arg;
 		}
 
-		protected override void AddPixelHistoryEvent(PixelHistoryEvent @event)
+		protected override void AddPixelEvent(PixelEvent @event)
 		{
+			if (!_includePixelEvents)
+				return;
 			var lastEvent = _currentFrame.Events.Last();
-			lastEvent.PixelHistoryEvents.Add(@event);
+			lastEvent.PixelEvents.Add(@event);
 		}
 
 		public IEnumerable<TracefileEvent> GetEvents(int frame, int x, int y)
 		{
 			return _tracefile.Frames.Single(f => f.Number == frame).Events
-				.Where(e => e.PixelHistoryEvents.Any(phe => phe.Matches(x, y)))
+				.Where(e => e.PixelEvents.Any(phe => phe.Matches(x, y)))
 				.Select(e => new TracefileEvent
 				{
 					Arguments = e.Arguments,
 					Number = e.Number,
 					OperationType = e.OperationType,
-					PixelHistoryEvents = e.PixelHistoryEvents.Where(phe => phe.Matches(x, y)).ToList()
+					PixelEvents = e.PixelEvents.Where(phe => phe.Matches(x, y)).ToList()
 				});
 		}
 

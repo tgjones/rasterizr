@@ -76,7 +76,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 		public PixelHistoryEventViewModel(TracefileEvent tracefileEvent)
 			: base(tracefileEvent)
 		{
-			_pixelHistoryEvents = tracefileEvent.PixelHistoryEvents.Select<PixelHistoryEvent, PixelHistoryEventViewModelBase>(x =>
+			_pixelHistoryEvents = tracefileEvent.PixelEvents.Select<PixelEvent, PixelHistoryEventViewModelBase>(x =>
 			{
 				if (x is ClearRenderTargetEvent)
 					return new SimplePixelHistoryEventViewModel(((ClearRenderTargetEvent) x).Result);
