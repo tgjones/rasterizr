@@ -4,13 +4,27 @@ namespace Rasterizr.Resources
 {
 	public abstract class Resource : DeviceChild
 	{
+		private readonly int _sizeInBytes;
+		private readonly int _strideInBytes;
 		private readonly byte[] _data;
 
-		protected Resource(Device device, int sizeInBytes)
+		public int SizeInBytes
+		{
+			get { return _sizeInBytes; }
+		}
+
+		internal abstract ResourceType ResourceType { get; }
+		internal abstract int NumElements { get; }
+
+		protected Resource(Device device, int sizeInBytes, int strideInBytes)
 			: base(device)
 		{
+			_sizeInBytes = sizeInBytes;
+			_strideInBytes = strideInBytes;
 			_data = new byte[sizeInBytes];
 		}
+
+		internal abstract int CalculateByteOffset(int x, int y, int z);
 
 		public void GetData<T>(int dataOffset, T[] data, int startIndex, int countInBytes)
 			where T : struct
@@ -58,6 +72,17 @@ namespace Rasterizr.Resources
 			where T : struct
 		{
 			Utilities.ToByteArray(ref data, _data, 0);
+		}
+
+		public void Fill<T>(ref T value)
+			where T : struct
+		{
+			var offset = 0;
+			while (offset < _sizeInBytes)
+			{
+				SetData(ref value, offset);
+				offset += _strideInBytes;
+			}
 		}
 	}
 }

@@ -9,10 +9,20 @@
 			get { return _description; }
 		}
 
+		internal override ResourceType ResourceType
+		{
+			get { return ResourceType.Texture1D; }
+		}
+
 		internal Texture1D(Device device, Texture1DDescription description)
 			: base(device, description.Width, description.Format)
 		{
 			_description = description;
+		}
+
+		protected override int CalculateIndex(int x, int y, int z)
+		{
+			return x;
 		}
 	}
 }

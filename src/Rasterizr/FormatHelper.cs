@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Rasterizr.Math;
+using Rasterizr.Util;
 
 namespace Rasterizr
 {
@@ -14,6 +18,68 @@ namespace Rasterizr
 		public static int SizeOfInBits(Format format)
 		{
 			return sizeOfInBits[(int) format];
+		}
+
+		/// <summary>
+		/// Clamps the specified color to the range specified by the format parameter.
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="format"></param>
+		/// <returns></returns>
+		public static Color4F Clamp(Color4F value, Format format)
+		{
+			switch (format)
+			{
+				case Format.B8G8R8A8_UInt:
+					return FormatB8G8R8A8UInt.FromColor(value).ToColor();
+				case Format.R8G8B8A8_UInt:
+					return value.ToColor4().ToColor4F();
+				default :
+					throw new NotSupportedException();
+			}
+		}
+
+		public static void Copy(Format format, Color4F source, byte[] destination, int destinationOffset)
+		{
+			switch (format)
+			{
+				case Format.B8G8R8A8_UInt:
+				{
+					var converted = FormatB8G8R8A8UInt.FromColor(source);
+					Utilities.ToByteArray(ref converted, destination, destinationOffset);
+					break;
+				}
+			}
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		private struct FormatB8G8R8A8UInt
+		{
+			public static FormatB8G8R8A8UInt FromColor(Color4F value)
+			{
+				var converted = value.ToColor4();
+				return new FormatB8G8R8A8UInt
+				{
+					B = converted.B,
+					G = converted.G,
+					R = converted.R,
+					A = converted.A
+				};
+			}
+
+			public byte B;
+			public byte G;
+			public byte R;
+			public byte A;
+
+			public Color4F ToColor()
+			{
+				return new Color4F(
+					R * 255 / 1.0f,
+					G * 255 / 1.0f,
+					B * 255 / 1.0f,
+					A * 255 / 1.0f);
+			}
 		}
 
 		static FormatHelper()

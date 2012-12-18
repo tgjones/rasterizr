@@ -8,6 +8,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 	public class RenderTargetView : ResourceView
 	{
 		private readonly RenderTargetViewDescription _description;
+		private readonly Format _actualFormat;
 		private readonly Color4[] _colors;
 
 		public RenderTargetViewDescription Description
@@ -30,6 +31,11 @@ namespace Rasterizr.Pipeline.OutputMerger
 			}
 		}
 
+		internal Format ActualFormat
+		{
+			get { return _actualFormat; }
+		}
+
 		internal RenderTargetView(Device device, Resource resource, RenderTargetViewDescription? description)
 			: base(device, resource)
 		{
@@ -39,9 +45,17 @@ namespace Rasterizr.Pipeline.OutputMerger
 					Format = Format.Unknown,
 					Dimension = RenderTargetViewDimension.Unknown
 				};
+
+			if (description.Value.Format == Format.Unknown && description.Value.Dimension == RenderTargetViewDimension.Buffer)
+				throw new ArgumentException();
+
 			_description = description.Value;
 			var texture = (Texture2D) resource;
 			_colors = new Color4[texture.Description.Width * texture.Description.Height];
+
+			_actualFormat = (_description.Format == Format.Unknown)
+				? ((TextureBase) resource).Format
+				: _description.Format;
 		}
 
 		internal unsafe void Clear(Color4F color)

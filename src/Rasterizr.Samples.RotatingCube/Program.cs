@@ -133,12 +133,6 @@ namespace Rasterizr.Samples.RotatingCube
 			_view = Matrix3D.CreateLookAt(new Point3D(0, 0, -5), Vector3D.Backward, Vector3D.UnitY);
 			_projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI / 4.0f, 
 				demoConfiguration.Width / (float)demoConfiguration.Height, 0.1f, 100.0f);
-
-			var worldViewProj = Matrix3D.CreateRotationX(0)
-				* Matrix3D.CreateRotationY(1)
-				* Matrix3D.CreateRotationZ(3) * _view * _projection;
-			worldViewProj = Matrix3D.Transpose(worldViewProj);
-			_constantBuffer.SetData(ref worldViewProj);
 		}
 
 		protected override void Draw(DemoTime time)
@@ -148,11 +142,12 @@ namespace Rasterizr.Samples.RotatingCube
 			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4F(0, 0, 0, 1));
 
 			// Update WorldViewProj Matrix
-			//var worldViewProj = Matrix3D.CreateRotationX((float) time.ElapsedTime)
-			//    * Matrix3D.CreateRotationY((float) (time.ElapsedTime * 2))
-			//    * Matrix3D.CreateRotationZ((float) (time.ElapsedTime * 0.7f)) * viewProj;
-			//worldViewProj = Matrix3D.Transpose(worldViewProj);
-			//_constantBuffer.SetData(ref worldViewProj);
+			var worldViewProj = Matrix3D.CreateRotationX((float)time.ElapsedTime)
+				* Matrix3D.CreateRotationY((float)(time.ElapsedTime * 2))
+				* Matrix3D.CreateRotationZ((float)(time.ElapsedTime * 0.7f))
+				* _view * _projection;
+			worldViewProj = Matrix3D.Transpose(worldViewProj);
+			_constantBuffer.SetData(ref worldViewProj);
 
 			// Draw the cube
 			_deviceContext.Draw(36, 0);

@@ -65,25 +65,27 @@ namespace Rasterizr.Pipeline.OutputMerger
 					};
 
 					float newDepth = pixel.Samples[sampleIndex].Depth;
-					if (_depthStencilView != null && !DepthStencilState.DepthTestPasses(newDepth, _depthStencilView[pixel.X, pixel.Y, sampleIndex]))
+					if (_depthStencilView != null && !DepthStencilState.DepthTestPasses(newDepth, _depthStencilView.GetDepth(pixel.X, pixel.Y, sampleIndex)))
 					{
 						pixelHistoryEvent.ExclusionReason = PixelExclusionReason.FailedDepthTest;
 						_device.Loggers.AddPixelHistoryEvent(pixelHistoryEvent);
 						continue;
 					}
 
+					// Clamp pixel colour to range supported by render target format.
+					var source = FormatHelper.Clamp(pixel.Color, renderTarget.ActualFormat);
+					var destination = renderTarget[pixel.X, pixel.Y, sampleIndex];
+
 					// Use blend state to calculate final color.
-					var previous = renderTarget[pixel.X, pixel.Y, sampleIndex];
-					Color4F finalColor = BlendState.DoBlend(renderTargetIndex, pixel.Color,
-						previous, BlendFactor);
+					Color4F finalColor = BlendState.DoBlend(renderTargetIndex, source, destination, BlendFactor);
 					renderTarget[pixel.X, pixel.Y, sampleIndex] = finalColor;
 
-					pixelHistoryEvent.Previous = previous;
+					pixelHistoryEvent.Previous = destination;
 					pixelHistoryEvent.Result = finalColor;
 					_device.Loggers.AddPixelHistoryEvent(pixelHistoryEvent);
 
 					if (_depthStencilView != null && DepthStencilState.Description.IsDepthEnabled)
-						_depthStencilView[pixel.X, pixel.Y, sampleIndex] = newDepth;
+						_depthStencilView.SetDepth(pixel.X, pixel.Y, sampleIndex, newDepth);
 				}
 			}
 			renderTarget.Invalidate();

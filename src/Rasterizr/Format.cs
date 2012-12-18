@@ -117,6 +117,8 @@
 		IA44 = 112,
 		P8 = 113,
 		A8P8 = 114,
-		B4G4R4A4_UNorm = 115
+		B4G4R4A4_UNorm = 115,
+
+		B8G8R8A8_UInt = 200,
 	}
 }
