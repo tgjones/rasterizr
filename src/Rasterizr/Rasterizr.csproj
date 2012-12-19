@@ -106,6 +106,7 @@
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDimension.cs" />
     <Compile Include="Resources\ResourceType.cs" />
+    <Compile Include="Resources\ResourceViewUtility.cs" />
     <Compile Include="Resources\SamplerState.cs" />
     <Compile Include="Resources\SamplerStateDescription.cs" />
     <Compile Include="Pipeline\ShaderResourceView.cs" />

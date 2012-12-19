@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Rasterizr.Math;
+using Rasterizr.Resources;
 using Rasterizr.Util;
 
 namespace Rasterizr
@@ -39,7 +40,7 @@ namespace Rasterizr
 			}
 		}
 
-		public static void Copy(Format format, Color4F source, byte[] destination, int destinationOffset)
+		public static void Convert(Format format, Color4F source, byte[] destination, int destinationOffset)
 		{
 			switch (format)
 			{
@@ -49,6 +50,40 @@ namespace Rasterizr
 					Utilities.ToByteArray(ref converted, destination, destinationOffset);
 					break;
 				}
+			}
+		}
+
+		public static Color4F Convert(Format format, byte[] source, int sourceOffset)
+		{
+			switch (format)
+			{
+				case Format.B8G8R8A8_UInt:
+				{
+					FormatB8G8R8A8UInt converted;
+					Utilities.FromByteArray(out converted, source, sourceOffset, SizeOfInBytes(format));
+					return converted.ToColor();
+				}
+				default:
+				{
+					throw new NotSupportedException();
+				}
+			}
+		}
+
+		public static void Fill(Resource resource, Format format, ref Color4F color)
+		{
+			switch (format)
+			{
+				case Format.B8G8R8A8_UInt:
+					{
+						var converted = FormatB8G8R8A8UInt.FromColor(color);
+						resource.Fill(ref converted);
+						break;
+					}
+				default:
+					{
+						throw new NotSupportedException();
+					}
 			}
 		}
 
@@ -138,6 +173,7 @@ namespace Rasterizr
                 Format.R8G8B8A8_UNorm,
                 Format.R8G8B8A8_UNorm_SRgb,
                 Format.B8G8R8A8_Typeless,
+				Format.B8G8R8A8_UInt,
                 Format.B8G8R8A8_UNorm,
                 Format.B8G8R8A8_UNorm_SRgb,
                 Format.R9G9B9E5_Sharedexp,

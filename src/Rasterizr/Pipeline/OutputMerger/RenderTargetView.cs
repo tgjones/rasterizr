@@ -1,7 +1,6 @@
 ﻿using System;
 using Rasterizr.Math;
 using Rasterizr.Resources;
-using Rasterizr.Util;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
@@ -9,26 +8,10 @@ namespace Rasterizr.Pipeline.OutputMerger
 	{
 		private readonly RenderTargetViewDescription _description;
 		private readonly Format _actualFormat;
-		private readonly Color4[] _colors;
 
 		public RenderTargetViewDescription Description
 		{
 			get { return _description; }
-		}
-
-		public Color4F this[int x, int y, int sampleIndex]
-		{
-			get
-			{
-				// TODO: Get rid of all these conversions.
-				var texture = (Texture2D) Resource;
-				return _colors[(y * texture.Description.Width) + x].ToColor4F();
-			}
-			set
-			{
-				var texture = (Texture2D) Resource;
-				_colors[(y * texture.Description.Width) + x] = value.ToColor4();
-			}
 		}
 
 		internal Format ActualFormat
@@ -50,42 +33,22 @@ namespace Rasterizr.Pipeline.OutputMerger
 				throw new ArgumentException();
 
 			_description = description.Value;
-			var texture = (Texture2D) resource;
-			_colors = new Color4[texture.Description.Width * texture.Description.Height];
-
-			_actualFormat = (_description.Format == Format.Unknown)
-				? ((TextureBase) resource).Format
-				: _description.Format;
+			_actualFormat = ResourceViewUtility.GetActualFormat(_description.Format, resource);
 		}
 
-		internal unsafe void Clear(Color4F color)
+		internal Color4F GetColor(int x, int y, int sampleIndex)
 		{
-			// TODO: Use RenderTargetView description to access resource.
-			var typedColor = color.ToColor4();
-			var invertedColor = new Color4(typedColor.B, typedColor.G, typedColor.R, typedColor.A);
-			var texture = (Texture2D) Resource;
-
-			// Fill first line.
-			int width = texture.Description.Width;
-			for (int x = 0; x < width; x++)
-				_colors[x] = invertedColor;
-
-			// Copy first line.
-			int height = texture.Description.Height;
-			int sizeToCopy = Utilities.SizeOf<Color4>() * width;
-			fixed (Color4* src = &_colors[0])
-				for (int y = 1; y < height; y++)
-				{
-					var dest = (void*)((IntPtr)src + y * sizeToCopy);
-					Interop.memcpy(dest, src, sizeToCopy);
-				}
-
-			Invalidate();
+			return FormatHelper.Convert(_actualFormat, Resource.Data, Resource.CalculateByteOffset(x, y, 0));
 		}
 
-		internal void Invalidate()
+		internal void SetColor(int x, int y, int sampleIndex, Color4F color)
 		{
-			Resource.SetData(_colors);
+			FormatHelper.Convert(_actualFormat, color, Resource.Data, Resource.CalculateByteOffset(x, y, 0));
+		}
+
+		internal void Clear(Color4F color)
+		{
+			FormatHelper.Fill(Resource, _actualFormat, ref color);
 		}
 	}
 }

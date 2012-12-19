@@ -6,6 +6,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 	public class DepthStencilView : ResourceView
 	{
 		private readonly DepthStencilViewDescription _description;
+		private readonly Format _actualFormat;
 
 		public DepthStencilViewDescription Description
 		{
@@ -29,6 +30,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 				};
 
 			_description = description.Value;
+			_actualFormat = ResourceViewUtility.GetActualFormat(_description.Format, resource);
 		}
 
 		internal float GetDepth(int x, int y, int sampleIndex)
@@ -45,15 +47,12 @@ namespace Rasterizr.Pipeline.OutputMerger
 
 		internal void Clear(DepthStencilClearFlags clearFlags, float depth, byte stencil)
 		{
-			var texture = (Texture2D)Resource;
-
-			var numElements = Resource.NumElements;
 			if (clearFlags.HasFlag(DepthStencilClearFlags.Depth))
 			{
-				switch (texture.Description.Format)
+				switch (_actualFormat)
 				{
 					case Format.D32_Float_S8X24_UInt :
-						texture.Fill(ref depth);
+						Resource.Fill(ref depth);
 						break;
 					default :
 						throw new ArgumentException();

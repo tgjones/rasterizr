@@ -13,6 +13,11 @@ namespace Rasterizr.Resources
 			get { return _sizeInBytes; }
 		}
 
+		internal byte[] Data
+		{
+			get { return _data; }
+		}
+
 		internal abstract ResourceType ResourceType { get; }
 		internal abstract int NumElements { get; }
 
@@ -83,6 +88,28 @@ namespace Rasterizr.Resources
 				SetData(ref value, offset);
 				offset += _strideInBytes;
 			}
+
+			// TODO: This might be faster.
+			//var typedColor = color.ToColor4();
+			//var invertedColor = new Color4(typedColor.B, typedColor.G, typedColor.R, typedColor.A);
+			//var texture = (Texture2D)Resource;
+
+			//// Fill first line.
+			//int width = texture.Description.Width;
+			//for (int x = 0; x < width; x++)
+			//	_colors[x] = invertedColor;
+
+			//// Copy first line.
+			//int height = texture.Description.Height;
+			//int sizeToCopy = Utilities.SizeOf<Color4>() * width;
+			//fixed (Color4* src = &_colors[0])
+			//	for (int y = 1; y < height; y++)
+			//	{
+			//		var dest = (void*)((IntPtr)src + y * sizeToCopy);
+			//		Interop.memcpy(dest, src, sizeToCopy);
+			//	}
+
+			//Resource.SetData(_colors);
 		}
 	}
 }
