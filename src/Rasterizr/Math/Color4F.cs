@@ -5,6 +5,11 @@ namespace Rasterizr.Math
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Color4F
 	{
+		public static Color4F Black
+		{
+			get { return new Color4F(0, 0, 0, 1); }
+		}
+
 		public float R;
 		public float G;
 		public float B;

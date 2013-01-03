@@ -86,7 +86,8 @@
   <ItemGroup>
     <Compile Include="Samples\BasicWindow\BasicWindowSample.cs" />
     <Compile Include="Samples\ISampleMetadata.cs" />
-    <Compile Include="Samples\RotatingCube\RotatingCubeSample.cs" />
+    <Compile Include="Samples\MiniCubeTexture\MiniCubeTextureSample.cs" />
+    <Compile Include="Samples\MiniCube\MiniCubeSample.cs" />
     <Compile Include="Samples\SampleBase.cs" />
     <Compile Include="Samples\SampleView.xaml.cs">
       <DependentUpon>SampleView.xaml</DependentUpon>
@@ -142,7 +143,13 @@
     <Content Include="Samples\BasicTriangle\MiniTri.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Samples\RotatingCube\MiniCube.fx">
+    <Content Include="Samples\MiniCubeTexture\GeneticaMortarlessBlocks.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\MiniCubeTexture\MiniCubeTexture.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\MiniCube\MiniCube.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

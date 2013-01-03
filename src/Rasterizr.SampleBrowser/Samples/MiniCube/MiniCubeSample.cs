@@ -10,11 +10,11 @@ using Rasterizr.Resources;
 using Rasterizr.Util;
 using SlimShader.Compiler;
 
-namespace Rasterizr.SampleBrowser.Samples.RotatingCube
+namespace Rasterizr.SampleBrowser.Samples.MiniCube
 {
 	[Export(typeof(SampleBase))]
 	[ExportMetadata("SortOrder", 2)]
-	public class RotatingCubeSample : SampleBase
+	public class MiniCubeSample : SampleBase
 	{
 		private DeviceContext _deviceContext;
 		private RenderTargetView _renderTargetView;
@@ -60,10 +60,10 @@ namespace Rasterizr.SampleBrowser.Samples.RotatingCube
 			_depthView = device.CreateDepthStencilView(depthBuffer);
 
 			// Compile Vertex and Pixel shaders
-			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Samples/RotatingCube/MiniCube.fx", "VS", "vs_4_0");
+			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Samples/MiniCube/MiniCube.fx", "VS", "vs_4_0");
 			var vertexShader = device.CreateVertexShader(vertexShaderByteCode);
 
-			var pixelShaderByteCode = ShaderCompiler.CompileFromFile("Samples/RotatingCube/MiniCube.fx", "PS", "ps_4_0");
+			var pixelShaderByteCode = ShaderCompiler.CompileFromFile("Samples/MiniCube/MiniCube.fx", "PS", "ps_4_0");
 			var pixelShader = device.CreatePixelShader(pixelShaderByteCode);
 
 			// Layout from VertexShader input signature
