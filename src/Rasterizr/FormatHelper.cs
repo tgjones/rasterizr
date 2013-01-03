@@ -51,7 +51,18 @@ namespace Rasterizr
 					break;
 				}
 			}
-		}
+		} 
+
+		//private static T Convert<T>(Format format, Color4F source)
+		//{
+		//	switch (format)
+		//	{
+		//		case Format.B8G8R8A8_UInt:
+		//			{
+		//				return FormatB8G8R8A8UInt.FromColor(source);
+		//			}
+		//	}
+		//}
 
 		public static Color4F Convert(Format format, byte[] source, int sourceOffset)
 		{
@@ -62,6 +73,12 @@ namespace Rasterizr
 					FormatB8G8R8A8UInt converted;
 					Utilities.FromByteArray(out converted, source, sourceOffset, SizeOfInBytes(format));
 					return converted.ToColor();
+				}
+				case Format.R8G8B8A8_UInt:
+				{
+					Color4 converted;
+					Utilities.FromByteArray(out converted, source, sourceOffset, SizeOfInBytes(format));
+					return converted.ToColor4F();
 				}
 				default:
 				{
@@ -75,15 +92,21 @@ namespace Rasterizr
 			switch (format)
 			{
 				case Format.B8G8R8A8_UInt:
-					{
-						var converted = FormatB8G8R8A8UInt.FromColor(color);
-						resource.Fill(ref converted);
-						break;
-					}
+				{
+					var converted = FormatB8G8R8A8UInt.FromColor(color);
+					resource.Fill(ref converted);
+					break;
+				}
+				case Format.R8G8B8A8_UInt:
+				{
+					var converted = color.ToColor4();
+					resource.Fill(ref converted);
+					break;
+				}
 				default:
-					{
-						throw new NotSupportedException();
-					}
+				{
+					throw new NotSupportedException();
+				}
 			}
 		}
 

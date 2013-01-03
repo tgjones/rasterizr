@@ -15,12 +15,6 @@ namespace Rasterizr.Platform.Wpf
 			get { return _bitmap; }
 		}
 
-		public WpfSwapChain(Device device, Image image)
-			: this(device, (int) image.Width, (int) image.Height)
-		{
-			image.Source = _bitmap;
-		}
-
 		public WpfSwapChain(Device device, int width, int height)
 			: base(device, new SwapChainDescription
 			{
