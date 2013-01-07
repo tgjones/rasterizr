@@ -26,6 +26,7 @@
 		RasterizerStageSetViewports,
 		RasterizerStateCreate,
 		CreateRenderTargetView,
+		CreateShaderResourceView,
 		SwapChainCreate,
 		SwapChainPresent,
 		CreateTexture1D,

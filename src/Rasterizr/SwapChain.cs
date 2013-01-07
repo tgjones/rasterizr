@@ -8,7 +8,7 @@ namespace Rasterizr
 	{
 		private readonly Device _device;
 		private readonly SwapChainDescription _description;
-		private readonly Resource _backBuffer;
+		private readonly Texture2D _backBuffer;
 		private readonly byte[] _resolvedColors;
 
 		public SwapChainDescription Description
@@ -25,15 +25,15 @@ namespace Rasterizr
 			{
 				Width = description.Width,
 				Height = description.Height,
-				Format = description.Format
+				Format = description.Format,
+				ArraySize = 1
 			});
 			_resolvedColors = new byte[description.Width * description.Height * FormatHelper.SizeOfInBytes(description.Format)];
 		}
 
-		public T GetBuffer<T>(int index)
-			where T : Resource
+		public Texture2D GetBuffer<T>(int index)
 		{
-			return (T) _backBuffer;
+			return _backBuffer;
 		}
 
 		private int _frameCounter;
@@ -42,7 +42,7 @@ namespace Rasterizr
 			_device.Loggers.BeginOperation(OperationType.SwapChainPresent);
 
 			// TODO: Resolve multi-sampled back buffer.
-			_backBuffer.GetData(_resolvedColors);
+			_backBuffer.GetData(0, 0, _resolvedColors);
 			Present(_resolvedColors);
 
 			Debug.WriteLine("Done frame " + _frameCounter++);

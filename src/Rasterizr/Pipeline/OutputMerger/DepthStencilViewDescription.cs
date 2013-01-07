@@ -1,10 +1,29 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
+using Rasterizr.Resources;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
 	[StructLayout(LayoutKind.Explicit, Pack = 0)]
 	public struct DepthStencilViewDescription
 	{
+		internal static DepthStencilViewDescription CreateDefault(Resource resource)
+		{
+			var result = new DepthStencilViewDescription();
+			switch (resource.ResourceType)
+			{
+				case ResourceType.Texture1D:
+					result.Dimension = DepthStencilViewDimension.Texture1D;
+					break;
+				case ResourceType.Texture2D:
+					result.Dimension = DepthStencilViewDimension.Texture2D;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+			return result;
+		}
+
 		public struct Texture2DResource
 		{
 			public int MipSlice;

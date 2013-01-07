@@ -6,7 +6,6 @@
 		public int Height;
 		public int Depth;
 		public int MipLevels;
-		public int ArraySize;
 		public Format Format;
 		public BindFlags BindFlags;
 	}

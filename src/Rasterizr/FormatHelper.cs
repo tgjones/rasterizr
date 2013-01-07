@@ -40,44 +40,33 @@ namespace Rasterizr
 			}
 		}
 
-		public static void Convert(Format format, Color4F source, byte[] destination, int destinationOffset)
+		internal static void Convert(Format format, Color4F source, DataIndex destination)
 		{
 			switch (format)
 			{
 				case Format.B8G8R8A8_UInt:
 				{
 					var converted = FormatB8G8R8A8UInt.FromColor(source);
-					Utilities.ToByteArray(ref converted, destination, destinationOffset);
+					Utilities.ToByteArray(ref converted, destination.Data, destination.Offset);
 					break;
 				}
 			}
-		} 
+		}
 
-		//private static T Convert<T>(Format format, Color4F source)
-		//{
-		//	switch (format)
-		//	{
-		//		case Format.B8G8R8A8_UInt:
-		//			{
-		//				return FormatB8G8R8A8UInt.FromColor(source);
-		//			}
-		//	}
-		//}
-
-		public static Color4F Convert(Format format, byte[] source, int sourceOffset)
+		internal static Color4F Convert(Format format, DataIndex source)
 		{
 			switch (format)
 			{
 				case Format.B8G8R8A8_UInt:
 				{
 					FormatB8G8R8A8UInt converted;
-					Utilities.FromByteArray(out converted, source, sourceOffset, SizeOfInBytes(format));
+					Utilities.FromByteArray(out converted, source.Data, source.Offset, SizeOfInBytes(format));
 					return converted.ToColor();
 				}
 				case Format.R8G8B8A8_UInt:
 				{
 					Color4 converted;
-					Utilities.FromByteArray(out converted, source, sourceOffset, SizeOfInBytes(format));
+					Utilities.FromByteArray(out converted, source.Data, source.Offset, SizeOfInBytes(format));
 					return converted.ToColor4F();
 				}
 				default:
@@ -87,20 +76,20 @@ namespace Rasterizr
 			}
 		}
 
-		public static void Fill(Resource resource, Format format, ref Color4F color)
+		internal static void Clear(TextureBase.ISubresource subresource, Format format, ref Color4F color)
 		{
 			switch (format)
 			{
 				case Format.B8G8R8A8_UInt:
 				{
 					var converted = FormatB8G8R8A8UInt.FromColor(color);
-					resource.Fill(ref converted);
+					subresource.Clear(ref converted);
 					break;
 				}
 				case Format.R8G8B8A8_UInt:
 				{
 					var converted = color.ToColor4();
-					resource.Fill(ref converted);
+					subresource.Clear(ref converted);
 					break;
 				}
 				default:

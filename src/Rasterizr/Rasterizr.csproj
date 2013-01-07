@@ -37,9 +37,22 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="FodyWeavers.xml" />
+    <Compile Include="Pipeline\OutputMerger\RenderTargetView.BufferView.cs" />
+    <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture1DArrayView.cs" />
+    <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture1DView.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilView.Texture1DArrayView.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilView.Texture1DView.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilView.Texture2DArrayView.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilView.InnerResourceView.cs" />
+    <Compile Include="Pipeline\OutputMerger\DepthStencilView.Texture2DView.cs" />
+    <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture2DArrayView.cs" />
+    <Compile Include="Pipeline\OutputMerger\RenderTargetView.InnerResourceView.cs" />
+    <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture3DView.cs" />
+    <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture2DView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparisonUtility.cs" />
+    <Compile Include="DataIndex.cs" />
     <Compile Include="Diagnostics\ClearRenderTargetEvent.cs" />
     <Compile Include="Diagnostics\DrawEvent.cs" />
     <Compile Include="Diagnostics\GraphicsLogger.cs" />
@@ -97,6 +110,7 @@
     <Compile Include="Pipeline\Rasterizer\Sample.cs" />
     <Compile Include="Pipeline\Rasterizer\Samples.cs" />
     <Compile Include="Pipeline\ShaderBase.cs" />
+    <Compile Include="Pipeline\SubresourceData.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShader.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderOutput.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderStage.cs" />
@@ -105,6 +119,7 @@
     <Compile Include="Resources\Filter.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDimension.cs" />
+    <Compile Include="Resources\MipMapUtility.cs" />
     <Compile Include="Resources\ResourceType.cs" />
     <Compile Include="Resources\ResourceViewUtility.cs" />
     <Compile Include="Resources\SamplerState.cs" />

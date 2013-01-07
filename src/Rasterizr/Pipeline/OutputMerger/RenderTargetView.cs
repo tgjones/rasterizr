@@ -1,12 +1,12 @@
-﻿using System;
-using Rasterizr.Math;
+﻿using Rasterizr.Math;
 using Rasterizr.Resources;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
-	public class RenderTargetView : ResourceView
+	public partial class RenderTargetView : ResourceView
 	{
 		private readonly RenderTargetViewDescription _description;
+		private readonly InnerResourceView _innerView;
 		private readonly Format _actualFormat;
 
 		public RenderTargetViewDescription Description
@@ -22,33 +22,24 @@ namespace Rasterizr.Pipeline.OutputMerger
 		internal RenderTargetView(Device device, Resource resource, RenderTargetViewDescription? description)
 			: base(device, resource)
 		{
-			if (description == null)
-				description = new RenderTargetViewDescription
-				{
-					Format = Format.Unknown,
-					Dimension = RenderTargetViewDimension.Unknown
-				};
-
-			if (description.Value.Format == Format.Unknown && description.Value.Dimension == RenderTargetViewDimension.Buffer)
-				throw new ArgumentException();
-
-			_description = description.Value;
+			_description = description.GetValueOrDefault(RenderTargetViewDescription.CreateDefault(resource));
+			_innerView = InnerResourceView.Create(resource, _description);
 			_actualFormat = ResourceViewUtility.GetActualFormat(_description.Format, resource);
 		}
 
-		internal Color4F GetColor(int x, int y, int sampleIndex)
+		internal Color4F GetColor(int arrayIndex, int x, int y, int sampleIndex)
 		{
-			return FormatHelper.Convert(_actualFormat, Resource.Data, Resource.CalculateByteOffset(x, y, 0));
+			return FormatHelper.Convert(_actualFormat, _innerView.GetDataIndex(arrayIndex, x, y, sampleIndex));
 		}
 
-		internal void SetColor(int x, int y, int sampleIndex, Color4F color)
+		internal void SetColor(int arrayIndex, int x, int y, int sampleIndex, Color4F color)
 		{
-			FormatHelper.Convert(_actualFormat, color, Resource.Data, Resource.CalculateByteOffset(x, y, 0));
+			FormatHelper.Convert(_actualFormat, color, _innerView.GetDataIndex(arrayIndex, x, y, sampleIndex));
 		}
 
-		internal void Clear(Color4F color)
+		internal void Clear(ref Color4F color)
 		{
-			FormatHelper.Fill(Resource, _actualFormat, ref color);
+			_innerView.Clear(_actualFormat, ref color);
 		}
 	}
 }

@@ -1,10 +1,35 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
+using Rasterizr.Resources;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
 	[StructLayout(LayoutKind.Explicit)]
 	public struct RenderTargetViewDescription
 	{
+		internal static RenderTargetViewDescription CreateDefault(Resource resource)
+		{
+			var result = new RenderTargetViewDescription();
+			switch (resource.ResourceType)
+			{
+				case ResourceType.Buffer:
+					result.Dimension = RenderTargetViewDimension.Buffer;
+					break;
+				case ResourceType.Texture1D:
+					result.Dimension = RenderTargetViewDimension.Texture1D;
+					break;
+				case ResourceType.Texture2D:
+					result.Dimension = RenderTargetViewDimension.Texture2D;
+					break;
+				case ResourceType.Texture3D:
+					result.Dimension = RenderTargetViewDimension.Texture3D;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+			return result;
+		}
+
 		[FieldOffset(0)]
 		public Format Format;
 

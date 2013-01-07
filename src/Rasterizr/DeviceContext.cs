@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Diagnostics;
 using Rasterizr.Math;
+using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
+using Rasterizr.Resources;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr
@@ -77,7 +79,7 @@ namespace Rasterizr
 		{
 			_device.Loggers.BeginOperation(OperationType.DeviceContextClearRenderTargetView, renderTargetView, color);
 			_device.Loggers.AddPixelHistoryEvent(new ClearRenderTargetEvent(color));
-			renderTargetView.Clear(color);
+			renderTargetView.Clear(ref color);
 		}
 
 		public void Draw(int vertexCount, int startVertexLocation)
@@ -127,6 +129,11 @@ namespace Rasterizr
 
 			var pixelShaderOutputs = _pixelShader.Execute(rasterizerOutputs);
 			_outputMerger.Execute(pixelShaderOutputs);
+		}
+
+		public void GenerateMips(ShaderResourceView shaderResourceView)
+		{
+			// TODO
 		}
 	}
 }

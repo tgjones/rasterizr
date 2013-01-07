@@ -131,7 +131,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 
 			// Load texture and create sampler
 			var texture = device.CreateTexture2D(new Texture2DDescription());// Texture2D.FromFile<Texture2D>(device, "GeneticaMortarlessBlocks.jpg");
-			var textureView = new ShaderResourceView(device, texture);
+			var textureView = device.CreateShaderResourceView(texture);
 
 			var sampler = new SamplerState(device, new SamplerStateDescription
 			{
@@ -175,8 +175,8 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 
 			// Update WorldViewProj Matrix
 			var worldViewProj = Matrix3D.CreateRotationX((float)time.ElapsedTime)
-				* Matrix3D.CreateRotationY((float)(time.ElapsedTime * 2))
-				* Matrix3D.CreateRotationZ((float)(time.ElapsedTime * 0.7f))
+				* Matrix3D.CreateRotationY((float)(time.ElapsedTime * 1))
+				* Matrix3D.CreateRotationZ((float)(time.ElapsedTime * 0.3f))
 				* _view * _projection;
 			worldViewProj = Matrix3D.Transpose(worldViewProj);
 			_constantBuffer.SetData(ref worldViewProj);

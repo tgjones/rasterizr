@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Diagnostics;
+using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
@@ -63,18 +64,19 @@ namespace Rasterizr
 		public Buffer CreateBuffer<T>(BufferDescription description, T[] data)
 			where T : struct
 		{
-			return CreateBuffer(description, Utilities.ToByteArray(data));
+			if (description.SizeInBytes == 0)
+				description.SizeInBytes = data.Length * Utilities.SizeOf<T>();
+
+			return CreateBuffer(description, new SubresourceData { Data = Utilities.ToByteArray(data) });
 		}
 
-		public Buffer CreateBuffer(BufferDescription description, byte[] data = null)
+		public Buffer CreateBuffer(BufferDescription description, SubresourceData? initialData = null)
 		{
-			Loggers.BeginOperation(OperationType.CreateBuffer, description, data);
-
-			if (description.SizeInBytes == 0 && data != null)
-				description.SizeInBytes = data.Length;
+			Loggers.BeginOperation(OperationType.CreateBuffer, description, initialData);
 
 			var buffer = new Buffer(this, description);
-			buffer.SetData(data);
+			if (initialData != null)
+				buffer.SetData(initialData.Value.Data);
 			return buffer;
 		}
 
@@ -118,6 +120,12 @@ namespace Rasterizr
 		{
 			Loggers.BeginOperation(OperationType.CreateRenderTargetView, resource, description);
 			return new RenderTargetView(this, resource, description);
+		}
+
+		public ShaderResourceView CreateShaderResourceView(Resource resource)
+		{
+			Loggers.BeginOperation(OperationType.CreateShaderResourceView, resource);
+			return new ShaderResourceView(this, resource);
 		}
 
 		public Texture1D CreateTexture1D(Texture1DDescription description)

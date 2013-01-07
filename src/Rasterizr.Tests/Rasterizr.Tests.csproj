@@ -51,6 +51,8 @@
     <Compile Include="Pipeline\OutputMerger\DepthStencilStateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\BufferTests.cs" />
+    <Compile Include="Resources\Texture1DTests.cs" />
+    <Compile Include="Resources\Texture2DTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="TestVertex.cs" />
     <Compile Include="Util\UtilitiesTests.cs" />

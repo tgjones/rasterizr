@@ -4,7 +4,7 @@ namespace Rasterizr.Pipeline
 {
 	public class ShaderResourceView : ResourceView
 	{
-		public ShaderResourceView(Device device, Resource resource)
+		internal ShaderResourceView(Device device, Resource resource)
 			: base(device, resource)
 		{
 		}

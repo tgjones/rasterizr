@@ -2,6 +2,18 @@
 {
 	public static class Utilities
 	{
+		public static void Clear<T>(byte[] elements, int elementSize, ref T value)
+				where T : struct
+		{
+			int length = elements.Length;
+			var offset = 0;
+			while (offset < length)
+			{
+				ToByteArray(ref value, elements, offset);
+				offset += elementSize;
+			}
+		}
+
 		/// <summary>
 		/// Converts a structured array to an equivalent byte array.
 		/// </summary>

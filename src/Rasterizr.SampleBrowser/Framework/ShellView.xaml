@@ -8,7 +8,8 @@
 					 mc:Ignorable="d"
                      Height="800" Width="1000"
 					 WindowStartupLocation="CenterScreen"
-					 d:DataContext="{d:DesignInstance framework:ShellViewModel}">
+					 d:DataContext="{d:DesignInstance framework:ShellViewModel}"
+					 SnapsToDevicePixels="True">
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -25,15 +26,19 @@
 		<Border Padding="20">
 			<TabControl>
 				<TabItem Header="Samples">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="200" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<ListBox Grid.Column="0" ItemsSource="{Binding Samples}" DisplayMemberPath="Name"
-								 SelectedItem="{Binding SelectedSample}" />
-						<ContentControl Grid.Column="1" x:Name="ActiveItem" />
-					</Grid>
+					<Border Padding="0,20,0,0">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="200" />
+								<ColumnDefinition Width="40" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<ListBox Grid.Column="0" ItemsSource="{Binding Samples}" DisplayMemberPath="Name"
+									 SelectedItem="{Binding SelectedSample}" />
+							<Border Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="LightGray" HorizontalAlignment="Center" />
+							<ContentControl Grid.Column="2" x:Name="ActiveItem" />
+						</Grid>
+					</Border>
 				</TabItem>
 				<TabItem Header="Technology Demos">
 				

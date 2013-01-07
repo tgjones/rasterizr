@@ -1,11 +1,13 @@
 ﻿using System;
 using Rasterizr.Resources;
+using Rasterizr.Util;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
-	public class DepthStencilView : ResourceView
+	public partial class DepthStencilView : ResourceView
 	{
 		private readonly DepthStencilViewDescription _description;
+		private readonly InnerResourceView _innerView;
 		private readonly Format _actualFormat;
 
 		public DepthStencilViewDescription Description
@@ -22,27 +24,24 @@ namespace Rasterizr.Pipeline.OutputMerger
 					throw new ArgumentException("Invalid resource type for depth stencil view: " + resource.ResourceType);
 			}
 
-			if (description == null)
-				description = new DepthStencilViewDescription
-				{
-					Format = Format.Unknown,
-					Dimension = DepthStencilViewDimension.Unknown
-				};
-
-			_description = description.Value;
+			_description = description.GetValueOrDefault(DepthStencilViewDescription.CreateDefault(resource));
+			_innerView = InnerResourceView.Create(resource, _description);
 			_actualFormat = ResourceViewUtility.GetActualFormat(_description.Format, resource);
 		}
 
-		internal float GetDepth(int x, int y, int sampleIndex)
+		internal float GetDepth(int arrayIndex, int x, int y, int sampleIndex)
 		{
+			var dataIndex = _innerView.GetDataIndex(arrayIndex, x, y, sampleIndex);
+
 			float result;
-			Resource.GetData(out result, Resource.CalculateByteOffset(x, y, 0), sizeof(float));
+			Utilities.FromByteArray(out result, dataIndex.Data, dataIndex.Offset, sizeof(float));
 			return result;
 		}
 
-		internal void SetDepth(int x, int y, int sampleIndex, float depth)
+		internal void SetDepth(int arrayIndex, int x, int y, int sampleIndex, float depth)
 		{
-			Resource.SetData(ref depth, Resource.CalculateByteOffset(x, y, 0));
+			var dataIndex = _innerView.GetDataIndex(arrayIndex, x, y, sampleIndex);
+			Utilities.ToByteArray(ref depth, dataIndex.Data, dataIndex.Offset);
 		}
 
 		internal void Clear(DepthStencilClearFlags clearFlags, float depth, byte stencil)
@@ -52,7 +51,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 				switch (_actualFormat)
 				{
 					case Format.D32_Float_S8X24_UInt :
-						Resource.Fill(ref depth);
+						_innerView.Clear(depth);
 						break;
 					default :
 						throw new ArgumentException();

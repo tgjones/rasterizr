@@ -153,8 +153,8 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCube
 
 			// Update WorldViewProj Matrix
 			var worldViewProj = Matrix3D.CreateRotationX((float)time.ElapsedTime)
-				* Matrix3D.CreateRotationY((float)(time.ElapsedTime * 2))
-				* Matrix3D.CreateRotationZ((float)(time.ElapsedTime * 0.7f))
+				* Matrix3D.CreateRotationY((float)(time.ElapsedTime * 1))
+				* Matrix3D.CreateRotationZ((float)(time.ElapsedTime * 0.3f))
 				* _view * _projection;
 			worldViewProj = Matrix3D.Transpose(worldViewProj);
 			_constantBuffer.SetData(ref worldViewProj);

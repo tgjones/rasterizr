@@ -1,4 +1,5 @@
-﻿using Rasterizr.Resources;
+﻿using Rasterizr.Pipeline.OutputMerger;
+using Rasterizr.Resources;
 
 namespace Rasterizr.Pipeline
 {
@@ -11,7 +12,7 @@ namespace Rasterizr.Pipeline
 			get { return _resource; }
 		}
 
-		protected ResourceView(Device device, Resource resource)
+		internal ResourceView(Device device, Resource resource)
 			: base(device)
 		{
 			_resource = resource;
