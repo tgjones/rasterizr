@@ -119,6 +119,7 @@
     <Compile Include="Resources\Filter.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDimension.cs" />
+    <Compile Include="Resources\MappedSubresource.cs" />
     <Compile Include="Resources\MipMapUtility.cs" />
     <Compile Include="Resources\ResourceType.cs" />
     <Compile Include="Resources\ResourceViewUtility.cs" />

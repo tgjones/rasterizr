@@ -5,7 +5,8 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:framework="clr-namespace:Rasterizr.SampleBrowser.Framework"
-					 mc:Ignorable="d"
+                     xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+                     mc:Ignorable="d"
                      Height="800" Width="1000"
 					 WindowStartupLocation="CenterScreen"
 					 d:DataContext="{d:DesignInstance framework:ShellViewModel}"
@@ -24,7 +25,7 @@
 	</Window.Resources>
 	<mahapps:MetroContentControl>
 		<Border Padding="20">
-			<TabControl>
+			<TabControl SelectedIndex="{Binding SelectedTabIndex}">
 				<TabItem Header="Samples">
 					<Border Padding="0,20,0,0">
 						<Grid>
@@ -33,15 +34,34 @@
 								<ColumnDefinition Width="40" />
 								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
-							<ListBox Grid.Column="0" ItemsSource="{Binding Samples}" DisplayMemberPath="Name"
+							<ListBox Grid.Column="0" ItemsSource="{Binding Samples}" DisplayMemberPath="DisplayName"
 									 SelectedItem="{Binding SelectedSample}" />
 							<Border Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="LightGray" HorizontalAlignment="Center" />
-							<ContentControl Grid.Column="2" x:Name="ActiveItem" />
+							<ContentControl Grid.Column="2" cal:View.Model="{Binding SelectedSample}" />
 						</Grid>
 					</Border>
 				</TabItem>
-				<TabItem Header="Technology Demos">
-				
+				<TabItem Header="Tech Demos">
+					<Border Padding="0,20,0,0">
+						<Grid>
+							<Grid.Resources>
+								<CollectionViewSource x:Key="GroupedTechDemos" Source="{Binding TechDemos}">
+									<CollectionViewSource.GroupDescriptions>
+										<PropertyGroupDescription PropertyName="Category" />
+									</CollectionViewSource.GroupDescriptions>
+								</CollectionViewSource>
+							</Grid.Resources>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="200" />
+								<ColumnDefinition Width="40" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<ListBox Grid.Column="0" ItemsSource="{Binding Source={StaticResource GroupedTechDemos}}" DisplayMemberPath="DisplayName"
+									 SelectedItem="{Binding SelectedTechDemo}" />
+							<Border Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="LightGray" HorizontalAlignment="Center" />
+							<ContentControl Grid.Column="2" cal:View.Model="{Binding SelectedTechDemo}" />
+						</Grid>
+					</Border>
 				</TabItem>
 			</TabControl>
 		</Border>

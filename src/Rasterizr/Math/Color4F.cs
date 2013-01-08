@@ -33,6 +33,24 @@ namespace Rasterizr.Math
 			return new Color4F(1 - value.A, 1 - value.R, 1 - value.G, 1 - value.B);
 		}
 
+		public static Color4F operator+(Color4F left, Color4F right)
+		{
+			return new Color4F(
+				left.R + right.R,
+				left.G + right.G,
+				left.B + right.B,
+				left.A + right.A);
+		}
+
+		public static Color4F operator/(Color4F left, float right)
+		{
+			return new Color4F(
+				left.R / right,
+				left.G / right,
+				left.B / right,
+				left.A / right);
+		}
+
 		public static Color4F Multiply(ref Color4F left, ref Color4F right)
 		{
 			return new Color4F(

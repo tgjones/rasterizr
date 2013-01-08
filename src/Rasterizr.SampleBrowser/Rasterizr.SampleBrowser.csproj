@@ -74,11 +74,22 @@
     <Compile Include="Framework\IShell.cs" />
     <Compile Include="Samples\BasicTriangle\BasicTriangleSample.cs" />
     <Compile Include="Samples\DemoTime.cs" />
+    <Compile Include="TechDemos\ITechDemoMetadata.cs" />
+    <Compile Include="TechDemos\Resources\TextureMipmapping\MipMapViewModel.cs" />
+    <Compile Include="TechDemos\Resources\TextureMipmapping\TextureMipmappingView.xaml.cs">
+      <DependentUpon>TextureMipmappingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TechDemos\Resources\TextureMipmapping\TextureMipmappingViewModel.cs" />
+    <Compile Include="TechDemos\TechDemoViewModel.cs" />
     <Page Include="Framework\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Samples\SampleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TechDemos\Resources\TextureMipmapping\TextureMipmappingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -120,6 +131,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="TechDemos\Resources\TextureMipmapping\window_28.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader.Compiler\SlimShader.Compiler.csproj">

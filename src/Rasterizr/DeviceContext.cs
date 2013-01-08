@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Pipeline;
@@ -131,9 +132,26 @@ namespace Rasterizr
 			_outputMerger.Execute(pixelShaderOutputs);
 		}
 
+		public MappedSubresource Map(Resource resource, int subresource)
+		{
+			return resource.Map(subresource);
+		}
+
 		public void GenerateMips(ShaderResourceView shaderResourceView)
 		{
-			// TODO
+			switch (shaderResourceView.Resource.ResourceType)
+			{
+				case ResourceType.Texture2D:
+					((Texture2D) shaderResourceView.Resource).GenerateMips();
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		public void UpdateSubresource(Resource resource, int subresource, byte[] data)
+		{
+			resource.UpdateSubresource(subresource, data);
 		}
 	}
 }

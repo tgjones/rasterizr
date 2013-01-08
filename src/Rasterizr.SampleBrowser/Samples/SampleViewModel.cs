@@ -14,6 +14,12 @@ namespace Rasterizr.SampleBrowser.Samples
 		private float _framePerSecond;
 		private Image _image;
 
+		public override string DisplayName
+		{
+			get { return _sample.Name; }
+			set { base.DisplayName = value; }
+		}
+
 		public SampleViewModel(SampleBase sample)
 		{
 			_sample = sample;
@@ -29,15 +35,29 @@ namespace Rasterizr.SampleBrowser.Samples
 		protected override void OnViewLoaded(object view)
 		{
 			_image = ((SampleView)view).Image;
+			Activate();
 
+			base.OnViewLoaded(view);
+		}
+
+		private void Activate()
+		{
 			_clock.Start();
 
 			_sample.Initialize(_image);
 			_sample.BeginRun();
 
 			_timer.Start();
+		}
 
-			base.OnViewLoaded(view);
+		protected override void OnActivate()
+		{
+			if (_image == null)
+				return;
+
+			Activate();
+
+			base.OnActivate();
 		}
 
 		protected override void OnDeactivate(bool close)

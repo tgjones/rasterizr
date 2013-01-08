@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Rasterizr.Resources
+﻿namespace Rasterizr.Resources
 {
 	public abstract class Resource : DeviceChild
 	{
@@ -23,9 +21,7 @@ namespace Rasterizr.Resources
 			
 		}
 
-		public void UpdateSubresource(int subresource, byte[] data)
-		{
-			// TODO
-		}
+		internal abstract MappedSubresource Map(int subresource);
+		internal abstract void UpdateSubresource(int subresource, byte[] data);
 	}
 }

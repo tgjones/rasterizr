@@ -14,6 +14,11 @@
 			}
 		}
 
+		internal static bool IsPowerOfTwo(int x)
+		{
+			return (x != 0) && (x & (x - 1)) == 0;
+		}
+
 		/// <summary>
 		/// Converts a structured array to an equivalent byte array.
 		/// </summary>

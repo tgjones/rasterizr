@@ -32,6 +32,12 @@ namespace Rasterizr.Resources
 			}
 		}
 
+		internal static void CalculateArrayMipSlice(int subresource, int mipLevels, out int mipSlice, out int arraySlice)
+		{
+			mipSlice = subresource % mipLevels;
+			arraySlice = (subresource - mipSlice) / mipLevels;
+		}
+
 		private readonly Format _format;
 
 		internal Format Format

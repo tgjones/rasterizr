@@ -26,6 +26,7 @@ namespace Rasterizr
 				Width = description.Width,
 				Height = description.Height,
 				Format = description.Format,
+				MipLevels = 1,
 				ArraySize = 1
 			});
 			_resolvedColors = new byte[description.Width * description.Height * FormatHelper.SizeOfInBytes(description.Format)];

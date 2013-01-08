@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Rasterizr.Util;
 
 namespace Rasterizr.Resources
 {
@@ -6,6 +8,9 @@ namespace Rasterizr.Resources
 	{
 		public static int CalculateMipMapCount(int mipLevels, params int[] dimensions)
 		{
+			if (mipLevels != 1 && dimensions.Any(x => !Utilities.IsPowerOfTwo(x)))
+				throw new ArgumentException("MipLevels must be 1 for non-power of 2 dimensions.");
+
 			if (mipLevels != 0)
 				return mipLevels;
 

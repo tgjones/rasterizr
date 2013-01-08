@@ -122,10 +122,10 @@ namespace Rasterizr
 			public Color4F ToColor()
 			{
 				return new Color4F(
-					R * 255 / 1.0f,
-					G * 255 / 1.0f,
-					B * 255 / 1.0f,
-					A * 255 / 1.0f);
+					R / 255.0f,
+					G / 255.0f,
+					B / 255.0f,
+					A / 255.0f);
 			}
 		}
 

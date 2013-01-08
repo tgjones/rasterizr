@@ -1,4 +1,6 @@
-﻿namespace Rasterizr.Resources
+﻿using System;
+
+namespace Rasterizr.Resources
 {
 	public class Texture1D : TextureBase
 	{
@@ -42,6 +44,25 @@
 				_subresources[i] = MipMapUtility.CreateMipMaps(mipMapCount,
 					FormatHelper.SizeOfInBytes(description.Format),
 					description.Width);
+		}
+
+		internal override MappedSubresource Map(int subresource)
+		{
+			int mipSlice, arrayIndex;
+			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
+
+			return new MappedSubresource
+			{
+				Data = _subresources[arrayIndex][mipSlice].Data
+			};
+		}
+
+		internal override void UpdateSubresource(int subresource, byte[] data)
+		{
+			int mipSlice, arrayIndex;
+			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
+
+			Array.Copy(data, _subresources[arrayIndex][mipSlice].Data, data.Length);
 		}
 
 		internal Texture1DSubresource GetSubresource(int arrayIndex, int mipSlice)
