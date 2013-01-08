@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Rasterizr.Math;
 using Rasterizr.Resources;
+using SlimShader.Chunks.Rdef;
 using SlimShader.Chunks.Shex;
 using SlimShader.Chunks.Xsgn;
 using SlimShader.VirtualMachine;
@@ -117,6 +118,15 @@ namespace Rasterizr.Pipeline
 							new RegisterIndex(i, registerIndex++), value.ToNumber4());
 					}
 			}
+
+			// TODO: Get texture count from virtual machine.
+			// TODO: Move resources to VirtualMachine from ExecutionContext?
+			for (int i = 0; i < NumShaderExecutionContexts; i++)
+				for (ushort j = 0; j < _shader.Bytecode.ResourceDefinition.ResourceBindings.Count(x => x.Type == ShaderInputType.Texture); j++)
+					_virtualMachine.SetTexture(i, new RegisterIndex(j),
+						(_shaderResources[j] != null)
+							? _shaderResources[j].InnerView
+							: null);
 		}
 
 		protected void SetShaderInputs(int contextIndex, ushort primitiveIndex, Vector4[] inputs)

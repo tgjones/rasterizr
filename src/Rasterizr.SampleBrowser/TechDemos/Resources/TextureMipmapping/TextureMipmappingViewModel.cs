@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows;
 using Rasterizr.Platform.Wpf;
+using Rasterizr.SampleBrowser.Framework.Services;
 
 namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureMipmapping
 {
@@ -28,13 +27,14 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureMipmapping
 			get { return _mipMaps; }
 		}
 
-		public TextureMipmappingViewModel()
+		[ImportingConstructor]
+		public TextureMipmappingViewModel(IResourceLoader resourceLoader)
 		{
-			var textureStream = Application.GetResourceStream(new Uri("pack://application:,,,/TechDemos/Resources/TextureMipmapping/window_28.jpg")).Stream;
-			var texture = TextureHelper.CreateTextureFromFile(new Device(), textureStream);
+			var textureStream = resourceLoader.OpenResource("TechDemos/Resources/TextureMipmapping/window_28.jpg");
+			var texture = TextureLoader.CreateTextureFromFile(new Device(), textureStream);
 
 			_mipMaps = Enumerable.Range(0, texture.Description.MipLevels)
-				.Select((x, i) => new MipMapViewModel(TextureHelper.CreateBitmapFromTexture(texture, x), i));
+				.Select((x, i) => new MipMapViewModel(TextureLoader.CreateBitmapFromTexture(texture, x), i));
 		}
 	}
 }

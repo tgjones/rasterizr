@@ -5,7 +5,7 @@ using Rasterizr.Resources;
 
 namespace Rasterizr.Platform.Wpf
 {
-	public static class TextureHelper
+	public static class TextureLoader
 	{
 		public static Texture2D CreateTextureFromFile(Device device, Stream stream)
 		{

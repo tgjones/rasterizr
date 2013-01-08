@@ -122,10 +122,10 @@ namespace Rasterizr
 			return new RenderTargetView(this, resource, description);
 		}
 
-		public ShaderResourceView CreateShaderResourceView(Resource resource)
+		public ShaderResourceView CreateShaderResourceView(Resource resource, ShaderResourceViewDescription? description = null)
 		{
-			Loggers.BeginOperation(OperationType.CreateShaderResourceView, resource);
-			return new ShaderResourceView(this, resource);
+			Loggers.BeginOperation(OperationType.CreateShaderResourceView, resource, description);
+			return new ShaderResourceView(this, resource, description);
 		}
 
 		public Texture1D CreateTexture1D(Texture1DDescription description)

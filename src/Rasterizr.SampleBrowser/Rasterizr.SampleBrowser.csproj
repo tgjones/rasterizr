@@ -72,6 +72,8 @@
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Framework\IShell.cs" />
+    <Compile Include="Framework\Services\IResourceLoader.cs" />
+    <Compile Include="Framework\Services\ResourceLoader.cs" />
     <Compile Include="Samples\BasicTriangle\BasicTriangleSample.cs" />
     <Compile Include="Samples\DemoTime.cs" />
     <Compile Include="TechDemos\ITechDemoMetadata.cs" />
@@ -155,9 +157,7 @@
     <Content Include="Samples\BasicTriangle\MiniTri.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Samples\MiniCubeTexture\GeneticaMortarlessBlocks.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Samples\MiniCubeTexture\GeneticaMortarlessBlocks.jpg" />
     <Content Include="Samples\MiniCubeTexture\MiniCubeTexture.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

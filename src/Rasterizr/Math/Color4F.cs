@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using SlimShader;
 
 namespace Rasterizr.Math
 {
@@ -92,6 +93,11 @@ namespace Rasterizr.Math
 				(byte) (G * 255.0f),
 				(byte) (B * 255.0f),
 				(byte) (A * 255.0f));
+		}
+
+		public Number4 ToNumber4()
+		{
+			return new Number4(R, G, B, A);
 		}
 	}
 }

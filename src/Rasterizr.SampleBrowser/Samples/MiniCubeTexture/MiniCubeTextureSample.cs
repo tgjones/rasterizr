@@ -2,12 +2,12 @@
 using System.Windows.Controls;
 using Nexus;
 using Rasterizr.Math;
-using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
+using Rasterizr.SampleBrowser.Framework.Services;
 using Rasterizr.Util;
 using SlimShader.Compiler;
 
@@ -17,6 +17,8 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 	[ExportMetadata("SortOrder", 3)]
 	public class MiniCubeTextureSample : SampleBase
 	{
+		private readonly IResourceLoader _resourceLoader;
+
 		private DeviceContext _deviceContext;
 		private RenderTargetView _renderTargetView;
 		private DepthStencilView _depthView;
@@ -25,6 +27,12 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 		private Buffer _constantBuffer;
 		private Matrix3D _view;
 		private Matrix3D _projection;
+
+		[ImportingConstructor]
+		public MiniCubeTextureSample(IResourceLoader resourceLoader)
+		{
+			_resourceLoader = resourceLoader;
+		}
 
 		public override string Name
 		{
@@ -130,7 +138,8 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 			});
 
 			// Load texture and create sampler
-			var texture = device.CreateTexture2D(new Texture2DDescription());// Texture2D.FromFile<Texture2D>(device, "GeneticaMortarlessBlocks.jpg");
+			var textureStream = _resourceLoader.OpenResource("Samples/MiniCubeTexture/GeneticaMortarlessBlocks.jpg");
+			var texture = TextureLoader.CreateTextureFromFile(device, textureStream);
 			var textureView = device.CreateShaderResourceView(texture);
 
 			var sampler = new SamplerState(device, new SamplerStateDescription

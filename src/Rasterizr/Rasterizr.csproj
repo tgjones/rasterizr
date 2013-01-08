@@ -37,6 +37,7 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="FodyWeavers.xml" />
+    <Compile Include="Pipeline\ShaderResourceView.InnerResourceView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.BufferView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture1DArrayView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture1DView.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.InnerResourceView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture3DView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture2DView.cs" />
+    <Compile Include="Pipeline\ShaderResourceView.Texture2DView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparisonUtility.cs" />
@@ -110,6 +112,9 @@
     <Compile Include="Pipeline\Rasterizer\Sample.cs" />
     <Compile Include="Pipeline\Rasterizer\Samples.cs" />
     <Compile Include="Pipeline\ShaderBase.cs" />
+    <Compile Include="Pipeline\ShaderResourceViewDescription.cs" />
+    <Compile Include="Pipeline\ShaderResourceViewDimension.cs" />
+    <Compile Include="Pipeline\ShaderResourceViewExtendedBufferFlags.cs" />
     <Compile Include="Pipeline\SubresourceData.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShader.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderOutput.cs" />
