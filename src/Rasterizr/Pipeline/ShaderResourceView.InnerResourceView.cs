@@ -1,4 +1,5 @@
 ﻿using System;
+using Rasterizr.Math;
 using Rasterizr.Resources;
 using SlimShader;
 using SlimShader.VirtualMachine.Resources;
@@ -9,34 +10,15 @@ namespace Rasterizr.Pipeline
 	{
 		private abstract class InnerResourceView : ITexture
 		{
-			private readonly Format _format;
-
-			protected InnerResourceView(Format format)
-			{
-				_format = format;
-			}
-
-			public abstract DataIndex GetDataIndex(int arrayIndex, int mipSlice, int x, int y, int z, int sampleIndex);
+			public abstract Color4F GetDataIndex(SamplerStateDescription sampler, float u, float v, float w);
 			
 			public Number4 Sample(ISampler sampler, Number4 location)
 			{
-				// TODO: arrayIndex and sampleIndex
-				const int arrayIndex = 0;
-				const int sampleIndex = 0;
-
 				float u = location.Number0.Float;
 				float v = location.Number1.Float;
 				float w = location.Number2.Float;
 
-				// TODO: Multiply by dimensions.
-				int x = (int) u;
-				int y = (int) v;
-				int z = (int) w;
-
-				// TODO: Calculate mip slice.
-				const int mipSlice = 0;
-
-				return FormatHelper.Convert(_format, GetDataIndex(arrayIndex, mipSlice, x, y, z, sampleIndex)).ToNumber4();
+				return GetDataIndex(((SamplerStateDescription) sampler.Description), u, v, w).ToNumber4();
 			}
 
 			public static InnerResourceView Create(Resource resource, ShaderResourceViewDescription description, Format format)

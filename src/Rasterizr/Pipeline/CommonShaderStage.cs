@@ -122,6 +122,13 @@ namespace Rasterizr.Pipeline
 			// TODO: Get texture count from virtual machine.
 			// TODO: Move resources to VirtualMachine from ExecutionContext?
 			for (int i = 0; i < NumShaderExecutionContexts; i++)
+				for (ushort j = 0; j < _shader.Bytecode.ResourceDefinition.ResourceBindings.Count(x => x.Type == ShaderInputType.Sampler); j++)
+					_virtualMachine.SetSampler(i, new RegisterIndex(j),
+						(_samplers[j] != null)
+							? _samplers[j].InnerSampler
+							: null);
+
+			for (int i = 0; i < NumShaderExecutionContexts; i++)
 				for (ushort j = 0; j < _shader.Bytecode.ResourceDefinition.ResourceBindings.Count(x => x.Type == ShaderInputType.Texture); j++)
 					_virtualMachine.SetTexture(i, new RegisterIndex(j),
 						(_shaderResources[j] != null)
