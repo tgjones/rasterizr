@@ -32,7 +32,7 @@ namespace Rasterizr.Resources
 			get { return _sampler; }
 		}
 
-		public SamplerState(Device device, SamplerStateDescription description)
+		internal SamplerState(Device device, SamplerStateDescription description)
 			: base(device)
 		{
 			_description = description;

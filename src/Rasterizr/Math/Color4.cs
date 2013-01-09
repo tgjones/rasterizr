@@ -5,6 +5,16 @@ namespace Rasterizr.Math
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	public struct Color4
 	{
+		public static Color4 Black
+		{
+			get { return new Color4(0, 0, 0, 255); }
+		}
+
+		public static Color4 White
+		{
+			get { return new Color4(255, 255, 255, 255); }
+		}
+
 		public byte R;
 		public byte G;
 		public byte B;

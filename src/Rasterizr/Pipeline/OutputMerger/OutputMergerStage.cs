@@ -48,6 +48,13 @@ namespace Rasterizr.Pipeline.OutputMerger
 		{
 			foreach (var pixel in inputs)
 			{
+				// TODO
+				const int renderTargetIndex = 0;
+				var renderTarget = _renderTargetViews[renderTargetIndex];
+
+				// TODO
+				const int renderTargetArrayIndex = 0;
+
 				for (int sampleIndex = 0; sampleIndex < MultiSampleCount; ++sampleIndex)
 				{
 					if (!pixel.Samples[sampleIndex].Covered)
@@ -60,13 +67,6 @@ namespace Rasterizr.Pipeline.OutputMerger
 						Y = pixel.Y,
 						PixelShader = pixel.Color
 					};
-
-					// TODO
-					const int renderTargetIndex = 0;
-					var renderTarget = _renderTargetViews[renderTargetIndex];
-
-					// TODO
-					const int renderTargetArrayIndex = 0;
 
 					float newDepth = pixel.Samples[sampleIndex].Depth;
 					if (_depthStencilView != null && !DepthStencilState.DepthTestPasses(newDepth, 

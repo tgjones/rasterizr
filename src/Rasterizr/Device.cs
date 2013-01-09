@@ -122,6 +122,12 @@ namespace Rasterizr
 			return new RenderTargetView(this, resource, description);
 		}
 
+		public SamplerState CreateSamplerState(SamplerStateDescription description)
+		{
+			Loggers.BeginOperation(OperationType.CreateSamplerState, description);
+			return new SamplerState(this, description);
+		}
+
 		public ShaderResourceView CreateShaderResourceView(Resource resource, ShaderResourceViewDescription? description = null)
 		{
 			Loggers.BeginOperation(OperationType.CreateShaderResourceView, resource, description);

@@ -10,6 +10,7 @@ using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
+using Rasterizr.Util;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr
@@ -152,6 +153,12 @@ namespace Rasterizr
 		public void UpdateSubresource(Resource resource, int subresource, byte[] data)
 		{
 			resource.UpdateSubresource(subresource, data);
+		}
+
+		public void UpdateSubresource<T>(Resource resource, int subresource, T[] data)
+			where T : struct
+		{
+			resource.UpdateSubresource(subresource, Utilities.ToByteArray(data));
 		}
 	}
 }

@@ -68,8 +68,28 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 				rasterizer.Primitive = primitive;
 				foreach (var fragmentQuad in rasterizer.Rasterize())
+				{
+					// TODO: Once clipping is implemented, these tests won't be necessary.
+					if (!IsFragmentInViewport(fragmentQuad.Fragment0))
+						continue;
+					if (!IsFragmentInViewport(fragmentQuad.Fragment1))
+						continue;
+					if (!IsFragmentInViewport(fragmentQuad.Fragment2))
+						continue;
+					if (!IsFragmentInViewport(fragmentQuad.Fragment3))
+						continue;
+
 					yield return fragmentQuad;
+				}
 			}
+		}
+
+		// TODO: Once clipping is implemented, this test won't be necessary.
+		private bool IsFragmentInViewport(Fragment fragment)
+		{
+			var viewport = _viewports[0];
+			return fragment.X > viewport.TopLeftX && fragment.X < viewport.TopLeftX + viewport.Width
+				&& fragment.Y > viewport.TopLeftY && fragment.Y < viewport.TopLeftY + viewport.Height;
 		}
 
 		private static void PerspectiveDivide(ref Vector4 position)

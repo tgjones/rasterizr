@@ -43,6 +43,15 @@ namespace Rasterizr.Math
 				left.A + right.A);
 		}
 
+		public static Color4F operator*(Color4F left, float right)
+		{
+			return new Color4F(
+				left.R * right,
+				left.G * right,
+				left.B * right,
+				left.A * right);
+		}
+
 		public static Color4F operator/(Color4F left, float right)
 		{
 			return new Color4F(

@@ -47,6 +47,7 @@
     <Compile Include="Model.cs" />
     <Compile Include="ModelLoader.cs" />
     <Compile Include="ModelMesh.cs" />
+    <Compile Include="ProceduralTextures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VertexPositionColor.cs" />
     <Compile Include="VertexPositionColorTexture.cs" />

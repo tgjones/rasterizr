@@ -141,7 +141,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCube
 
 			// Prepare matrices
 			_view = Matrix3D.CreateLookAt(new Point3D(0, 0, -5), Vector3D.Backward, Vector3D.UnitY);
-			_projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI / 4.0f, 
+			_projection = Matrix3D.CreatePerspectiveFieldOfView(Nexus.MathUtility.PI / 4.0f, 
 				width / (float) height, 0.1f, 100.0f);
 		}
 

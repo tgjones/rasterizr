@@ -37,6 +37,7 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="FodyWeavers.xml" />
+    <Compile Include="Math\MathUtility.cs" />
     <Compile Include="Pipeline\ShaderResourceView.InnerResourceView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.BufferView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture1DArrayView.cs" />
