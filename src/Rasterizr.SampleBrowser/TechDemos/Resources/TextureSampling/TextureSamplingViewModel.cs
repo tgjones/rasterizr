@@ -10,7 +10,7 @@ using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
-using Rasterizr.Toolkit;
+using Rasterizr.SampleBrowser.Framework.Services;
 using Rasterizr.Util;
 using SlimShader.Compiler;
 
@@ -20,6 +20,8 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 	[ExportMetadata("SortOrder", 1)]
 	public class TextureSamplingViewModel : TechDemoViewModel
 	{
+		private readonly IResourceLoader _resourceLoader;
+
 		public override string DisplayName
 		{
 			get { return "Texture Sampling"; }
@@ -57,6 +59,12 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 				NotifyOfPropertyChange(() => SelectedTextureFilter);
 				GenerateImage();
 			}
+		}
+
+		[ImportingConstructor]
+		public TextureSamplingViewModel(IResourceLoader resourceLoader)
+		{
+			_resourceLoader = resourceLoader;
 		}
 
 		protected override void OnActivate()
@@ -164,7 +172,8 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 			});
 
 			// Load texture and create sampler
-			var texture = ProceduralTextures.CreateCheckerboard(device, 32, 32);
+			var textureStream = _resourceLoader.OpenResource("TechDemos/Resources/TextureSampling/CorrodedTiles.png");
+			var texture = TextureLoader.CreateTextureFromFile(device, textureStream);
 			var textureView = device.CreateShaderResourceView(texture);
 
 			var sampler = device.CreateSamplerState(new SamplerStateDescription
@@ -196,7 +205,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 			deviceContext.OutputMerger.SetTargets(depthView, renderTargetView);
 
 			// Prepare matrices
-			var view = Matrix3D.CreateLookAt(new Point3D(0.7f, 0, -1.8f), Vector3D.Backward, Vector3D.UnitY);
+			var view = Matrix3D.CreateLookAt(new Point3D(0.7f, 0, -1.7f), Vector3D.Backward, Vector3D.UnitY);
 			var projection = Matrix3D.CreatePerspectiveFieldOfView(Nexus.MathUtility.PI / 4.0f,
 				Bitmap.PixelWidth / (float) Bitmap.PixelHeight, 0.1f, 100.0f);
 
@@ -207,7 +216,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 			// Update WorldViewProj Matrix
 			var worldViewProj = Matrix3D.CreateRotationX(0.3f)
 				* Matrix3D.CreateRotationY(0.6f)
-				* Matrix3D.CreateRotationZ(0.5f)
+				* Matrix3D.CreateRotationZ(0.6f)
 				* view * projection;
 			worldViewProj = Matrix3D.Transpose(worldViewProj);
 			constantBuffer.SetData(ref worldViewProj);

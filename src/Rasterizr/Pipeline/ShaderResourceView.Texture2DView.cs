@@ -1,6 +1,8 @@
 ﻿using System;
 using Rasterizr.Math;
 using Rasterizr.Resources;
+using SlimShader;
+using SlimShader.VirtualMachine.Resources;
 
 namespace Rasterizr.Pipeline
 {
@@ -17,6 +19,56 @@ namespace Rasterizr.Pipeline
 				for (int i = description.MostDetailedMip; i < description.MostDetailedMip + description.MipLevels; i++)
 					_subresources[i] = resource.GetSubresource(0, i);
 				_format = format;
+			}
+
+			public override float CalculateLevelOfDetail(ISampler sampler, ref SlimShader.Number4 ddx, ref SlimShader.Number4 ddy)
+			{
+				var subresource = _subresources[0];
+				int width = subresource.Width;
+				int height = subresource.Height;
+				float xBound2 = width * width;
+				float yBound2 = height * height;
+
+				float dudx2 = ddx.Number0.Float * ddx.Number0.Float * xBound2;
+				float dvdx2 = ddx.Number1.Float * ddx.Number1.Float * yBound2;
+				float dudy2 = ddy.Number0.Float * ddy.Number0.Float * xBound2;
+				float dvdy2 = ddy.Number1.Float * ddy.Number1.Float * yBound2;
+
+				// Proportional to the amount of a texel on display in a single pixel
+				float pixelSizeTexelRatio2 = System.Math.Max(dudx2 + dvdx2, dudy2 + dvdy2);
+
+				// Uses formula for p410 of Essential Mathematics for Games and Interactive Applications
+				return 0.5f * MathUtility.Log2(pixelSizeTexelRatio2);
+			}
+
+			public override Number4 SampleLevel(ISampler sampler, ref Number4 location, float lod)
+			{
+				throw new NotImplementedException();
+				//switch (samplerState.Filter)
+				//{
+				//	case TextureFilter.MinLinearMagMipPoint:
+				//	case TextureFilter.MinMagLinearMipPoint:
+				//	case TextureFilter.MinMagMipPoint:
+				//		{
+				//			// Calculate nearest mipmap level.
+				//			int nearestLevel = MathUtility.Round(lod);
+				//			return GetFilteredColor(samplerState.Filter, true, nearestLevel, samplerState, location.X, location.Y);
+				//		}
+				//	case TextureFilter.MinLinearMagPointMipLinear:
+				//	case TextureFilter.MinMagMipLinear:
+				//	case TextureFilter.MinMagPointMipLinear:
+				//	case TextureFilter.MinPointMagMipLinear:
+				//		{
+				//			// Calculate nearest two levels and linearly filter between them.
+				//			int nearestLevelInt = (int) lod;
+				//			float d = lod - nearestLevelInt;
+				//			ColorF c1 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt, samplerState, location.X, location.Y);
+				//			ColorF c2 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt + 1, samplerState, location.X, location.Y);
+				//			return (c1 * (1 - d)) + (c2 * d);
+				//		}
+				//	default:
+				//		throw new NotSupportedException();
+				//}
 			}
 
 			public override Color4F GetDataIndex(SamplerStateDescription sampler, float u, float v, float w)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Rasterizr.Math;
 using Rasterizr.Util;
 
 namespace Rasterizr.Resources
@@ -14,7 +15,7 @@ namespace Rasterizr.Resources
 			if (mipLevels != 0)
 				return mipLevels;
 
-			return (int) System.Math.Log(dimensions.Max(), 2.0) + 1;
+			return (int) MathUtility.Log2(dimensions.Max()) + 1;
 		}
 
 		public static Texture1D.Texture1DSubresource[] CreateMipMaps(int mipLevels, int elementSize, int width)

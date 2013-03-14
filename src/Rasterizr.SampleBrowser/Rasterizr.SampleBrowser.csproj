@@ -169,6 +169,7 @@
     <Content Include="Samples\BasicTriangle\MiniTri.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="TechDemos\Resources\TextureSampling\CorrodedTiles.png" />
     <Content Include="TechDemos\Resources\TextureSampling\Texture.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

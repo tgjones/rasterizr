@@ -21,9 +21,11 @@ namespace Rasterizr.Toolkit
 				for (int x = 0; x < width; x++)
 				{
 					data[(y * width) + x] = (black) ? Color4.Black : Color4.White;
-					black = !black;
+					if (x % 8 == 0)
+						black = !black;
 				}
-				black = !black;
+				if (y % 8 == 0)
+					black = !black;
 			}
 			device.ImmediateContext.UpdateSubresource(texture, 0, data);
 			return texture;
