@@ -30,9 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SlimShader, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SlimShader, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SlimShader.0.1.0\lib\portable-win+net40\SlimShader.dll</HintPath>
+      <HintPath>..\packages\SlimShader.0.1.1\lib\portable-win+net40\SlimShader.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

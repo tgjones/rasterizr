@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>SlimShader.VirtualMachine</id>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <title>SlimShader.VirtualMachine</title>
     <authors>Tim Jones</authors>
     <owners>Tim Jones</owners>
@@ -10,12 +10,9 @@
     <projectUrl>https://github.com/tgjones/slimshader</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>SlimShader.VirtualMachine is an HLSL virtual machine for .NET</description>
-    <releaseNotes />
-    <copyright />
-    <language />
     <tags>HLSL shader assembly fxc bytecode decompiler Direct3D virtual machine VM GPU</tags>
     <dependencies>
-      <dependency id="SlimShader" version="0.1.0.0" />
+      <dependency id="SlimShader" version="0.1.1.0" />
     </dependencies>
   </metadata>
 </package>

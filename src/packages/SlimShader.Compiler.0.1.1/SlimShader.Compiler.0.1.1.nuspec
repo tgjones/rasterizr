@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>SlimShader.Compiler</id>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <title>SlimShader.Compiler</title>
     <authors>Tim Jones</authors>
     <owners>Tim Jones</owners>
@@ -10,13 +10,10 @@
     <projectUrl>https://github.com/tgjones/slimshader</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>SlimShader.Compiler transforms HLSL source code into SlimShader objects ready for use in SlimShader.VirtualMachine</description>
-    <releaseNotes />
-    <copyright />
-    <language />
     <tags>HLSL shader assembly fxc bytecode decompiler compiler Direct3D</tags>
     <dependencies>
-      <dependency id="SlimShader" version="0.1.0.0" />
-      <dependency id="SharpDX.D3DCompiler" version="2.4.1" />
+      <dependency id="SlimShader" version="0.1.1.0" />
+      <dependency id="SharpDX.D3DCompiler" version="2.4.2" />
     </dependencies>
   </metadata>
 </package>

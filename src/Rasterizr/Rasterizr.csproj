@@ -176,10 +176,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SlimShader">
-      <HintPath>..\packages\SlimShader.0.1.0\lib\portable-win+net40\SlimShader.dll</HintPath>
+      <HintPath>..\packages\SlimShader.0.1.1\lib\portable-win+net40\SlimShader.dll</HintPath>
     </Reference>
     <Reference Include="SlimShader.VirtualMachine">
-      <HintPath>..\packages\SlimShader.VirtualMachine.0.1.0\lib\portable-win+net40\SlimShader.VirtualMachine.dll</HintPath>
+      <HintPath>..\packages\SlimShader.VirtualMachine.0.1.1\lib\portable-win+net40\SlimShader.VirtualMachine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
