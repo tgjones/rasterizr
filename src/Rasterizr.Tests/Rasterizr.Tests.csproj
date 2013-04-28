@@ -94,6 +94,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\lib\D3DCompiler_43.dll">
+      <Link>D3DCompiler_43.dll</Link>
+    </Content>
     <Content Include="Assets\MiniTri.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
