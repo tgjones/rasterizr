@@ -56,10 +56,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader\SlimShader.csproj">
-      <Project>{D75528F5-54F9-4E31-94F6-03C194F74CF2}</Project>
-      <Name>SlimShader %28SlimShader\SlimShader%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Rasterizr\Rasterizr.csproj">
       <Project>{5975A920-5CA3-4187-824A-1804A1ACB6D2}</Project>
       <Name>Rasterizr</Name>

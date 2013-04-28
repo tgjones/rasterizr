@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SlimShader</id>
+    <version>0.1.0</version>
+    <title>SlimShader</title>
+    <authors>Tim Jones</authors>
+    <owners>Tim Jones</owners>
+    <licenseUrl>http://www.opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/tgjones/slimshader</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SlimShader is a Direct3D shader bytecode parser for .NET and C++</description>
+    <tags>HLSL shader assembly fxc bytecode decompiler Direct3D</tags>
+  </metadata>
+</package>

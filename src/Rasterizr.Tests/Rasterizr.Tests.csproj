@@ -36,8 +36,26 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.2.4.2\lib\net40\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.D3DCompiler, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.D3DCompiler.2.4.2\lib\net40\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimShader, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SlimShader.0.1.0\lib\portable-win+net40\SlimShader.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimShader.Compiler, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SlimShader.Compiler.0.1.0\lib\net40\SlimShader.Compiler.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,14 +80,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader.Compiler\SlimShader.Compiler.csproj">
-      <Project>{B0930EDC-6303-4641-B44D-3AE73A9D00A8}</Project>
-      <Name>SlimShader.Compiler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader\SlimShader.csproj">
-      <Project>{D75528F5-54F9-4E31-94F6-03C194F74CF2}</Project>
-      <Name>SlimShader %28SlimShader\SlimShader%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Rasterizr.Diagnostics.Logging\Rasterizr.Diagnostics.Logging.csproj">
       <Project>{AF234621-D615-499B-803B-E60586283509}</Project>
       <Name>Rasterizr.Diagnostics.Logging</Name>

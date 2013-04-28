@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SlimShader, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SlimShader.0.1.0\lib\portable-win+net40\SlimShader.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,14 +59,13 @@
     <Compile Include="VertexPositionTexture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader\SlimShader.csproj">
-      <Project>{D75528F5-54F9-4E31-94F6-03C194F74CF2}</Project>
-      <Name>SlimShader %28SlimShader\SlimShader%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Rasterizr\Rasterizr.csproj">
       <Project>{5975A920-5CA3-4187-824A-1804A1ACB6D2}</Project>
       <Name>Rasterizr</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

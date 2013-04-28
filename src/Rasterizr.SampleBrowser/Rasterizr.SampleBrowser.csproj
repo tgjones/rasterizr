@@ -43,9 +43,27 @@
     <Reference Include="Nexus">
       <HintPath>..\packages\Nexus.2.1.0\lib\net40\Nexus.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.2.4.2\lib\net40\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.D3DCompiler, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.D3DCompiler.2.4.2\lib\net40\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimShader, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SlimShader.0.1.0\lib\portable-win+net40\SlimShader.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimShader.Compiler, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SlimShader.Compiler.0.1.0\lib\net40\SlimShader.Compiler.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -135,6 +153,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -144,14 +163,6 @@
     <Resource Include="TechDemos\Resources\TextureMipmapping\window_28.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader.Compiler\SlimShader.Compiler.csproj">
-      <Project>{B0930EDC-6303-4641-B44D-3AE73A9D00A8}</Project>
-      <Name>SlimShader.Compiler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader\SlimShader.csproj">
-      <Project>{D75528F5-54F9-4E31-94F6-03C194F74CF2}</Project>
-      <Name>SlimShader %28SlimShader\SlimShader%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Rasterizr.Platform.Wpf\Rasterizr.Platform.Wpf.csproj">
       <Project>{4633E75B-1C03-4588-BD29-8BE9A111AD1A}</Project>
       <Name>Rasterizr.Platform.Wpf</Name>

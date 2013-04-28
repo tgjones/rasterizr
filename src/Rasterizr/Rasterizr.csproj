@@ -52,6 +52,7 @@
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture3DView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture2DView.cs" />
     <Compile Include="Pipeline\ShaderResourceView.Texture2DView.cs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparisonUtility.cs" />
@@ -174,16 +175,12 @@
     <Compile Include="Pipeline\Rasterizer\Viewport.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader.VirtualMachine\SlimShader.VirtualMachine.csproj">
-      <Project>{167769B9-A10E-4DFD-B09F-43BFEF4EB673}</Project>
-      <Name>SlimShader.VirtualMachine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\slimshader\src\csharp\SlimShader\SlimShader.csproj">
-      <Project>{D75528F5-54F9-4E31-94F6-03C194F74CF2}</Project>
-      <Name>SlimShader %28SlimShader\SlimShader%29</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <Reference Include="SlimShader">
+      <HintPath>..\packages\SlimShader.0.1.0\lib\portable-win+net40\SlimShader.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimShader.VirtualMachine">
+      <HintPath>..\packages\SlimShader.VirtualMachine.0.1.0\lib\portable-win+net40\SlimShader.VirtualMachine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup />
