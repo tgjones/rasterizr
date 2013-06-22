@@ -135,6 +135,10 @@ namespace Rasterizr.Diagnostics.Logging
 						_swapChain.Present();
 						presented = true;
 						break;
+                    case OperationType.CreateSamplerState :
+                        // TODO
+                        //_device.CreateSamplerState(args.Get<SamplerStateDescription>(0));
+                        break;
 					case OperationType.CreateTexture2D:
 						_device.CreateTexture2D(args.Get<Texture2DDescription>(0));
 						break;

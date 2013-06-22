@@ -11,7 +11,7 @@
         },
         {
           "Number": 2,
-          "OperationType": 24,
+          "OperationType": 26,
           "Arguments": [
             {
               "$type": "Rasterizr.SwapChainDescription, Rasterizr",
@@ -96,12 +96,12 @@
           "Arguments": [
             {
               "$type": "Rasterizr.Resources.BufferDescription, Rasterizr",
-              "SizeInBytes": 0,
+              "SizeInBytes": 96,
               "BindFlags": 1
             },
             {
-              "$type": "System.Byte[], mscorlib",
-              "$value": "AAAAAAAAAD8AAAA/AACAPwAAgD8AAAAAAAAAAAAAgD8AAAA/AAAAvwAAAD8AAIA/AAAAAAAAgD8AAAAAAACAPwAAAL8AAAC/AAAAPwAAgD8AAAAAAAAAAAAAgD8AAIA/"
+              "$type": "Rasterizr.Pipeline.SubresourceData, Rasterizr",
+              "Data": "AAAAAAAAAD8AAAA/AACAPwAAgD8AAAAAAAAAAAAAgD8AAAA/AAAAvwAAAD8AAIA/AAAAAAAAgD8AAAAAAACAPwAAAL8AAAC/AAAAPwAAgD8AAAAAAAAAAAAAgD8AAIA/"
             }
           ],
           "PixelEvents": []
@@ -142,7 +142,7 @@
         },
         {
           "Number": 11,
-          "OperationType": 29,
+          "OperationType": 31,
           "Arguments": [
             5
           ],
@@ -216,7 +216,7 @@
         },
         {
           "Number": 17,
-          "OperationType": 25,
+          "OperationType": 27,
           "Arguments": [],
           "PixelEvents": []
         }
