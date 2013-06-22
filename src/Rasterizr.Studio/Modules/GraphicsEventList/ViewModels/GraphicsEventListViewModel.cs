@@ -12,11 +12,6 @@ namespace Rasterizr.Studio.Modules.GraphicsEventList.ViewModels
 	{
 		private readonly ISelectionService _selectionService;
 
-		public override string DisplayName
-		{
-			get { return "Graphics Event List"; }
-		}
-
 		public override PaneLocation PreferredLocation
 		{
 			get { return PaneLocation.Right; }
@@ -41,6 +36,8 @@ namespace Rasterizr.Studio.Modules.GraphicsEventList.ViewModels
 		[ImportingConstructor]
 		public GraphicsEventListViewModel(ISelectionService selectionService)
 		{
+		    DisplayName = "Graphics Event List";
+
 			_selectionService = selectionService;
 			_events = new BindableCollection<TracefileEventViewModel>();
 			selectionService.SelectedFrameChanged += OnSelectedFrameChanged;

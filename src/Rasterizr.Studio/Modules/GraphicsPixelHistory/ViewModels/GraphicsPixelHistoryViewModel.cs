@@ -16,11 +16,6 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 	{
 		private readonly ISelectionService _selectionService;
 
-		public override string DisplayName
-		{
-			get { return "Pixel History"; }
-		}
-
 		public override PaneLocation PreferredLocation
 		{
 			get { return PaneLocation.Left; }
@@ -46,6 +41,8 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 		[ImportingConstructor]
 		public GraphicsPixelHistoryViewModel(ISelectionService selectionService)
 		{
+		    DisplayName = "Pixel History";
+
 			_selectionService = selectionService;
 			_pixelEvents = new BindableCollection<PixelHistoryEventViewModel>();
 			selectionService.SelectedPixelChanged += OnSelectedPixelChanged;

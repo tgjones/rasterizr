@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
 using Gemini.Framework;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Math;
@@ -13,13 +11,7 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 	public class TracefileViewerViewModel : Document
 	{
 		private readonly ISelectionService _selectionService;
-		private readonly string _fileName;
 		private readonly TracefileViewModel _tracefile;
-
-		public override string DisplayName
-		{
-			get { return Path.GetFileName(_fileName); }
-		}
 
 		public IList<TracefileFrameViewModel> Frames
 		{
@@ -112,9 +104,10 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 		public TracefileViewerViewModel(ISelectionService selectionService, string fileName, Tracefile tracefile)
 		{
 			_selectionService = selectionService;
-			_fileName = fileName;
 			_tracefile = new TracefileViewModel(selectionService, tracefile);
 			_hasSelectedPixel = false;
+
+		    DisplayName = Path.GetFileName(fileName);
 		}
 	}
 }

@@ -3,8 +3,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using Caliburn.Micro;
 using Gemini.Framework;
-using Gemini.Framework.Menus;
 using Gemini.Framework.Results;
+using Gemini.Modules.MainMenu.Models;
 using Rasterizr.Studio.Modules.GraphicsEventList.ViewModels;
 using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels;
 
