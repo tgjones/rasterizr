@@ -4,7 +4,7 @@ namespace Rasterizr.Resources
 {
 	public class SamplerState : DeviceChild
 	{
-		private class Sampler : ISampler
+		private class Sampler : ISamplerState
 		{
 			private readonly SamplerStateDescription _description;
 
@@ -20,14 +20,14 @@ namespace Rasterizr.Resources
 		}
 
 		private readonly SamplerStateDescription _description;
-		private readonly ISampler _sampler;
+        private readonly ISamplerState _sampler;
 
 		public SamplerStateDescription Description
 		{
 			get { return _description; }
 		}
 
-		internal ISampler InnerSampler
+        internal ISamplerState InnerSampler
 		{
 			get { return _sampler; }
 		}

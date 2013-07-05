@@ -46,11 +46,11 @@
     </Reference>
     <Reference Include="SlimShader, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SlimShader.0.1.1\lib\portable-win+net40\SlimShader.dll</HintPath>
+      <HintPath>..\..\lib\SlimShader.dll</HintPath>
     </Reference>
     <Reference Include="SlimShader.Compiler, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SlimShader.Compiler.0.1.1\lib\net40\SlimShader.Compiler.dll</HintPath>
+      <HintPath>..\..\lib\SlimShader.Compiler.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

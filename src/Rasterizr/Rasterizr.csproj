@@ -52,7 +52,6 @@
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture3DView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture2DView.cs" />
     <Compile Include="Pipeline\ShaderResourceView.Texture2DView.cs" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparisonUtility.cs" />
@@ -176,10 +175,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SlimShader">
-      <HintPath>..\packages\SlimShader.0.1.1\lib\portable-win+net40\SlimShader.dll</HintPath>
+      <HintPath>..\..\lib\SlimShader.dll</HintPath>
     </Reference>
     <Reference Include="SlimShader.VirtualMachine">
-      <HintPath>..\packages\SlimShader.VirtualMachine.0.1.1\lib\portable-win+net40\SlimShader.VirtualMachine.dll</HintPath>
+      <HintPath>..\..\lib\SlimShader.VirtualMachine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

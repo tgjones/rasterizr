@@ -9,6 +9,6 @@
 		DecrementAndClamp,
 		Invert,
 		Increment,
-		Decrement,
+		Decrement
 	}
 }

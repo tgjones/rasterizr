@@ -25,5 +25,10 @@
 		{
 			return (float) System.Math.Log(d, 2.0f);
 		}
+
+        public static int Round(float value)
+        {
+            return (int) System.Math.Round(value);
+        }
 	}
 }

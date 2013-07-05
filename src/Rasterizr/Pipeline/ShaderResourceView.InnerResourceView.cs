@@ -10,7 +10,7 @@ namespace Rasterizr.Pipeline
 	{
 		private abstract class InnerResourceView : ITexture
 		{
-			public Number4 SampleGrad(ISampler sampler, ref Number4 location, ref Number4 ddx, ref Number4 ddy)
+			public Number4 SampleGrad(ISamplerState sampler, ref Number4 location, ref Number4 ddx, ref Number4 ddy)
 			{
 				return SampleLevel(sampler, ref location, CalculateLevelOfDetail(sampler, ref ddx, ref ddy));
 			}
@@ -23,20 +23,11 @@ namespace Rasterizr.Pipeline
 			/// <param name="lod">A number that specifies the mipmap level. If the value is &lt;=0, the zero'th (biggest map)
 			/// is used. The fractional value (if supplied) is used to interpolate between two mipmap levels.</param>
 			/// <returns></returns>
-			public abstract Number4 SampleLevel(ISampler sampler, ref Number4 location, float lod);
+            public abstract Number4 SampleLevel(ISamplerState sampler, ref Number4 location, float lod);
 
-			public abstract float CalculateLevelOfDetail(ISampler sampler, ref Number4 ddx, ref Number4 ddy);
+            public abstract float CalculateLevelOfDetail(ISamplerState sampler, ref Number4 ddx, ref Number4 ddy);
 
 			public abstract Color4F GetDataIndex(SamplerStateDescription sampler, float u, float v, float w);
-			
-			public Number4 Sample(ISampler sampler, Number4 location)
-			{
-				float u = location.Number0.Float;
-				float v = location.Number1.Float;
-				float w = location.Number2.Float;
-
-				return GetDataIndex(((SamplerStateDescription) sampler.Description), u, v, w).ToNumber4();
-			}
 
 			public static InnerResourceView Create(Resource resource, ShaderResourceViewDescription description, Format format)
 			{

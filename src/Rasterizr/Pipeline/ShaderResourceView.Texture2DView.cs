@@ -21,7 +21,7 @@ namespace Rasterizr.Pipeline
 				_format = format;
 			}
 
-			public override float CalculateLevelOfDetail(ISampler sampler, ref SlimShader.Number4 ddx, ref SlimShader.Number4 ddy)
+            public override float CalculateLevelOfDetail(ISamplerState sampler, ref Number4 ddx, ref Number4 ddy)
 			{
 				var subresource = _subresources[0];
 				int width = subresource.Width;
@@ -41,34 +41,39 @@ namespace Rasterizr.Pipeline
 				return 0.5f * MathUtility.Log2(pixelSizeTexelRatio2);
 			}
 
-			public override Number4 SampleLevel(ISampler sampler, ref Number4 location, float lod)
-			{
-				throw new NotImplementedException();
-				//switch (samplerState.Filter)
-				//{
-				//	case TextureFilter.MinLinearMagMipPoint:
-				//	case TextureFilter.MinMagLinearMipPoint:
-				//	case TextureFilter.MinMagMipPoint:
-				//		{
-				//			// Calculate nearest mipmap level.
-				//			int nearestLevel = MathUtility.Round(lod);
-				//			return GetFilteredColor(samplerState.Filter, true, nearestLevel, samplerState, location.X, location.Y);
-				//		}
-				//	case TextureFilter.MinLinearMagPointMipLinear:
-				//	case TextureFilter.MinMagMipLinear:
-				//	case TextureFilter.MinMagPointMipLinear:
-				//	case TextureFilter.MinPointMagMipLinear:
-				//		{
-				//			// Calculate nearest two levels and linearly filter between them.
-				//			int nearestLevelInt = (int) lod;
-				//			float d = lod - nearestLevelInt;
-				//			ColorF c1 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt, samplerState, location.X, location.Y);
-				//			ColorF c2 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt + 1, samplerState, location.X, location.Y);
-				//			return (c1 * (1 - d)) + (c2 * d);
-				//		}
-				//	default:
-				//		throw new NotSupportedException();
-				//}
+            public override Number4 SampleLevel(ISamplerState sampler, ref Number4 location, float lod)
+            {
+                var samplerState = (SamplerStateDescription) sampler.Description; // TODO: This isn't nice.
+                switch (samplerState.Filter)
+                {
+                    case Filter.MinPointMagLinearMipPoint :
+                    case Filter.MinLinearMagMipPoint:
+                    case Filter.MinMagLinearMipPoint:
+                    case Filter.MinMagMipPoint:
+                        {
+                            // Calculate nearest mipmap level.
+                            var nearestLevel = MathUtility.Round(lod);
+                            return GetFilteredColor(samplerState.Filter, true, nearestLevel, ref samplerState, 
+                                location.Number0.Float, location.Number1.Float)
+                                .ToNumber4();
+                        }
+                    case Filter.MinLinearMagPointMipLinear:
+                    case Filter.MinMagMipLinear:
+                    case Filter.MinMagPointMipLinear:
+                    case Filter.MinPointMagMipLinear:
+                        {
+                            // Calculate nearest two levels and linearly filter between them.
+                            var nearestLevelInt = (int) lod;
+                            var d = lod - nearestLevelInt;
+                            var c1 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt, ref samplerState,
+                                location.Number0.Float, location.Number1.Float);
+                            var c2 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt + 1, ref samplerState,
+                                location.Number0.Float, location.Number1.Float);
+                            return ((c1 * (1 - d)) + (c2 * d)).ToNumber4();
+                        }
+                    default:
+                        throw new NotSupportedException();
+                }
 			}
 
 			public override Color4F GetDataIndex(SamplerStateDescription sampler, float u, float v, float w)
@@ -92,6 +97,7 @@ namespace Rasterizr.Pipeline
 					{
 						case Filter.MinMagMipPoint:
 						case Filter.MinMagPointMipLinear:
+                        case Filter.MinPointMagLinearMipPoint :
 						case Filter.MinPointMagMipLinear:
 							return GetNearestNeighbor(ref samplerState, level, u, v);
 						case Filter.MinLinearMagMipPoint:
@@ -113,6 +119,7 @@ namespace Rasterizr.Pipeline
 						return GetNearestNeighbor(ref samplerState, level, u, v);
 					case Filter.MinMagLinearMipPoint:
 					case Filter.MinMagMipLinear:
+                    case Filter.MinPointMagLinearMipPoint:
 					case Filter.MinPointMagMipLinear:
 						return GetLinear(ref samplerState, level, u, v);
 					default:

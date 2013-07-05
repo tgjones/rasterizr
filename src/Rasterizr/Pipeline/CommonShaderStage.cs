@@ -120,20 +120,17 @@ namespace Rasterizr.Pipeline
 			}
 
 			// TODO: Get texture count from virtual machine.
-			// TODO: Move resources to VirtualMachine from ExecutionContext?
-			for (int i = 0; i < NumShaderExecutionContexts; i++)
-				for (ushort j = 0; j < _shader.Bytecode.ResourceDefinition.ResourceBindings.Count(x => x.Type == ShaderInputType.Sampler); j++)
-					_virtualMachine.SetSampler(i, new RegisterIndex(j),
-						(_samplers[j] != null)
-							? _samplers[j].InnerSampler
-							: null);
+            for (ushort i = 0; i < _shader.Bytecode.ResourceDefinition.ResourceBindings.Count(x => x.Type == ShaderInputType.Sampler); i++)
+                _virtualMachine.SetSampler(new RegisterIndex(i),
+                    (_samplers[i] != null)
+                        ? _samplers[i].InnerSampler
+                        : null);
 
-			for (int i = 0; i < NumShaderExecutionContexts; i++)
-				for (ushort j = 0; j < _shader.Bytecode.ResourceDefinition.ResourceBindings.Count(x => x.Type == ShaderInputType.Texture); j++)
-					_virtualMachine.SetTexture(i, new RegisterIndex(j),
-						(_shaderResources[j] != null)
-							? _shaderResources[j].InnerView
-							: null);
+			for (ushort i = 0; i < _shader.Bytecode.ResourceDefinition.ResourceBindings.Count(x => x.Type == ShaderInputType.Texture); i++)
+				_virtualMachine.SetTexture(new RegisterIndex(i),
+					(_shaderResources[i] != null)
+						? _shaderResources[i].InnerView
+						: null);
 		}
 
 		protected void SetShaderInputs(int contextIndex, ushort primitiveIndex, Vector4[] inputs)
