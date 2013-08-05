@@ -37,12 +37,12 @@ namespace Rasterizr.Pipeline
 			{
 				_shader = value;
 				_outputParametersCount = value.Bytecode.OutputSignature.Parameters.Count;
-				_virtualMachine = new VirtualMachine(value.Bytecode, NumShaderExecutionContexts);
+                _virtualMachine = new VirtualMachine(value.Bytecode, BatchSize);
 				OnShaderChanged(value);
 			}
 		}
 
-		protected virtual int NumShaderExecutionContexts
+		protected virtual int BatchSize
 		{
 			get { return 1; }
 		}

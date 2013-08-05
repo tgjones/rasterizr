@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using MoreLinq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.Rasterizer;
 using SlimShader.Chunks.Xsgn;
@@ -10,9 +12,9 @@ namespace Rasterizr.Pipeline.PixelShader
 	{
 		private int _outputColorRegister;
 
-		protected override int NumShaderExecutionContexts
+		protected override int BatchSize
 		{
-			get { return 4; }
+			get { return 32; }
 		}
 
 		public PixelShaderStage(Device device)
@@ -36,25 +38,36 @@ namespace Rasterizr.Pipeline.PixelShader
 		{
 			SetShaderConstants();
 
-			// Process groups of four fragments together.
-			foreach (var input in inputs)
-			{
-				SetShaderInputs(0, 0, input.Fragment0.Data);
-				SetShaderInputs(1, 0, input.Fragment1.Data);
-				SetShaderInputs(2, 0, input.Fragment2.Data);
-				SetShaderInputs(3, 0, input.Fragment3.Data);
+            foreach (var fragmentQuadBatch in inputs.Batch(BatchSize / 4))
+            {
+                var fragmentQuads = fragmentQuadBatch.ToList();
 
-				VirtualMachine.Execute();
+                var contextIndex = 0;
+                foreach (var fragmentQuad in fragmentQuads)
+                {
+                    SetShaderInputs(contextIndex + 0, 0, fragmentQuad.Fragment0.Data);
+                    SetShaderInputs(contextIndex + 1, 0, fragmentQuad.Fragment1.Data);
+                    SetShaderInputs(contextIndex + 2, 0, fragmentQuad.Fragment2.Data);
+                    SetShaderInputs(contextIndex + 3, 0, fragmentQuad.Fragment3.Data);
+                    contextIndex += 4;
+                }
 
-				if (input.Fragment0.Samples.AnyCovered)
-					yield return GetPixel(input.Fragment0.X, input.Fragment0.Y, input.Fragment0.Samples, 0, input.Fragment0.PrimitiveID);
-				if (input.Fragment1.Samples.AnyCovered)
-					yield return GetPixel(input.Fragment1.X, input.Fragment1.Y, input.Fragment1.Samples, 1, input.Fragment1.PrimitiveID);
-				if (input.Fragment2.Samples.AnyCovered)
-					yield return GetPixel(input.Fragment2.X, input.Fragment2.Y, input.Fragment2.Samples, 2, input.Fragment2.PrimitiveID);
-				if (input.Fragment3.Samples.AnyCovered)
-					yield return GetPixel(input.Fragment3.X, input.Fragment3.Y, input.Fragment3.Samples, 3, input.Fragment3.PrimitiveID);
-			}
+                VirtualMachine.Execute();
+
+                contextIndex = 0;
+                foreach (var fragmentQuad in fragmentQuads)
+                {
+                    if (fragmentQuad.Fragment0.Samples.AnyCovered)
+                        yield return GetPixel(fragmentQuad.Fragment0.X, fragmentQuad.Fragment0.Y, fragmentQuad.Fragment0.Samples, contextIndex + 0, fragmentQuad.Fragment0.PrimitiveID);
+                    if (fragmentQuad.Fragment1.Samples.AnyCovered)
+                        yield return GetPixel(fragmentQuad.Fragment1.X, fragmentQuad.Fragment1.Y, fragmentQuad.Fragment1.Samples, contextIndex + 1, fragmentQuad.Fragment1.PrimitiveID);
+                    if (fragmentQuad.Fragment2.Samples.AnyCovered)
+                        yield return GetPixel(fragmentQuad.Fragment2.X, fragmentQuad.Fragment2.Y, fragmentQuad.Fragment2.Samples, contextIndex + 2, fragmentQuad.Fragment2.PrimitiveID);
+                    if (fragmentQuad.Fragment3.Samples.AnyCovered)
+                        yield return GetPixel(fragmentQuad.Fragment3.X, fragmentQuad.Fragment3.Y, fragmentQuad.Fragment3.Samples, contextIndex + 3, fragmentQuad.Fragment3.PrimitiveID);
+                    contextIndex += 4;
+                }
+            }
 		}
 
 		private Pixel GetPixel(int x, int y, Samples samples, int contextIndex, int primitiveID)

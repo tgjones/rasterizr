@@ -164,6 +164,7 @@
     <Compile Include="SwapChainDescription.cs" />
     <Compile Include="Resources\Texture2D.cs" />
     <Compile Include="Resources\Texture2DDescription.cs" />
+    <Compile Include="Util\Batch.cs" />
     <Compile Include="Util\ConversionExtensions.cs" />
     <Compile Include="Util\Interop.cs" />
     <Compile Include="Util\Number4Extensions.cs" />
