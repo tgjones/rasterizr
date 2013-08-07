@@ -106,7 +106,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("TechDemos/Resources/TextureSampling/Texture.fx", "VS", "vs_4_0");
 			var vertexShader = device.CreateVertexShader(vertexShaderByteCode);
 
-			var pixelShaderByteCode = ShaderCompiler.CompileFromFile("TechDemos/Resources/TextureSampling/Texture.fx", "PS", "ps_4_0");
+			var pixelShaderByteCode = ShaderCompiler.CompileFromFile("TechDemos/Resources/TextureSampling/Texture.fx", "PS", "ps_4_1");
 			var pixelShader = device.CreatePixelShader(pixelShaderByteCode);
 
 			// Layout from VertexShader input signature
