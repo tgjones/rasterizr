@@ -36,7 +36,10 @@ namespace Rasterizr.Pipeline
 				float pixelSizeTexelRatio2 = System.Math.Max(dudx2 + dvdx2, dudy2 + dvdy2);
 
 				// Uses formula for p410 of Essential Mathematics for Games and Interactive Applications
-				return 0.5f * MathUtility.Log2(pixelSizeTexelRatio2);
+				float result = 0.5f * MathUtility.Log2(pixelSizeTexelRatio2);
+
+                // Clamp to >= 0.
+                return System.Math.Max(result, 0.0f);
 			}
 
             public override Number4 SampleLevel(ISamplerState sampler, ref Number4 location, float lod)
