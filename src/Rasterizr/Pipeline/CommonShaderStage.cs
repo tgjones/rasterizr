@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Rasterizr.Math;
 using Rasterizr.Resources;
 using SlimShader;
 using SlimShader.Chunks.Rdef;
@@ -111,12 +110,12 @@ namespace Rasterizr.Pipeline
 				foreach (var variableDefinition in constantBufferDefinition.Variables)
 					for (ushort k = 0; k < variableDefinition.ShaderType.Rows; k++)
 					{
-						Vector4 value;
+						Number4 value;
 						_constantBuffers[i].GetData(out value, 
 							(int) variableDefinition.StartOffset + k * variableDefinition.ShaderType.Columns * 4,
 							variableDefinition.ShaderType.Columns * 4);
 						_virtualMachine.SetRegister(0, OperandType.ConstantBuffer, 
-							new RegisterIndex(i, registerIndex++), value.ToNumber4());
+							new RegisterIndex(i, registerIndex++), value);
 					}
 			}
 
