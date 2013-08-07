@@ -63,7 +63,7 @@ namespace Rasterizr.Pipeline.PixelShader
 			return new Pixel(x, y)
 			{
 				Samples = samples,
-				Color = outputs[_outputColorRegister].ToColor4F(),
+				Color = outputs[_outputColorRegister],
 				PrimitiveID = primitiveID
 			};
 		}

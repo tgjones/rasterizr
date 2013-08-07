@@ -1,4 +1,4 @@
-﻿using Rasterizr.Math;
+﻿using SlimShader;
 
 namespace Rasterizr.Resources
 {
@@ -19,7 +19,7 @@ namespace Rasterizr.Resources
 					MipLodBias = 0.0f,
 					MaximumAnisotropy = 16,
 					ComparisonFunction = Comparison.Never,
-					BorderColor = new Color4F(0, 0, 0, 0),
+					BorderColor = new Number4(0, 0, 0, 0),
 				};
 			}
 		}
@@ -33,6 +33,6 @@ namespace Rasterizr.Resources
 		public float MipLodBias;
 		public int MaximumAnisotropy;
 		public Comparison ComparisonFunction;
-		public Color4F BorderColor;
+		public Number4 BorderColor;
 	}
 }

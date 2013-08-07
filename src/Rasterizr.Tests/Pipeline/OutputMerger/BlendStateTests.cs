@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.OutputMerger;
+using SlimShader;
 
 namespace Rasterizr.Tests.Pipeline.OutputMerger
 {
@@ -13,12 +13,14 @@ namespace Rasterizr.Tests.Pipeline.OutputMerger
 			// Arrange.
 			var device = new Device();
 			var blendState = new BlendState(device, BlendStateDescription.AlphaBlend);
+		    var source = new Number4(1.0f, 0.0f, 0.0f, 0.3f);
+		    var destination = new Number4(0.0f, 1.0f, 0.0f, 0.4f);
+		    var blendFactor = new Number4();
 
 			// Act.
 			var result = blendState.DoBlend(0,
-				new Color4F(1.0f, 0.0f, 0.0f, 0.3f),
-				new Color4F(0.0f, 1.0f, 0.0f, 0.4f),
-				new Color4F());
+                ref source, ref destination,
+                ref blendFactor);
 
 			// Assert.
 			Assert.That(result.R, Is.EqualTo(1.0f).Within(0.01f));

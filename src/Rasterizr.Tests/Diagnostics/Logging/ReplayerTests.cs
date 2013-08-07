@@ -7,6 +7,7 @@ using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Resources;
+using SlimShader;
 using SlimShader.Compiler;
 
 namespace Rasterizr.Tests.Diagnostics.Logging
@@ -40,7 +41,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			Assert.That(actualData, Is.EqualTo(expectedData));
 		}
 
-		private static Color4F[] RenderScene(TracefileGraphicsLogger logger)
+        private static Number4[] RenderScene(TracefileGraphicsLogger logger)
 		{
 			const int width = 200;
 			const int height = 100;
@@ -86,7 +87,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			deviceContext.PixelShader.Shader = pixelShader;
 			deviceContext.OutputMerger.SetTargets(null, renderTargetView);
 
-			deviceContext.ClearRenderTargetView(renderTargetView, new Color4F(0, 0, 0, 1));
+            deviceContext.ClearRenderTargetView(renderTargetView, new Number4(0, 0, 0, 1));
 			deviceContext.Draw(3, 0);
 			swapChain.Present();
 

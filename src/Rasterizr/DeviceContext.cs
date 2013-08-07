@@ -10,6 +10,7 @@ using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
+using SlimShader;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr
@@ -76,7 +77,7 @@ namespace Rasterizr
 			depthStencilView.Clear(clearFlags, depth, stencil);
 		}
 
-		public virtual void ClearRenderTargetView(RenderTargetView renderTargetView, Color4F color)
+        public virtual void ClearRenderTargetView(RenderTargetView renderTargetView, Number4 color)
 		{
 			_device.Loggers.BeginOperation(OperationType.DeviceContextClearRenderTargetView, renderTargetView, color);
 			_device.Loggers.AddPixelHistoryEvent(new ClearRenderTargetEvent(color));

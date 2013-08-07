@@ -1,13 +1,13 @@
-﻿using Rasterizr.Math;
+﻿using SlimShader;
 
 namespace Rasterizr.Pipeline.Rasterizer.Primitives
 {
 	internal static class InterpolationUtility
 	{
-		public static Vector4 Linear(float alpha, float beta, float gamma,
-			ref Vector4 p1, ref Vector4 p2, ref Vector4 p3)
+        public static Number4 Linear(float alpha, float beta, float gamma,
+            ref Number4 p1, ref Number4 p2, ref Number4 p3)
 		{
-			return new Vector4
+            return new Number4
 			{
 				X = Linear(alpha, beta, gamma, p1.X, p2.X, p3.X),
 				Y = Linear(alpha, beta, gamma, p1.Y, p2.Y, p3.Y),
@@ -29,13 +29,13 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			return (1f / p1W) * alpha + (1f / p2W) * beta + (1f / p3W) * gamma;
 		}
 
-		public static Vector4 Perspective(
+        public static Number4 Perspective(
 			float alpha, float beta, float gamma,
-			ref Vector4 p1, ref Vector4 p2, ref Vector4 p3,
+            ref Number4 p1, ref Number4 p2, ref Number4 p3,
 			float p1W, float p2W, float p3W,
 			float w)
 		{
-			var result = new Vector4
+            var result = new Number4
 			{
 				X = Perspective(alpha, beta, gamma, p1.X, p2.X, p3.X, p1W, p2W, p3W, w),
 				Y = Perspective(alpha, beta, gamma, p1.Y, p2.Y, p3.Y, p1W, p2W, p3W, w),

@@ -4,6 +4,7 @@ using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.VertexShader;
+using SlimShader;
 using SlimShader.Chunks.Xsgn;
 using Buffer = Rasterizr.Resources.Buffer;
 
@@ -159,7 +160,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 				var output = new InputAssemblerVertexOutput();
 				output.VertexID = vertexID++;
 				output.InstanceID = instanceID;
-				output.Data = new Vector4[inputParameterCount];
+				output.Data = new Number4[inputParameterCount];
 				
 				// TODO: Support non-32-bit formats.
 				foreach (var parameter in vertexShaderInputSignature.Parameters)
@@ -177,10 +178,10 @@ namespace Rasterizr.Pipeline.InputAssembler
 								FormatHelper.SizeOfInBytes(inputElement.Format));
 							break;
 						case Name.VertexID:
-							output.Data[parameter.Register] = new Vector4(output.VertexID, 0, 0, 0);
+							output.Data[parameter.Register] = new Number4(output.VertexID, 0, 0, 0);
 							break;
 						case Name.InstanceID:
-							output.Data[parameter.Register] = new Vector4(output.InstanceID, 0, 0, 0);
+							output.Data[parameter.Register] = new Number4(output.InstanceID, 0, 0, 0);
 							break;
 					}
 				}

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using SlimShader;
 
 namespace Rasterizr.Math
 {
@@ -28,9 +29,9 @@ namespace Rasterizr.Math
 			A = a;
 		}
 
-		public Color4F ToColor4F()
+		public Number4 ToNumber4()
 		{
-			return new Color4F(
+			return new Number4(
 				R / 255.0f,
 				G / 255.0f,
 				B / 255.0f,

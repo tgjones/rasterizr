@@ -2,7 +2,8 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Rasterizr.Math;
+using Rasterizr.Util;
+using SlimShader;
 
 namespace Rasterizr.Platform.Wpf
 {
@@ -28,7 +29,7 @@ namespace Rasterizr.Platform.Wpf
 		    _outputBytes = new byte[width * height * 4];
 		}
 
-		protected override void Present(Color4F[] colors)
+		protected override void Present(Number4[] colors)
 		{
             for (var i = 0; i < colors.Length; i++)
             {

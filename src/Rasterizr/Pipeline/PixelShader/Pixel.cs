@@ -1,5 +1,5 @@
-﻿using Rasterizr.Math;
-using Rasterizr.Pipeline.Rasterizer;
+﻿using Rasterizr.Pipeline.Rasterizer;
+using SlimShader;
 
 namespace Rasterizr.Pipeline.PixelShader
 {
@@ -7,7 +7,7 @@ namespace Rasterizr.Pipeline.PixelShader
 	{
 		public int X;
 		public int Y;
-		public Color4F Color;
+        public Number4 Color;
 		public Samples Samples;
 		public int PrimitiveID;
 
@@ -15,7 +15,7 @@ namespace Rasterizr.Pipeline.PixelShader
 		{
 			X = x;
 			Y = y;
-			Color = new Color4F();
+			Color = new Number4();
 			Samples = new Samples();
 			PrimitiveID = 0;
 		}

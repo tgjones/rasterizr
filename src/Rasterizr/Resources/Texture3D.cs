@@ -1,5 +1,5 @@
 ﻿using System;
-using Rasterizr.Math;
+using SlimShader;
 
 namespace Rasterizr.Resources
 {
@@ -19,12 +19,12 @@ namespace Rasterizr.Resources
 				Depth = depth;
 			}
 
-			public Color4F GetData(int x, int y, int z)
+            public Number4 GetData(int x, int y, int z)
 			{
 				return Data[((z * Width * Height) + (y * Width) + x)];
 			}
 
-            public void SetData(int x, int y, int z, ref Color4F value)
+            public void SetData(int x, int y, int z, ref Number4 value)
             {
                 Data[((z * Width * Height) + (y * Width) + x)] = value;
             }
@@ -54,12 +54,12 @@ namespace Rasterizr.Resources
 				description.Width, description.Height, description.Depth);
 		}
 
-        public override Color4F[] GetData(int subresource)
+        public override Number4[] GetData(int subresource)
         {
             return _subresources[subresource].Data;
         }
 
-		public override void SetData(int subresource, Color4F[] data)
+        public override void SetData(int subresource, Number4[] data)
 		{
 			Array.Copy(data, _subresources[subresource].Data, data.Length);
 		}

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Rasterizr.Diagnostics;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer.Primitives;
+using SlimShader;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Pipeline.Rasterizer
@@ -92,7 +92,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 				&& fragment.Y > viewport.TopLeftY && fragment.Y < viewport.TopLeftY + viewport.Height;
 		}
 
-		private static void PerspectiveDivide(ref Vector4 position)
+        private static void PerspectiveDivide(ref Number4 position)
 		{
 			position.X /= position.W;
 			position.Y /= position.W;
@@ -104,7 +104,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 		/// </summary>
 		/// <param name="position"></param>
 		/// <returns></returns>
-		private void ToScreenCoordinates(ref Vector4 position)
+        private void ToScreenCoordinates(ref Number4 position)
 		{
 			var viewport = _viewports[0];
 			position.X = (position.X + 1) * viewport.Width * 0.5f + viewport.TopLeftX;

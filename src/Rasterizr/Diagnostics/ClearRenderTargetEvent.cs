@@ -1,12 +1,12 @@
-﻿using Rasterizr.Math;
+﻿using SlimShader;
 
 namespace Rasterizr.Diagnostics
 {
 	public class ClearRenderTargetEvent : PixelEvent
 	{
-		public Color4F Result { get; private set; }
+        public Number4 Result { get; private set; }
 
-		public ClearRenderTargetEvent(Color4F result)
+        public ClearRenderTargetEvent(Number4 result)
 		{
 			Result = result;
 		}

@@ -166,6 +166,7 @@
     <Compile Include="Resources\Texture2DDescription.cs" />
     <Compile Include="Util\ConversionExtensions.cs" />
     <Compile Include="Util\Interop.cs" />
+    <Compile Include="Util\Number4Extensions.cs" />
     <Compile Include="Util\Utilities.cs" />
     <Compile Include="Pipeline\InputAssembler\VertexBufferBinding.cs" />
     <Compile Include="Pipeline\Rasterizer\Viewport.cs" />

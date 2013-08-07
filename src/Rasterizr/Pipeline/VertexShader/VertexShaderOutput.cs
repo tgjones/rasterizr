@@ -1,4 +1,4 @@
-﻿using Rasterizr.Math;
+﻿using SlimShader;
 
 namespace Rasterizr.Pipeline.VertexShader
 {
@@ -7,7 +7,7 @@ namespace Rasterizr.Pipeline.VertexShader
 		public bool IsStripCut;
 		public int VertexID;
 		public int InstanceID;
-		public Vector4 Position;
-		public Vector4[] Data;
+		public Number4 Position;
+		public Number4[] Data;
 	}
 }

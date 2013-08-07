@@ -1,5 +1,4 @@
 ﻿using System;
-using Rasterizr.Math;
 using Rasterizr.Resources;
 using SlimShader;
 using SlimShader.VirtualMachine.Resources;
@@ -27,7 +26,7 @@ namespace Rasterizr.Pipeline
 
             public abstract float CalculateLevelOfDetail(ISamplerState sampler, ref Number4 ddx, ref Number4 ddy);
 
-			public abstract Color4F GetDataIndex(SamplerStateDescription sampler, float u, float v, float w);
+			public abstract Number4 GetDataIndex(SamplerStateDescription sampler, float u, float v, float w);
 
 			public static InnerResourceView Create(Resource resource, ShaderResourceViewDescription description)
 			{

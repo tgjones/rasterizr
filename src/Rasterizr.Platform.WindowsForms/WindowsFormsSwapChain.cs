@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Rasterizr.Math;
+using SlimShader;
 using Point = System.Drawing.Point;
 
 namespace Rasterizr.Platform.WindowsForms
@@ -29,7 +30,7 @@ namespace Rasterizr.Platform.WindowsForms
 			_graphics = window.CreateGraphics();
 		}
 
-		protected override void Present(Color4F[] colors)
+		protected override void Present(Number4[] colors)
 		{
             // TODO: Convert Color4F[] to byte[] in R8G8B8A8 format.
 			var bitmapData = _bitmap.LockBits(new Rectangle(0, 0, _width, _height),

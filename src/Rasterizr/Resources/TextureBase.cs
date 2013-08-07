@@ -1,4 +1,4 @@
-﻿using Rasterizr.Math;
+﻿using SlimShader;
 
 namespace Rasterizr.Resources
 {
@@ -6,19 +6,19 @@ namespace Rasterizr.Resources
 	{
 		internal abstract class TextureSubresource : ISubresource
 		{
-			private readonly Color4F[] _data;
+            private readonly Number4[] _data;
 
-			public Color4F[] Data
+            public Number4[] Data
 			{
 				get { return _data; }
 			}
 
 			protected TextureSubresource(int numElements)
 			{
-                _data = new Color4F[numElements];
+                _data = new Number4[numElements];
 			}
 
-		    public void Clear(ref Color4F value)
+            public void Clear(ref Number4 value)
 		    {
 		        for (var i = 0; i < _data.Length; i++)
 		            _data[i] = value;
@@ -37,7 +37,7 @@ namespace Rasterizr.Resources
 			
 		}
 
-	    public abstract Color4F[] GetData(int subresource);
-	    public abstract void SetData(int subresource, Color4F[] data);
+        public abstract Number4[] GetData(int subresource);
+        public abstract void SetData(int subresource, Number4[] data);
 	}
 }

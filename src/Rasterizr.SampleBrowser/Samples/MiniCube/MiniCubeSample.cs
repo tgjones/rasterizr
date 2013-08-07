@@ -8,6 +8,7 @@ using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.Util;
+using SlimShader;
 using SlimShader.Compiler;
 
 namespace Rasterizr.SampleBrowser.Samples.MiniCube
@@ -148,7 +149,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCube
 		{
 			// Clear views
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4F(0, 0, 0, 1));
+            _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
 
 			// Update WorldViewProj Matrix
 			var worldViewProj = Matrix3D.CreateRotationX((float)time.ElapsedTime)

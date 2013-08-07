@@ -9,6 +9,7 @@ using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.SampleBrowser.Framework.Services;
 using Rasterizr.Util;
+using SlimShader;
 using SlimShader.Compiler;
 
 namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
@@ -147,7 +148,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 				AddressU = TextureAddressMode.Wrap,
 				AddressV = TextureAddressMode.Wrap,
 				AddressW = TextureAddressMode.Wrap,
-				BorderColor = Color4F.Black,
+				BorderColor = new Number4(0, 0, 0, 1),
 				ComparisonFunction = Comparison.Never,
 				MaximumAnisotropy = 16,
 				MipLodBias = 0,
@@ -179,7 +180,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 		{
 			// Clear views
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4F(0, 0, 0, 1));
+            _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
 
 			// Update WorldViewProj Matrix
 			var worldViewProj = Matrix3D.CreateRotationX((float)time.ElapsedTime)

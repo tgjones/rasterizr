@@ -12,6 +12,7 @@ using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.SampleBrowser.Framework.Services;
 using Rasterizr.Util;
+using SlimShader;
 using SlimShader.Compiler;
 
 namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
@@ -181,7 +182,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 				AddressU = TextureAddressMode.Wrap,
 				AddressV = TextureAddressMode.Wrap,
 				AddressW = TextureAddressMode.Wrap,
-				BorderColor = Color4F.Black,
+				BorderColor = new Number4(0, 0, 0, 1),
 				ComparisonFunction = Comparison.Never,
 				MaximumAnisotropy = 16,
 				MipLodBias = 0,
@@ -210,7 +211,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 
 			// Clear views
 			deviceContext.ClearDepthStencilView(depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-			deviceContext.ClearRenderTargetView(renderTargetView, new Color4F(0.3f, 0, 0, 1));
+            deviceContext.ClearRenderTargetView(renderTargetView, new Number4(0.3f, 0, 0, 1));
 
 			// Update WorldViewProj Matrix
 			var worldViewProj = Matrix3D.CreateRotationX(0.3f)

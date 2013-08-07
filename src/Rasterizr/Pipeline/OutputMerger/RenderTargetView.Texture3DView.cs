@@ -1,5 +1,5 @@
-﻿using Rasterizr.Math;
-using Rasterizr.Resources;
+﻿using Rasterizr.Resources;
+using SlimShader;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
@@ -18,17 +18,17 @@ namespace Rasterizr.Pipeline.OutputMerger
 				_depthSliceCount = description.DepthSliceCount;
 			}
 
-            public override Color4F GetData(int arrayIndex, int x, int y, int sampleIndex)
+            public override Number4 GetData(int arrayIndex, int x, int y, int sampleIndex)
             {
                 return _subresource.GetData(x, y, _firstDepthSlice + arrayIndex);
             }
 
-            public override void SetData(int arrayIndex, int x, int y, int sampleIndex, ref Color4F value)
+            public override void SetData(int arrayIndex, int x, int y, int sampleIndex, ref Number4 value)
             {
                 _subresource.SetData(x, y, _firstDepthSlice + arrayIndex, ref value);
             }
 
-			public override void Clear(ref Color4F color)
+            public override void Clear(ref Number4 color)
 			{
 				// TODO
 				//for (int i = _firstDepthSlice; i < _firstDepthSlice + _depthSliceCount; i++)

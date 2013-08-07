@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Rasterizr.Diagnostics;
-using Rasterizr.Math;
 using Rasterizr.Resources;
+using SlimShader;
 
 namespace Rasterizr
 {
@@ -47,6 +47,6 @@ namespace Rasterizr
 			Debug.WriteLine("Done frame " + _frameCounter++);
 		}
 
-		protected abstract void Present(Color4F[] colors);
+        protected abstract void Present(Number4[] colors);
 	}
 }

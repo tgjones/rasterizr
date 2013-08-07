@@ -1,5 +1,5 @@
-﻿using Rasterizr.Math;
-using Rasterizr.Resources;
+﻿using Rasterizr.Resources;
+using SlimShader;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
@@ -16,17 +16,17 @@ namespace Rasterizr.Pipeline.OutputMerger
 					_subresources[i] = resource.GetSubresource(i, description.MipSlice);
 			}
 
-            public override Color4F GetData(int arrayIndex, int x, int y, int sampleIndex)
+            public override Number4 GetData(int arrayIndex, int x, int y, int sampleIndex)
             {
                 return _subresources[arrayIndex].GetData(x);
             }
 
-            public override void SetData(int arrayIndex, int x, int y, int sampleIndex, ref Color4F value)
+            public override void SetData(int arrayIndex, int x, int y, int sampleIndex, ref Number4 value)
             {
                 _subresources[arrayIndex].SetData(x, ref value);
             }
 
-			public override void Clear(ref Color4F color)
+            public override void Clear(ref Number4 color)
 			{
 			    foreach (var subresource in _subresources)
 			        subresource.Clear(ref color);

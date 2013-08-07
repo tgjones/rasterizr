@@ -6,6 +6,7 @@ using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
+using SlimShader;
 using SlimShader.Compiler;
 
 namespace Rasterizr.SampleBrowser.Samples.BasicTriangle
@@ -73,7 +74,7 @@ namespace Rasterizr.SampleBrowser.Samples.BasicTriangle
 
 		public override void Draw(DemoTime time)
 		{
-			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4F(0, 0, 0, 1));
+            _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
 			_deviceContext.Draw(3, 0);
 			_swapChain.Present();
 		}

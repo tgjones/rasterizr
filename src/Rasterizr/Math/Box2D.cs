@@ -1,4 +1,6 @@
-﻿namespace Rasterizr.Math
+﻿using SlimShader;
+
+namespace Rasterizr.Math
 {
 	internal struct Box2D
 	{
@@ -15,7 +17,7 @@
 			MaxY = maxY;
 		}
 
-		public static Box2D CreateBoundingBox(ref Vector4 v0, ref Vector4 v1, ref Vector4 v2)
+        public static Box2D CreateBoundingBox(ref Number4 v0, ref Number4 v1, ref Number4 v2)
 		{
 			float minX = float.MaxValue, minY = float.MaxValue;
 			float maxX = float.MinValue, maxY = float.MinValue;
@@ -27,7 +29,7 @@
 			return new Box2D((int)minX, (int)minY, (int)maxX, (int)maxY);
 		}
 
-		private static void CheckMinMax(ref Vector4 v,
+        private static void CheckMinMax(ref Number4 v,
 			ref float minX, ref float maxX,
 			ref float minY, ref float maxY)
 		{

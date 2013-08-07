@@ -1,12 +1,12 @@
-﻿using Rasterizr.Math;
+﻿using SlimShader;
 
 namespace Rasterizr
 {
 	public class RawSwapChain : SwapChain
 	{
-		private Color4F[] _data;
+        private Number4[] _data;
 
-		public Color4F[] Data
+        public Number4[] Data
 		{
 			get { return _data; }
 		}
@@ -22,7 +22,7 @@ namespace Rasterizr
 		
 		}
 
-		protected override void Present(Color4F[] colors)
+        protected override void Present(Number4[] colors)
 		{
 			_data = colors;
 		}

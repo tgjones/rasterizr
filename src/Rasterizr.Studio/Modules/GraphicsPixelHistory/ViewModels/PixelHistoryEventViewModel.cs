@@ -4,8 +4,8 @@ using System.Linq;
 using Caliburn.Micro;
 using Rasterizr.Diagnostics;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
-using Rasterizr.Math;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
+using SlimShader;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
@@ -23,7 +23,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 			get { return _result; }
 		}
 
-		public SimplePixelHistoryEventViewModel(Color4F result)
+        public SimplePixelHistoryEventViewModel(Number4 result)
 		{
 			_result = new ColorViewModel(result);
 		}

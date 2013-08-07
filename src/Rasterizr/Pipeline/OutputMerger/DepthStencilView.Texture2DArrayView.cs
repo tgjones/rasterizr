@@ -1,5 +1,5 @@
-﻿using Rasterizr.Math;
-using Rasterizr.Resources;
+﻿using Rasterizr.Resources;
+using SlimShader;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
@@ -23,13 +23,13 @@ namespace Rasterizr.Pipeline.OutputMerger
 
             public override void SetData(int arrayIndex, int x, int y, int sampleIndex, float value)
             {
-                var color = new Color4F(value, 0, 0, 0);
+                var color = new Number4(value, 0, 0, 0);
                 _subresources[arrayIndex].SetData(x, y, ref color);
             }
 
             public override void Clear(float depth)
             {
-                var color = new Color4F(depth, 0, 0, 0);
+                var color = new Number4(depth, 0, 0, 0);
                 foreach (var subresource in _subresources)
                     subresource.Clear(ref color);
             }

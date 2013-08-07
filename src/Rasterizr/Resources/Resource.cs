@@ -1,4 +1,4 @@
-﻿using Rasterizr.Math;
+﻿using SlimShader;
 
 namespace Rasterizr.Resources
 {
@@ -6,7 +6,7 @@ namespace Rasterizr.Resources
 	{
 		internal interface ISubresource
 		{
-		    void Clear(ref Color4F value);
+            void Clear(ref Number4 value);
 		}
 
 		public static int CalculateSubresource(int mipSlice, int arraySlice, int mipLevels)

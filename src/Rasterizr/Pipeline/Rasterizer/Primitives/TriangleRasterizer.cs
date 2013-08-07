@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
+using SlimShader;
 
 namespace Rasterizr.Pipeline.Rasterizer.Primitives
 {
 	internal class TriangleRasterizer : PrimitiveRasterizer
 	{
 		private InputAssemblerPrimitiveOutput _primitive;
-		private Vector4 _p0, _p1, _p2;
+		private Number4 _p0, _p1, _p2;
 
 		private float _alphaDenominator;
 		private float _betaDenominator;
@@ -123,7 +124,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			return (value % 2 == 0) ? value : value - 1;
 		}
 
-		private static float ComputeFunction(float x, float y, ref Vector4 pa, ref Vector4 pb)
+		private static float ComputeFunction(float x, float y, ref Number4 pa, ref Number4 pb)
 		{
 			return (pa.Y - pb.Y) * x + (pb.X - pa.X) * y + pa.X * pb.Y - pb.X * pa.Y;
 		}
@@ -216,7 +217,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			coordinates.Gamma = ComputeFunction(position.X, position.Y, ref _p0, ref _p1) / _gammaDenominator;
 		}
 
-		private Vector4[] CreatePixelShaderInput(ref BarycentricCoordinates coordinates)
+		private Number4[] CreatePixelShaderInput(ref BarycentricCoordinates coordinates)
 		{
 			float w = InterpolationUtility.PrecalculateW(
 				coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
@@ -224,7 +225,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 
 			// TODO: Cache as much of this as possible.
 			// Calculate interpolated attribute values for this fragment.
-			var result = new Vector4[OutputInputRegisterMappings.Length];
+            var result = new Number4[OutputInputRegisterMappings.Length];
 			for (int i = 0; i < result.Length; i++)
 			{
 				var outputRegister = OutputInputRegisterMappings[i];
@@ -234,7 +235,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 
 				// Interpolate values.
 				const bool isPerspectiveCorrect = true; // TODO
-				Vector4 interpolatedValue = (isPerspectiveCorrect)
+				var interpolatedValue = (isPerspectiveCorrect)
 					? InterpolationUtility.Perspective(
 					coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
 						ref v0Value, ref v1Value, ref v2Value,

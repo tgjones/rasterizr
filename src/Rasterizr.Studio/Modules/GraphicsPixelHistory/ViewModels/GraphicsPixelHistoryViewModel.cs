@@ -5,9 +5,9 @@ using Gemini.Framework;
 using Gemini.Framework.Services;
 using System.ComponentModel.Composition;
 using Rasterizr.Diagnostics.Logging;
-using Rasterizr.Math;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Studio.Modules.GraphicsDebugging;
+using SlimShader;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
@@ -65,7 +65,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 				var events = replayer.Logger.GetEvents(_selectionService.SelectedFrame.Number, e.SelectedPixel.X, e.SelectedPixel.Y);
 				_pixelEvents.AddRange(events.Select(x => new PixelHistoryEventViewModel(x)));
 
-				FinalFrameBufferColor = new ColorViewModel(new Color4F(0, 1, 0, 1)); // TODO
+                FinalFrameBufferColor = new ColorViewModel(new Number4(0, 1, 0, 1)); // TODO
 			});
 		}
 

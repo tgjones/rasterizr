@@ -1,13 +1,13 @@
 ﻿using Caliburn.Micro;
-using Rasterizr.Math;
+using SlimShader;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
 	public class ColorViewModel : PropertyChangedBase
 	{
-		private readonly Color4F _color;
+        private readonly Number4 _color;
 
-		public Color4F Color
+        public Number4 Color
 		{
 			get { return _color; }
 		}
@@ -32,7 +32,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 			get { return _color.A; }
 		}
 
-		public ColorViewModel(Color4F color)
+        public ColorViewModel(Number4 color)
 		{
 			_color = color;
 		}

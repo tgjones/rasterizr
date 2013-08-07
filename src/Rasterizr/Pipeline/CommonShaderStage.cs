@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Rasterizr.Math;
 using Rasterizr.Resources;
+using SlimShader;
 using SlimShader.Chunks.Rdef;
 using SlimShader.Chunks.Shex;
 using SlimShader.Chunks.Xsgn;
@@ -133,18 +134,19 @@ namespace Rasterizr.Pipeline
 						: null);
 		}
 
-		protected void SetShaderInputs(int contextIndex, ushort primitiveIndex, Vector4[] inputs)
+		protected void SetShaderInputs(int contextIndex, ushort primitiveIndex, Number4[] inputs)
 		{
 			for (ushort i = 0; i < inputs.Length; i++)
-				_virtualMachine.SetRegister(contextIndex, OperandType.Input, new RegisterIndex(primitiveIndex, i),
-					inputs[i].ToNumber4());
+				_virtualMachine.SetRegister(contextIndex, 
+                    OperandType.Input, new RegisterIndex(primitiveIndex, i),
+					inputs[i]);
 		}
 
-		protected Vector4[] GetShaderOutputs(int contextIndex)
+		protected Number4[] GetShaderOutputs(int contextIndex)
 		{
-			var outputs = new Vector4[_outputParametersCount];
+			var outputs = new Number4[_outputParametersCount];
 			for (ushort i = 0; i < outputs.Length; i++)
-				outputs[i] = Vector4.FromNumber4(_virtualMachine.GetRegister(contextIndex, OperandType.Output, new RegisterIndex(i)));
+				outputs[i] = _virtualMachine.GetRegister(contextIndex, OperandType.Output, new RegisterIndex(i));
 			return outputs;
 		}
 

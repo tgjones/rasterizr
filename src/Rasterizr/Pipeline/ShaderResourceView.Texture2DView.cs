@@ -54,8 +54,7 @@ namespace Rasterizr.Pipeline
                             // Calculate nearest mipmap level.
                             var nearestLevel = MathUtility.Round(lod);
                             return GetFilteredColor(samplerState.Filter, true, nearestLevel, ref samplerState, 
-                                location.Number0.Float, location.Number1.Float)
-                                .ToNumber4();
+                                location.Number0.Float, location.Number1.Float);
                         }
                     case Filter.MinLinearMagPointMipLinear:
                     case Filter.MinMagMipLinear:
@@ -69,19 +68,19 @@ namespace Rasterizr.Pipeline
                                 location.Number0.Float, location.Number1.Float);
                             var c2 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt + 1, ref samplerState,
                                 location.Number0.Float, location.Number1.Float);
-                            return (Color4F.Multiply(ref c1, (1 - d)) + Color4F.Multiply(ref c2, d)).ToNumber4();
+                            return Number4.Lerp(ref c1, ref c2, d);
                         }
                     default:
                         throw new NotSupportedException();
                 }
 			}
 
-			public override Color4F GetDataIndex(SamplerStateDescription sampler, float u, float v, float w)
+            public override Number4 GetDataIndex(SamplerStateDescription sampler, float u, float v, float w)
 			{
 				return GetFilteredColor(sampler.Filter, true, 0, ref sampler, u, v);
 			}
 
-			private Color4F GetFilteredColor(Filter filter, bool minifying, int level, ref SamplerStateDescription samplerState, float u, float v)
+            private Number4 GetFilteredColor(Filter filter, bool minifying, int level, ref SamplerStateDescription samplerState, float u, float v)
 			{
 				level = MathUtility.Clamp(level, 0, _subresources.Length - 1);
 
@@ -127,7 +126,7 @@ namespace Rasterizr.Pipeline
 				}
 			}
 
-			private Color4F GetLinear(ref SamplerStateDescription samplerState, int level, float texelX, float texelY)
+            private Number4 GetLinear(ref SamplerStateDescription samplerState, int level, float texelX, float texelY)
 			{
 				int intTexelX = (int) texelX;
 				int intTexelY = (int) texelY;
@@ -140,18 +139,18 @@ namespace Rasterizr.Pipeline
 				var c01 = GetColor(ref samplerState, level, intTexelX, intTexelY + 1);
 				var c11 = GetColor(ref samplerState, level, intTexelX + 1, intTexelY + 1);
 
-				var cMinV = Color4F.Multiply(ref c00, (1 - fracX)) + Color4F.Multiply(ref c10, fracX);
-				var cMaxV = Color4F.Multiply(ref c01, (1 - fracX)) + Color4F.Multiply(ref c11, fracX);
+                var cMinV = Number4.Lerp(ref c00, ref c10, fracX);
+                var cMaxV = Number4.Lerp(ref c01, ref c11, fracX);
 
-				return Color4F.Multiply(ref cMinV, (1 - fracY)) + Color4F.Multiply(ref cMaxV, fracY);
+                return Number4.Lerp(ref cMinV, ref cMaxV, fracY);
 			}
 
-			private Color4F GetNearestNeighbor(ref SamplerStateDescription samplerState, int level, float texU, float texV)
+            private Number4 GetNearestNeighbor(ref SamplerStateDescription samplerState, int level, float texU, float texV)
 			{
 				return GetColor(ref samplerState, level, MathUtility.Floor(texU), MathUtility.Floor(texV));
 			}
 
-			private Color4F GetColor(ref SamplerStateDescription samplerState, int level, int texU, int texV)
+			private Number4 GetColor(ref SamplerStateDescription samplerState, int level, int texU, int texV)
 			{
 				var subresource = _subresources[level];
 

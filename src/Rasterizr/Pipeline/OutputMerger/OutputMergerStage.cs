@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Diagnostics;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.PixelShader;
+using SlimShader;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
@@ -10,12 +10,17 @@ namespace Rasterizr.Pipeline.OutputMerger
 		private readonly Device _device;
 		private RenderTargetView[] _renderTargetViews;
 		private DepthStencilView _depthStencilView;
+	    private Number4 _blendFactor;
 
 		public DepthStencilState DepthStencilState { get; set; }
 		public int DepthStencilReference { get; set; }
 
 		public BlendState BlendState { get; set; }
-		public Color4F BlendFactor { get; set; }
+	    public Number4 BlendFactor
+	    {
+            get { return _blendFactor; }
+            set { _blendFactor = value; }
+	    }
 		public int BlendSampleMask { get; set; }
 
 		internal int MultiSampleCount
@@ -81,7 +86,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 					var destination = renderTarget.GetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex);
 
 					// Use blend state to calculate final color.
-					Color4F finalColor = BlendState.DoBlend(renderTargetIndex, source, destination, BlendFactor);
+					var finalColor = BlendState.DoBlend(renderTargetIndex, ref source, ref destination, ref _blendFactor);
 					renderTarget.SetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex, ref finalColor);
 
 					pixelHistoryEvent.Previous = destination;

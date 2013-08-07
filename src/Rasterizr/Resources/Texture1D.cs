@@ -1,5 +1,5 @@
 ﻿using System;
-using Rasterizr.Math;
+using SlimShader;
 
 namespace Rasterizr.Resources
 {
@@ -15,12 +15,12 @@ namespace Rasterizr.Resources
 				Width = width;
 			}
 
-			public Color4F GetData(int x)
+            public Number4 GetData(int x)
 			{
 				return Data[x];
 			}
 
-            public void SetData(int x, ref Color4F value)
+            public void SetData(int x, ref Number4 value)
             {
                 Data[x] = value;
             }
@@ -51,7 +51,7 @@ namespace Rasterizr.Resources
 					description.Width);
 		}
 
-        public override Color4F[] GetData(int subresource)
+        public override Number4[] GetData(int subresource)
         {
             int mipSlice, arrayIndex;
             CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
@@ -59,7 +59,7 @@ namespace Rasterizr.Resources
             return _subresources[arrayIndex][mipSlice].Data;
         }
 
-		public override void SetData(int subresource, Color4F[] data)
+        public override void SetData(int subresource, Number4[] data)
 		{
 			int mipSlice, arrayIndex;
 			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);

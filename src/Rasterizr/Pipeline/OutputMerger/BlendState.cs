@@ -1,5 +1,6 @@
 ﻿using System;
 using Rasterizr.Math;
+using SlimShader;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
@@ -18,20 +19,20 @@ namespace Rasterizr.Pipeline.OutputMerger
 			_description = description;
 		}
 
-		internal Color4F DoBlend(int renderTargetIndex, Color4F source, Color4F destination, Color4F blendFactor)
+        internal Number4 DoBlend(int renderTargetIndex, ref Number4 source, ref Number4 destination, ref Number4 blendFactor)
 		{
 			var blendDescription = Description.RenderTarget[renderTargetIndex];
 			if (!blendDescription.IsBlendEnabled)
 				return source;
 
-			var result = new Color4F();
+            var result = new Number4();
 
 			// RGB blending
 			var colorDestinationBlendFactor = GetBlendFactor(blendDescription.DestinationBlend, ref source, ref destination, ref blendFactor);
 			var colorSourceBlendFactor = GetBlendFactor(blendDescription.SourceBlend, ref source, ref destination, ref blendFactor);
 
-			var colorDestination = Color4F.Multiply(ref destination, ref colorDestinationBlendFactor);
-			var colorSource = Color4F.Multiply(ref source, ref colorSourceBlendFactor);
+			var colorDestination = Number4.Multiply(ref destination, ref colorDestinationBlendFactor);
+            var colorSource = Number4.Multiply(ref source, ref colorSourceBlendFactor);
 
 			result.R = DoBlendOperation(blendDescription.BlendOperation, colorSource.R, colorDestination.R);
 			result.G = DoBlendOperation(blendDescription.BlendOperation, colorSource.G, colorDestination.G);
@@ -60,36 +61,36 @@ namespace Rasterizr.Pipeline.OutputMerger
 			}
 		}
 
-		private Color4F GetBlendFactor(BlendOption blend, ref Color4F source, ref Color4F destination, ref Color4F blendFactor)
+        private Number4 GetBlendFactor(BlendOption blend, ref Number4 source, ref Number4 destination, ref Number4 blendFactor)
 		{
 			switch (blend)
 			{
 				case BlendOption.Zero:
-					return new Color4F(0, 0, 0, 0);
+                    return new Number4(0, 0, 0, 0);
 				case BlendOption.One:
-					return new Color4F(1, 1, 1, 1);
+                    return new Number4(1, 1, 1, 1);
 				case BlendOption.SourceColor:
 					return source;
 				case BlendOption.InverseSourceColor:
-					return Color4F.Invert(ref source);
+                    return Number4.Invert(ref source);
 				case BlendOption.SourceAlpha:
-					return new Color4F(source.A, source.A, source.A, source.A);
+                    return new Number4(source.A, source.A, source.A, source.A);
 				case BlendOption.InverseSourceAlpha:
-					return Color4F.Invert(new Color4F(source.A, source.A, source.A, source.A));
+                    return Number4.Invert(new Number4(source.A, source.A, source.A, source.A));
 				case BlendOption.DestinationAlpha:
-					return new Color4F(destination.A, destination.A, destination.A, destination.A);
+                    return new Number4(destination.A, destination.A, destination.A, destination.A);
 				case BlendOption.InverseDestinationAlpha:
-					return Color4F.Invert(new Color4F(destination.A, destination.A, destination.A, destination.A));
+                    return Number4.Invert(new Number4(destination.A, destination.A, destination.A, destination.A));
 				case BlendOption.DestinationColor:
 					return destination;
 				case BlendOption.InverseDestinationColor:
-					return Color4F.Invert(destination);
+                    return Number4.Invert(ref destination);
 				case BlendOption.SourceAlphaSaturate:
-					return Color4F.Saturate(new Color4F(source.A, source.A, source.A, source.A));
+                    return Number4.Saturate(new Number4(source.A, source.A, source.A, source.A));
 				case BlendOption.BlendFactor:
 					return blendFactor;
 				case BlendOption.InverseBlendFactor:
-					return Color4F.Invert(blendFactor);
+					return Number4.Invert(ref blendFactor);
 				default:
 					throw new NotSupportedException();
 			}

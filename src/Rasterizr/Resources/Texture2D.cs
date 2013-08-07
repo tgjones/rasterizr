@@ -1,5 +1,5 @@
 ﻿using System;
-using Rasterizr.Math;
+using SlimShader;
 
 namespace Rasterizr.Resources
 {
@@ -17,12 +17,12 @@ namespace Rasterizr.Resources
 				Height = height;
 			}
 
-			public Color4F GetData(int x, int y)
+            public Number4 GetData(int x, int y)
 			{
 				return Data[((y * Width) + x)];
 			}
 
-            public void SetData(int x, int y, ref Color4F value)
+            public void SetData(int x, int y, ref Number4 value)
             {
                 Data[((y * Width) + x)] = value;
             }
@@ -65,7 +65,7 @@ namespace Rasterizr.Resources
 					description.Width, description.Height);
 		}
 
-        public override Color4F[] GetData(int subresource)
+        public override Number4[] GetData(int subresource)
         {
             int mipSlice, arrayIndex;
             CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
@@ -73,7 +73,7 @@ namespace Rasterizr.Resources
             return _subresources[arrayIndex][mipSlice].Data;
         }
 
-		public override void SetData(int subresource, Color4F[] data)
+        public override void SetData(int subresource, Number4[] data)
 		{
 			int mipSlice, arrayIndex;
 			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
@@ -81,7 +81,7 @@ namespace Rasterizr.Resources
 			Array.Copy(data, _subresources[arrayIndex][mipSlice].Data, data.Length);
 		}
 
-		internal Color4F[] GetData(int arrayIndex, int mipSlice)
+        internal Number4[] GetData(int arrayIndex, int mipSlice)
 		{
 			return _subresources[arrayIndex][mipSlice].Data;
 		}
@@ -125,11 +125,11 @@ namespace Rasterizr.Resources
 							int previousLevelY = y * 2;
 
 							var moreDetailedMipLevel = GetSubresource(i, mipSlice - 1);
-							Color4F c00 = moreDetailedMipLevel.GetData(previousLevelX, previousLevelY);
-							Color4F c10 = moreDetailedMipLevel.GetData(previousLevelX + 1, previousLevelY);
-							Color4F c01 = moreDetailedMipLevel.GetData(previousLevelX, previousLevelY + 1);
-							Color4F c11 = moreDetailedMipLevel.GetData(previousLevelX + 1, previousLevelY + 1);
-							Color4F interpolatedColor = (c00 + c10 + c01 + c11) / 4.0f;
+							var c00 = moreDetailedMipLevel.GetData(previousLevelX, previousLevelY);
+							var c10 = moreDetailedMipLevel.GetData(previousLevelX + 1, previousLevelY);
+							var c01 = moreDetailedMipLevel.GetData(previousLevelX, previousLevelY + 1);
+							var c11 = moreDetailedMipLevel.GetData(previousLevelX + 1, previousLevelY + 1);
+							var interpolatedColor = Number4.Average(ref c00, ref c10, ref c01, ref c11);
 
 						    subresource.SetData(x, y, ref interpolatedColor);
 						}

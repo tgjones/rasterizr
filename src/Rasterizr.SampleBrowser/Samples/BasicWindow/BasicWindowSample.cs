@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Controls;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
+using SlimShader;
 
 namespace Rasterizr.SampleBrowser.Samples.BasicWindow
 {
@@ -55,7 +55,7 @@ namespace Rasterizr.SampleBrowser.Samples.BasicWindow
 
 		public override void Draw(DemoTime time)
 		{
-			_deviceContext.ClearRenderTargetView(_renderTargetView, new Color4F((float)(time.ElapsedTime / 5.0) % 1.0f, 0, 0, 1));
+            _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4((float) (time.ElapsedTime / 5.0) % 1.0f, 0, 0, 1));
 			_swapChain.Present();
 		}
 	}

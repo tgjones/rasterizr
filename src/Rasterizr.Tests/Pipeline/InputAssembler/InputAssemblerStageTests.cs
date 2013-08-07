@@ -4,6 +4,7 @@ using Nexus;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Resources;
+using SlimShader;
 using SlimShader.Chunks.Common;
 using SlimShader.Chunks.Xsgn;
 using PrimitiveTopology = Rasterizr.Pipeline.InputAssembler.PrimitiveTopology;
@@ -132,18 +133,18 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			Assert.That(vertexStream[0].VertexID, Is.EqualTo(0));
 			Assert.That(vertexStream[0].Data, Is.EqualTo(new[]
 				{
-					new Vector4(1.0f, 2.0f, 3.0f, 0.0f),
-					new Vector4(3.0f, 2.0f, 1.0f, 0.0f),
-					new Vector4(3.0f, 4.0f, 0.0f, 0.0f)
+					new Number4(1.0f, 2.0f, 3.0f, 0.0f),
+					new Number4(3.0f, 2.0f, 1.0f, 0.0f),
+					new Number4(3.0f, 4.0f, 0.0f, 0.0f)
 				}));
 
 			Assert.That(vertexStream[1].InstanceID, Is.EqualTo(0));
 			Assert.That(vertexStream[1].VertexID, Is.EqualTo(1));
 			Assert.That(vertexStream[1].Data, Is.EqualTo(new[]
 				{
-					new Vector4(4.0f, 5.0f, 6.0f, 0.0f),
-					new Vector4(4.0f, 6.0f, 8.0f, 0.0f),
-					new Vector4(0.5f, 0.3f, 0.0f, 0.0f)
+					new Number4(4.0f, 5.0f, 6.0f, 0.0f),
+					new Number4(4.0f, 6.0f, 8.0f, 0.0f),
+					new Number4(0.5f, 0.3f, 0.0f, 0.0f)
 				}));
 		}
 
@@ -187,18 +188,18 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			Assert.That(vertexStream[0].VertexID, Is.EqualTo(0));
 			Assert.That(vertexStream[0].Data, Is.EqualTo(new[]
 				{
-					new Vector4(1.0f, 2.0f, 3.0f, 0.0f),
-					new Vector4(3.0f, 2.0f, 1.0f, 0.0f),
-					new Vector4(3.0f, 4.0f, 0.0f, 0.0f)
+					new Number4(1.0f, 2.0f, 3.0f, 0.0f),
+					new Number4(3.0f, 2.0f, 1.0f, 0.0f),
+					new Number4(3.0f, 4.0f, 0.0f, 0.0f)
 				}));
 
 			Assert.That(vertexStream[1].InstanceID, Is.EqualTo(0));
 			Assert.That(vertexStream[1].VertexID, Is.EqualTo(1));
 			Assert.That(vertexStream[1].Data, Is.EqualTo(new[]
 				{
-					new Vector4(4.0f, 5.0f, 6.0f, 0.0f),
-					new Vector4(4.0f, 6.0f, 8.0f, 0.0f),
-					new Vector4(0.5f, 0.3f, 0.0f, 0.0f)
+					new Number4(4.0f, 5.0f, 6.0f, 0.0f),
+					new Number4(4.0f, 6.0f, 8.0f, 0.0f),
+					new Number4(0.5f, 0.3f, 0.0f, 0.0f)
 				}));
 		}
 
@@ -237,18 +238,18 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			Assert.That(vertexStream[0].VertexID, Is.EqualTo(1));
 			Assert.That(vertexStream[0].Data, Is.EqualTo(new[]
 				{
-					new Vector4(4.0f, 5.0f, 6.0f, 0.0f),
-					new Vector4(4.0f, 6.0f, 8.0f, 0.0f),
-					new Vector4(0.5f, 0.3f, 0.0f, 0.0f)
+					new Number4(4.0f, 5.0f, 6.0f, 0.0f),
+					new Number4(4.0f, 6.0f, 8.0f, 0.0f),
+					new Number4(0.5f, 0.3f, 0.0f, 0.0f)
 				}));
 
 			Assert.That(vertexStream[1].InstanceID, Is.EqualTo(0));
 			Assert.That(vertexStream[1].VertexID, Is.EqualTo(2));
 			Assert.That(vertexStream[1].Data, Is.EqualTo(new[]
 				{
-					new Vector4(1.0f, 2.0f, 3.0f, 0.0f),
-					new Vector4(3.0f, 2.0f, 1.0f, 0.0f),
-					new Vector4(3.0f, 4.0f, 0.0f, 0.0f)
+					new Number4(1.0f, 2.0f, 3.0f, 0.0f),
+					new Number4(3.0f, 2.0f, 1.0f, 0.0f),
+					new Number4(3.0f, 4.0f, 0.0f, 0.0f)
 				}));
 		}
 
@@ -321,88 +322,88 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			Assert.That(vertexStream[0].VertexID, Is.EqualTo(0));
 			Assert.That(vertexStream[0].Data, Is.EqualTo(new[]
 				{
-					new Vector4(1.0f, 2.0f, 3.0f, 0.0f), // Position
-					new Vector4(3.0f, 2.0f, 1.0f, 0.0f), // Normal
-					new Vector4(-2.0f, 3.0f, 16.0f, 0.0f), // Instance Pos
-					new Vector4(1.0f, 1.0f, 1.0f, 0.0f), // Instance Scale
-					new Vector4(1.0f, 0.0f, 0.0f, 0.0f) // Instance Colour
+					new Number4(1.0f, 2.0f, 3.0f, 0.0f), // Position
+					new Number4(3.0f, 2.0f, 1.0f, 0.0f), // Normal
+					new Number4(-2.0f, 3.0f, 16.0f, 0.0f), // Instance Pos
+					new Number4(1.0f, 1.0f, 1.0f, 0.0f), // Instance Scale
+					new Number4(1.0f, 0.0f, 0.0f, 0.0f) // Instance Colour
 				}));
 
 			Assert.That(vertexStream[1].InstanceID, Is.EqualTo(0));
 			Assert.That(vertexStream[1].VertexID, Is.EqualTo(1));
 			Assert.That(vertexStream[1].Data, Is.EqualTo(new[]
 				{
-					new Vector4(4.0f, 5.0f, 6.0f, 0.0f),
-					new Vector4(4.0f, 6.0f, 8.0f, 0.0f),
-					new Vector4(-2.0f, 3.0f, 16.0f, 0.0f),
-					new Vector4(1.0f, 1.0f, 1.0f, 0.0f),
-					new Vector4(1.0f, 0.0f, 0.0f, 0.0f)
+					new Number4(4.0f, 5.0f, 6.0f, 0.0f),
+					new Number4(4.0f, 6.0f, 8.0f, 0.0f),
+					new Number4(-2.0f, 3.0f, 16.0f, 0.0f),
+					new Number4(1.0f, 1.0f, 1.0f, 0.0f),
+					new Number4(1.0f, 0.0f, 0.0f, 0.0f)
 				}));
 
 			Assert.That(vertexStream[2].InstanceID, Is.EqualTo(1));
 			Assert.That(vertexStream[2].VertexID, Is.EqualTo(0));
 			Assert.That(vertexStream[2].Data, Is.EqualTo(new[]
 				{
-					new Vector4(1.0f, 2.0f, 3.0f, 0.0f),
-					new Vector4(3.0f, 2.0f, 1.0f, 0.0f),
-					new Vector4(5.0f, 3.0f, 11.0f, 0.0f),
-					new Vector4(2.0f, 2.0f, 2.0f, 0.0f),
-					new Vector4(1.0f, 0.0f, 0.0f, 0.0f)
+					new Number4(1.0f, 2.0f, 3.0f, 0.0f),
+					new Number4(3.0f, 2.0f, 1.0f, 0.0f),
+					new Number4(5.0f, 3.0f, 11.0f, 0.0f),
+					new Number4(2.0f, 2.0f, 2.0f, 0.0f),
+					new Number4(1.0f, 0.0f, 0.0f, 0.0f)
 				}));
 
 			Assert.That(vertexStream[3].InstanceID, Is.EqualTo(1));
 			Assert.That(vertexStream[3].VertexID, Is.EqualTo(1));
 			Assert.That(vertexStream[3].Data, Is.EqualTo(new[]
 				{
-					new Vector4(4.0f, 5.0f, 6.0f, 0.0f),
-					new Vector4(4.0f, 6.0f, 8.0f, 0.0f),
-					new Vector4(5.0f, 3.0f, 11.0f, 0.0f),
-					new Vector4(2.0f, 2.0f, 2.0f, 0.0f),
-					new Vector4(1.0f, 0.0f, 0.0f, 0.0f)
+					new Number4(4.0f, 5.0f, 6.0f, 0.0f),
+					new Number4(4.0f, 6.0f, 8.0f, 0.0f),
+					new Number4(5.0f, 3.0f, 11.0f, 0.0f),
+					new Number4(2.0f, 2.0f, 2.0f, 0.0f),
+					new Number4(1.0f, 0.0f, 0.0f, 0.0f)
 				}));
 
 			Assert.That(vertexStream[4].InstanceID, Is.EqualTo(2));
 			Assert.That(vertexStream[4].VertexID, Is.EqualTo(0));
 			Assert.That(vertexStream[4].Data, Is.EqualTo(new[]
 				{
-					new Vector4(1.0f, 2.0f, 3.0f, 0.0f), // Position
-					new Vector4(3.0f, 2.0f, 1.0f, 0.0f), // Normal
-					new Vector4(2.0f, 5.0f, 10.0f, 0.0f), // Instance Pos
-					new Vector4(3.0f, 3.0f, 3.0f, 0.0f), // Instance Scale
-					new Vector4(0.0f, 1.0f, 0.0f, 0.0f) // Instance Colour
+					new Number4(1.0f, 2.0f, 3.0f, 0.0f), // Position
+					new Number4(3.0f, 2.0f, 1.0f, 0.0f), // Normal
+					new Number4(2.0f, 5.0f, 10.0f, 0.0f), // Instance Pos
+					new Number4(3.0f, 3.0f, 3.0f, 0.0f), // Instance Scale
+					new Number4(0.0f, 1.0f, 0.0f, 0.0f) // Instance Colour
 				}));
 
 			Assert.That(vertexStream[5].InstanceID, Is.EqualTo(2));
 			Assert.That(vertexStream[5].VertexID, Is.EqualTo(1));
 			Assert.That(vertexStream[5].Data, Is.EqualTo(new[]
 				{
-					new Vector4(4.0f, 5.0f, 6.0f, 0.0f),
-					new Vector4(4.0f, 6.0f, 8.0f, 0.0f),
-					new Vector4(2.0f, 5.0f, 10.0f, 0.0f),
-					new Vector4(3.0f, 3.0f, 3.0f, 0.0f),
-					new Vector4(0.0f, 1.0f, 0.0f, 0.0f)
+					new Number4(4.0f, 5.0f, 6.0f, 0.0f),
+					new Number4(4.0f, 6.0f, 8.0f, 0.0f),
+					new Number4(2.0f, 5.0f, 10.0f, 0.0f),
+					new Number4(3.0f, 3.0f, 3.0f, 0.0f),
+					new Number4(0.0f, 1.0f, 0.0f, 0.0f)
 				}));
 
 			Assert.That(vertexStream[6].InstanceID, Is.EqualTo(3));
 			Assert.That(vertexStream[6].VertexID, Is.EqualTo(0));
 			Assert.That(vertexStream[6].Data, Is.EqualTo(new[]
 				{
-					new Vector4(1.0f, 2.0f, 3.0f, 0.0f),
-					new Vector4(3.0f, 2.0f, 1.0f, 0.0f),
-					new Vector4(12.0f, 15.0f, 8.0f, 0.0f),
-					new Vector4(0.5f, 0.5f, 0.5f, 0.0f),
-					new Vector4(0.0f, 1.0f, 0.0f, 0.0f)
+					new Number4(1.0f, 2.0f, 3.0f, 0.0f),
+					new Number4(3.0f, 2.0f, 1.0f, 0.0f),
+					new Number4(12.0f, 15.0f, 8.0f, 0.0f),
+					new Number4(0.5f, 0.5f, 0.5f, 0.0f),
+					new Number4(0.0f, 1.0f, 0.0f, 0.0f)
 				}));
 
 			Assert.That(vertexStream[7].InstanceID, Is.EqualTo(3));
 			Assert.That(vertexStream[7].VertexID, Is.EqualTo(1));
 			Assert.That(vertexStream[7].Data, Is.EqualTo(new[]
 				{
-					new Vector4(4.0f, 5.0f, 6.0f, 0.0f),
-					new Vector4(4.0f, 6.0f, 8.0f, 0.0f),
-					new Vector4(12.0f, 15.0f, 8.0f, 0.0f),
-					new Vector4(0.5f, 0.5f, 0.5f, 0.0f),
-					new Vector4(0.0f, 1.0f, 0.0f, 0.0f)
+					new Number4(4.0f, 5.0f, 6.0f, 0.0f),
+					new Number4(4.0f, 6.0f, 8.0f, 0.0f),
+					new Number4(12.0f, 15.0f, 8.0f, 0.0f),
+					new Number4(0.5f, 0.5f, 0.5f, 0.0f),
+					new Number4(0.0f, 1.0f, 0.0f, 0.0f)
 				}));
 		}
 
@@ -440,24 +441,24 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			Assert.That(vertexStream[0].VertexID, Is.EqualTo(0));
 			Assert.That(vertexStream[0].Data, Is.EqualTo(new[]
 				{
-					new Vector4(0.0f, 0, 0, 0),
-					new Vector4(0.0f, 0, 0, 0)
+					new Number4(0.0f, 0, 0, 0),
+					new Number4(0.0f, 0, 0, 0)
 				}));
 
 			Assert.That(vertexStream[1].InstanceID, Is.EqualTo(0));
 			Assert.That(vertexStream[1].VertexID, Is.EqualTo(1));
 			Assert.That(vertexStream[1].Data, Is.EqualTo(new[]
 				{
-					new Vector4(1.0f, 0, 0, 0),
-					new Vector4(0.0f, 0, 0, 0)
+					new Number4(1.0f, 0, 0, 0),
+					new Number4(0.0f, 0, 0, 0)
 				}));
 
 			Assert.That(vertexStream[2].InstanceID, Is.EqualTo(0));
 			Assert.That(vertexStream[2].VertexID, Is.EqualTo(2));
 			Assert.That(vertexStream[2].Data, Is.EqualTo(new[]
 				{
-					new Vector4(2.0f, 0, 0, 0),
-					new Vector4(0.0f, 0, 0, 0)
+					new Number4(2.0f, 0, 0, 0),
+					new Number4(0.0f, 0, 0, 0)
 				}));
 		}
 	}
