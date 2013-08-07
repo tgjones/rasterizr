@@ -29,18 +29,16 @@ namespace Rasterizr.Pipeline
 
 			public abstract Color4F GetDataIndex(SamplerStateDescription sampler, float u, float v, float w);
 
-			public static InnerResourceView Create(Resource resource, ShaderResourceViewDescription description, Format format)
+			public static InnerResourceView Create(Resource resource, ShaderResourceViewDescription description)
 			{
 				switch (description.Dimension)
 				{
-					case ShaderResourceViewDimension.Buffer:
-						throw new NotImplementedException();
 					case ShaderResourceViewDimension.Texture1D:
 						throw new NotImplementedException();
 					case ShaderResourceViewDimension.Texture1DArray:
 						throw new NotImplementedException();
 					case ShaderResourceViewDimension.Texture2D:
-						return new Texture2DView((Texture2D) resource, description.Texture2D, format);
+						return new Texture2DView((Texture2D) resource, description.Texture2D);
 					case ShaderResourceViewDimension.Texture2DArray:
 						throw new NotImplementedException();
 					case ShaderResourceViewDimension.Texture2DMultisampled:
@@ -52,8 +50,6 @@ namespace Rasterizr.Pipeline
 					case ShaderResourceViewDimension.TextureCube:
 						throw new NotImplementedException();
 					case ShaderResourceViewDimension.TextureCubeArray:
-						throw new NotImplementedException();
-					case ShaderResourceViewDimension.ExtendedBuffer:
 						throw new NotImplementedException();
 					default:
 						throw new ArgumentOutOfRangeException();

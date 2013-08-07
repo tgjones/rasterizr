@@ -1,6 +1,5 @@
 ﻿using System;
 using Rasterizr.Math;
-using Rasterizr.Util;
 
 namespace Rasterizr.Resources
 {
@@ -11,25 +10,30 @@ namespace Rasterizr.Resources
 			public int Width { get; private set; }
 			public int Height { get; private set; }
 
-			public Texture2DSubresource(int elementSize, int width, int height)
-				: base(width * height * elementSize, elementSize)
+			public Texture2DSubresource(int width, int height)
+				: base(width * height)
 			{
 				Width = width;
 				Height = height;
 			}
 
-			public int CalculateByteOffset(int x, int y)
+			public Color4F GetData(int x, int y)
 			{
-				return ((y * Width) + x) * ElementSize;
+				return Data[((y * Width) + x)];
 			}
+
+            public void SetData(int x, int y, ref Color4F value)
+            {
+                Data[((y * Width) + x)] = value;
+            }
 		}
 
 		private readonly Texture2DDescription _description;
 		private readonly Texture2DSubresource[][] _subresources;
 
-		public static Texture2D FromSwapChain<T>(SwapChain swapChain, int index)
+		public static Texture2D FromSwapChain(SwapChain swapChain, int index)
 		{
-			return swapChain.GetBuffer<T>(index);
+			return swapChain.GetBuffer(index);
 		}
 
 		public Texture2DDescription Description
@@ -43,7 +47,7 @@ namespace Rasterizr.Resources
 		}
 
 		internal Texture2D(Device device, Texture2DDescription description)
-			: base(device, description.Format)
+			: base(device)
 		{
 			if (description.ArraySize == 0)
 				throw new ArgumentException("ArraySize must be at least 1.");
@@ -58,22 +62,18 @@ namespace Rasterizr.Resources
 			
 			for (int i = 0; i < description.ArraySize; i++)
 				_subresources[i] = MipMapUtility.CreateMipMaps(mipMapCount, 
-					FormatHelper.SizeOfInBytes(description.Format),
 					description.Width, description.Height);
 		}
 
-		internal override MappedSubresource Map(int subresource)
-		{
-			int mipSlice, arrayIndex;
-			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
+        public override Color4F[] GetData(int subresource)
+        {
+            int mipSlice, arrayIndex;
+            CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
 
-			return new MappedSubresource
-			{
-				Data = _subresources[arrayIndex][mipSlice].Data
-			};
-		}
+            return _subresources[arrayIndex][mipSlice].Data;
+        }
 
-		internal override void UpdateSubresource(int subresource, byte[] data)
+		public override void SetData(int subresource, Color4F[] data)
 		{
 			int mipSlice, arrayIndex;
 			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
@@ -81,11 +81,9 @@ namespace Rasterizr.Resources
 			Array.Copy(data, _subresources[arrayIndex][mipSlice].Data, data.Length);
 		}
 
-		internal void GetData<T>(int arrayIndex, int mipSlice, T[] data)
-			where T : struct
+		internal Color4F[] GetData(int arrayIndex, int mipSlice)
 		{
-			var source = _subresources[arrayIndex][mipSlice].Data;
-			Utilities.FromByteArray(data, 0, source, 0, source.Length);
+			return _subresources[arrayIndex][mipSlice].Data;
 		}
 
 		internal Texture2DSubresource GetSubresource(int arrayIndex, int mipSlice)
@@ -127,29 +125,16 @@ namespace Rasterizr.Resources
 							int previousLevelY = y * 2;
 
 							var moreDetailedMipLevel = GetSubresource(i, mipSlice - 1);
-							Color4F c00 = GetColor(moreDetailedMipLevel, previousLevelX, previousLevelY);
-							Color4F c10 = GetColor(moreDetailedMipLevel, previousLevelX + 1, previousLevelY);
-							Color4F c01 = GetColor(moreDetailedMipLevel, previousLevelX, previousLevelY + 1);
-							Color4F c11 = GetColor(moreDetailedMipLevel, previousLevelX + 1, previousLevelY + 1);
+							Color4F c00 = moreDetailedMipLevel.GetData(previousLevelX, previousLevelY);
+							Color4F c10 = moreDetailedMipLevel.GetData(previousLevelX + 1, previousLevelY);
+							Color4F c01 = moreDetailedMipLevel.GetData(previousLevelX, previousLevelY + 1);
+							Color4F c11 = moreDetailedMipLevel.GetData(previousLevelX + 1, previousLevelY + 1);
 							Color4F interpolatedColor = (c00 + c10 + c01 + c11) / 4.0f;
 
-							FormatHelper.Convert(Format, interpolatedColor, new DataIndex
-							{
-								Data = subresource.Data,
-								Offset = subresource.CalculateByteOffset(x, y)
-							});
+						    subresource.SetData(x, y, ref interpolatedColor);
 						}
 					}
 				}
-		}
-
-		private Color4F GetColor(Texture2DSubresource subresource, int x, int y)
-		{
-			return FormatHelper.Convert(Format, new DataIndex
-			{
-				Data = subresource.Data,
-				Offset = subresource.CalculateByteOffset(x, y)
-			});
 		}
 	}
 }

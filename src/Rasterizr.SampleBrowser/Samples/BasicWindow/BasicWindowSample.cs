@@ -34,13 +34,12 @@ namespace Rasterizr.SampleBrowser.Samples.BasicWindow
 			_deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
-			var backBuffer = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0);
+			var backBuffer = Texture2D.FromSwapChain(_swapChain, 0);
 			_renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 			// Create DepthStencilView.
 			var depthStencilBuffer = device.CreateTexture2D(new Texture2DDescription
 			{
-				Format = Format.D32_Float,
 				ArraySize = 1,
 				MipLevels = 1,
 				Width = width,

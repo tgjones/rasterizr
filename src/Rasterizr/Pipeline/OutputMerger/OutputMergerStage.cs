@@ -77,13 +77,12 @@ namespace Rasterizr.Pipeline.OutputMerger
 						continue;
 					}
 
-					// Clamp pixel colour to range supported by render target format.
-					var source = FormatHelper.Clamp(pixel.Color, renderTarget.ActualFormat);
+					var source = pixel.Color;
 					var destination = renderTarget.GetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex);
 
 					// Use blend state to calculate final color.
 					Color4F finalColor = BlendState.DoBlend(renderTargetIndex, source, destination, BlendFactor);
-					renderTarget.SetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex, finalColor);
+					renderTarget.SetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex, ref finalColor);
 
 					pixelHistoryEvent.Previous = destination;
 					pixelHistoryEvent.Result = finalColor;

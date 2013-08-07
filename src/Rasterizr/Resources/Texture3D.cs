@@ -1,4 +1,5 @@
 ﻿using System;
+using Rasterizr.Math;
 
 namespace Rasterizr.Resources
 {
@@ -10,18 +11,23 @@ namespace Rasterizr.Resources
 			public int Height { get; private set; }
 			public int Depth { get; private set; }
 
-			public Texture3DSubresource(int elementSize, int width, int height, int depth)
-				: base(width * height * depth * elementSize, elementSize)
+			public Texture3DSubresource(int width, int height, int depth)
+				: base(width * height * depth)
 			{
 				Width = width;
 				Height = height;
 				Depth = depth;
 			}
 
-			public int CalculateByteOffset(int x, int y, int z)
+			public Color4F GetData(int x, int y, int z)
 			{
-				return ((z * Width * Height) + (y * Width) + x) * ElementSize;
+				return Data[((z * Width * Height) + (y * Width) + x)];
 			}
+
+            public void SetData(int x, int y, int z, ref Color4F value)
+            {
+                Data[((z * Width * Height) + (y * Width) + x)] = value;
+            }
 		}
 
 		private readonly Texture3DDescription _description;
@@ -38,25 +44,22 @@ namespace Rasterizr.Resources
 		}
 
 		internal Texture3D(Device device, Texture3DDescription description)
-			: base(device, description.Format)
+			: base(device)
 		{
 			_description = description;
 
 			int mipMapCount = MipMapUtility.CalculateMipMapCount(description.MipLevels,
 				description.Width, description.Height, description.Depth);
-			_subresources = MipMapUtility.CreateMipMaps(mipMapCount, FormatHelper.SizeOfInBytes(description.Format),
+			_subresources = MipMapUtility.CreateMipMaps(mipMapCount,
 				description.Width, description.Height, description.Depth);
 		}
 
-		internal override MappedSubresource Map(int subresource)
-		{
-			return new MappedSubresource
-			{
-				Data = _subresources[subresource].Data
-			};
-		}
+        public override Color4F[] GetData(int subresource)
+        {
+            return _subresources[subresource].Data;
+        }
 
-		internal override void UpdateSubresource(int subresource, byte[] data)
+		public override void SetData(int subresource, Color4F[] data)
 		{
 			Array.Copy(data, _subresources[subresource].Data, data.Length);
 		}

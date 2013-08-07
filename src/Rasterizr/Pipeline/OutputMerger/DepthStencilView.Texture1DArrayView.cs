@@ -1,4 +1,5 @@
-﻿using Rasterizr.Resources;
+﻿using Rasterizr.Math;
+using Rasterizr.Resources;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
@@ -15,20 +16,23 @@ namespace Rasterizr.Pipeline.OutputMerger
 					_subresources[i] = resource.GetSubresource(i, description.MipSlice);
 			}
 
-			public override DataIndex GetDataIndex(int arrayIndex, int x, int y, int sampleIndex)
-			{
-				return new DataIndex
-				{
-					Data = _subresources[arrayIndex].Data,
-					Offset = _subresources[arrayIndex].CalculateByteOffset(x)
-				};
-			}
+            public override float GetData(int arrayIndex, int x, int y, int sampleIndex)
+            {
+                return _subresources[arrayIndex].GetData(x).R;
+            }
 
-			public override void Clear(float depth)
-			{
-				foreach (var subresource in _subresources)
-					subresource.Clear(ref depth);
-			}
+            public override void SetData(int arrayIndex, int x, int y, int sampleIndex, float value)
+            {
+                var color = new Color4F(value, 0, 0, 0);
+                _subresources[arrayIndex].SetData(x, ref color);
+            }
+
+            public override void Clear(float depth)
+            {
+                var color = new Color4F(depth, 0, 0, 0);
+                foreach (var subresource in _subresources)
+                    subresource.Clear(ref color);
+            }
 		}
 	}
 }

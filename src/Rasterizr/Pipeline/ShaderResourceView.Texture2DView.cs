@@ -11,14 +11,12 @@ namespace Rasterizr.Pipeline
 		private class Texture2DView : InnerResourceView
 		{
 			private readonly Texture2D.Texture2DSubresource[] _subresources;
-			private readonly Format _format;
 
-			public Texture2DView(Texture2D resource, ShaderResourceViewDescription.Texture2DResource description, Format format)
+			public Texture2DView(Texture2D resource, ShaderResourceViewDescription.Texture2DResource description)
 			{
 				_subresources = new Texture2D.Texture2DSubresource[description.MipLevels];
 				for (int i = description.MostDetailedMip; i < description.MostDetailedMip + description.MipLevels; i++)
 					_subresources[i] = resource.GetSubresource(0, i);
-				_format = format;
 			}
 
             public override float CalculateLevelOfDetail(ISamplerState sampler, ref Number4 ddx, ref Number4 ddy)
@@ -43,6 +41,8 @@ namespace Rasterizr.Pipeline
 
             public override Number4 SampleLevel(ISamplerState sampler, ref Number4 location, float lod)
             {
+                // TODO: Don't always pass minifying=true to GetFilteredColor.
+
                 var samplerState = (SamplerStateDescription) sampler.Description; // TODO: This isn't nice.
                 switch (samplerState.Filter)
                 {
@@ -69,7 +69,7 @@ namespace Rasterizr.Pipeline
                                 location.Number0.Float, location.Number1.Float);
                             var c2 = GetFilteredColor(samplerState.Filter, true, nearestLevelInt + 1, ref samplerState,
                                 location.Number0.Float, location.Number1.Float);
-                            return ((c1 * (1 - d)) + (c2 * d)).ToNumber4();
+                            return (Color4F.Multiply(ref c1, (1 - d)) + Color4F.Multiply(ref c2, d)).ToNumber4();
                         }
                     default:
                         throw new NotSupportedException();
@@ -135,16 +135,15 @@ namespace Rasterizr.Pipeline
 				float fracX = texelX - intTexelX;
 				float fracY = texelY - intTexelY;
 
-				Color4F c00 = GetColor(ref samplerState, level, intTexelX, intTexelY);
-				Color4F c10 = GetColor(ref samplerState, level, intTexelX + 1, intTexelY);
-				Color4F c01 = GetColor(ref samplerState, level, intTexelX, intTexelY + 1);
-				Color4F c11 = GetColor(ref samplerState, level, intTexelX + 1, intTexelY + 1);
+				var c00 = GetColor(ref samplerState, level, intTexelX, intTexelY);
+				var c10 = GetColor(ref samplerState, level, intTexelX + 1, intTexelY);
+				var c01 = GetColor(ref samplerState, level, intTexelX, intTexelY + 1);
+				var c11 = GetColor(ref samplerState, level, intTexelX + 1, intTexelY + 1);
 
-				Color4F cMinV = (c00 * (1 - fracX)) + (c10 * fracX);
-				Color4F cMaxV = (c01 * (1 - fracX)) + (c11 * fracX);
+				var cMinV = Color4F.Multiply(ref c00, (1 - fracX)) + Color4F.Multiply(ref c10, fracX);
+				var cMaxV = Color4F.Multiply(ref c01, (1 - fracX)) + Color4F.Multiply(ref c11, fracX);
 
-				Color4F cFinal = (cMinV * (1 - fracY)) + (cMaxV * fracY);
-				return cFinal;
+				return Color4F.Multiply(ref cMinV, (1 - fracY)) + Color4F.Multiply(ref cMaxV, fracY);
 			}
 
 			private Color4F GetNearestNeighbor(ref SamplerStateDescription samplerState, int level, float texU, float texV)
@@ -162,13 +161,7 @@ namespace Rasterizr.Pipeline
 				if (modifiedTexelU == null || modifiedTexelV == null)
 					return samplerState.BorderColor;
 
-				var dataIndex = new DataIndex
-				{
-					Data = subresource.Data,
-					Offset = subresource.CalculateByteOffset(modifiedTexelU.Value, modifiedTexelV.Value)
-				};
-
-				return FormatHelper.Convert(_format, dataIndex);
+			    return subresource.GetData(modifiedTexelU.Value, modifiedTexelV.Value);
 			}
 
 			private static int? GetTextureAddress(int value, int maxValue, TextureAddressMode textureAddressMode)

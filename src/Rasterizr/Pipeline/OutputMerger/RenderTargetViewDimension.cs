@@ -3,7 +3,6 @@
 	public enum RenderTargetViewDimension
 	{
 		Unknown,
-		Buffer,
 		Texture1D,
 		Texture1DArray,
 		Texture2D,

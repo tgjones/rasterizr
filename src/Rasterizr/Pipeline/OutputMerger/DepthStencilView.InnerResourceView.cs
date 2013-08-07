@@ -7,7 +7,8 @@ namespace Rasterizr.Pipeline.OutputMerger
 	{
 		private abstract class InnerResourceView
 		{
-			public abstract DataIndex GetDataIndex(int arrayIndex, int x, int y, int sampleIndex);
+			public abstract float GetData(int arrayIndex, int x, int y, int sampleIndex);
+		    public abstract void SetData(int arrayIndex, int x, int y, int sampleIndex, float value);
 			public abstract void Clear(float depth);
 
 			public static InnerResourceView Create(Resource resource, DepthStencilViewDescription description)

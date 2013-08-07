@@ -8,15 +8,14 @@ namespace Rasterizr.Pipeline.OutputMerger
 	{
 		private abstract class InnerResourceView
 		{
-			public abstract DataIndex GetDataIndex(int arrayIndex, int x, int y, int sampleIndex);
-			public abstract void Clear(Format format, ref Color4F color);
+			public abstract Color4F GetData(int arrayIndex, int x, int y, int sampleIndex);
+            public abstract void SetData(int arrayIndex, int x, int y, int sampleIndex, ref Color4F value);
+			public abstract void Clear(ref Color4F color);
 
 			public static InnerResourceView Create(Resource resource, RenderTargetViewDescription description)
 			{
 				switch (description.Dimension)
 				{
-					case RenderTargetViewDimension.Buffer:
-						return new BufferView((Resources.Buffer) resource, description.Buffer);
 					case RenderTargetViewDimension.Texture1D:
 						return new Texture1DView((Texture1D) resource, description.Texture1D);
 					case RenderTargetViewDimension.Texture1DArray:

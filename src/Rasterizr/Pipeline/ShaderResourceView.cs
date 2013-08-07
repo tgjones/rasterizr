@@ -17,8 +17,7 @@ namespace Rasterizr.Pipeline
 			: base(device, resource)
 		{
 			_description = description.GetValueOrDefault(ShaderResourceViewDescription.CreateDefault(resource));
-			var actualFormat = ResourceViewUtility.GetActualFormat(_description.Format, resource);
-			_innerView = InnerResourceView.Create(resource, _description, actualFormat);
+			_innerView = InnerResourceView.Create(resource, _description);
 		}
 	}
 }

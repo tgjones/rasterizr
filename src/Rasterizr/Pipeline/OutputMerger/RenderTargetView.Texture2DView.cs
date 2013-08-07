@@ -14,18 +14,19 @@ namespace Rasterizr.Pipeline.OutputMerger
 				_subresource = resource.GetSubresource(0, description.MipSlice);
 			}
 
-			public override DataIndex GetDataIndex(int arrayIndex, int x, int y, int sampleIndex)
-			{
-				return new DataIndex
-				{
-					Data = _subresource.Data,
-					Offset = _subresource.CalculateByteOffset(x, y)
-				};
-			}
+            public override Color4F GetData(int arrayIndex, int x, int y, int sampleIndex)
+            {
+                return _subresource.GetData(x, y);
+            }
 
-			public override void Clear(Format format, ref Color4F color)
+            public override void SetData(int arrayIndex, int x, int y, int sampleIndex, ref Color4F value)
+            {
+                _subresource.SetData(x, y, ref value);
+            }
+
+			public override void Clear(ref Color4F color)
 			{
-				FormatHelper.Clear(_subresource, format, ref color);
+			    _subresource.Clear(ref color);
 			}
 		}
 	}

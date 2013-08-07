@@ -13,8 +13,7 @@ namespace Rasterizr.Tests.Resources
 			var texture = new Texture1D(new Device(), new Texture1DDescription
 			{
 				Width = 32,
-				ArraySize = 1,
-				Format = Format.R8G8B8A8_UInt
+				ArraySize = 1
 			});
 			int width, numberOfLevels;
 
@@ -39,8 +38,7 @@ namespace Rasterizr.Tests.Resources
 			var texture = new Texture1D(new Device(), new Texture1DDescription
 			{
 				Width = 64,
-				ArraySize = 1,
-				Format = Format.R8G8B8A8_UInt
+				ArraySize = 1
 			});
 
 			// Act / Assert.

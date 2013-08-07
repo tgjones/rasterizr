@@ -60,30 +60,27 @@ namespace Rasterizr.Pipeline.OutputMerger
 		}
 
 		[FieldOffset(0)]
-		public Format Format;
-
-		[FieldOffset(4)]
 		public DepthStencilViewDimension Dimension;
 
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public DepthStencilViewFlags Flags;
 
-		[FieldOffset(12)]
+		[FieldOffset(8)]
 		public Texture1DResource Texture1D;
 
-		[FieldOffset(12)]
-		public Texture1DArrayResource Texture1DArray;
+        [FieldOffset(8)]
+        public Texture1DArrayResource Texture1DArray;
 
-		[FieldOffset(12)]
+        [FieldOffset(8)]
 		public Texture2DResource Texture2D;
 
-		[FieldOffset(12)]
+        [FieldOffset(8)]
 		public Texture2DArrayResource Texture2DArray;
 
-		[FieldOffset(12)]
+        [FieldOffset(8)]
 		public Texture2DMultisampledResource Texture2DMS;
 
-		[FieldOffset(12)]
+        [FieldOffset(8)]
 		public Texture2DMultisampledArrayResource Texture2DMSArray;	 
 	}
 }

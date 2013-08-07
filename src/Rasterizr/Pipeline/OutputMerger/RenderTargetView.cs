@@ -7,16 +7,10 @@ namespace Rasterizr.Pipeline.OutputMerger
 	{
 		private readonly RenderTargetViewDescription _description;
 		private readonly InnerResourceView _innerView;
-		private readonly Format _actualFormat;
 
 		public RenderTargetViewDescription Description
 		{
 			get { return _description; }
-		}
-
-		internal Format ActualFormat
-		{
-			get { return _actualFormat; }
 		}
 
 		internal RenderTargetView(Device device, Resource resource, RenderTargetViewDescription? description)
@@ -24,22 +18,21 @@ namespace Rasterizr.Pipeline.OutputMerger
 		{
 			_description = description.GetValueOrDefault(RenderTargetViewDescription.CreateDefault(resource));
 			_innerView = InnerResourceView.Create(resource, _description);
-			_actualFormat = ResourceViewUtility.GetActualFormat(_description.Format, resource);
 		}
 
 		internal Color4F GetColor(int arrayIndex, int x, int y, int sampleIndex)
 		{
-			return FormatHelper.Convert(_actualFormat, _innerView.GetDataIndex(arrayIndex, x, y, sampleIndex));
+			return _innerView.GetData(arrayIndex, x, y, sampleIndex);
 		}
 
-		internal void SetColor(int arrayIndex, int x, int y, int sampleIndex, Color4F color)
+		internal void SetColor(int arrayIndex, int x, int y, int sampleIndex, ref Color4F color)
 		{
-			FormatHelper.Convert(_actualFormat, color, _innerView.GetDataIndex(arrayIndex, x, y, sampleIndex));
+		    _innerView.SetData(arrayIndex, x, y, sampleIndex, ref color);
 		}
 
 		internal void Clear(ref Color4F color)
 		{
-			_innerView.Clear(_actualFormat, ref color);
+			_innerView.Clear(ref color);
 		}
 	}
 }

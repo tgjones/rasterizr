@@ -1,11 +1,12 @@
-﻿namespace Rasterizr.Resources
+﻿using Rasterizr.Math;
+
+namespace Rasterizr.Resources
 {
 	public abstract class Resource : DeviceChild
 	{
 		internal interface ISubresource
 		{
-			void Clear<T>(ref T value)
-				where T : struct;
+		    void Clear(ref Color4F value);
 		}
 
 		public static int CalculateSubresource(int mipSlice, int arraySlice, int mipLevels)
@@ -20,8 +21,5 @@
 		{
 			
 		}
-
-		internal abstract MappedSubresource Map(int subresource);
-		internal abstract void UpdateSubresource(int subresource, byte[] data);
 	}
 }

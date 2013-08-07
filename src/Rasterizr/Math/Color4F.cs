@@ -11,6 +11,11 @@ namespace Rasterizr.Math
 			get { return new Color4F(0, 0, 0, 1); }
 		}
 
+        public static Color4F White
+        {
+            get { return new Color4F(1, 1, 1, 1); }
+        }
+
 		public float R;
 		public float G;
 		public float B;
@@ -43,15 +48,6 @@ namespace Rasterizr.Math
 				left.A + right.A);
 		}
 
-		public static Color4F operator*(Color4F left, float right)
-		{
-			return new Color4F(
-				left.R * right,
-				left.G * right,
-				left.B * right,
-				left.A * right);
-		}
-
 		public static Color4F operator/(Color4F left, float right)
 		{
 			return new Color4F(
@@ -69,6 +65,15 @@ namespace Rasterizr.Math
 				left.B * right.B, 
 				left.A * right.A);
 		}
+
+        public static Color4F Multiply(ref Color4F left, float right)
+        {
+            return new Color4F(
+                left.R * right,
+                left.G * right,
+                left.B * right,
+                left.A * right);
+        }
 
 		public static Color4F Saturate(ref Color4F value)
 		{

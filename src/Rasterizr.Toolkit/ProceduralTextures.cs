@@ -11,23 +11,22 @@ namespace Rasterizr.Toolkit
 			{
 				Width = width,
 				Height = height,
-				ArraySize = 1,
-				Format = Format.R8G8B8A8_UInt
+				ArraySize = 1
 			});
-			var data = new Color4[width * height];
+			var data = new Color4F[width * height];
 			bool black = false;
 			for (int y = 0; y < height; y++)
 			{
 				for (int x = 0; x < width; x++)
 				{
-					data[(y * width) + x] = (black) ? Color4.Black : Color4.White;
+					data[(y * width) + x] = (black) ? Color4F.Black : Color4F.White;
 					if (x % 8 == 0)
 						black = !black;
 				}
 				if (y % 8 == 0)
 					black = !black;
 			}
-			device.ImmediateContext.UpdateSubresource(texture, 0, data);
+		    texture.SetData(0, data);
 			return texture;
 		}
 	}

@@ -17,8 +17,7 @@ namespace Rasterizr.Tests.Resources
 			{
 				Width = 32,
 				Height = 32,
-				ArraySize = 1,
-				Format = Format.R8G8B8A8_UInt
+				ArraySize = 1
 			});
 			int width, height, numberOfLevels;
 
@@ -40,8 +39,7 @@ namespace Rasterizr.Tests.Resources
 			{
 				Width = 31,
 				Height = 32,
-				ArraySize = 1,
-				Format = Format.R8G8B8A8_UInt
+				ArraySize = 1
 			});
 		}
 
@@ -54,8 +52,7 @@ namespace Rasterizr.Tests.Resources
 				Width = 31,
 				Height = 32,
 				ArraySize = 1,
-				MipLevels = 1,
-				Format = Format.R8G8B8A8_UInt
+				MipLevels = 1
 			}));
 		}
 
@@ -73,8 +70,7 @@ namespace Rasterizr.Tests.Resources
 			{
 				Width = 64,
 				Height = 32,
-				ArraySize = 1,
-				Format = Format.R8G8B8A8_UInt
+				ArraySize = 1
 			});
 
 			// Act / Assert.

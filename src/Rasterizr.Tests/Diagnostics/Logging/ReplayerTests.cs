@@ -40,10 +40,10 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			Assert.That(actualData, Is.EqualTo(expectedData));
 		}
 
-		private static byte[] RenderScene(TracefileGraphicsLogger logger)
+		private static Color4F[] RenderScene(TracefileGraphicsLogger logger)
 		{
-			int width = 200;
-			int height = 100;
+			const int width = 200;
+			const int height = 100;
 
 			// Create device and swap chain.
 			var device = new Device(logger);
@@ -51,7 +51,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			var deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
-			var backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
+			var backBuffer = Texture2D.FromSwapChain(swapChain, 0);
 			var renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 			// Compile Vertex and Pixel shaders

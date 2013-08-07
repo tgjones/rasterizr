@@ -10,7 +10,6 @@ using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
-using Rasterizr.Util;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr
@@ -133,11 +132,6 @@ namespace Rasterizr
 			_outputMerger.Execute(pixelShaderOutputs);
 		}
 
-		public MappedSubresource Map(Resource resource, int subresource)
-		{
-			return resource.Map(subresource);
-		}
-
 		public void GenerateMips(ShaderResourceView shaderResourceView)
 		{
 			switch (shaderResourceView.Resource.ResourceType)
@@ -148,17 +142,6 @@ namespace Rasterizr
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-		}
-
-		public void UpdateSubresource(Resource resource, int subresource, byte[] data)
-		{
-			resource.UpdateSubresource(subresource, data);
-		}
-
-		public void UpdateSubresource<T>(Resource resource, int subresource, T[] data)
-			where T : struct
-		{
-			resource.UpdateSubresource(subresource, Utilities.ToByteArray(data));
 		}
 	}
 }

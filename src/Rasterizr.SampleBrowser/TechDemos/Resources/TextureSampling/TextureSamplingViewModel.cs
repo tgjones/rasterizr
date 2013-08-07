@@ -85,13 +85,12 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 			var deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
-			var backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
+			var backBuffer = Texture2D.FromSwapChain(swapChain, 0);
 			var renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 			// Create the depth buffer
 			var depthBuffer = device.CreateTexture2D(new Texture2DDescription
 			{
-				Format = Format.D32_Float_S8X24_UInt,
 				ArraySize = 1,
 				MipLevels = 1,
 				Width = Bitmap.PixelWidth,

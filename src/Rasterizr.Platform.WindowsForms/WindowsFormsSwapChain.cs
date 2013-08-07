@@ -2,6 +2,8 @@
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Rasterizr.Math;
+using Point = System.Drawing.Point;
 
 namespace Rasterizr.Platform.WindowsForms
 {
@@ -17,7 +19,6 @@ namespace Rasterizr.Platform.WindowsForms
 			{
 				Width = window.ClientSize.Width,
 				Height = window.ClientSize.Height,
-				Format = Format.R8G8B8A8_UInt,
 				SampleDescription = new SampleDescription(1)
 			})
 		{
@@ -28,12 +29,13 @@ namespace Rasterizr.Platform.WindowsForms
 			_graphics = window.CreateGraphics();
 		}
 
-		protected override void Present(byte[] colors)
+		protected override void Present(Color4F[] colors)
 		{
+            // TODO: Convert Color4F[] to byte[] in R8G8B8A8 format.
 			var bitmapData = _bitmap.LockBits(new Rectangle(0, 0, _width, _height),
 				ImageLockMode.WriteOnly, _bitmap.PixelFormat);
 
-			Marshal.Copy(colors, 0, bitmapData.Scan0, _width * _height * 3);
+			//Marshal.Copy(colors, 0, bitmapData.Scan0, _width * _height * 3);
 
 			_bitmap.UnlockBits(bitmapData);
 

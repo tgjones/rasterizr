@@ -14,6 +14,7 @@
     <TargetFrameworkProfile>Profile5</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <FodyPath>..\packages\Fody.1.13.12</FodyPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,10 +37,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="FodyWeavers.xml" />
+    <Compile Include="Format.cs" />
+    <Compile Include="FormatHelper.cs" />
     <Compile Include="Math\MathUtility.cs" />
     <Compile Include="Pipeline\ShaderResourceView.InnerResourceView.cs" />
-    <Compile Include="Pipeline\OutputMerger\RenderTargetView.BufferView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture1DArrayView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture1DView.cs" />
     <Compile Include="Pipeline\OutputMerger\DepthStencilView.Texture1DArrayView.cs" />
@@ -125,10 +126,8 @@
     <Compile Include="Resources\Filter.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDimension.cs" />
-    <Compile Include="Resources\MappedSubresource.cs" />
     <Compile Include="Resources\MipMapUtility.cs" />
     <Compile Include="Resources\ResourceType.cs" />
-    <Compile Include="Resources\ResourceViewUtility.cs" />
     <Compile Include="Resources\SamplerState.cs" />
     <Compile Include="Resources\SamplerStateDescription.cs" />
     <Compile Include="Pipeline\ShaderResourceView.cs" />
@@ -143,8 +142,6 @@
     <Compile Include="Device.cs" />
     <Compile Include="DeviceChild.cs" />
     <Compile Include="DeviceContext.cs" />
-    <Compile Include="Format.cs" />
-    <Compile Include="FormatHelper.cs" />
     <Compile Include="Pipeline\InputAssembler\IndexBufferBinding.cs" />
     <Compile Include="Pipeline\InputAssembler\InputAssemblerStage.cs" />
     <Compile Include="Pipeline\InputAssembler\InputClassification.cs" />
@@ -182,8 +179,12 @@
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Fody.targets" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="Fody.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -191,5 +192,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="$(ProjectPath)\..\..\Tools\Fody\Fody.targets" />
 </Project>

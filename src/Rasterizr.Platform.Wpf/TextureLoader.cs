@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Rasterizr.Math;
 using Rasterizr.Resources;
 
 namespace Rasterizr.Platform.Wpf
@@ -26,10 +27,20 @@ namespace Rasterizr.Platform.Wpf
 				Height = bitmap.PixelHeight,
 				MipLevels = 0,
 				ArraySize = 1,
-				Format = Format.B8G8R8A8_UInt
 			});
 
-			device.ImmediateContext.UpdateSubresource(result, 0, pixelData);
+		    var colors = new Color4F[bitmap.PixelWidth * bitmap.PixelHeight];
+		    for (int i = 0; i < colors.Length; i++)
+		    {
+                var b = pixelData[(i * 4) + 0];
+                var g = pixelData[(i * 4) + 1];
+                var r = pixelData[(i * 4) + 2];
+                var a = pixelData[(i * 4) + 3];
+
+                colors[i] = new Color4(r, g, b, a).ToColor4F();
+		    }
+
+		    result.SetData(0, colors);
 			device.ImmediateContext.GenerateMips(device.CreateShaderResourceView(result));
 
 			return result;
@@ -37,15 +48,27 @@ namespace Rasterizr.Platform.Wpf
 
 		public static WriteableBitmap CreateBitmapFromTexture(Texture2D texture, int mipLevel)
 		{
-			var mappedSubresource = texture.Map(mipLevel);
+		    var subresource = Resource.CalculateSubresource(mipLevel, 0, texture.Description.MipLevels);
+            var colors = texture.GetData(subresource);
 
-			int width, height;
-			texture.GetDimensions(mipLevel, out width, out height);
+            var pixelData = new byte[colors.Length * 4];
+            for (int i = 0; i < colors.Length; i++)
+            {
+                var color = colors[i].ToColor4();
 
-			var bitmapSouce = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null,
-				mappedSubresource.Data, width * PixelFormats.Bgra32.BitsPerPixel / 8);
+                pixelData[(i * 4) + 0] = color.B;
+                pixelData[(i * 4) + 1] = color.G;
+                pixelData[(i * 4) + 2] = color.R;
+                pixelData[(i * 4) + 3] = color.A;
+            }
 
-			return new WriteableBitmap(bitmapSouce);
+            int width, height;
+            texture.GetDimensions(mipLevel, out width, out height);
+
+            var bitmapSouce = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null,
+                pixelData, width * PixelFormats.Bgra32.BitsPerPixel / 8);
+
+            return new WriteableBitmap(bitmapSouce);
 		}
 	}
 }

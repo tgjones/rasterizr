@@ -1,4 +1,5 @@
 ﻿using System;
+using Rasterizr.Math;
 
 namespace Rasterizr.Resources
 {
@@ -8,16 +9,21 @@ namespace Rasterizr.Resources
 		{
 			public int Width { get; private set; }
 
-			public Texture1DSubresource(int elementSize, int width)
-				: base(width * elementSize, elementSize)
+			public Texture1DSubresource(int width)
+				: base(width)
 			{
 				Width = width;
 			}
 
-			public int CalculateByteOffset(int x)
+			public Color4F GetData(int x)
 			{
-				return x * ElementSize;
+				return Data[x];
 			}
+
+            public void SetData(int x, ref Color4F value)
+            {
+                Data[x] = value;
+            }
 		}
 
 		private readonly Texture1DDescription _description;
@@ -34,7 +40,7 @@ namespace Rasterizr.Resources
 		}
 
 		internal Texture1D(Device device, Texture1DDescription description)
-			: base(device, description.Format)
+			: base(device)
 		{
 			_description = description;
 
@@ -42,22 +48,18 @@ namespace Rasterizr.Resources
 			int mipMapCount = MipMapUtility.CalculateMipMapCount(description.MipLevels, description.Width);
 			for (int i = 0; i < description.ArraySize; i++)
 				_subresources[i] = MipMapUtility.CreateMipMaps(mipMapCount,
-					FormatHelper.SizeOfInBytes(description.Format),
 					description.Width);
 		}
 
-		internal override MappedSubresource Map(int subresource)
-		{
-			int mipSlice, arrayIndex;
-			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
+        public override Color4F[] GetData(int subresource)
+        {
+            int mipSlice, arrayIndex;
+            CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
 
-			return new MappedSubresource
-			{
-				Data = _subresources[arrayIndex][mipSlice].Data
-			};
-		}
+            return _subresources[arrayIndex][mipSlice].Data;
+        }
 
-		internal override void UpdateSubresource(int subresource, byte[] data)
+		public override void SetData(int subresource, Color4F[] data)
 		{
 			int mipSlice, arrayIndex;
 			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);

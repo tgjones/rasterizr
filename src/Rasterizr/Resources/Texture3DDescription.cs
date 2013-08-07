@@ -6,7 +6,6 @@
 		public int Height;
 		public int Depth;
 		public int MipLevels;
-		public Format Format;
 		public BindFlags BindFlags;
 	}
 }

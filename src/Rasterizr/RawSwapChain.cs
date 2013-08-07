@@ -1,10 +1,12 @@
-﻿namespace Rasterizr
+﻿using Rasterizr.Math;
+
+namespace Rasterizr
 {
 	public class RawSwapChain : SwapChain
 	{
-		private byte[] _data;
+		private Color4F[] _data;
 
-		public byte[] Data
+		public Color4F[] Data
 		{
 			get { return _data; }
 		}
@@ -14,14 +16,13 @@
 			{
 				Width = width,
 				Height = height,
-				Format = Format.R8G8B8A8_UInt,
 				SampleDescription = new SampleDescription(1)
 			})
 		{
 		
 		}
 
-		protected override void Present(byte[] colors)
+		protected override void Present(Color4F[] colors)
 		{
 			_data = colors;
 		}

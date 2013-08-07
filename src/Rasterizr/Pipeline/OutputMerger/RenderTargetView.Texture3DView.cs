@@ -18,16 +18,17 @@ namespace Rasterizr.Pipeline.OutputMerger
 				_depthSliceCount = description.DepthSliceCount;
 			}
 
-			public override DataIndex GetDataIndex(int arrayIndex, int x, int y, int sampleIndex)
-			{
-				return new DataIndex
-				{
-					Data = _subresource.Data,
-					Offset = _subresource.CalculateByteOffset(x, y, _firstDepthSlice + arrayIndex)
-				};
-			}
+            public override Color4F GetData(int arrayIndex, int x, int y, int sampleIndex)
+            {
+                return _subresource.GetData(x, y, _firstDepthSlice + arrayIndex);
+            }
 
-			public override void Clear(Format format, ref Color4F color)
+            public override void SetData(int arrayIndex, int x, int y, int sampleIndex, ref Color4F value)
+            {
+                _subresource.SetData(x, y, _firstDepthSlice + arrayIndex, ref value);
+            }
+
+			public override void Clear(ref Color4F color)
 			{
 				// TODO
 				//for (int i = _firstDepthSlice; i < _firstDepthSlice + _depthSliceCount; i++)

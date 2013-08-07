@@ -1,5 +1,4 @@
-﻿using System;
-using Rasterizr.Util;
+﻿using Rasterizr.Util;
 
 namespace Rasterizr.Resources
 {
@@ -23,19 +22,6 @@ namespace Rasterizr.Resources
 		{
 			_sizeInBytes = description.SizeInBytes;
 			_data = new byte[_sizeInBytes];
-		}
-
-		internal override MappedSubresource Map(int subresource)
-		{
-			return new MappedSubresource
-			{
-				Data = _data
-			};
-		}
-
-		internal override void UpdateSubresource(int subresource, byte[] data)
-		{
-			Array.Copy(data, _data, 0);
 		}
 
 		public void GetData<T>(int dataOffset, T[] data, int startIndex, int countInBytes)

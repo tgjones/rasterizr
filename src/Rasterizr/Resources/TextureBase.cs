@@ -1,4 +1,4 @@
-﻿using Rasterizr.Util;
+﻿using Rasterizr.Math;
 
 namespace Rasterizr.Resources
 {
@@ -6,30 +6,23 @@ namespace Rasterizr.Resources
 	{
 		internal abstract class TextureSubresource : ISubresource
 		{
-			private readonly byte[] _data;
-			private readonly int _elementSize;
+			private readonly Color4F[] _data;
 
-			public byte[] Data
+			public Color4F[] Data
 			{
 				get { return _data; }
 			}
 
-			public int ElementSize
+			protected TextureSubresource(int numElements)
 			{
-				get { return _elementSize; }
+                _data = new Color4F[numElements];
 			}
 
-			protected TextureSubresource(int sizeInBytes, int elementSize)
-			{
-				_data = new byte[sizeInBytes];
-				_elementSize = elementSize;
-			}
-
-			public void Clear<T>(ref T value)
-				where T : struct
-			{
-				Utilities.Clear(_data, _elementSize, ref value);
-			}
+		    public void Clear(ref Color4F value)
+		    {
+		        for (var i = 0; i < _data.Length; i++)
+		            _data[i] = value;
+		    }
 		}
 
 		internal static void CalculateArrayMipSlice(int subresource, int mipLevels, out int mipSlice, out int arraySlice)
@@ -38,17 +31,13 @@ namespace Rasterizr.Resources
 			arraySlice = (subresource - mipSlice) / mipLevels;
 		}
 
-		private readonly Format _format;
-
-		internal Format Format
-		{
-			get { return _format; }
-		}
-
-		protected TextureBase(Device device, Format format)
+		protected TextureBase(Device device)
 			: base(device)
 		{
-			_format = format;
+			
 		}
+
+	    public abstract Color4F[] GetData(int subresource);
+	    public abstract void SetData(int subresource, Color4F[] data);
 	}
 }

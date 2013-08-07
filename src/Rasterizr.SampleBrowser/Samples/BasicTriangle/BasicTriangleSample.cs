@@ -35,7 +35,7 @@ namespace Rasterizr.SampleBrowser.Samples.BasicTriangle
 			_deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
-			var backBuffer = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0);
+			var backBuffer = Texture2D.FromSwapChain(_swapChain, 0);
 			_renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 			// Compile Vertex and Pixel shaders

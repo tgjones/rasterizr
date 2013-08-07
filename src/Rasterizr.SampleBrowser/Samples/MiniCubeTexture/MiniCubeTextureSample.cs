@@ -51,13 +51,12 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 			_deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
-			var backBuffer = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0);
+			var backBuffer = Texture2D.FromSwapChain(_swapChain, 0);
 			_renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 			// Create the depth buffer
 			var depthBuffer = device.CreateTexture2D(new Texture2DDescription
 			{
-				Format = Format.D32_Float_S8X24_UInt,
 				ArraySize = 1,
 				MipLevels = 1,
 				Width = width,
@@ -144,7 +143,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 
 			var sampler = device.CreateSamplerState(new SamplerStateDescription
 			{
-				Filter = Filter.MinMagMipLinear,
+				Filter = Filter.MinMagMipPoint,
 				AddressU = TextureAddressMode.Wrap,
 				AddressV = TextureAddressMode.Wrap,
 				AddressW = TextureAddressMode.Wrap,

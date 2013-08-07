@@ -14,8 +14,7 @@ namespace Rasterizr.Tests.Resources
 			{
 				Width = 32,
 				Height = 32,
-				Depth = 32,
-				Format = Format.R8G8B8A8_UInt
+				Depth = 32
 			});
 			int width, height, depth, numberOfLevels;
 
@@ -43,8 +42,7 @@ namespace Rasterizr.Tests.Resources
 			{
 				Width = 64,
 				Height = 32,
-				Depth = 16,
-				Format = Format.R8G8B8A8_UInt
+				Depth = 16
 			});
 
 			// Act / Assert.

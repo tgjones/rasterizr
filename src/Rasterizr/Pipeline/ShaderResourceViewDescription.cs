@@ -12,9 +12,6 @@ namespace Rasterizr.Pipeline
 			var result = new ShaderResourceViewDescription();
 			switch (resource.ResourceType)
 			{
-				case ResourceType.Buffer:
-					result.Dimension = ShaderResourceViewDimension.Buffer;
-					break;
 				case ResourceType.Texture1D:
 					result.Dimension = ShaderResourceViewDimension.Texture1D;
 					break;
@@ -30,22 +27,6 @@ namespace Rasterizr.Pipeline
 					throw new ArgumentOutOfRangeException();
 			}
 			return result;
-		}
-
-		[StructLayout(LayoutKind.Explicit, Pack = 0)]
-		public struct BufferResource
-		{
-			[FieldOffset(0)]
-			public int FirstElement;
-
-			[FieldOffset(0)]
-			public int ElementOffset;
-
-			[FieldOffset(4)]
-			public int ElementCount;
-
-			[FieldOffset(4)]
-			public int ElementWidth;
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 0)]
@@ -116,51 +97,34 @@ namespace Rasterizr.Pipeline
 			public int MipLevels;
 		}
 
-		[StructLayout(LayoutKind.Sequential, Pack = 0)]
-		public struct ExtendedBufferResource
-		{
-			public int FirstElement;
-			public int ElementCount;
-			public ShaderResourceViewExtendedBufferFlags Flags;
-		}
-
 		[FieldOffset(0)]
-		public Format Format;
-
-		[FieldOffset(4)]
 		public ShaderResourceViewDimension Dimension;
 
-		[FieldOffset(8)]
-		public BufferResource Buffer;
-
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public Texture1DResource Texture1D;
 
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public Texture1DArrayResource Texture1DArray;
 
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public Texture2DResource Texture2D;
 
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public Texture2DArrayResource Texture2DArray;
 
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public Texture2DMultisampledResource Texture2DMS;
 
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public Texture2DMultisampledArrayResource Texture2DMSArray;
 
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public Texture3DResource Texture3D;
 
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public TextureCubeResource TextureCube;
 
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public TextureCubeArrayResource TextureCubeArray;
-
-		[FieldOffset(8)]
-		public ExtendedBufferResource BufferEx;
 	}
 }

@@ -3,7 +3,6 @@
 	public enum ShaderResourceViewDimension
 	{
 		Unknown,
-		Buffer,
 		Texture1D,
 		Texture1DArray,
 		Texture2D,
@@ -12,7 +11,6 @@
 		Texture2DMultisampledArray,
 		Texture3D,
 		TextureCube,
-		TextureCubeArray,
-		ExtendedBuffer,
+		TextureCubeArray
 	}
 }
