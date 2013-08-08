@@ -136,16 +136,14 @@ namespace Rasterizr.Pipeline
 		protected void SetShaderInputs(int contextIndex, ushort primitiveIndex, Number4[] inputs)
 		{
 			for (ushort i = 0; i < inputs.Length; i++)
-				_virtualMachine.SetRegister(contextIndex, 
-                    OperandType.Input, new RegisterIndex(primitiveIndex, i),
-					inputs[i]);
+				_virtualMachine.SetInputRegisterValue(contextIndex, primitiveIndex, i, ref inputs[i]);
 		}
 
 		protected Number4[] GetShaderOutputs(int contextIndex)
 		{
 			var outputs = new Number4[_outputParametersCount];
 			for (ushort i = 0; i < outputs.Length; i++)
-				outputs[i] = _virtualMachine.GetRegister(contextIndex, OperandType.Output, new RegisterIndex(i));
+				outputs[i] = _virtualMachine.GetOutputRegisterValue(contextIndex, i);
 			return outputs;
 		}
 

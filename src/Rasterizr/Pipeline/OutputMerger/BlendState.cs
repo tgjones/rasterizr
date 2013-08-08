@@ -1,5 +1,4 @@
 ﻿using System;
-using Rasterizr.Math;
 using SlimShader;
 
 namespace Rasterizr.Pipeline.OutputMerger
@@ -7,6 +6,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 	public class BlendState : DeviceChild
 	{
 		private readonly BlendStateDescription _description;
+	    private readonly RenderTargetBlendDescription[] _renderTargetBlendDescriptions;
 
 		public BlendStateDescription Description
 		{
@@ -17,11 +17,12 @@ namespace Rasterizr.Pipeline.OutputMerger
 			: base(device)
 		{
 			_description = description;
+		    _renderTargetBlendDescriptions = description.RenderTarget;
 		}
 
         internal Number4 DoBlend(int renderTargetIndex, ref Number4 source, ref Number4 destination, ref Number4 blendFactor)
 		{
-			var blendDescription = Description.RenderTarget[renderTargetIndex];
+            var blendDescription = _renderTargetBlendDescriptions[renderTargetIndex];
 			if (!blendDescription.IsBlendEnabled)
 				return source;
 

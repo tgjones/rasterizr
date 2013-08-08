@@ -6,22 +6,17 @@ namespace Rasterizr.Resources
 	{
 		internal abstract class TextureSubresource : ISubresource
 		{
-            private readonly Number4[] _data;
-
-            public Number4[] Data
-			{
-				get { return _data; }
-			}
+            internal readonly Number4[] Data;
 
 			protected TextureSubresource(int numElements)
 			{
-                _data = new Number4[numElements];
+                Data = new Number4[numElements];
 			}
 
             public void Clear(ref Number4 value)
 		    {
-		        for (var i = 0; i < _data.Length; i++)
-		            _data[i] = value;
+		        for (var i = 0; i < Data.Length; i++)
+		            Data[i] = value;
 		    }
 		}
 
