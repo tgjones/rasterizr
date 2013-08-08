@@ -123,7 +123,7 @@ namespace Rasterizr.Pipeline
             for (ushort i = 0; i < _shader.Bytecode.ResourceDefinition.ResourceBindings.Count(x => x.Type == ShaderInputType.Sampler); i++)
                 _virtualMachine.SetSampler(new RegisterIndex(i),
                     (_samplers[i] != null)
-                        ? _samplers[i].InnerSampler
+                        ? _samplers[i].VirtualMachineSamplerState
                         : null);
 
 			for (ushort i = 0; i < _shader.Bytecode.ResourceDefinition.ResourceBindings.Count(x => x.Type == ShaderInputType.Texture); i++)

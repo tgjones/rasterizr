@@ -1,21 +1,32 @@
 ﻿using System;
 using SlimShader;
+using SlimShader.VirtualMachine.Resources;
 
 namespace Rasterizr.Resources
 {
 	public class Texture2D : TextureBase
 	{
-		internal class Texture2DSubresource : TextureSubresource
+		internal class Texture2DSubresource : TextureSubresource, ITextureMipMap
 		{
 			public int Width { get; private set; }
 			public int Height { get; private set; }
 
-			public Texture2DSubresource(int width, int height)
+		    public int Depth
+		    {
+		        get { return 0; }
+		    }
+
+		    public Texture2DSubresource(int width, int height)
 				: base(width * height)
 			{
 				Width = width;
 				Height = height;
 			}
+
+            Number4 ITextureMipMap.GetData(ref Number4 coords)
+            {
+                return Data[((coords.Int1 * Width) + coords.Int0)];
+            }
 
             public Number4 GetData(int x, int y)
 			{

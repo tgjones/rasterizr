@@ -9,25 +9,6 @@ namespace Rasterizr.Pipeline
 	{
 		private abstract class InnerResourceView : ITexture
 		{
-			public Number4 SampleGrad(ISamplerState sampler, ref Number4 location, ref Number4 ddx, ref Number4 ddy)
-			{
-				return SampleLevel(sampler, ref location, CalculateLevelOfDetail(sampler, ref ddx, ref ddy));
-			}
-
-			/// <summary>
-			/// 
-			/// </summary>
-			/// <param name="sampler"></param>
-			/// <param name="location"></param>
-			/// <param name="lod">A number that specifies the mipmap level. If the value is &lt;=0, the zero'th (biggest map)
-			/// is used. The fractional value (if supplied) is used to interpolate between two mipmap levels.</param>
-			/// <returns></returns>
-            public abstract Number4 SampleLevel(ISamplerState sampler, ref Number4 location, float lod);
-
-            public abstract float CalculateLevelOfDetail(ISamplerState sampler, ref Number4 ddx, ref Number4 ddy);
-
-			public abstract Number4 GetDataIndex(SamplerStateDescription sampler, float u, float v, float w);
-
 			public static InnerResourceView Create(Resource resource, ShaderResourceViewDescription description)
 			{
 				switch (description.Dimension)
@@ -54,6 +35,11 @@ namespace Rasterizr.Pipeline
 						throw new ArgumentOutOfRangeException();
 				}
 			}
+
+            public abstract TextureDimension Dimension { get; }
+
+            public abstract int MipMapCount { get; }
+            public abstract ITextureMipMap GetMipMap(int level);
 		}
 	}
 }
