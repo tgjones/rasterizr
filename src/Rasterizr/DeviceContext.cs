@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Pipeline;
@@ -11,6 +12,7 @@ using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
 using SlimShader;
+using SlimShader.Chunks.Shex.Tokens;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr
@@ -127,6 +129,7 @@ namespace Rasterizr
 
 			var rasterizerOutputs = _rasterizer.Execute(rasterizerInputs, rasterizerInputTopology,
 				rasterizerInputSignature, _pixelShader.Shader.Bytecode.InputSignature,
+                _pixelShader.Shader.Bytecode.Shader.DeclarationTokens.OfType<PixelShaderInputRegisterDeclarationToken>().ToList(),
 				_outputMerger.MultiSampleCount);
 
 			var pixelShaderOutputs = _pixelShader.Execute(rasterizerOutputs);

@@ -26,7 +26,7 @@ struct VS_IN
 struct PS_IN
 {
 	float4 pos : SV_POSITION;
-	float4 col : COLOR;
+	noperspective float4 col : COLOR;
 };
 
 float4x4 worldViewProj;

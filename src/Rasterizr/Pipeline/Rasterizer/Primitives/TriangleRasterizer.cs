@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using SlimShader;
+using SlimShader.Chunks.Shex;
 
 namespace Rasterizr.Pipeline.Rasterizer.Primitives
 {
@@ -181,7 +182,6 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			depth = InterpolationUtility.Linear(coordinates.Alpha, coordinates.Beta, coordinates.Gamma, _p0.Z, _p1.Z, _p2.Z);
 
 			// If any of these tests fails, the current pixel is not inside the triangle.
-			// TODO: Only need to test if > 1?
 			if (coordinates.IsOutsideTriangle)
 			{
 				depth = 0;
@@ -226,29 +226,45 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			// TODO: Cache as much of this as possible.
 			// Calculate interpolated attribute values for this fragment.
             var result = new Number4[OutputInputRegisterMappings.Length];
-			for (int i = 0; i < result.Length; i++)
-			{
-				var outputRegister = OutputInputRegisterMappings[i];
-				var v0Value = _primitive.Vertices[0].Data[outputRegister];
-				var v1Value = _primitive.Vertices[1].Data[outputRegister];
-				var v2Value = _primitive.Vertices[2].Data[outputRegister];
+		    for (int i = 0; i < result.Length; i++)
+		    {
+		        var outputRegister = OutputInputRegisterMappings[i];
+		        var v0Value = _primitive.Vertices[0].Data[outputRegister];
+		        var v1Value = _primitive.Vertices[1].Data[outputRegister];
+		        var v2Value = _primitive.Vertices[2].Data[outputRegister];
 
-				// Interpolate values.
-				const bool isPerspectiveCorrect = true; // TODO
-				var interpolatedValue = (isPerspectiveCorrect)
-					? InterpolationUtility.Perspective(
-					coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
-						ref v0Value, ref v1Value, ref v2Value,
-						_p0.W, _p1.W, _p2.W, w)
-					: InterpolationUtility.Linear(coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
-						ref v0Value, ref v1Value, ref v2Value);
+		        // Interpolate values.
+		        Number4 interpolatedValue;
+		        switch (InputRegisterInterpolationModes[i])
+		        {
+                    case InterpolationMode.Constant:
+		                interpolatedValue = v0Value;
+		                break;
+		            case InterpolationMode.Linear:
+		                interpolatedValue = InterpolationUtility.Perspective(
+		                    coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
+		                    ref v0Value, ref v1Value, ref v2Value,
+		                    _p0.W, _p1.W, _p2.W, w);
+		                break;
+		            case InterpolationMode.LinearNoPerspective:
+		                interpolatedValue = InterpolationUtility.Linear(
+		                    coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
+		                    ref v0Value, ref v1Value, ref v2Value);
+		                break;
+                    case InterpolationMode.Undefined:
+                        // TODO: This is used for SV_Position - can we just skip that semantic altogether?
+                        interpolatedValue = new Number4();
+                        break;
+                    default:
+		                throw new NotImplementedException();
+		        }
 
-				// Set value onto pixel shader input.
-				result[i] = interpolatedValue;
+		        // Set value onto pixel shader input.
+		        result[i] = interpolatedValue;
 
-				// TODO: Do something different if input parameter is a system value.
-			}
-			return result;
+		        // TODO: Do something different if input parameter is a system value.
+		    }
+		    return result;
 		}
 	}
 }
