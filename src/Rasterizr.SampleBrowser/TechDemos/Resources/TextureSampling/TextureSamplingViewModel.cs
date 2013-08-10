@@ -14,6 +14,7 @@ using Rasterizr.SampleBrowser.Framework.Services;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Compiler;
+using Buffer = Rasterizr.Resources.Buffer;
 
 namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 {
@@ -21,7 +22,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 	[ExportMetadata("SortOrder", 1)]
 	public class TextureSamplingViewModel : TechDemoViewModel
 	{
-		private readonly IResourceLoader _resourceLoader;
+		private readonly ImageGenerator _imageGenerator;
 
 		public override string DisplayName
 		{
@@ -51,7 +52,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 		}
 
 		private Filter _selectedTextureFilter = Filter.MinMagMipPoint;
-		public Filter SelectedTextureFilter
+	    public Filter SelectedTextureFilter
 		{
 			get { return _selectedTextureFilter; }
 			set
@@ -65,7 +66,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 		[ImportingConstructor]
 		public TextureSamplingViewModel(IResourceLoader resourceLoader)
 		{
-			_resourceLoader = resourceLoader;
+			_imageGenerator = new ImageGenerator(resourceLoader);
 		}
 
 		protected override void OnActivate()
@@ -74,158 +75,185 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 			base.OnActivate();
 		}
 
-		private void GenerateImage()
-		{
-			const int width = 400;
-			const int height = 400;
+	    private void GenerateImage()
+	    {
+            _imageGenerator.GenerateImage(SelectedTextureFilter);
+	        Bitmap = _imageGenerator.OutputBitmap;
+	    }
 
-			// Create device and swap chain.
-			var device = new Device();
-			var swapChain = new WpfSwapChain(device, width, height);
-			Bitmap = swapChain.Bitmap;
-			var deviceContext = device.ImmediateContext;
+	    private class ImageGenerator
+	    {
+	        private readonly WriteableBitmap _outputBitmap;
+            private readonly Device _device;
+            private readonly DeviceContext _deviceContext;
+	        private readonly Matrix3D _view, _projection;
+            private readonly RenderTargetView _renderTargetView;
+            private readonly DepthStencilView _depthView;
+	        private readonly WpfSwapChain _swapChain;
+	        private readonly Buffer _constantBuffer;
 
-			// Create RenderTargetView from the backbuffer.
-			var backBuffer = Texture2D.FromSwapChain(swapChain, 0);
-			var renderTargetView = device.CreateRenderTargetView(backBuffer);
+	        public WriteableBitmap OutputBitmap
+	        {
+	            get { return _outputBitmap; }
+	        }
 
-			// Create the depth buffer
-			var depthBuffer = device.CreateTexture2D(new Texture2DDescription
-			{
-				ArraySize = 1,
-				MipLevels = 1,
-				Width = Bitmap.PixelWidth,
-				Height = Bitmap.PixelHeight,
-				BindFlags = BindFlags.DepthStencil
-			});
+	        public ImageGenerator(IResourceLoader resourceLoader)
+	        {
+                const int width = 400;
+                const int height = 400;
 
-			// Create the depth buffer view
-			var depthView = device.CreateDepthStencilView(depthBuffer);
+                // Create device and swap chain.
+                _device = new Device();
+                _swapChain = new WpfSwapChain(_device, width, height);
+                _outputBitmap = _swapChain.Bitmap;
+                _deviceContext = _device.ImmediateContext;
 
-			// Compile Vertex and Pixel shaders
-			var vertexShaderByteCode = ShaderCompiler.CompileFromFile("TechDemos/Resources/TextureSampling/Texture.fx", "VS", "vs_4_0");
-			var vertexShader = device.CreateVertexShader(vertexShaderByteCode);
+                // Create RenderTargetView from the backbuffer.
+                var backBuffer = Texture2D.FromSwapChain(_swapChain, 0);
+                _renderTargetView = _device.CreateRenderTargetView(backBuffer);
 
-			var pixelShaderByteCode = ShaderCompiler.CompileFromFile("TechDemos/Resources/TextureSampling/Texture.fx", "PS", "ps_4_1");
-			var pixelShader = device.CreatePixelShader(pixelShaderByteCode);
+                // Create the depth buffer
+                var depthBuffer = _device.CreateTexture2D(new Texture2DDescription
+                {
+                    ArraySize = 1,
+                    MipLevels = 1,
+                    Width = _outputBitmap.PixelWidth,
+                    Height = _outputBitmap.PixelHeight,
+                    BindFlags = BindFlags.DepthStencil
+                });
 
-			// Layout from VertexShader input signature
-			var layout = device.CreateInputLayout(
-				new[]
-				{
-					new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0, 0),
-					new InputElement("TEXCOORD", 0, Format.R32G32_Float, 0, 16)
-				}, vertexShaderByteCode);
+                // Create the depth buffer view
+                _depthView = _device.CreateDepthStencilView(depthBuffer);
 
-			// Instantiate Vertex buiffer from vertex data
-			var vertices = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), new[]
-			{
-				// 3D coordinates              UV Texture coordinates
-                -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Front
-                -1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
-                1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
-                -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
-                1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
-                1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 1.0f,
+                // Compile Vertex and Pixel shaders
+                var vertexShaderByteCode = ShaderCompiler.CompileFromFile("TechDemos/Resources/TextureSampling/Texture.fx", "VS", "vs_4_0");
+                var vertexShader = _device.CreateVertexShader(vertexShaderByteCode);
 
-                -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f, // BACK
-                1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
-                -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
-                -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
-                1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
-                1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                var pixelShaderByteCode = ShaderCompiler.CompileFromFile("TechDemos/Resources/TextureSampling/Texture.fx", "PS", "ps_4_1");
+                var pixelShader = _device.CreatePixelShader(pixelShaderByteCode);
 
-                -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f, // Top
-                -1.0f, 1.0f,  1.0f,  1.0f,     0.0f, 0.0f,
-                1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
-                -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f,
-                1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
-                1.0f, 1.0f, -1.0f,  1.0f,     1.0f, 1.0f,
+                // Layout from VertexShader input signature
+                var layout = _device.CreateInputLayout(
+                    new[]
+	                {
+	                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0, 0),
+	                    new InputElement("TEXCOORD", 0, Format.R32G32_Float, 0, 16)
+	                }, vertexShaderByteCode);
 
-                -1.0f,-1.0f, -1.0f,  1.0f,     1.0f, 0.0f, // Bottom
-                1.0f,-1.0f,  1.0f,  1.0f,     0.0f, 1.0f,
-                -1.0f,-1.0f,  1.0f,  1.0f,     1.0f, 1.0f,
-                -1.0f,-1.0f, -1.0f,  1.0f,     1.0f, 0.0f,
-                1.0f,-1.0f, -1.0f,  1.0f,     0.0f, 0.0f,
-                1.0f,-1.0f,  1.0f,  1.0f,     0.0f, 1.0f,
+                // Instantiate Vertex buiffer from vertex data
+                var vertices = _device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), new[]
+	            {
+	                // 3D coordinates              UV Texture coordinates
+	                -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f, // Front
+	                -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+	                1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+	                -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+	                1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+	                1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
 
-                -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Left
-                -1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
-                -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
-                -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
-                -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
-                -1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 1.0f,
+	                -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, // BACK
+	                1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+	                -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	                -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	                1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+	                1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
 
-                1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f, // Right
-                1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
-                1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
-                1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
-                1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
-                1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f
-			});
+	                -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 1.0f, // Top
+	                -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+	                1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	                -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+	                1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	                1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
 
-			// Create Constant Buffer
-			var constantBuffer = device.CreateBuffer(new BufferDescription
-			{
-				SizeInBytes = Utilities.SizeOf<Matrix3D>(),
-				BindFlags = BindFlags.ConstantBuffer
-			});
+	                -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, // Bottom
+	                1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+	                -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	                -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+	                1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+	                1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
 
-			// Load texture and create sampler
-			var textureStream = _resourceLoader.OpenResource("TechDemos/Resources/TextureSampling/CorrodedTiles.png");
-			var texture = TextureLoader.CreateTextureFromFile(device, textureStream);
-			var textureView = device.CreateShaderResourceView(texture);
+	                -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f, // Left
+	                -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+	                -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	                -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+	                -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	                -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
 
-			var sampler = device.CreateSamplerState(new SamplerStateDescription
-			{
-				Filter = SelectedTextureFilter,
-				AddressU = TextureAddressMode.Wrap,
-				AddressV = TextureAddressMode.Wrap,
-				AddressW = TextureAddressMode.Wrap,
-				BorderColor = new Number4(0, 0, 0, 1),
-				ComparisonFunction = Comparison.Never,
-				MaximumAnisotropy = 16,
-				MipLodBias = 0,
-				MinimumLod = 0,
-				MaximumLod = 16,
-			});
+	                1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, // Right
+	                1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+	                1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	                1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+	                1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+	                1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
+	            });
 
-			// Prepare all the stages
-			deviceContext.InputAssembler.InputLayout = layout;
-			deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-			deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>()));
-			deviceContext.VertexShader.SetConstantBuffers(0, constantBuffer);
-			deviceContext.VertexShader.Shader = vertexShader;
-			deviceContext.PixelShader.Shader = pixelShader;
-			deviceContext.PixelShader.SetSamplers(0, sampler);
-			deviceContext.PixelShader.SetShaderResources(0, textureView);
+                // Create Constant Buffer
+                _constantBuffer = _device.CreateBuffer(new BufferDescription
+                {
+                    SizeInBytes = Utilities.SizeOf<Matrix3D>(),
+                    BindFlags = BindFlags.ConstantBuffer
+                });
 
-			// Setup targets and viewport for rendering
-			deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, Bitmap.PixelWidth, Bitmap.PixelHeight, 0.0f, 1.0f));
-			deviceContext.OutputMerger.SetTargets(depthView, renderTargetView);
+                // Load texture and create sampler
+                var textureStream = resourceLoader.OpenResource("TechDemos/Resources/TextureSampling/CorrodedTiles.png");
+                var texture = TextureLoader.CreateTextureFromFile(_device, textureStream);
+                var textureView = _device.CreateShaderResourceView(texture);
 
-			// Prepare matrices
-			var view = Matrix3D.CreateLookAt(new Point3D(0.7f, 0, -1.7f), Vector3D.Backward, Vector3D.UnitY);
-			var projection = Matrix3D.CreatePerspectiveFieldOfView(Nexus.MathUtility.PI / 4.0f,
-				Bitmap.PixelWidth / (float) Bitmap.PixelHeight, 0.1f, 100.0f);
+                // Prepare all the stages
+                _deviceContext.InputAssembler.InputLayout = layout;
+                _deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+                _deviceContext.InputAssembler.SetVertexBuffers(0,
+                    new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>()));
+                _deviceContext.VertexShader.SetConstantBuffers(0, _constantBuffer);
+                _deviceContext.VertexShader.Shader = vertexShader;
+                _deviceContext.PixelShader.Shader = pixelShader;
+                _deviceContext.PixelShader.SetShaderResources(0, textureView);
 
-			// Clear views
-			deviceContext.ClearDepthStencilView(depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            deviceContext.ClearRenderTargetView(renderTargetView, new Number4(0.3f, 0, 0, 1));
+                // Setup targets and viewport for rendering
+                _deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, _outputBitmap.PixelWidth, _outputBitmap.PixelHeight, 0.0f, 1.0f));
+                _deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
-			// Update WorldViewProj Matrix
-			var worldViewProj = Matrix3D.CreateRotationX(0.3f)
-				* Matrix3D.CreateRotationY(0.6f)
-				* Matrix3D.CreateRotationZ(0.6f)
-				* view * projection;
-			worldViewProj = Matrix3D.Transpose(worldViewProj);
-			constantBuffer.SetData(ref worldViewProj);
+                // Prepare matrices
+                _view = Matrix3D.CreateLookAt(new Point3D(0.7f, 0, -1.7f), Vector3D.Backward, Vector3D.UnitY);
+                _projection = Matrix3D.CreatePerspectiveFieldOfView(Nexus.MathUtility.PI / 4.0f,
+                    _outputBitmap.PixelWidth / (float) _outputBitmap.PixelHeight, 0.1f, 100.0f);
+	        }
 
-			// Draw the cube
-			deviceContext.Draw(36, 0);
+	        public void GenerateImage(Filter textureFilter)
+	        {
+                var sampler = _device.CreateSamplerState(new SamplerStateDescription
+                {
+                    Filter = textureFilter,
+                    AddressU = TextureAddressMode.Wrap,
+                    AddressV = TextureAddressMode.Wrap,
+                    AddressW = TextureAddressMode.Wrap,
+                    BorderColor = new Number4(0, 0, 0, 1),
+                    ComparisonFunction = Comparison.Never,
+                    MaximumAnisotropy = 16,
+                    MipLodBias = 0,
+                    MinimumLod = 0,
+                    MaximumLod = 16,
+                });
+                _deviceContext.PixelShader.SetSamplers(0, sampler);
 
-			// Present!
-			swapChain.Present();
-		}
+	            // Clear views
+	            _deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
+                _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0.3f, 0, 0, 1));
+
+	            // Update WorldViewProj Matrix
+	            var worldViewProj = Matrix3D.CreateRotationX(0.3f)
+	                * Matrix3D.CreateRotationY(0.6f)
+	                * Matrix3D.CreateRotationZ(0.6f)
+	                * _view * _projection;
+	            worldViewProj = Matrix3D.Transpose(worldViewProj);
+	            _constantBuffer.SetData(ref worldViewProj);
+
+	            // Draw the cube
+	            _deviceContext.Draw(36, 0);
+
+	            // Present!
+	            _swapChain.Present();
+	        }
+	    }
 	}
 }
