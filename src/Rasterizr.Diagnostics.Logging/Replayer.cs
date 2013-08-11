@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
-using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
@@ -54,7 +53,7 @@ namespace Rasterizr.Diagnostics.Logging
 						_device.CreateBlendState(args.Get<BlendStateDescription>(0));
 						break;
 					case OperationType.CreateBuffer :
-						_device.CreateBuffer(args.Get<BufferDescription>(0), args.Get<SubresourceData>(1));
+						_device.CreateBuffer(args.Get<BufferDescription>(0), args.Get<byte[]>(1));
 						break;
 					case OperationType.CreateDepthStencilState :
 						_device.CreateDepthStencilState(args.Get<DepthStencilStateDescription>(0));

@@ -67,16 +67,16 @@ namespace Rasterizr
 			if (description.SizeInBytes == 0)
 				description.SizeInBytes = data.Length * Utilities.SizeOf<T>();
 
-			return CreateBuffer(description, new SubresourceData { Data = Utilities.ToByteArray(data) });
+			return CreateBuffer(description, Utilities.ToByteArray(data));
 		}
 
-		public Buffer CreateBuffer(BufferDescription description, SubresourceData? initialData = null)
+		public Buffer CreateBuffer(BufferDescription description, byte[] initialData = null)
 		{
 			Loggers.BeginOperation(OperationType.CreateBuffer, description, initialData);
 
 			var buffer = new Buffer(this, description);
 			if (initialData != null)
-				buffer.SetData(initialData.Value.Data);
+				buffer.SetData(initialData);
 			return buffer;
 		}
 

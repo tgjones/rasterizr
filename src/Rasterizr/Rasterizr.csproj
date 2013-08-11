@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparisonUtility.cs" />
-    <Compile Include="DataIndex.cs" />
     <Compile Include="Diagnostics\ClearRenderTargetEvent.cs" />
     <Compile Include="Diagnostics\DrawEvent.cs" />
     <Compile Include="Diagnostics\GraphicsLogger.cs" />
@@ -113,7 +112,6 @@
     <Compile Include="Pipeline\ShaderResourceViewDescription.cs" />
     <Compile Include="Pipeline\ShaderResourceViewDimension.cs" />
     <Compile Include="Pipeline\ShaderResourceViewExtendedBufferFlags.cs" />
-    <Compile Include="Pipeline\SubresourceData.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShader.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderOutput.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderStage.cs" />
