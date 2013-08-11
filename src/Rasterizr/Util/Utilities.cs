@@ -2,23 +2,6 @@
 {
 	public static class Utilities
 	{
-		public static void Clear<T>(byte[] elements, int elementSize, ref T value)
-				where T : struct
-		{
-			int length = elements.Length;
-			var offset = 0;
-			while (offset < length)
-			{
-				ToByteArray(ref value, elements, offset);
-				offset += elementSize;
-			}
-		}
-
-		internal static bool IsPowerOfTwo(int x)
-		{
-			return (x != 0) && (x & (x - 1)) == 0;
-		}
-
 		/// <summary>
 		/// Converts a structured array to an equivalent byte array.
 		/// </summary>
@@ -104,17 +87,6 @@
 		public static int SizeOf<T>() where T : struct
 		{
 			return Interop.SizeOf<T>();
-		}
-
-		/// <summary>
-		/// Return the sizeof an array of struct. Equivalent to sizeof operator but works on generics too.
-		/// </summary>
-		/// <typeparam name="T">a struct</typeparam>
-		/// <param name="array">The array of struct to evaluate.</param>
-		/// <returns>sizeof in bytes of this array of struct</returns>
-		public static int SizeOf<T>(T[] array) where T : struct
-		{
-			return array == null ? 0 : array.Length * Interop.SizeOf<T>();
 		}
 	}
 }
