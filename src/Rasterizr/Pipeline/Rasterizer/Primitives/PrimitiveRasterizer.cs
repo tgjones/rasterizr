@@ -42,7 +42,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 
 		public abstract IEnumerable<FragmentQuad> Rasterize();
 
-		protected Vector2 GetSamplePosition(int x, int y, int sampleIndex)
+        protected Point GetSamplePosition(int x, int y, int sampleIndex)
 		{
 			return MultiSamplingUtility.GetSamplePosition(MultiSampleCount, x, y, sampleIndex);
 		}

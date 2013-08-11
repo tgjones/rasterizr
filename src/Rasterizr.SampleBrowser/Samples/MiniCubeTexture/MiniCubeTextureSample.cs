@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using Nexus;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.SampleBrowser.Framework.Services;
+using Rasterizr.Toolkit;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Compiler;

@@ -1,5 +1,5 @@
 ﻿using System;
-using Rasterizr.Math;
+using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 
 namespace Rasterizr.Studio.Modules.GraphicsDebugging.Design
@@ -11,6 +11,6 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.Design
 		public event EventHandler<PixelChangedEventArgs> SelectedPixelChanged;
 		public TracefileFrameViewModel SelectedFrame { get; set; }
 		public TracefileEventViewModel SelectedEvent { get; set; }
-		public Point SelectedPixel { get; set; }
+		public Int32Point SelectedPixel { get; set; }
 	}
 }

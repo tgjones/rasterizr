@@ -1,18 +1,18 @@
 using System;
-using Rasterizr.Math;
+using Rasterizr.Studio.Framework;
 
 namespace Rasterizr.Studio.Modules.GraphicsDebugging
 {
 	public class PixelChangedEventArgs : EventArgs
 	{
-		private readonly Point _selectedPixel;
+		private readonly Int32Point _selectedPixel;
 
-		public Point SelectedPixel
+		public Int32Point SelectedPixel
 		{
 			get { return _selectedPixel; }
 		}
 
-		public PixelChangedEventArgs(Point selectedPixel)
+		public PixelChangedEventArgs(Int32Point selectedPixel)
 		{
 			_selectedPixel = selectedPixel;
 		}

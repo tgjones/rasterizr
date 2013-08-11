@@ -1,9 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Rasterizr.Math;
 using Rasterizr.Resources;
-using Rasterizr.Util;
 using SlimShader;
 
 namespace Rasterizr.Platform.Wpf
@@ -39,7 +37,7 @@ namespace Rasterizr.Platform.Wpf
                 var r = pixelData[(i * 4) + 2];
                 var a = pixelData[(i * 4) + 3];
 
-                colors[i] = new Color4(r, g, b, a).ToNumber4();
+                colors[i] = new Number4(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 		    }
 
 		    result.SetData(0, colors);
@@ -56,12 +54,10 @@ namespace Rasterizr.Platform.Wpf
             var pixelData = new byte[colors.Length * 4];
             for (int i = 0; i < colors.Length; i++)
             {
-                var color = colors[i].ToColor4();
-
-                pixelData[(i * 4) + 0] = color.B;
-                pixelData[(i * 4) + 1] = color.G;
-                pixelData[(i * 4) + 2] = color.R;
-                pixelData[(i * 4) + 3] = color.A;
+                pixelData[(i * 4) + 0] = (byte) (colors[i].B * 255.0f);
+                pixelData[(i * 4) + 1] = (byte) (colors[i].G * 255.0f);
+                pixelData[(i * 4) + 2] = (byte) (colors[i].R * 255.0f);
+                pixelData[(i * 4) + 3] = (byte) (colors[i].A * 255.0f);
             }
 
             int width, height;

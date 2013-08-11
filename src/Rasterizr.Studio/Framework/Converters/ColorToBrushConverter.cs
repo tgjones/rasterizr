@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Media;
 using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels;
-using Rasterizr.Util;
+using Rasterizr.Toolkit;
 
 namespace Rasterizr.Studio.Framework.Converters
 {

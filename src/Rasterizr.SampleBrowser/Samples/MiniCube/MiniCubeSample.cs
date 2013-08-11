@@ -7,6 +7,7 @@ using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
+using Rasterizr.Toolkit;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Compiler;

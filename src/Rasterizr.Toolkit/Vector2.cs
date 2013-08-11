@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace Rasterizr.Math
+namespace Rasterizr.Toolkit
 {
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Vector2

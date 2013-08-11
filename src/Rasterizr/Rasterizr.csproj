@@ -67,13 +67,7 @@
     <Compile Include="Diagnostics\PixelEvent.cs" />
     <Compile Include="Diagnostics\PixelExclusionReason.cs" />
     <Compile Include="Diagnostics\TextWriterGraphicsLogger.cs" />
-    <Compile Include="Math\Color3.cs" />
-    <Compile Include="Math\Color3F.cs" />
-    <Compile Include="Math\Color4.cs" />
     <Compile Include="Math\Point.cs" />
-    <Compile Include="Math\Vector2.cs" />
-    <Compile Include="Math\Vector3.cs" />
-    <Compile Include="Math\Vector4.cs" />
     <Compile Include="Pipeline\CommonShaderStage.cs" />
     <Compile Include="Pipeline\GeometryShader\GeometryShader.cs" />
     <Compile Include="Pipeline\GeometryShader\GeometryShaderStage.cs" />
@@ -138,7 +132,6 @@
     <Compile Include="Resources\BindFlags.cs" />
     <Compile Include="Resources\Buffer.cs" />
     <Compile Include="Resources\BufferDescription.cs" />
-    <Compile Include="Math\Color4F.cs" />
     <Compile Include="Pipeline\OutputMerger\DepthStencilClearFlags.cs" />
     <Compile Include="Pipeline\OutputMerger\DepthStencilView.cs" />
     <Compile Include="Device.cs" />
@@ -169,7 +162,6 @@
     <Compile Include="Util\Batch.cs" />
     <Compile Include="Util\ConversionExtensions.cs" />
     <Compile Include="Util\Interop.cs" />
-    <Compile Include="Util\Number4Extensions.cs" />
     <Compile Include="Util\Utilities.cs" />
     <Compile Include="Pipeline\InputAssembler\VertexBufferBinding.cs" />
     <Compile Include="Pipeline\Rasterizer\Viewport.cs" />

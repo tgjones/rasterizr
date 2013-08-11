@@ -92,6 +92,7 @@
     <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
     <Compile Include="Framework\Controls\ZoomBorder.cs" />
     <Compile Include="Framework\Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Framework\Int32Point.cs" />
     <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeSelectionService.cs" />
     <Compile Include="Modules\GraphicsDebugging\Design\DesignTimeTracefile.cs" />
     <Compile Include="Modules\GraphicsDebugging\ISelectionService.cs" />
@@ -180,6 +181,10 @@
     <ProjectReference Include="..\Rasterizr.Platform.Wpf\Rasterizr.Platform.Wpf.csproj">
       <Project>{4633E75B-1C03-4588-BD29-8BE9A111AD1A}</Project>
       <Name>Rasterizr.Platform.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rasterizr.Toolkit\Rasterizr.Toolkit.csproj">
+      <Project>{C7886048-659E-44CA-8921-2416CCE3A795}</Project>
+      <Name>Rasterizr.Toolkit</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rasterizr\Rasterizr.csproj">
       <Project>{5975A920-5CA3-4187-824A-1804A1ACB6D2}</Project>

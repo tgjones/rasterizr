@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Rasterizr.Util;
 using SlimShader;
 
 namespace Rasterizr.Platform.Wpf
@@ -33,12 +32,10 @@ namespace Rasterizr.Platform.Wpf
 		{
             for (var i = 0; i < colors.Length; i++)
             {
-                var color = colors[i].ToColor4();
-
-                _outputBytes[(i * 4) + 0] = color.B;
-                _outputBytes[(i * 4) + 1] = color.G;
-                _outputBytes[(i * 4) + 2] = color.R;
-                _outputBytes[(i * 4) + 3] = color.A;
+                _outputBytes[(i * 4) + 0] = (byte) (colors[i].B * 255.0f);
+                _outputBytes[(i * 4) + 1] = (byte) (colors[i].G * 255.0f);
+                _outputBytes[(i * 4) + 2] = (byte) (colors[i].R * 255.0f);
+                _outputBytes[(i * 4) + 3] = (byte) (colors[i].A * 255.0f);
             }
 
 			_bitmap.Dispatcher.Invoke((Action) (() =>

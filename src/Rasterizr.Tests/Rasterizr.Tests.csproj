@@ -94,6 +94,10 @@
       <Project>{4633E75B-1C03-4588-BD29-8BE9A111AD1A}</Project>
       <Name>Rasterizr.Platform.Wpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Rasterizr.Toolkit\Rasterizr.Toolkit.csproj">
+      <Project>{c7886048-659e-44ca-8921-2416cce3a795}</Project>
+      <Name>Rasterizr.Toolkit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rasterizr\Rasterizr.csproj">
       <Project>{5975a920-5ca3-4187-824a-1804a1acb6d2}</Project>
       <Name>Rasterizr</Name>

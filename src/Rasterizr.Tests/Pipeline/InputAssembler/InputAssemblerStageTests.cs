@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Nexus;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Resources;
+using Rasterizr.Toolkit;
 using SlimShader;
 using SlimShader.Chunks.Common;
 using SlimShader.Chunks.Xsgn;

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using SlimShader;
 
-namespace Rasterizr.Math
+namespace Rasterizr.Toolkit
 {
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Color4F

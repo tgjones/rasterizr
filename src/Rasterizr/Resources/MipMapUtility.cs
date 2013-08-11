@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Rasterizr.Math;
-using Rasterizr.Util;
 
 namespace Rasterizr.Resources
 {

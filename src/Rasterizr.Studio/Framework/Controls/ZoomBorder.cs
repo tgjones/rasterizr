@@ -98,7 +98,7 @@ namespace Rasterizr.Studio.Framework.Controls
 				if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
 					return;
 
-				Point relative = e.GetPosition(child);
+				var relative = e.GetPosition(child);
 				double abosuluteX;
 				double abosuluteY;
 

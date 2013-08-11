@@ -1,5 +1,5 @@
 ﻿using System;
-using Rasterizr.Math;
+using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 
 namespace Rasterizr.Studio.Modules.GraphicsDebugging
@@ -12,6 +12,6 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging
 
 		TracefileFrameViewModel SelectedFrame { get; set; }
 		TracefileEventViewModel SelectedEvent { get; set; }
-		Point SelectedPixel { get; set; }
+		Int32Point SelectedPixel { get; set; }
 	}
 }

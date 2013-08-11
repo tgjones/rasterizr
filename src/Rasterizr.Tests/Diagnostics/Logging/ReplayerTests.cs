@@ -3,10 +3,10 @@ using System.Linq;
 using NUnit.Framework;
 using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Resources;
+using Rasterizr.Toolkit;
 using SlimShader;
 using SlimShader.Compiler;
 

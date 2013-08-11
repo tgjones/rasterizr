@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Linq;
-using Rasterizr.Math;
+using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 
 namespace Rasterizr.Studio.Modules.GraphicsDebugging
@@ -15,7 +15,7 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging
 
 		private TracefileFrameViewModel _selectedFrame;
 		private TracefileEventViewModel _selectedEvent;
-		private Point _selectedPixel;
+		private Int32Point _selectedPixel;
 
 		public TracefileFrameViewModel SelectedFrame
 		{
@@ -39,7 +39,7 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging
 			}
 		}
 
-		public Point SelectedPixel
+		public Int32Point SelectedPixel
 		{
 			get { return _selectedPixel; }
 			set

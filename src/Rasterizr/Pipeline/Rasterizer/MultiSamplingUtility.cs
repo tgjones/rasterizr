@@ -5,19 +5,19 @@ namespace Rasterizr.Pipeline.Rasterizer
 {
 	internal static class MultiSamplingUtility
 	{
-		public static Vector2 GetSamplePosition(int multiSampleCount, int x, int y, int sampleIndex)
+        public static Point GetSamplePosition(int multiSampleCount, int x, int y, int sampleIndex)
 		{
 			switch (multiSampleCount)
 			{
 				case 1:
-					return new Vector2(x + 0.5f, y + 0.5f);
+                    return new Point(x + 0.5f, y + 0.5f);
 				case 2:
 					switch (sampleIndex)
 					{
 						case 0:
-							return new Vector2(x + 0.25f, y + 0.25f);
+                            return new Point(x + 0.25f, y + 0.25f);
 						case 1:
-							return new Vector2(x + 0.75f, y + 0.75f);
+                            return new Point(x + 0.75f, y + 0.75f);
 						default:
 							throw new InvalidOperationException();
 					}
@@ -25,13 +25,13 @@ namespace Rasterizr.Pipeline.Rasterizer
 					switch (sampleIndex)
 					{
 						case 0:
-							return new Vector2(x + 0.31f, y + 0.11f);
+                            return new Point(x + 0.31f, y + 0.11f);
 						case 1:
-							return new Vector2(x + 0.88f, y + 0.31f);
+                            return new Point(x + 0.88f, y + 0.31f);
 						case 2:
-							return new Vector2(x + 0.68f, y + 0.88f);
+                            return new Point(x + 0.68f, y + 0.88f);
 						case 3:
-							return new Vector2(x + 0.11f, y + 0.68f);
+                            return new Point(x + 0.11f, y + 0.68f);
 						default:
 							throw new InvalidOperationException();
 					}

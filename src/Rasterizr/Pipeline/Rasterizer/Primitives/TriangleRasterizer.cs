@@ -106,7 +106,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 		private bool CalculateCoverageAndInterpolateFragmentData(ref Fragment fragment, out BarycentricCoordinates coordinates)
 		{
 			// For non-multisampling, we can re-use the same calculations for coverage and interpolation.
-			var pixelCenter = new Vector2(fragment.X + 0.5f, fragment.Y + 0.5f);
+            var pixelCenter = new Point(fragment.X + 0.5f, fragment.Y + 0.5f);
 			CalculateBarycentricCoordinates(ref pixelCenter, out coordinates);
 
 			float depth;
@@ -132,7 +132,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 
 		private void InterpolateFragmentData(ref Fragment fragment)
 		{
-			var pixelCenter = new Vector2(fragment.X + 0.5f, fragment.Y + 0.5f);
+            var pixelCenter = new Point(fragment.X + 0.5f, fragment.Y + 0.5f);
 
 			// Calculate alpha, beta, gamma for pixel center.
 			BarycentricCoordinates coordinates;
@@ -161,7 +161,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 		private bool CalculateSampleCoverage(ref Fragment fragment, int sampleIndex, out Sample sample)
 		{
 			// Is this pixel inside triangle?
-			Vector2 samplePosition = GetSamplePosition(fragment.X, fragment.Y, sampleIndex);
+			var samplePosition = GetSamplePosition(fragment.X, fragment.Y, sampleIndex);
 
 			float depth;
 			bool covered = IsSampleInsideTriangle(ref samplePosition, out depth);
@@ -202,14 +202,14 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			}
 		}
 
-		private bool IsSampleInsideTriangle(ref Vector2 samplePosition, out float depth)
+        private bool IsSampleInsideTriangle(ref Point samplePosition, out float depth)
 		{
 			BarycentricCoordinates coordinates;
 			CalculateBarycentricCoordinates(ref samplePosition, out coordinates);
 			return IsSampleInsideTriangle(ref coordinates, out depth);
 		}
 
-		private void CalculateBarycentricCoordinates(ref Vector2 position, out BarycentricCoordinates coordinates)
+        private void CalculateBarycentricCoordinates(ref Point position, out BarycentricCoordinates coordinates)
 		{
 			// Calculate alpha, beta, gamma for pixel center.
 			coordinates.Alpha = ComputeFunction(position.X, position.Y, ref _p1, ref _p2) / _alphaDenominator;

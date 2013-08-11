@@ -2,7 +2,7 @@
 using System.IO;
 using Gemini.Framework;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
-using Rasterizr.Math;
+using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.GraphicsDebugging;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
 
@@ -28,8 +28,8 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 			}
 		}
 
-		private Point _hoverPixel;
-		internal Point HoverPixel
+		private Int32Point _hoverPixel;
+		internal Int32Point HoverPixel
 		{
 			get { return _hoverPixel; }
 			set
@@ -64,8 +64,8 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 			}
 		}
 
-		private Point _selectedPixel;
-		internal Point SelectedPixel
+		private Int32Point _selectedPixel;
+		internal Int32Point SelectedPixel
 		{
 			get { return _selectedPixel; }
 			set

@@ -1,7 +1,6 @@
-﻿using Rasterizr.Math;
-using SlimShader;
+﻿using SlimShader;
 
-namespace Rasterizr.Util
+namespace Rasterizr.Toolkit
 {
     public static class Number4Extensions
     {
