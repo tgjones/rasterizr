@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{330BF1
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Toolkit.Tests", "Rasterizr.Toolkit.Tests\Rasterizr.Toolkit.Tests.csproj", "{BEF8E52F-CA36-4D85-911E-31AE25D154E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,16 @@ Global
 		{73C182B2-347C-490C-9498-237832B2A21A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{73C182B2-347C-490C-9498-237832B2A21A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{73C182B2-347C-490C-9498-237832B2A21A}.Release|x86.ActiveCfg = Release|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BEF8E52F-CA36-4D85-911E-31AE25D154E7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

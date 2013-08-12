@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AssimpNet">
+      <HintPath>..\..\lib\AssimpNet\AssimpNet.dll</HintPath>
+    </Reference>
     <Reference Include="SlimShader, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\SlimShader.dll</HintPath>
@@ -47,10 +50,9 @@
     <Compile Include="Color4.cs" />
     <Compile Include="Color4F.cs" />
     <Compile Include="Effects\BasicEffect.cs" />
+    <Compile Include="Effects\BasicEffectCode.cs" />
     <Compile Include="Effects\DirectionalLight.cs" />
     <Compile Include="Effects\Effect.cs" />
-    <Compile Include="Effects\EffectPass.cs" />
-    <Compile Include="Effects\EffectTechnique.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelLoader.cs" />
     <Compile Include="ModelMesh.cs" />
@@ -71,7 +73,42 @@
       <Name>Rasterizr</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\lib\AssimpNet\Assimp32.dll">
+      <Link>Assimp32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\lib\AssimpNet\Assimp64.dll">
+      <Link>Assimp64.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Hlsl Include="Effects\BasicEffect.hlsl.vs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Hlsl>
+    <Hlsl Include="Effects\BasicEffect.hlsl.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Hlsl>
+    <Content Include="Effects\BasicEffect.hlsl.h">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
+    <AvailableItemName Include="Hlsl">
+      <Visible>false</Visible>
+    </AvailableItemName>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Effects\BasicEffect.hlsl.pso" />
+    <EmbeddedResource Include="Effects\BasicEffect.hlsl.vso" />
+  </ItemGroup>
+  <UsingTask TaskName="MSBuild.Fxc.CompileShader" AssemblyFile="..\..\lib\MSBuild.Fxc.dll" />
+  <Target Name="ShaderCompile" Condition="'@(Hlsl)' != '' " BeforeTargets="Build">
+    <CompileShader InputFiles="@(Hlsl)" OutputPath="$(MSBuildProjectDirectory)" Profile="4_0" />
+  </Target>
+  <PropertyGroup>
+    <PrepareResourcesDependsOn>ShaderCompile;$(PrepareResourcesDependsOn)</PrepareResourcesDependsOn>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

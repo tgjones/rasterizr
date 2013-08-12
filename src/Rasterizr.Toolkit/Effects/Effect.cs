@@ -1,29 +1,29 @@
-using System.Collections.Generic;
+using Rasterizr.Pipeline.PixelShader;
+using Rasterizr.Pipeline.VertexShader;
 
 namespace Rasterizr.Toolkit.Effects
 {
 	public class Effect
 	{
-		private EffectTechnique _currentTechnique;
-
 		public DeviceContext DeviceContext { get; private set; }
-		public List<EffectTechnique> Techniques { get; set; }
 
-		public EffectTechnique CurrentTechnique
-		{
-			get { return _currentTechnique ?? (_currentTechnique = Techniques[0]); }
-			set { _currentTechnique = value; }
-		}
+        public VertexShader VertexShader { get; private set; }
+        public PixelShader PixelShader { get; private set; }
 
-		public Effect(DeviceContext deviceContext)
+		public Effect(DeviceContext deviceContext,
+            byte[] vertexShaderBytecode,
+            byte[] pixelShaderBytecode)
 		{
 			DeviceContext = deviceContext;
-			Techniques = new List<EffectTechnique>();
+
+		    VertexShader = deviceContext.Device.CreateVertexShader(vertexShaderBytecode);
+		    PixelShader = deviceContext.Device.CreatePixelShader(pixelShaderBytecode);
 		}
 
-		protected internal virtual void OnApply()
+		public virtual void Apply()
 		{
-			
+            DeviceContext.VertexShader.Shader = VertexShader;
+            DeviceContext.PixelShader.Shader = PixelShader;
 		}
 	}
 }

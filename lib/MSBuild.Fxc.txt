@@ -1,0 +1,1 @@
+From http://sharpdx.org/forum/4-general/355-shader-compilation-using-msbuild

@@ -21,8 +21,9 @@ namespace Rasterizr.Toolkit
 			set
 			{
 				_effect = value;
-				_inputLayout = _device.CreateInputLayout(VertexPositionNormalTexture.InputElements,
-					Effect.CurrentTechnique.Passes[0].VertexShader.Bytecode.RawBytes);
+				_inputLayout = _device.CreateInputLayout(
+                    VertexPositionNormalTexture.InputElements,
+					Effect.VertexShader.Bytecode.RawBytes);
 			}
 		}
 
@@ -44,11 +45,8 @@ namespace Rasterizr.Toolkit
 				new VertexBufferBinding(_vertexBuffer, 0, VertexPositionNormalTexture.SizeInBytes));
 			_device.ImmediateContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
 
-			foreach (EffectPass pass in Effect.CurrentTechnique.Passes)
-			{
-				pass.Apply();
-				_device.ImmediateContext.DrawIndexed(_indices.Count, 0, 0);
-			}
+		    _effect.Apply();
+            _device.ImmediateContext.DrawIndexed(_indices.Count, 0, 0);
 		}
 	}
 }

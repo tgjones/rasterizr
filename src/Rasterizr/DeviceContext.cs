@@ -17,7 +17,7 @@ using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr
 {
-	public class DeviceContext
+	public class DeviceContext : DeviceChild
 	{
 		private readonly Device _device;
 		private readonly InputAssemblerStage _inputAssembler;
@@ -26,11 +26,6 @@ namespace Rasterizr
 		private readonly RasterizerStage _rasterizer;
 		private readonly PixelShaderStage _pixelShader;
 		private readonly OutputMergerStage _outputMerger;
-
-		protected Device Device
-		{
-			get { return _device; }
-		}
 
 		public InputAssemblerStage InputAssembler
 		{
@@ -63,6 +58,7 @@ namespace Rasterizr
 		}
 
 		public DeviceContext(Device device)
+            : base(device)
 		{
 			_device = device;
 			_inputAssembler = new InputAssemblerStage(device);

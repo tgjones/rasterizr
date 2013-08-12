@@ -289,8 +289,9 @@ namespace Weavers
 				var ilProcessor = method.Body.GetILProcessor();
 
 				var instructions = method.Body.Instructions;
-			    foreach (var instruction in instructions)
+			    for (int i = 0; i < instructions.Count; i++)
 			    {
+			        var instruction = instructions[i];
 			        if (instruction.OpCode == OpCodes.Call && instruction.Operand is MethodReference)
 			        {
 			            var methodDescription = (MethodReference) instruction.Operand;

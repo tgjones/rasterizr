@@ -1,0 +1,16 @@
+#include "BasicEffect.hlsl.h"
+
+float3 Diffuse;
+float Alpha;
+
+bool TextureEnabled;
+Texture2D Texture;
+SamplerState Sampler;
+
+float4 main(PixelShaderInput input) : SV_Target
+{
+	float4 result = float4(Diffuse, Alpha);
+	if (TextureEnabled)
+		result += Texture.Sample(Sampler, input.tex);
+	return result;
+}
