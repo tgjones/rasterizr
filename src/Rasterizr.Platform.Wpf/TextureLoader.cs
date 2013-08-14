@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Rasterizr.Math;
 using Rasterizr.Resources;
 using SlimShader;
 
@@ -21,11 +22,14 @@ namespace Rasterizr.Platform.Wpf
 			var pixelData = new byte[bitmap.PixelWidth * bitmap.PixelHeight * bitmap.Format.BitsPerPixel / 8];
 			bitmap.CopyPixels(pixelData, bitmap.PixelWidth * bitmap.Format.BitsPerPixel / 8, 0);
 
+		    var mipLevels = (MathUtility.IsPowerOfTwo(bitmap.PixelWidth) && MathUtility.IsPowerOfTwo(bitmap.PixelHeight))
+		        ? 0 : 1;
+
 			var result = device.CreateTexture2D(new Texture2DDescription
 			{
 				Width = bitmap.PixelWidth,
 				Height = bitmap.PixelHeight,
-				MipLevels = 0,
+				MipLevels = mipLevels,
 				ArraySize = 1,
 			});
 

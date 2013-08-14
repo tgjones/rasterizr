@@ -31,9 +31,9 @@ namespace Rasterizr.SampleBrowser.Samples
 			return updateTime;
 		}
 
-		public double ElapsedTime
+		public float ElapsedTime
 		{
-			get { return _stopwatch.ElapsedMilliseconds * 0.001; }
+			get { return _stopwatch.ElapsedMilliseconds * 0.001f; }
 		}
 	}
 }

@@ -10,7 +10,6 @@ using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.SampleBrowser.Framework.Services;
-using Rasterizr.Toolkit;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Compiler;
@@ -203,7 +202,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
                 _deviceContext.InputAssembler.InputLayout = layout;
                 _deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
                 _deviceContext.InputAssembler.SetVertexBuffers(0,
-                    new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>()));
+                    new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4D>() + Utilities.SizeOf<Vector2D>()));
                 _deviceContext.VertexShader.SetConstantBuffers(0, _constantBuffer);
                 _deviceContext.VertexShader.Shader = vertexShader;
                 _deviceContext.PixelShader.Shader = pixelShader;

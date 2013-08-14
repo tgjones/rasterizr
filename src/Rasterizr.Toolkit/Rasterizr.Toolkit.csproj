@@ -11,6 +11,8 @@
     <AssemblyName>Rasterizr.Toolkit</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +35,9 @@
     <Reference Include="AssimpNet">
       <HintPath>..\..\lib\AssimpNet\AssimpNet.dll</HintPath>
     </Reference>
+    <Reference Include="Nexus">
+      <HintPath>..\packages\Nexus.2.1.0\lib\net40\Nexus.dll</HintPath>
+    </Reference>
     <Reference Include="SlimShader, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\SlimShader.dll</HintPath>
@@ -53,7 +58,6 @@
     <Compile Include="Effects\BasicEffectCode.cs" />
     <Compile Include="Effects\DirectionalLight.cs" />
     <Compile Include="Effects\Effect.cs" />
-    <Compile Include="Matrix.cs" />
     <Compile Include="Models\ConversionExtensions.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\ModelLoader.cs" />
@@ -62,9 +66,6 @@
     <Compile Include="Number4Extensions.cs" />
     <Compile Include="ProceduralTextures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Vector2.cs" />
-    <Compile Include="Vector3.cs" />
-    <Compile Include="Vector4.cs" />
     <Compile Include="VertexPositionColor.cs" />
     <Compile Include="VertexPositionColorTexture.cs" />
     <Compile Include="VertexPositionNormalTexture.cs" />
@@ -105,6 +106,9 @@
     <EmbeddedResource Include="Effects\BasicEffect.pso" />
     <EmbeddedResource Include="Effects\BasicEffect.vso" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <UsingTask TaskName="MSBuild.Fxc.CompileShader" AssemblyFile="..\..\lib\MSBuild.Fxc.dll" />
   <Target Name="ShaderCompile" Condition="'@(Hlsl)' != '' " BeforeTargets="Build">
     <CompileShader InputFiles="@(Hlsl)" OutputPath="$(MSBuildProjectDirectory)" Profile="4_1" />
@@ -112,6 +116,7 @@
   <PropertyGroup>
     <PrepareResourcesDependsOn>ShaderCompile;$(PrepareResourcesDependsOn)</PrepareResourcesDependsOn>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

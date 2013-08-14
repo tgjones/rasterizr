@@ -1,13 +1,11 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using Nexus;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
-using Rasterizr.Toolkit;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Compiler;
@@ -78,47 +76,47 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCube
 			// Instantiate Vertex buffer from vertex data
 			var vertices = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), new[]
 			{
-				new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f), // Front
-				new Vector4(-1.0f, 1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-				new Vector4(1.0f, 1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-				new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-				new Vector4(1.0f, 1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-				new Vector4(1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+				new Vector4D(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 0.0f, 1.0f), // Front
+				new Vector4D(-1.0f, 1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 0.0f, 1.0f),
+				new Vector4D(1.0f, 1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 0.0f, 1.0f),
+				new Vector4D(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 0.0f, 1.0f),
+				new Vector4D(1.0f, 1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 0.0f, 1.0f),
+				new Vector4D(1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 0.0f, 1.0f),
 
-				new Vector4(-1.0f, -1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f), // BACK
-				new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4(-1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4(-1.0f, -1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4(1.0f, -1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(-1.0f, -1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 0.0f, 1.0f), // BACK
+				new Vector4D(1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(-1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(-1.0f, -1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(1.0f, -1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 0.0f, 1.0f),
 
-				new Vector4(-1.0f, 1.0f, -1.0f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f), // Top
-				new Vector4(-1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
-				new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
-				new Vector4(-1.0f, 1.0f, -1.0f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
-				new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
-				new Vector4(1.0f, 1.0f, -1.0f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(-1.0f, 1.0f, -1.0f, 1.0f), new Vector4D(0.0f, 0.0f, 1.0f, 1.0f), // Top
+				new Vector4D(-1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(-1.0f, 1.0f, -1.0f, 1.0f), new Vector4D(0.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(1.0f, 1.0f, -1.0f, 1.0f), new Vector4D(0.0f, 0.0f, 1.0f, 1.0f),
 
-				new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f), // Bottom
-				new Vector4(1.0f, -1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4(-1.0f, -1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4(1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4(1.0f, -1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 1.0f, 0.0f, 1.0f), // Bottom
+				new Vector4D(1.0f, -1.0f, 1.0f, 1.0f), new Vector4D(1.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(-1.0f, -1.0f, 1.0f, 1.0f), new Vector4D(1.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(1.0f, -1.0f, 1.0f, 1.0f), new Vector4D(1.0f, 1.0f, 0.0f, 1.0f),
 
-				new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f), // Left
-				new Vector4(-1.0f, -1.0f, 1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
-				new Vector4(-1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
-				new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
-				new Vector4(-1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
-				new Vector4(-1.0f, 1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 1.0f, 1.0f), // Left
+				new Vector4D(-1.0f, -1.0f, 1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(-1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(-1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 1.0f, 1.0f),
+				new Vector4D(-1.0f, 1.0f, -1.0f, 1.0f), new Vector4D(1.0f, 0.0f, 1.0f, 1.0f),
 
-				new Vector4(1.0f, -1.0f, -1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f), // Right
-				new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-				new Vector4(1.0f, -1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-				new Vector4(1.0f, -1.0f, -1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-				new Vector4(1.0f, 1.0f, -1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-				new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f)
+				new Vector4D(1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 1.0f, 1.0f), // Right
+				new Vector4D(1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 1.0f, 1.0f),
+				new Vector4D(1.0f, -1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 1.0f, 1.0f),
+				new Vector4D(1.0f, -1.0f, -1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 1.0f, 1.0f),
+				new Vector4D(1.0f, 1.0f, -1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 1.0f, 1.0f),
+				new Vector4D(1.0f, 1.0f, 1.0f, 1.0f), new Vector4D(0.0f, 1.0f, 1.0f, 1.0f)
 			});
 
 			// Create Constant Buffer
@@ -131,7 +129,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCube
 			// Prepare all the stages
 			_deviceContext.InputAssembler.InputLayout = layout;
 			_deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-			_deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4>() * 2));
+			_deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4D>() * 2));
 			_deviceContext.VertexShader.SetConstantBuffers(0, _constantBuffer);
 			_deviceContext.VertexShader.Shader = vertexShader;
 			_deviceContext.PixelShader.Shader = pixelShader;
@@ -153,9 +151,9 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCube
             _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
 
 			// Update WorldViewProj Matrix
-			var worldViewProj = Matrix3D.CreateRotationX((float)time.ElapsedTime)
-				* Matrix3D.CreateRotationY((float)(time.ElapsedTime * 1))
-				* Matrix3D.CreateRotationZ((float)(time.ElapsedTime * 0.3f))
+			var worldViewProj = Matrix3D.CreateRotationX(time.ElapsedTime)
+				* Matrix3D.CreateRotationY(time.ElapsedTime * 1)
+				* Matrix3D.CreateRotationZ(time.ElapsedTime * 0.3f)
 				* _view * _projection;
 			worldViewProj = Matrix3D.Transpose(worldViewProj);
 			_constantBuffer.SetData(ref worldViewProj);

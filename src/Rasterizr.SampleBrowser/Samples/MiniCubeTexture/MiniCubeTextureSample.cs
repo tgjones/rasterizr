@@ -7,7 +7,6 @@ using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.SampleBrowser.Framework.Services;
-using Rasterizr.Toolkit;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Compiler;
@@ -159,7 +158,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 			// Prepare all the stages
 			_deviceContext.InputAssembler.InputLayout = layout;
 			_deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-			_deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>()));
+			_deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4D>() + Utilities.SizeOf<Vector2D>()));
 			_deviceContext.VertexShader.SetConstantBuffers(0, _constantBuffer);
 			_deviceContext.VertexShader.Shader = vertexShader;
 			_deviceContext.PixelShader.Shader = pixelShader;
@@ -183,9 +182,9 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
             _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
 
 			// Update WorldViewProj Matrix
-			var worldViewProj = Matrix3D.CreateRotationX((float)time.ElapsedTime)
-				* Matrix3D.CreateRotationY((float)(time.ElapsedTime * 1))
-				* Matrix3D.CreateRotationZ((float)(time.ElapsedTime * 0.3f))
+			var worldViewProj = Matrix3D.CreateRotationX(time.ElapsedTime)
+				* Matrix3D.CreateRotationY(time.ElapsedTime * 1)
+				* Matrix3D.CreateRotationZ(time.ElapsedTime * 0.3f)
 				* _view * _projection;
 			worldViewProj = Matrix3D.Transpose(worldViewProj);
 			_constantBuffer.SetData(ref worldViewProj);

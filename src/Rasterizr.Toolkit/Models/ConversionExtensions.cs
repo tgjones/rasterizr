@@ -1,12 +1,12 @@
-﻿using Assimp;
+﻿using Nexus;
 
 namespace Rasterizr.Toolkit.Models
 {
     internal static class ConversionExtensions
     {
-        public static Matrix ToMatrix(this Matrix4x4 mat)
+        public static Matrix3D ToMatrix(this Assimp.Matrix4x4 mat)
         {
-            Matrix m = new Matrix();
+            var m = new Matrix3D();
             m.M11 = mat.A1;
             m.M12 = mat.A2;
             m.M13 = mat.A3;
@@ -26,16 +26,25 @@ namespace Rasterizr.Toolkit.Models
             return m;
         }
 
-        public static Vector3 ToVector3(this Vector3D vec)
+        public static Point3D ToPoint3D(this Assimp.Vector3D vec)
         {
-            Vector3 v;
+            Point3D v;
             v.X = vec.X;
             v.Y = vec.Y;
             v.Z = vec.Z;
             return v;
         }
 
-        public static Color4 ToColor4(this Color4D color)
+        public static Vector3D ToVector3D(this Assimp.Vector3D vec)
+        {
+            Vector3D v;
+            v.X = vec.X;
+            v.Y = vec.Y;
+            v.Z = vec.Z;
+            return v;
+        }
+
+        public static Color4 ToColor4(this Assimp.Color4D color)
         {
             Color4 c;
             c.R = (byte) (color.R * 255);

@@ -1,16 +1,27 @@
 #include "BasicEffect.hlsl.h"
 
-float3 Diffuse;
+cbuffer PixelShaderConstants
+{
+	float3 LightPos;
+}
+
+float3 DiffuseColor;
 float Alpha;
 
-bool TextureEnabled;
-Texture2D Texture;
-SamplerState Sampler;
+bool DiffuseTextureEnabled;
+Texture2D DiffuseTexture;
+SamplerState DiffuseSampler;
 
 float4 main(PixelShaderInput input) : SV_Target
 {
-	float4 result = float4(Diffuse, Alpha);
-	if (TextureEnabled)
-		result += Texture.Sample(Sampler, input.tex);
-	return result;
+	float3 l = normalize(LightPos - input.worldPos);
+	float3 n = normalize(input.normal);
+
+	float3 materialColor = DiffuseColor;
+	if (DiffuseTextureEnabled)
+		materialColor += DiffuseTexture.Sample(DiffuseSampler, input.uv).xyz;
+
+	float3 diffuse = materialColor * saturate(dot(n, l));
+
+	return float4(diffuse, Alpha);
 }

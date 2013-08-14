@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Controls;
-using Rasterizr.Math;
+using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
-using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
-using Rasterizr.Toolkit;
 using SlimShader;
 using SlimShader.Compiler;
+using Viewport = Rasterizr.Pipeline.Rasterizer.Viewport;
 
 namespace Rasterizr.SampleBrowser.Samples.BasicTriangle
 {
@@ -58,9 +57,9 @@ namespace Rasterizr.SampleBrowser.Samples.BasicTriangle
 			// Instantiate Vertex buffer from vertex data
 			var vertices = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), new[]
 			{
-				new Vector4(0.0f, 0.5f, 0.5f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-				new Vector4(0.5f, -0.5f, 0.5f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4(-0.5f, -0.5f, 0.5f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f)
+				new Vector4D(0.0f, 0.5f, 0.5f, 1.0f), new Vector4D(1.0f, 0.0f, 0.0f, 1.0f),
+				new Vector4D(0.5f, -0.5f, 0.5f, 1.0f), new Vector4D(0.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4D(-0.5f, -0.5f, 0.5f, 1.0f), new Vector4D(0.0f, 0.0f, 1.0f, 1.0f)
 			});
 
 			// Prepare all the stages

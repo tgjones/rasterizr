@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using Rasterizr.Math;
+using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
 
 namespace Rasterizr.Toolkit
@@ -7,11 +7,11 @@ namespace Rasterizr.Toolkit
 	[StructLayout(LayoutKind.Sequential)]
 	public struct VertexPositionColorTexture
 	{
-		public Vector3 Position;
+		public Point3D Position;
 		public Color4F Color;
-		public Vector2 TextureCoordinate;
+		public Point2D TextureCoordinate;
 
-		public VertexPositionColorTexture(Vector3 position, Color4F color, Vector2 textureCoordinate)
+		public VertexPositionColorTexture(Point3D position, Color4F color, Point2D textureCoordinate)
 		{
 			Position = position;
 			Color = color;

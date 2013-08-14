@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using Rasterizr.Math;
+using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
 
 namespace Rasterizr.Toolkit
@@ -7,11 +7,11 @@ namespace Rasterizr.Toolkit
 	[StructLayout(LayoutKind.Sequential)]
 	public struct VertexPositionNormalTexture
 	{
-		public Vector3 Position;
-		public Vector3 Normal;
-		public Vector2 TextureCoordinate;
+		public Point3D Position;
+		public Vector3D Normal;
+		public Point2D TextureCoordinate;
 
-		public VertexPositionNormalTexture(Vector3 position, Vector3 normal, Vector2 textureCoordinate)
+		public VertexPositionNormalTexture(Point3D position, Vector3D normal, Point2D textureCoordinate)
 		{
 			Position = position;
 			Normal = normal;
@@ -20,7 +20,7 @@ namespace Rasterizr.Toolkit
 
 		public static int SizeInBytes
 		{
-			get { return Vector3.SizeInBytes + Vector3.SizeInBytes + Vector2.SizeInBytes; }
+			get { return Point3D.SizeInBytes + Vector3D.SizeInBytes + Point2D.SizeInBytes; }
 		}
 
 		public static InputElement[] InputElements

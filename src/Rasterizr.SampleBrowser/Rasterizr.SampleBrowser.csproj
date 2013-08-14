@@ -113,6 +113,7 @@
     <Compile Include="Framework\Services\ResourceLoader.cs" />
     <Compile Include="Samples\BasicTriangle\BasicTriangleSample.cs" />
     <Compile Include="Samples\DemoTime.cs" />
+    <Compile Include="Samples\ModelLoading\ModelLoadingSample.cs" />
     <Compile Include="TechDemos\ITechDemoMetadata.cs" />
     <Compile Include="TechDemos\Resources\TextureSampling\TextureSamplingView.xaml.cs">
       <DependentUpon>TextureSamplingView.xaml</DependentUpon>
@@ -183,6 +184,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Content Include="Samples\ModelLoading\Sponza\sponza.3ds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="TechDemos\Resources\TextureMipmapping\window_28.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +208,48 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="TechDemos\Resources\TextureSampling\CorrodedTiles.png" />
+    <Content Include="Samples\ModelLoading\Sponza\00_skap.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\01_stub.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\01_St_kp.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\01_S_ba.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\01_S_kap.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\kamen-stup.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\kamen.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\prozor1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\reljef.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\sky.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\sp_luk.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\vrata_ko.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\vrata_kr.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ModelLoading\Sponza\x01_st.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TechDemos\Resources\TextureSampling\Texture.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
