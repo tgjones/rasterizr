@@ -19,6 +19,9 @@ namespace Rasterizr.Toolkit.Effects
 
         public Point3D LightPosition { get; set; }
 
+        public Color3F DiffuseColor { get; set; }
+        public float Alpha { get; set; }
+
 		public BasicEffect(DeviceContext deviceContext)
 			: base(deviceContext, BasicEffectCode.VertexShaderCode, BasicEffectCode.PixelShaderCode)
 		{
@@ -39,7 +42,11 @@ namespace Rasterizr.Toolkit.Effects
             _vertexShaderData.WorldViewProjection = Matrix3D.Transpose(World * View * Projection);
             _vertexShaderData.World = Matrix3D.Transpose(World);
 
+            _pixelShaderData.DiffuseColorAndAlpha = new Color4F(
+                DiffuseColor.Red, DiffuseColor.Green, DiffuseColor.Blue,
+                Alpha);
             _pixelShaderData.LightPos = LightPosition;
+            _pixelShaderData.DiffuseTextureEnabled = false;
 
             _vertexShaderBuffer.SetData(ref _vertexShaderData);
             _pixelShaderBuffer.SetData(ref _pixelShaderData);
@@ -60,7 +67,9 @@ namespace Rasterizr.Toolkit.Effects
         [StructLayout(LayoutKind.Sequential)]
         private struct PixelShaderData
         {
+            public Color4F DiffuseColorAndAlpha;
             public Point3D LightPos;
+            public bool DiffuseTextureEnabled;
         }
 	}
 }

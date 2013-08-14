@@ -2,13 +2,11 @@
 
 cbuffer PixelShaderConstants
 {
+	float4 DiffuseColorAndAlpha;
 	float3 LightPos;
+	bool DiffuseTextureEnabled;
 }
 
-float3 DiffuseColor;
-float Alpha;
-
-bool DiffuseTextureEnabled;
 Texture2D DiffuseTexture;
 SamplerState DiffuseSampler;
 
@@ -17,11 +15,11 @@ float4 main(PixelShaderInput input) : SV_Target
 	float3 l = normalize(LightPos - input.worldPos);
 	float3 n = normalize(input.normal);
 
-	float3 materialColor = DiffuseColor;
+	float3 materialColor = DiffuseColorAndAlpha.rgb;
 	if (DiffuseTextureEnabled)
-		materialColor += DiffuseTexture.Sample(DiffuseSampler, input.uv).xyz;
+		materialColor += DiffuseTexture.Sample(DiffuseSampler, input.uv).rgb;
 
 	float3 diffuse = materialColor * saturate(dot(n, l));
 
-	return float4(diffuse, Alpha);
+	return float4(diffuse, DiffuseColorAndAlpha.a);
 }

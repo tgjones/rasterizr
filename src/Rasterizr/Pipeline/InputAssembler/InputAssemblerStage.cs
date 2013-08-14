@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rasterizr.Diagnostics;
-using Rasterizr.Math;
 using Rasterizr.Pipeline.VertexShader;
 using SlimShader;
 using SlimShader.Chunks.Xsgn;

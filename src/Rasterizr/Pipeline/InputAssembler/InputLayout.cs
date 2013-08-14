@@ -46,27 +46,35 @@ namespace Rasterizr.Pipeline.InputAssembler
 		private ProcessedInputElement[] ProcessElements(InputElement[] elements)
 		{
 			var slotOffsets = new int[InputAssemblerStage.VertexInputResourceSlotCount];
-			var result = new ProcessedInputElement[elements.Length];
-			for (int i = 0; i < elements.Length; i++)
+
+			var result = new List<ProcessedInputElement>();
+			foreach (var element in elements)
 			{
-				var element = elements[i];
+			    var registerIndex = _inputSignature.Parameters.FindRegister(
+			        element.SemanticName, (uint) element.SemanticIndex);
 
-				if (element.AlignedByteOffset != InputElement.AppendAligned)
-					slotOffsets[element.InputSlot] = element.AlignedByteOffset;
+			    // If registerIndex is null, it means that this element in the input
+			    // data has no corresponding vertex shader input. That's okay -
+			    // we just ignore it.
+			    if (registerIndex == null)
+			        continue;
 
-				result[i] = new ProcessedInputElement
-				{
-					RegisterIndex = (int)_inputSignature.Parameters.FindRegister(element.SemanticName, (uint)element.SemanticIndex),
-					Format = element.Format,
-					InputSlot = element.InputSlot,
-					AlignedByteOffset = slotOffsets[element.InputSlot],
-					InputSlotClass = element.InputSlotClass,
-					InstanceDataStepRate = element.InstanceDataStepRate
-				};
+			    if (element.AlignedByteOffset != InputElement.AppendAligned)
+			        slotOffsets[element.InputSlot] = element.AlignedByteOffset;
 
-				slotOffsets[element.InputSlot] += FormatHelper.SizeOfInBytes(element.Format);
+			    result.Add(new ProcessedInputElement
+			    {
+			        RegisterIndex = (int) registerIndex.Value,
+			        Format = element.Format,
+			        InputSlot = element.InputSlot,
+			        AlignedByteOffset = slotOffsets[element.InputSlot],
+			        InputSlotClass = element.InputSlotClass,
+			        InstanceDataStepRate = element.InstanceDataStepRate
+			    });
+
+			    slotOffsets[element.InputSlot] += FormatHelper.SizeOfInBytes(element.Format);
 			}
-			return result;
+			return result.ToArray();
 		}
 
 		private InputSlotElement[] ProcessSlots(InputElement[] elements)
