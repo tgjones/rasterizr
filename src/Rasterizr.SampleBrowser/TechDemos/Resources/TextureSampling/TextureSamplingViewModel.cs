@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Media.Imaging;
-using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
-using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.SampleBrowser.Framework.Services;
-using Rasterizr.Util;
+using SharpDX;
 using SlimShader;
 using SlimShader.Compiler;
 using Buffer = Rasterizr.Resources.Buffer;
+using Utilities = Rasterizr.Util.Utilities;
+using Viewport = Rasterizr.Pipeline.Rasterizer.Viewport;
 
 namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 {
@@ -85,7 +85,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 	        private readonly WriteableBitmap _outputBitmap;
             private readonly Device _device;
             private readonly DeviceContext _deviceContext;
-	        private readonly Matrix3D _view, _projection;
+	        private readonly Matrix _view, _projection;
             private readonly RenderTargetView _renderTargetView;
             private readonly DepthStencilView _depthView;
 	        private readonly WpfSwapChain _swapChain;
@@ -189,7 +189,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
                 // Create Constant Buffer
                 _constantBuffer = _device.CreateBuffer(new BufferDescription
                 {
-                    SizeInBytes = Utilities.SizeOf<Matrix3D>(),
+                    SizeInBytes = Utilities.SizeOf<Matrix>(),
                     BindFlags = BindFlags.ConstantBuffer
                 });
 
@@ -202,7 +202,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
                 _deviceContext.InputAssembler.InputLayout = layout;
                 _deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
                 _deviceContext.InputAssembler.SetVertexBuffers(0,
-                    new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4D>() + Utilities.SizeOf<Vector2D>()));
+                    new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>()));
                 _deviceContext.VertexShader.SetConstantBuffers(0, _constantBuffer);
                 _deviceContext.VertexShader.Shader = vertexShader;
                 _deviceContext.PixelShader.Shader = pixelShader;
@@ -213,8 +213,8 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
                 _deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
                 // Prepare matrices
-                _view = Matrix3D.CreateLookAt(new Point3D(0.7f, 0, -1.7f), Vector3D.Backward, Vector3D.UnitY);
-                _projection = Matrix3D.CreatePerspectiveFieldOfView(Nexus.MathUtility.PI / 4.0f,
+                _view = Matrix.LookAtRH(new Vector3(0.7f, 0, -1.7f), Vector3.BackwardRH, Vector3.UnitY);
+                _projection = Matrix.PerspectiveFovRH(MathUtil.PiOverFour,
                     _outputBitmap.PixelWidth / (float) _outputBitmap.PixelHeight, 0.1f, 100.0f);
 	        }
 
@@ -240,11 +240,11 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
                 _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0.3f, 0, 0, 1));
 
 	            // Update WorldViewProj Matrix
-	            var worldViewProj = Matrix3D.CreateRotationX(0.3f)
-	                * Matrix3D.CreateRotationY(0.6f)
-	                * Matrix3D.CreateRotationZ(0.6f)
+	            var worldViewProj = Matrix.RotationX(0.3f)
+	                * Matrix.RotationY(0.6f)
+	                * Matrix.RotationZ(0.6f)
 	                * _view * _projection;
-	            worldViewProj = Matrix3D.Transpose(worldViewProj);
+	            worldViewProj = Matrix.Transpose(worldViewProj);
 	            _constantBuffer.SetData(ref worldViewProj);
 
 	            // Draw the cube

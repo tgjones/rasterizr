@@ -1,15 +1,14 @@
 ﻿using System.IO;
 using System.Linq;
 using NUnit.Framework;
-using Nexus;
 using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Pipeline.InputAssembler;
-using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Resources;
-using Rasterizr.Toolkit;
+using SharpDX;
 using SlimShader;
 using SlimShader.Compiler;
+using Viewport = Rasterizr.Pipeline.Rasterizer.Viewport;
 
 namespace Rasterizr.Tests.Diagnostics.Logging
 {
@@ -74,9 +73,9 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			// Instantiate Vertex buffer from vertex data
 			var vertices = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), new[]
 			{
-				new Vector4D(0.0f, 0.5f, 0.5f, 1.0f), new Vector4D(1.0f, 0.0f, 0.0f, 1.0f),
-				new Vector4D(0.5f, -0.5f, 0.5f, 1.0f), new Vector4D(0.0f, 1.0f, 0.0f, 1.0f),
-				new Vector4D(-0.5f, -0.5f, 0.5f, 1.0f), new Vector4D(0.0f, 0.0f, 1.0f, 1.0f)
+				new Vector4(0.0f, 0.5f, 0.5f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+				new Vector4(0.5f, -0.5f, 0.5f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
+				new Vector4(-0.5f, -0.5f, 0.5f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f)
 			});
 
 			// Prepare all the stages

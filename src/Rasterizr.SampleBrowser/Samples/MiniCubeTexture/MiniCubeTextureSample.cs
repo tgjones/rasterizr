@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Controls;
-using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
-using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.SampleBrowser.Framework.Services;
-using Rasterizr.Util;
+using SharpDX;
 using SlimShader;
 using SlimShader.Compiler;
+using Utilities = Rasterizr.Util.Utilities;
+using Viewport = Rasterizr.Pipeline.Rasterizer.Viewport;
 
 namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 {
@@ -25,8 +25,8 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 		private WpfSwapChain _swapChain;
 
 		private Buffer _constantBuffer;
-		private Matrix3D _view;
-		private Matrix3D _projection;
+		private Matrix _view;
+		private Matrix _projection;
 
 		[ImportingConstructor]
 		public MiniCubeTextureSample(IResourceLoader resourceLoader)
@@ -132,7 +132,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 			// Create Constant Buffer
 			_constantBuffer = device.CreateBuffer(new BufferDescription
 			{
-				SizeInBytes = Utilities.SizeOf<Matrix3D>(),
+				SizeInBytes = Utilities.SizeOf<Matrix>(),
 				BindFlags = BindFlags.ConstantBuffer
 			});
 
@@ -158,7 +158,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 			// Prepare all the stages
 			_deviceContext.InputAssembler.InputLayout = layout;
 			_deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-			_deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4D>() + Utilities.SizeOf<Vector2D>()));
+			_deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 0, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>()));
 			_deviceContext.VertexShader.SetConstantBuffers(0, _constantBuffer);
 			_deviceContext.VertexShader.Shader = vertexShader;
 			_deviceContext.PixelShader.Shader = pixelShader;
@@ -170,8 +170,8 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 			_deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
 			// Prepare matrices
-			_view = Matrix3D.CreateLookAt(new Point3D(0, 0, -5), Vector3D.Backward, Vector3D.UnitY);
-			_projection = Matrix3D.CreatePerspectiveFieldOfView(Nexus.MathUtility.PI / 4.0f, 
+            _view = Matrix.LookAtRH(new Vector3(0, 0, -5), Vector3.BackwardRH, Vector3.UnitY);
+			_projection = Matrix.PerspectiveFovRH(MathUtil.PiOverFour, 
 				width / (float) height, 0.1f, 100.0f);
 		}
 
@@ -182,11 +182,11 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
             _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
 
 			// Update WorldViewProj Matrix
-			var worldViewProj = Matrix3D.CreateRotationX(time.ElapsedTime)
-				* Matrix3D.CreateRotationY(time.ElapsedTime * 1)
-				* Matrix3D.CreateRotationZ(time.ElapsedTime * 0.3f)
+			var worldViewProj = Matrix.RotationX(time.ElapsedTime)
+				* Matrix.RotationY(time.ElapsedTime * 1)
+				* Matrix.RotationZ(time.ElapsedTime * 0.3f)
 				* _view * _projection;
-			worldViewProj = Matrix3D.Transpose(worldViewProj);
+			worldViewProj = Matrix.Transpose(worldViewProj);
 			_constantBuffer.SetData(ref worldViewProj);
 
 			// Draw the cube

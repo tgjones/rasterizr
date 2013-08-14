@@ -1,17 +1,17 @@
 using System.Runtime.InteropServices;
-using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
+using SharpDX;
 
 namespace Rasterizr.Toolkit
 {
 	[StructLayout(LayoutKind.Sequential)]
 	public struct VertexPositionColorTexture
 	{
-		public Point3D Position;
+        public Vector3 Position;
 		public Color4F Color;
-		public Point2D TextureCoordinate;
+        public Vector2 TextureCoordinate;
 
-		public VertexPositionColorTexture(Point3D position, Color4F color, Point2D textureCoordinate)
+        public VertexPositionColorTexture(Vector3 position, Color4F color, Vector2 textureCoordinate)
 		{
 			Position = position;
 			Color = color;

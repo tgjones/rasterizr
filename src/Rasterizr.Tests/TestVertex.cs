@@ -1,5 +1,5 @@
-﻿using Nexus;
-using Rasterizr.Pipeline.InputAssembler;
+﻿using Rasterizr.Pipeline.InputAssembler;
+using SharpDX;
 
 namespace Rasterizr.Tests
 {
@@ -9,7 +9,7 @@ namespace Rasterizr.Tests
 		{
 			public static int SizeInBytes
 			{
-				get { return Point3D.SizeInBytes + Vector3D.SizeInBytes + Point2D.SizeInBytes; }
+                get { return Vector3.SizeInBytes + Vector3.SizeInBytes + Vector2.SizeInBytes; }
 			}
 
 			public static InputElement[] InputElements
@@ -25,11 +25,11 @@ namespace Rasterizr.Tests
 				}
 			}
 
-			public Point3D Position;
-			public Vector3D Normal;
-			public Point2D TexCoord;
+            public Vector3 Position;
+            public Vector3 Normal;
+            public Vector2 TexCoord;
 
-			public PositionNormalTexture(Point3D position, Vector3D normal, Point2D texCoord)
+            public PositionNormalTexture(Vector3 position, Vector3 normal, Vector2 texCoord)
 			{
 				Position = position;
 				Normal = normal;
@@ -41,7 +41,7 @@ namespace Rasterizr.Tests
 		{
 			public static int SizeInBytes
 			{
-				get { return Point3D.SizeInBytes + Vector3D.SizeInBytes; }
+                get { return Vector3.SizeInBytes + Vector3.SizeInBytes; }
 			}
 
 			public static InputElement[] InputElements
@@ -56,10 +56,10 @@ namespace Rasterizr.Tests
 				}
 			}
 
-			public Point3D Position;
-			public Vector3D Normal;
+            public Vector3 Position;
+            public Vector3 Normal;
 
-			public PositionNormal(Point3D position, Vector3D normal)
+            public PositionNormal(Vector3 position, Vector3 normal)
 			{
 				Position = position;
 				Normal = normal;

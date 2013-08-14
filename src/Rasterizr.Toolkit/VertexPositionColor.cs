@@ -1,16 +1,16 @@
 using System.Runtime.InteropServices;
-using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
+using SharpDX;
 
 namespace Rasterizr.Toolkit
 {
 	[StructLayout(LayoutKind.Sequential)]
 	public struct VertexPositionColor
 	{
-		public Point3D Position;
+		public Vector3 Position;
 		public Color4F Color;
 
-        public VertexPositionColor(Point3D position, Color4F color)
+        public VertexPositionColor(Vector3 position, Color4F color)
 		{
 			Position = position;
 			Color = color;

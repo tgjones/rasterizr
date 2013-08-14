@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
-using Rasterizr.Toolkit.Effects;
+using SharpDX;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Toolkit.Models
@@ -17,9 +15,9 @@ namespace Rasterizr.Toolkit.Models
             get { return _meshes; }
         }
 
-        public Point3D AxisAlignedBoxMin { get; set; }
-        public Point3D AxisAlignedBoxMax { get; set; }
-        public Point3D AxisAlignedBoxCentre { get; set; }
+        public Vector3 AxisAlignedBoxMin { get; set; }
+        public Vector3 AxisAlignedBoxMax { get; set; }
+        public Vector3 AxisAlignedBoxCentre { get; set; }
 
         public Model()
         {
@@ -32,7 +30,7 @@ namespace Rasterizr.Toolkit.Models
             _meshes.Add(mesh);
         }
 
-        public void SetAxisAlignedBox(Point3D min, Point3D max)
+        public void SetAxisAlignedBox(Vector3 min, Vector3 max)
         {
             AxisAlignedBoxMin = min;
             AxisAlignedBoxMax = max;

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
-using Nexus;
 using Rasterizr.Diagnostics;
 using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Pipeline.OutputMerger;
@@ -11,6 +10,7 @@ using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.Toolkit.Effects;
 using Rasterizr.Toolkit.Models;
+using SharpDX;
 using SlimShader;
 using Viewport = Rasterizr.Pipeline.Rasterizer.Viewport;
 
@@ -66,7 +66,7 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
             _model = modelLoader.Load("Samples/ModelLoading/Sponza/sponza.3ds");
 
 		    _effect = new BasicEffect(device.ImmediateContext);
-		    _effect.LightPosition = new Point3D(0, 2.5f, 0);
+		    _effect.LightPosition = new Vector3(0, 2.5f, 0);
 
 		    _model.SetInputLayout(device, _effect.VertexShader.Bytecode.InputSignature);
 
@@ -92,7 +92,7 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 			_deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
 			// Prepare matrices
-			_effect.Projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_4, 
+			_effect.Projection = Matrix.PerspectiveFovRH(MathUtil.PiOverFour, 
 				width / (float) height, 0.1f, 100.0f);
 		}
 
@@ -103,22 +103,22 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
             _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
 
             // Rotate camera
-            var cameraPosition = new Point3D(0, 3, 5.0f);
-            var cameraLookAt = new Point3D(0, 2.0f, 0);
-            var tempPos = Point3D.Transform(cameraPosition, Matrix3D.CreateRotationY(0.2f * time.ElapsedTime));
+            var cameraPosition = new Vector3(0, 3, 5.0f);
+            var cameraLookAt = new Vector3(0, 2.0f, 0);
+            var tempPos = Vector3.TransformCoordinate(cameraPosition, Matrix.RotationY(0.2f * time.ElapsedTime));
             cameraPosition = tempPos;
 
             // Update matrices.
-		    _effect.World = Matrix3D.CreateTranslation(0, -_model.AxisAlignedBoxCentre.Y / 2, 0);
-            _effect.View = Matrix3D.CreateLookAt(cameraPosition, cameraLookAt - cameraPosition, Vector3D.UnitY);
+		    _effect.World = Matrix.Translation(0, -_model.AxisAlignedBoxCentre.Y / 2, 0);
+            _effect.View = Matrix.LookAtRH(cameraPosition, cameraLookAt, Vector3.UnitY);
 
-		    var wvp = _effect.World * _effect.View * _effect.Projection;
-		    var wvpT = Matrix3D.Transpose(wvp);
+            //var wvp = _effect.World * _effect.View * _effect.Projection;
+            //var wvpT = Matrix3D.Transpose(wvp);
 
-		    Point3D point;
-		    _model.Meshes.First().VertexBuffer.GetData<Point3D>(out point, 0, Point3D.SizeInBytes);
+            //Point3D point;
+            //_model.Meshes.First().VertexBuffer.GetData<Point3D>(out point, 0, Point3D.SizeInBytes);
 
-		    var result = wvpT.Transform(new Point4D(point, 1));
+            //var result = wvpT.Transform(new Point4D(point, 1));
 
 		    _effect.Apply();
 		    _model.Draw(_deviceContext);

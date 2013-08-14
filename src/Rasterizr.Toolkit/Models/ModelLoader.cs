@@ -5,10 +5,10 @@ using System;
 using System.IO;
 using Assimp;
 using Assimp.Configs;
-using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Resources;
-using Rasterizr.Util;
+using SharpDX;
+using Utilities = Rasterizr.Util.Utilities;
 using Vector3D = Assimp.Vector3D;
 
 namespace Rasterizr.Toolkit.Models
@@ -36,7 +36,7 @@ namespace Rasterizr.Toolkit.Models
             _modelPath = Path.GetDirectoryName(fileName);
 
             var model = new Model();
-            var identity = Matrix3D.Identity;
+            var identity = Matrix.Identity;
 
             AddVertexData(model, scene, scene.RootNode, _device, ref identity);
             ComputeBoundingBox(model, scene);
@@ -49,9 +49,9 @@ namespace Rasterizr.Toolkit.Models
         /// </summary>
         private void ComputeBoundingBox(Model model, Scene scene)
         {
-            var sceneMin = new Point3D(1e10f, 1e10f, 1e10f);
-            var sceneMax = new Point3D(-1e10f, -1e10f, -1e10f);
-            var transform = Matrix3D.Identity;
+            var sceneMin = new Vector3(1e10f, 1e10f, 1e10f);
+            var sceneMax = new Vector3(-1e10f, -1e10f, -1e10f);
+            var transform = Matrix.Identity;
 
             ComputeBoundingBox(scene, scene.RootNode, ref sceneMin, ref sceneMax, ref transform);
 
@@ -63,8 +63,8 @@ namespace Rasterizr.Toolkit.Models
         /// Recursively calculates the bounding box of the whole model.
         /// </summary>
         private void ComputeBoundingBox(Scene scene, Node node,
-            ref Point3D min, ref Point3D max,
-            ref Matrix3D transform)
+            ref Vector3 min, ref Vector3 max,
+            ref Matrix transform)
         {
             var previousTransform = transform;
             transform = previousTransform * node.Transform.ToMatrix();
@@ -76,8 +76,8 @@ namespace Rasterizr.Toolkit.Models
                     Mesh mesh = scene.Meshes[index];
                     for (int i = 0; i < mesh.VertexCount; i++)
                     {
-                        var tmp = mesh.Vertices[i].ToPoint3D();
-                        var result = Point3D.Transform(tmp, transform);
+                        var tmp = mesh.Vertices[i].ToVector3();
+                        var result = Vector3.TransformCoordinate(tmp, transform);
 
                         min.X = System.Math.Min(min.X, result.X);
                         min.Y = System.Math.Min(min.Y, result.Y);
@@ -133,7 +133,7 @@ namespace Rasterizr.Toolkit.Models
         /// </summary>
         private void AddVertexData(
             Model model, Scene scene, Node node, Device device,
-            ref Matrix3D transform)
+            ref Matrix transform)
         {
             var previousTransform = transform;
             transform = previousTransform * node.Transform.ToMatrix();
@@ -141,7 +141,7 @@ namespace Rasterizr.Toolkit.Models
             // Also calculate inverse transpose matrix for normal/tangent/bitagent transformation.
             var invTranspose = transform;
             invTranspose.Invert();
-            invTranspose = Matrix3D.Transpose(invTranspose);
+            invTranspose = Matrix.Transpose(invTranspose);
 
             if (node.HasMeshes)
             {
@@ -186,7 +186,7 @@ namespace Rasterizr.Toolkit.Models
                     var vertexElements = new InputElement[GetNumberOfInputElements(mesh)];
                     uint elementIndex = 0;
                     vertexElements[elementIndex++] = new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0);
-                    var vertexSize = (short) Utilities.SizeOf<Point3D>();
+                    var vertexSize = (short) Utilities.SizeOf<Vector3>();
 
                     if (hasColors)
                     {
@@ -196,22 +196,22 @@ namespace Rasterizr.Toolkit.Models
                     if (hasNormals)
                     {
                         vertexElements[elementIndex++] = new InputElement("NORMAL", 0, Format.R32G32B32_Float, 0, vertexSize);
-                        vertexSize += (short) Utilities.SizeOf<Vector3D>();
+                        vertexSize += (short) Utilities.SizeOf<Vector3>();
                     }
                     if (hasTangents)
                     {
                         vertexElements[elementIndex++] = new InputElement("TANGENT", 0, Format.R32G32B32_Float, 0, vertexSize);
-                        vertexSize += (short) Utilities.SizeOf<Vector3D>();
+                        vertexSize += (short) Utilities.SizeOf<Vector3>();
                     }
                     if (hasBitangents)
                     {
                         vertexElements[elementIndex++] = new InputElement("BITANGENT", 0, Format.R32G32B32_Float, 0, vertexSize);
-                        vertexSize += (short) Utilities.SizeOf<Vector3D>();
+                        vertexSize += (short) Utilities.SizeOf<Vector3>();
                     }
                     if (hasTexCoords)
                     {
                         vertexElements[elementIndex++] = new InputElement("TEXCOORD", 0, Format.R32G32_Float, 0, vertexSize);
-                        vertexSize += (short) Utilities.SizeOf<Point2D>();
+                        vertexSize += (short) Utilities.SizeOf<Vector2>();
                     }
 
                     //set the vertex elements and size
@@ -255,10 +255,10 @@ namespace Rasterizr.Toolkit.Models
                     {
                         {
                             // Add position, after transforming it with accumulated node transform.
-                            var pos = positions[i].ToPoint3D();
-                            var result = Point3D.Transform(pos, transform);
+                            var pos = positions[i].ToVector3();
+                            var result = Vector3.TransformCoordinate(pos, transform);
                             vertexBuffer.SetData(ref result, byteOffset);
-                            byteOffset += Point3D.SizeInBytes;
+                            byteOffset += Vector3.SizeInBytes;
                         }
 
                         if (hasColors)
@@ -269,30 +269,30 @@ namespace Rasterizr.Toolkit.Models
                         }
                         if (hasNormals)
                         {
-                            var normal = normals[i].ToVector3D();
-                            var result = invTranspose.Transform(normal);
+                            var normal = normals[i].ToVector3();
+                            var result = Vector3.TransformNormal(normal, invTranspose);
                             vertexBuffer.SetData(ref result, byteOffset);
-                            byteOffset += Point3D.SizeInBytes;
+                            byteOffset += Vector3.SizeInBytes;
                         }
                         if (hasTangents)
                         {
-                            var tangent = tangents[i].ToVector3D();
-                            var result = invTranspose.Transform(tangent);
+                            var tangent = tangents[i].ToVector3();
+                            var result = Vector3.TransformNormal(tangent, invTranspose);
                             vertexBuffer.SetData(ref result, byteOffset);
-                            byteOffset += Point3D.SizeInBytes;
+                            byteOffset += Vector3.SizeInBytes;
                         }
                         if (hasBitangents)
                         {
-                            var biTangent = biTangents[i].ToVector3D();
-                            var result = invTranspose.Transform(biTangent);
+                            var biTangent = biTangents[i].ToVector3();
+                            var result = Vector3.TransformNormal(biTangent, invTranspose);
                             vertexBuffer.SetData(ref result, byteOffset);
-                            byteOffset += Point3D.SizeInBytes;
+                            byteOffset += Vector3.SizeInBytes;
                         }
                         if (hasTexCoords)
                         {
-                            var result = new Nexus.Vector2D(texCoords[i].X, 1 - texCoords[i].Y);
+                            var result = new Vector2(texCoords[i].X, 1 - texCoords[i].Y);
                             vertexBuffer.SetData(ref result, byteOffset);
-                            byteOffset += Nexus.Vector2D.SizeInBytes;
+                            byteOffset += Vector2.SizeInBytes;
                         }
                     }
 

@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Nexus;
 using Rasterizr.Resources;
-using Rasterizr.Util;
+using SharpDX;
+using Utilities = Rasterizr.Util.Utilities;
 
 namespace Rasterizr.Tests.Resources
 {
@@ -15,16 +15,16 @@ namespace Rasterizr.Tests.Resources
 			var device = new Device();
 			var description = new BufferDescription
 			{
-				SizeInBytes = Utilities.SizeOf<Matrix3D>()
+				SizeInBytes = Utilities.SizeOf<Matrix>()
 			};
 			var buffer = new Buffer(device, description);
-			var matrix = Matrix3D.CreateLookAt(new Point3D(1, 2, 3), Vector3D.Forward, Vector3D.Up);
+            var matrix = Matrix.LookAtRH(new Vector3(1, 2, 3), Vector3.ForwardRH, Vector3.Up);
 
 			// Act.
 			buffer.SetData(ref matrix);
 
-			Matrix3D retrievedMatrix;
-			buffer.GetData(out retrievedMatrix, 0, Utilities.SizeOf<Matrix3D>());
+			Matrix retrievedMatrix;
+			buffer.GetData(out retrievedMatrix, 0, Utilities.SizeOf<Matrix>());
 
 			// Assert.
 			Assert.That(retrievedMatrix, Is.EqualTo(matrix));

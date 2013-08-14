@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
-using Nexus;
 using Rasterizr.Resources;
-using Rasterizr.Util;
+using SharpDX;
+using Utilities = Rasterizr.Util.Utilities;
 
 namespace Rasterizr.Toolkit.Effects
 {
@@ -13,11 +13,11 @@ namespace Rasterizr.Toolkit.Effects
 	    private VertexShaderData _vertexShaderData;
         private PixelShaderData _pixelShaderData;
 
-        public Matrix3D World { get; set; }
-        public Matrix3D View { get; set; }
-        public Matrix3D Projection { get; set; }
+        public Matrix World { get; set; }
+        public Matrix View { get; set; }
+        public Matrix Projection { get; set; }
 
-        public Point3D LightPosition { get; set; }
+        public Vector3 LightPosition { get; set; }
 
         public Color3F DiffuseColor { get; set; }
         public float Alpha { get; set; }
@@ -42,8 +42,8 @@ namespace Rasterizr.Toolkit.Effects
 
         public override void Apply()
         {
-            _vertexShaderData.WorldViewProjection = Matrix3D.Transpose(World * View * Projection);
-            _vertexShaderData.World = Matrix3D.Transpose(World);
+            _vertexShaderData.WorldViewProjection = Matrix.Transpose(World * View * Projection);
+            _vertexShaderData.World = Matrix.Transpose(World);
 
             _pixelShaderData.DiffuseColorAndAlpha = new Color4F(
                 DiffuseColor.Red, DiffuseColor.Green, DiffuseColor.Blue,
@@ -62,15 +62,15 @@ namespace Rasterizr.Toolkit.Effects
         [StructLayout(LayoutKind.Sequential)]
         private struct VertexShaderData
         {
-            public Matrix3D WorldViewProjection;
-            public Matrix3D World;
+            public Matrix WorldViewProjection;
+            public Matrix World;
         }
 
         [StructLayout(LayoutKind.Sequential)]
         private struct PixelShaderData
         {
             public Color4F DiffuseColorAndAlpha;
-            public Point3D LightPos;
+            public Vector3 LightPos;
         }
 	}
 }

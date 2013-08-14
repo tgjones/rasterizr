@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Resources;
 using Rasterizr.Toolkit;
+using SharpDX;
 using SlimShader;
 using SlimShader.Chunks.Common;
 using SlimShader.Chunks.Xsgn;
@@ -58,8 +58,8 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			var inputAssembler = new InputAssemblerStage(device);
 			var vertices = new[]
 			{
-				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero),
-				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero)
+				new TestVertex.PositionNormalTexture(Vector3.Zero, Vector3.Zero, Vector2.Zero),
+				new TestVertex.PositionNormalTexture(Vector3.Zero, Vector3.Zero, Vector2.Zero)
 			};
 			var vertexBuffer = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
 
@@ -83,8 +83,8 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			var inputAssembler = new InputAssemblerStage(device);
 			var vertices = new[]
 			{
-				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero),
-				new TestVertex.PositionNormalTexture(Point3D.Zero, Vector3D.Zero, Point2D.Zero)
+				new TestVertex.PositionNormalTexture(Vector3.Zero, Vector3.Zero, Vector2.Zero),
+				new TestVertex.PositionNormalTexture(Vector3.Zero, Vector3.Zero, Vector2.Zero)
 			};
 			var vertexBuffer1 = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
 			var vertexBuffer2 = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
@@ -114,8 +114,8 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 			var vertices = new[]
 			{
-				new TestVertex.PositionNormalTexture(new Point3D(1, 2, 3), new Vector3D(3, 2, 1), new Point2D(3, 4)),
-				new TestVertex.PositionNormalTexture(new Point3D(4, 5, 6), new Vector3D(4, 6, 8), new Point2D(0.5f, 0.3f))
+				new TestVertex.PositionNormalTexture(new Vector3(1, 2, 3), new Vector3(3, 2, 1), new Vector2(3, 4)),
+				new TestVertex.PositionNormalTexture(new Vector3(4, 5, 6), new Vector3(4, 6, 8), new Vector2(0.5f, 0.3f))
 			};
 			var vertexBuffer = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
 			inputAssembler.SetVertexBuffers(0, new[]
@@ -162,20 +162,20 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 			var positionsAndNormals = new[]
 			{
-				new TestVertex.PositionNormal(new Point3D(1, 2, 3), new Vector3D(3, 2, 1)),
-				new TestVertex.PositionNormal(new Point3D(4, 5, 6), new Vector3D(4, 6, 8))
+				new TestVertex.PositionNormal(new Vector3(1, 2, 3), new Vector3(3, 2, 1)),
+				new TestVertex.PositionNormal(new Vector3(4, 5, 6), new Vector3(4, 6, 8))
 			};
 			var texCoords = new[]
 			{
-				new Point2D(3, 4),
-				new Point2D(0.5f, 0.3f)
+				new Vector2(3, 4),
+				new Vector2(0.5f, 0.3f)
 			};
 			inputAssembler.SetVertexBuffers(0, new[]
 			{
 				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), positionsAndNormals),
 					0, TestVertex.PositionNormal.SizeInBytes),
 				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), texCoords),
-					0, Point2D.SizeInBytes)
+					0, Vector2.SizeInBytes)
 			});
 
 			// Act.
@@ -217,8 +217,8 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 				new TestVertex.PositionNormalTexture(),
 				new TestVertex.PositionNormalTexture(),
 
-				new TestVertex.PositionNormalTexture(new Point3D(1, 2, 3), new Vector3D(3, 2, 1), new Point2D(3, 4)),
-				new TestVertex.PositionNormalTexture(new Point3D(4, 5, 6), new Vector3D(4, 6, 8), new Point2D(0.5f, 0.3f))
+				new TestVertex.PositionNormalTexture(new Vector3(1, 2, 3), new Vector3(3, 2, 1), new Vector2(3, 4)),
+				new TestVertex.PositionNormalTexture(new Vector3(4, 5, 6), new Vector3(4, 6, 8), new Vector2(0.5f, 0.3f))
 			};
 			var vertexBuffer = device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), vertices);
 			inputAssembler.SetVertexBuffers(0, new[]
@@ -275,25 +275,25 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 			inputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 			var positionsAndNormals = new[]
 			{
-				new TestVertex.PositionNormal(new Point3D(1, 2, 3), new Vector3D(3, 2, 1)),
-				new TestVertex.PositionNormal(new Point3D(4, 5, 6), new Vector3D(4, 6, 8))
+				new TestVertex.PositionNormal(new Vector3(1, 2, 3), new Vector3(3, 2, 1)),
+				new TestVertex.PositionNormal(new Vector3(4, 5, 6), new Vector3(4, 6, 8))
 			};
 			var instancePositions = new[]
 			{
-				new Point3D(0, 0, 0),
-				new Point3D(0, 0, 0),
+				new Vector3(0, 0, 0),
+				new Vector3(0, 0, 0),
 
-				new Point3D(-2, 3, 16), // Position
-				new Point3D(1, 1, 1), // Scale
+				new Vector3(-2, 3, 16), // Position
+				new Vector3(1, 1, 1), // Scale
 
-				new Point3D(5, 3, 11),
-				new Point3D(2, 2, 2),
+				new Vector3(5, 3, 11),
+				new Vector3(2, 2, 2),
 
-				new Point3D(2, 5, 10),
-				new Point3D(3, 3, 3),
+				new Vector3(2, 5, 10),
+				new Vector3(3, 3, 3),
 
-				new Point3D(12, 15, 8),
-				new Point3D(0.5f, 0.5f, 0.5f)
+				new Vector3(12, 15, 8),
+				new Vector3(0.5f, 0.5f, 0.5f)
 			};
 			var instanceColors = new[]
 			{
@@ -307,7 +307,7 @@ namespace Rasterizr.Tests.Pipeline.InputAssembler
 				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), positionsAndNormals),
 					0, TestVertex.PositionNormal.SizeInBytes),
 				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), instancePositions),
-					0, Point3D.SizeInBytes * 2),
+					0, Vector3.SizeInBytes * 2),
 				new VertexBufferBinding(device.CreateBuffer(new BufferDescription(BindFlags.VertexBuffer), instanceColors),
 					0, Color3F.SizeInBytes)
 			});
