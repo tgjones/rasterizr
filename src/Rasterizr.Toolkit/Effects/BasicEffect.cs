@@ -36,7 +36,7 @@ namespace Rasterizr.Toolkit.Effects
                     SizeInBytes = Utilities.SizeOf<PixelShaderData>()
                 });
 
-		    DiffuseColor = new Color3F(0, 1, 1);
+		    DiffuseColor = new Color3F(0, 1, 0);
 		    Alpha = 1;
 		}
 
@@ -44,6 +44,9 @@ namespace Rasterizr.Toolkit.Effects
         {
             _vertexShaderData.WorldViewProjection = Matrix.Transpose(World * View * Projection);
             _vertexShaderData.World = Matrix.Transpose(World);
+
+            //_vertexShaderData.WorldViewProjection = World * View * Projection;
+            //_vertexShaderData.World = World;
 
             _pixelShaderData.DiffuseColorAndAlpha = new Color4F(
                 DiffuseColor.Red, DiffuseColor.Green, DiffuseColor.Blue,

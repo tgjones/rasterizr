@@ -14,17 +14,20 @@ namespace MSBuild.Fxc
         {
             if (name == null) throw new ArgumentNullException("name");
             if (prefix == null) throw new ArgumentNullException("prefix");
-            if (versions.Length < 1)
-
-                Name = name;
+            //if (versions.Length < 1)
+            Name = name;
             Prefix = prefix;
             Versions = versions;
             DefaultVersion = versions[0];
         }
 
-        public string BuildShaderProfileString(string filename)
+        public string BuildShaderProfileString(string overrideVersion, string filename)
         {
-            var version = Versions.FirstOrDefault(filename.Contains) ?? DefaultVersion;
+            var version = (!string.IsNullOrEmpty(overrideVersion))
+                ? Versions.FirstOrDefault(x => x == overrideVersion)
+                : Versions.FirstOrDefault(filename.Contains);
+            if (version == null)
+                throw new Exception("No version found in '" + Name + "' for Profile '" + overrideVersion + "' and filename '" + filename + "'.");
             return string.Format("{0}_{1}", Prefix, version);
         }
     }

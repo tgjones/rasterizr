@@ -114,8 +114,8 @@ namespace Rasterizr.Pipeline
 						_constantBuffers[i].GetData(out value, 
 							(int) variableDefinition.StartOffset + k * variableDefinition.ShaderType.Columns * 4,
 							variableDefinition.ShaderType.Columns * 4);
-						_virtualMachine.SetRegister(0, OperandType.ConstantBuffer, 
-							new RegisterIndex(i, registerIndex++), value);
+						_virtualMachine.SetConstantBufferRegisterValue(
+							i, registerIndex++, ref value);
 					}
 			}
 

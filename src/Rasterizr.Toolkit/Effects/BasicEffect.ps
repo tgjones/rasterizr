@@ -11,8 +11,6 @@ cbuffer PixelShaderConstants
 
 float4 main(PixelShaderInput input) : SV_Target
 {
-	return float4(0, 1, 1, 1);
-
 	float3 l = normalize(LightPos - input.worldPos);
 	float3 n = normalize(input.normal);
 
@@ -20,6 +18,7 @@ float4 main(PixelShaderInput input) : SV_Target
 	//materialColor += DiffuseTexture.Sample(DiffuseSampler, input.uv).rgb;
 
 	float3 diffuse = materialColor * saturate(dot(n, l));
+	float3 ambient = float3(0.1, 0.1, 0.1);
 
-	return float4(diffuse, DiffuseColorAndAlpha.a);
+	return float4(diffuse + ambient, DiffuseColorAndAlpha.a);
 }

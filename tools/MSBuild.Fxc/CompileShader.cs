@@ -174,7 +174,7 @@
 
             var profileInfo = ShaderProfile.GetInfo(prefix);
 
-            var profileString = profileInfo.BuildShaderProfileString(Path.GetFileNameWithoutExtension(input));
+            var profileString = profileInfo.BuildShaderProfileString(Profile, Path.GetFileNameWithoutExtension(input));
 
             var sb = new StringBuilder();
             sb.AppendFormat(" /nologo");

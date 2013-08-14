@@ -91,8 +91,13 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, width, height, 0.0f, 1.0f));
 			_deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
+            //_deviceContext.Rasterizer.State = device.CreateRasterizerState(new RasterizerStateDescription
+            //{
+            //    CullMode = CullMode.None
+            //});
+
 			// Prepare matrices
-			_effect.Projection = Matrix.PerspectiveFovRH(MathUtil.PiOverFour, 
+			_effect.Projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, 
 				width / (float) height, 0.1f, 100.0f);
 		}
 
@@ -105,20 +110,12 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
             // Rotate camera
             var cameraPosition = new Vector3(0, 3, 5.0f);
             var cameraLookAt = new Vector3(0, 2.0f, 0);
-            var tempPos = Vector3.TransformCoordinate(cameraPosition, Matrix.RotationY(0.2f * time.ElapsedTime));
-            cameraPosition = tempPos;
+            Vector4 tempPos = Vector3.Transform(cameraPosition, Matrix.RotationY(0.2f * time.ElapsedTime));
+            cameraPosition = new Vector3(tempPos.X, tempPos.Y, tempPos.Z);
 
             // Update matrices.
 		    _effect.World = Matrix.Translation(0, -_model.AxisAlignedBoxCentre.Y / 2, 0);
-            _effect.View = Matrix.LookAtRH(cameraPosition, cameraLookAt, Vector3.UnitY);
-
-            //var wvp = _effect.World * _effect.View * _effect.Projection;
-            //var wvpT = Matrix3D.Transpose(wvp);
-
-            //Point3D point;
-            //_model.Meshes.First().VertexBuffer.GetData<Point3D>(out point, 0, Point3D.SizeInBytes);
-
-            //var result = wvpT.Transform(new Point4D(point, 1));
+            _effect.View = Matrix.LookAtLH(cameraPosition, cameraLookAt, Vector3.UnitY);
 
 		    _effect.Apply();
 		    _model.Draw(_deviceContext);

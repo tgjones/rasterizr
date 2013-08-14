@@ -43,7 +43,8 @@ namespace Rasterizr.Toolkit.Models
             {
                 context.InputAssembler.InputLayout = mesh.InputLayout;
                 context.InputAssembler.PrimitiveTopology = mesh.PrimitiveTopology;
-                context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.VertexBuffer, 0, mesh.VertexSize));
+                context.InputAssembler.SetVertexBuffers(0,
+                    new VertexBufferBinding(mesh.VertexBuffer, 0, mesh.VertexSize));
                 context.InputAssembler.SetIndexBuffer(mesh.IndexBuffer, Format.R32_UInt, 0);
                 context.PixelShader.SetShaderResources(0, mesh.DiffuseTextureView);
 

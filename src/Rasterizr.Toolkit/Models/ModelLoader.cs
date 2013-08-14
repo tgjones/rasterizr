@@ -255,8 +255,10 @@ namespace Rasterizr.Toolkit.Models
                     {
                         {
                             // Add position, after transforming it with accumulated node transform.
-                            var pos = positions[i].ToVector3();
-                            var result = Vector3.TransformCoordinate(pos, transform);
+                            Vector4 tempResult;
+                            Vector3 pos = positions[i].ToVector3();
+                            Vector3.Transform(ref pos, ref transform, out tempResult);
+                            Vector3 result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
                             vertexBuffer.SetData(ref result, byteOffset);
                             byteOffset += Vector3.SizeInBytes;
                         }
@@ -309,12 +311,12 @@ namespace Rasterizr.Toolkit.Models
                         new BufferDescription
                         {
                             BindFlags = BindFlags.IndexBuffer,
-                            SizeInBytes = indices.GetLength(0) * sizeof(uint)
+                            SizeInBytes = indices.Length * sizeof(uint)
                         }, indices);
 
                     // Add it to the mesh.
                     modelMesh.IndexBuffer = indexBuffer;
-                    modelMesh.IndexCount = indices.GetLength(0);
+                    modelMesh.IndexCount = indices.Length;
                 }
             }
 
