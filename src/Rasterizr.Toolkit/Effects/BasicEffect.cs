@@ -35,6 +35,8 @@ namespace Rasterizr.Toolkit.Effects
                 {
                     SizeInBytes = Utilities.SizeOf<PixelShaderData>()
                 });
+
+		    Alpha = 1;
 		}
 
         public override void Apply()
@@ -46,7 +48,6 @@ namespace Rasterizr.Toolkit.Effects
                 DiffuseColor.Red, DiffuseColor.Green, DiffuseColor.Blue,
                 Alpha);
             _pixelShaderData.LightPos = LightPosition;
-            _pixelShaderData.DiffuseTextureEnabled = false;
 
             _vertexShaderBuffer.SetData(ref _vertexShaderData);
             _pixelShaderBuffer.SetData(ref _pixelShaderData);
@@ -69,7 +70,6 @@ namespace Rasterizr.Toolkit.Effects
         {
             public Color4F DiffuseColorAndAlpha;
             public Point3D LightPos;
-            public bool DiffuseTextureEnabled;
         }
 	}
 }

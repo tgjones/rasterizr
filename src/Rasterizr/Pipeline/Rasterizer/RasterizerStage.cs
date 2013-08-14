@@ -66,11 +66,19 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 			foreach (var primitive in inputs)
 			{
+                // TODO: Proper clipping.
+                var anyVertexOutsideViewport = false;
 				for (int i = 0; i < primitive.Vertices.Length; i++)
 				{
 					PerspectiveDivide(ref primitive.Vertices[i].Position);
 					ToScreenCoordinates(ref primitive.Vertices[i].Position);
+
+                    if (!IsVertexInViewport(ref primitive.Vertices[i].Position))
+                        anyVertexOutsideViewport = true;
 				}
+
+                if (anyVertexOutsideViewport)
+                    continue;
 
 				rasterizer.Primitive = primitive;
 				foreach (var fragmentQuad in rasterizer.Rasterize())
@@ -97,6 +105,12 @@ namespace Rasterizr.Pipeline.Rasterizer
 			return fragment.X > viewport.TopLeftX && fragment.X < viewport.TopLeftX + viewport.Width
 				&& fragment.Y > viewport.TopLeftY && fragment.Y < viewport.TopLeftY + viewport.Height;
 		}
+        private bool IsVertexInViewport(ref Number4 position)
+        {
+            var viewport = _viewports[0];
+            return position.X > viewport.TopLeftX && position.X < viewport.TopLeftX + viewport.Width
+                && position.Y > viewport.TopLeftY && position.Y < viewport.TopLeftY + viewport.Height;
+        }
 
         private static void PerspectiveDivide(ref Number4 position)
 		{

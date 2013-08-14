@@ -19,13 +19,13 @@
 			if (_indexBufferBinding.Format == Format.R32_UInt)
 			{
 				var data = new uint[1];
-				_indexBufferBinding.Buffer.GetData(data, _offset + index, 1);
+				_indexBufferBinding.Buffer.GetData(data, _offset + (index * 4), 1);
 				return (int)data[0];
 			}
 			else
 			{
 				var data = new ushort[1];
-				_indexBufferBinding.Buffer.GetData(data, _offset + index, 1);
+				_indexBufferBinding.Buffer.GetData(data, _offset + (index * 2), 1);
 				return data[0];
 			}
 		}

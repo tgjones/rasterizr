@@ -20,6 +20,8 @@ namespace Rasterizr.Toolkit.Models
         public Texture2D DiffuseTexture { get; set; }
         public ShaderResourceView DiffuseTextureView { get; set; }
 
+        public Color3F DiffuseColor { get; set; }
+
         public void AddTextureDiffuse(Device device, Texture2D texture)
         {
             DiffuseTexture = texture;

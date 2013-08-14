@@ -35,6 +35,10 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			_betaDenominator = ComputeFunction(_p1.X, _p1.Y, ref _p2, ref _p0);
 			_gammaDenominator = ComputeFunction(_p2.X, _p2.Y, ref _p0, ref _p1);
 
+            // TODO: This is totally made up. I think this occurs when the triangle is degenerate.
+            if (_alphaDenominator == 0.0f || _betaDenominator == 0.0f || _gammaDenominator == 0.0f)
+                yield break;
+
 			var screenBounds = Box2D.CreateBoundingBox(ref _p0, ref _p1, ref _p2);
 
 			// Scan pixels in target area, checking if they are inside the triangle.

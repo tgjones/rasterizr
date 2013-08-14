@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Nexus;
 using Rasterizr.Pipeline.InputAssembler;
+using Rasterizr.Toolkit.Effects;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Toolkit.Models
@@ -38,7 +39,7 @@ namespace Rasterizr.Toolkit.Models
             AxisAlignedBoxCentre = 0.5f * (min + max);
         }
 
-        public void Draw(DeviceContext context)
+        public void Draw(DeviceContext context, BasicEffect effect)
         {
             if (!_inputLayoutSet)
                 throw new Exception("Input layout has not been specified. You must call SetInputLayout() before calling Draw().");
@@ -50,6 +51,9 @@ namespace Rasterizr.Toolkit.Models
                 context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.VertexBuffer, 0, mesh.VertexSize));
                 context.InputAssembler.SetIndexBuffer(mesh.IndexBuffer, Format.R32_UInt, 0);
                 context.PixelShader.SetShaderResources(0, mesh.DiffuseTextureView);
+
+                effect.DiffuseColor = mesh.DiffuseColor;
+                effect.Apply();
 
                 context.DrawIndexed(mesh.IndexCount, 0, 0);
             }

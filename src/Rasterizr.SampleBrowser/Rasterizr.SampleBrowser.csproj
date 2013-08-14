@@ -187,6 +187,9 @@
     <Content Include="Samples\ModelLoading\Sponza\sponza.3ds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Samples\ModelLoading\85-nissan-fairlady.3ds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="TechDemos\Resources\TextureMipmapping\window_28.jpg" />
   </ItemGroup>
   <ItemGroup>
