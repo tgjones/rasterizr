@@ -84,9 +84,9 @@ namespace Rasterizr.Tests.Resources
 		public void CanGenerateMips()
 		{
 			// Arrange.
-			var texture = TextureLoader.CreateTextureFromFile(new Device(), File.OpenRead("Assets/Texture.png"));
-			var mipLevel1 = TextureLoader.CreateTextureFromFile(new Device(), File.OpenRead("Assets/TextureMip1.png"));
-			var mipLevel2 = TextureLoader.CreateTextureFromFile(new Device(), File.OpenRead("Assets/TextureMip2.png"));
+			var texture = TextureLoader.CreateTextureFromStream(new Device(), File.OpenRead("Assets/Texture.png"));
+			var mipLevel1 = TextureLoader.CreateTextureFromStream(new Device(), File.OpenRead("Assets/TextureMip1.png"));
+			var mipLevel2 = TextureLoader.CreateTextureFromStream(new Device(), File.OpenRead("Assets/TextureMip2.png"));
 
 			// Act.
 			texture.GenerateMips();

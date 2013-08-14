@@ -57,7 +57,7 @@ namespace Rasterizr
 			get { return _outputMerger; }
 		}
 
-		public DeviceContext(Device device)
+		internal DeviceContext(Device device)
             : base(device)
 		{
 			_device = device;

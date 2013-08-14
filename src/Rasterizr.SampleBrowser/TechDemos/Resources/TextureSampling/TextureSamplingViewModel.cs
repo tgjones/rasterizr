@@ -196,7 +196,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureSampling
 
                 // Load texture and create sampler
                 var textureStream = resourceLoader.OpenResource("TechDemos/Resources/TextureSampling/CorrodedTiles.png");
-                var texture = TextureLoader.CreateTextureFromFile(_device, textureStream);
+                var texture = TextureLoader.CreateTextureFromStream(_device, textureStream);
                 var textureView = _device.CreateShaderResourceView(texture);
 
                 // Prepare all the stages

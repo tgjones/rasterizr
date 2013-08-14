@@ -9,6 +9,7 @@ using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
 using Rasterizr.Util;
+using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr
 {
@@ -103,6 +104,12 @@ namespace Rasterizr
 			Loggers.BeginOperation(OperationType.InputLayoutCreate, elements, shaderBytecodeWithInputSignature);
 			return new InputLayout(this, elements, shaderBytecodeWithInputSignature);
 		}
+
+        public InputLayout CreateInputLayout(InputElement[] elements, InputSignatureChunk inputSignature)
+        {
+            Loggers.BeginOperation(OperationType.InputLayoutCreate, elements, inputSignature);
+            return new InputLayout(this, elements, inputSignature);
+        }
 
 		public PixelShader CreatePixelShader(byte[] shaderBytecode)
 		{

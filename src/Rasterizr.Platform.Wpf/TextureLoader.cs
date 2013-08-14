@@ -8,7 +8,7 @@ namespace Rasterizr.Platform.Wpf
 {
 	public static class TextureLoader
 	{
-		public static Texture2D CreateTextureFromFile(Device device, Stream stream)
+		public static Texture2D CreateTextureFromStream(Device device, Stream stream)
 		{
 			var bitmap = new BitmapImage
 			{

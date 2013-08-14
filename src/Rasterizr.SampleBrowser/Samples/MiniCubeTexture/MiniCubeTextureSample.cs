@@ -139,7 +139,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 
 			// Load texture and create sampler
 			var textureStream = _resourceLoader.OpenResource("Samples/MiniCubeTexture/GeneticaMortarlessBlocks.jpg");
-			var texture = TextureLoader.CreateTextureFromFile(device, textureStream);
+			var texture = TextureLoader.CreateTextureFromStream(device, textureStream);
 			var textureView = device.CreateShaderResourceView(texture);
 
 			var sampler = device.CreateSamplerState(new SamplerStateDescription

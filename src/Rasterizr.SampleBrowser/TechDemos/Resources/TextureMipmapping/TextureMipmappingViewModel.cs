@@ -31,7 +31,7 @@ namespace Rasterizr.SampleBrowser.TechDemos.Resources.TextureMipmapping
 		public TextureMipmappingViewModel(IResourceLoader resourceLoader)
 		{
 			var textureStream = resourceLoader.OpenResource("TechDemos/Resources/TextureMipmapping/window_28.jpg");
-			var texture = TextureLoader.CreateTextureFromFile(new Device(), textureStream);
+			var texture = TextureLoader.CreateTextureFromStream(new Device(), textureStream);
 
 			_mipMaps = Enumerable.Range(0, texture.Description.MipLevels)
 				.Select((x, i) => new MipMapViewModel(TextureLoader.CreateBitmapFromTexture(texture, x), i));

@@ -53,9 +53,12 @@
     <Compile Include="Effects\BasicEffectCode.cs" />
     <Compile Include="Effects\DirectionalLight.cs" />
     <Compile Include="Effects\Effect.cs" />
-    <Compile Include="Model.cs" />
-    <Compile Include="ModelLoader.cs" />
-    <Compile Include="ModelMesh.cs" />
+    <Compile Include="Matrix.cs" />
+    <Compile Include="Models\ConversionExtensions.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\ModelLoader.cs" />
+    <Compile Include="Models\ModelMesh.cs" />
+    <Compile Include="Models\TextureLoadHandler.cs" />
     <Compile Include="Number4Extensions.cs" />
     <Compile Include="ProceduralTextures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,10 +85,10 @@
       <Link>Assimp64.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Hlsl Include="Effects\BasicEffect.hlsl.vs">
+    <Hlsl Include="Effects\BasicEffect.vs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Hlsl>
-    <Hlsl Include="Effects\BasicEffect.hlsl.ps">
+    <Hlsl Include="Effects\BasicEffect_4_0.ps">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Hlsl>
     <Content Include="Effects\BasicEffect.hlsl.h">
@@ -98,13 +101,9 @@
       <Visible>false</Visible>
     </AvailableItemName>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Effects\BasicEffect.hlsl.pso" />
-    <EmbeddedResource Include="Effects\BasicEffect.hlsl.vso" />
-  </ItemGroup>
   <UsingTask TaskName="MSBuild.Fxc.CompileShader" AssemblyFile="..\..\lib\MSBuild.Fxc.dll" />
   <Target Name="ShaderCompile" Condition="'@(Hlsl)' != '' " BeforeTargets="Build">
-    <CompileShader InputFiles="@(Hlsl)" OutputPath="$(MSBuildProjectDirectory)" Profile="4_0" />
+    <CompileShader InputFiles="@(Hlsl)" OutputPath="$(MSBuildProjectDirectory)" Profile="4_1" />
   </Target>
   <PropertyGroup>
     <PrepareResourcesDependsOn>ShaderCompile;$(PrepareResourcesDependsOn)</PrepareResourcesDependsOn>

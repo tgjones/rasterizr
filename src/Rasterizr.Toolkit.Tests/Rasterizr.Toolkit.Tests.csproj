@@ -45,15 +45,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effects\BasicEffectCodeTests.cs" />
+    <Compile Include="Effects\BasicEffectTests.cs" />
+    <Compile Include="ModelLoaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Models\85-nissan-fairlady.3ds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Rasterizr.Platform.Wpf\Rasterizr.Platform.Wpf.csproj">
+      <Project>{4633E75B-1C03-4588-BD29-8BE9A111AD1A}</Project>
+      <Name>Rasterizr.Platform.Wpf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rasterizr.Toolkit\Rasterizr.Toolkit.csproj">
       <Project>{C7886048-659E-44CA-8921-2416CCE3A795}</Project>
       <Name>Rasterizr.Toolkit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rasterizr\Rasterizr.csproj">
+      <Project>{5975A920-5CA3-4187-824A-1804A1ACB6D2}</Project>
+      <Name>Rasterizr</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

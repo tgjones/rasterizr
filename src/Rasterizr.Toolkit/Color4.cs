@@ -6,6 +6,8 @@ namespace Rasterizr.Toolkit
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	public struct Color4
 	{
+        public static readonly int SizeInBytes = sizeof(byte) * 4;
+
 		public static Color4 Black
 		{
 			get { return new Color4(0, 0, 0, 255); }
