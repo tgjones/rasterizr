@@ -5,6 +5,7 @@ using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
+using Rasterizr.Toolkit.Models;
 using SlimShader;
 using SlimShader.Compiler;
 using Viewport = Rasterizr.Pipeline.Rasterizer.Viewport;
@@ -18,6 +19,7 @@ namespace Rasterizr.SampleBrowser.Samples.BasicTriangle
 		private DeviceContext _deviceContext;
 		private RenderTargetView _renderTargetView;
 		private WpfSwapChain _swapChain;
+	    private Model _model;
 
 		public override string Name
 		{
@@ -62,10 +64,23 @@ namespace Rasterizr.SampleBrowser.Samples.BasicTriangle
 				new Vector4D(-0.5f, -0.5f, 0.5f, 1.0f), new Vector4D(0.0f, 0.0f, 1.0f, 1.0f)
 			});
 
+		    _model = new Model();
+		    _model.AddMesh(new ModelMesh
+		    {
+		        IndexBuffer = device.CreateBuffer(new BufferDescription
+		        {
+		            BindFlags = BindFlags.IndexBuffer
+		        }, new uint[] { 0, 1, 2 }),
+                IndexCount = 3,
+                InputLayout = layout,
+                PrimitiveCount = 1,
+                PrimitiveTopology = PrimitiveTopology.TriangleList,
+                VertexBuffer = vertices,
+                VertexCount = 3,
+                VertexSize = 32
+		    });
+
 			// Prepare all the stages
-			_deviceContext.InputAssembler.InputLayout = layout;
-			_deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-			_deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 0, 32));
 			_deviceContext.VertexShader.Shader = vertexShader;
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, width, height, 0.0f, 1.0f));
 			_deviceContext.PixelShader.Shader = pixelShader;
@@ -75,7 +90,7 @@ namespace Rasterizr.SampleBrowser.Samples.BasicTriangle
 		public override void Draw(DemoTime time)
 		{
             _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
-			_deviceContext.Draw(3, 0);
+		    _model.Draw(_deviceContext);
 			_swapChain.Present();
 		}
 	}

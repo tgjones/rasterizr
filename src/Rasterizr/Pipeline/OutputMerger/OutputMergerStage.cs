@@ -74,12 +74,15 @@ namespace Rasterizr.Pipeline.OutputMerger
 					};
 
 					float newDepth = pixel.Samples[sampleIndex].Depth;
-					if (_depthStencilView != null && !DepthStencilState.DepthTestPasses(newDepth, 
-						_depthStencilView.GetDepth(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex)))
+                    if (_depthStencilView != null)
 					{
-						pixelHistoryEvent.ExclusionReason = PixelExclusionReason.FailedDepthTest;
-						_device.Loggers.AddPixelHistoryEvent(pixelHistoryEvent);
-						continue;
+                        float currentDepth = _depthStencilView.GetDepth(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex);
+					    if (!DepthStencilState.DepthTestPasses(newDepth, currentDepth))
+					    {
+					        pixelHistoryEvent.ExclusionReason = PixelExclusionReason.FailedDepthTest;
+					        _device.Loggers.AddPixelHistoryEvent(pixelHistoryEvent);
+					        continue;
+					    }
 					}
 
 					var source = pixel.Color;

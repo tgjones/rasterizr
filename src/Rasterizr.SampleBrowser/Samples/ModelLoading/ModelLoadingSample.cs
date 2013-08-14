@@ -1,7 +1,12 @@
 ﻿using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
 using System.Windows.Controls;
 using Nexus;
+using Rasterizr.Diagnostics;
+using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Pipeline.OutputMerger;
+using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.Toolkit.Effects;
@@ -58,7 +63,7 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 
             // Load model.
 		    var modelLoader = new ModelLoader(device, TextureLoader.CreateTextureFromStream);
-            _model = modelLoader.Load("Samples/ModelLoading/85-nissan-fairlady.3ds");
+            _model = modelLoader.Load("Samples/ModelLoading/Sponza/sponza.3ds");
 
 		    _effect = new BasicEffect(device.ImmediateContext);
 		    _effect.LightPosition = new Point3D(0, 2.5f, 0);
@@ -88,7 +93,7 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 
 			// Prepare matrices
 			_effect.Projection = Matrix3D.CreatePerspectiveFieldOfView(MathUtility.PI_OVER_4, 
-				width / (float) height, 0.1f, 10000.0f);
+				width / (float) height, 0.1f, 100.0f);
 		}
 
 		public override void Draw(DemoTime time)
@@ -98,7 +103,7 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
             _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
 
             // Rotate camera
-            var cameraPosition = new Point3D(0, 3000, 5.0f);
+            var cameraPosition = new Point3D(0, 3, 5.0f);
             var cameraLookAt = new Point3D(0, 2.0f, 0);
             var tempPos = Point3D.Transform(cameraPosition, Matrix3D.CreateRotationY(0.2f * time.ElapsedTime));
             cameraPosition = tempPos;
@@ -107,7 +112,16 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 		    _effect.World = Matrix3D.CreateTranslation(0, -_model.AxisAlignedBoxCentre.Y / 2, 0);
             _effect.View = Matrix3D.CreateLookAt(cameraPosition, cameraLookAt - cameraPosition, Vector3D.UnitY);
 
-		    _model.Draw(_deviceContext, _effect);
+		    var wvp = _effect.World * _effect.View * _effect.Projection;
+		    var wvpT = Matrix3D.Transpose(wvp);
+
+		    Point3D point;
+		    _model.Meshes.First().VertexBuffer.GetData<Point3D>(out point, 0, Point3D.SizeInBytes);
+
+		    var result = wvpT.Transform(new Point4D(point, 1));
+
+		    _effect.Apply();
+		    _model.Draw(_deviceContext);
 
 			// Present!
 			_swapChain.Present();

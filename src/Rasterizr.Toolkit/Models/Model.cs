@@ -39,11 +39,8 @@ namespace Rasterizr.Toolkit.Models
             AxisAlignedBoxCentre = 0.5f * (min + max);
         }
 
-        public void Draw(DeviceContext context, BasicEffect effect)
+        public void Draw(DeviceContext context)
         {
-            if (!_inputLayoutSet)
-                throw new Exception("Input layout has not been specified. You must call SetInputLayout() before calling Draw().");
-
             foreach (var mesh in _meshes)
             {
                 context.InputAssembler.InputLayout = mesh.InputLayout;
@@ -51,9 +48,6 @@ namespace Rasterizr.Toolkit.Models
                 context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.VertexBuffer, 0, mesh.VertexSize));
                 context.InputAssembler.SetIndexBuffer(mesh.IndexBuffer, Format.R32_UInt, 0);
                 context.PixelShader.SetShaderResources(0, mesh.DiffuseTextureView);
-
-                effect.DiffuseColor = mesh.DiffuseColor;
-                effect.Apply();
 
                 context.DrawIndexed(mesh.IndexCount, 0, 0);
             }

@@ -193,6 +193,10 @@
     <Resource Include="TechDemos\Resources\TextureMipmapping\window_28.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Rasterizr.Diagnostics.Logging\Rasterizr.Diagnostics.Logging.csproj">
+      <Project>{AF234621-D615-499B-803B-E60586283509}</Project>
+      <Name>Rasterizr.Diagnostics.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rasterizr.Platform.Wpf\Rasterizr.Platform.Wpf.csproj">
       <Project>{4633E75B-1C03-4588-BD29-8BE9A111AD1A}</Project>
       <Name>Rasterizr.Platform.Wpf</Name>

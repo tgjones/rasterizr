@@ -36,6 +36,7 @@ namespace Rasterizr.Toolkit.Effects
                     SizeInBytes = Utilities.SizeOf<PixelShaderData>()
                 });
 
+		    DiffuseColor = new Color3F(0, 1, 1);
 		    Alpha = 1;
 		}
 
