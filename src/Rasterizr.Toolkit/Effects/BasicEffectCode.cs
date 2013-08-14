@@ -9,8 +9,8 @@ namespace Rasterizr.Toolkit.Effects
 
         static BasicEffectCode()
         {
-            VertexShaderCode = ReadEmbeddedResource("BasicEffect.hlsl.vso");
-            PixelShaderCode = ReadEmbeddedResource("BasicEffect.hlsl.pso");
+            VertexShaderCode = ReadEmbeddedResource("BasicEffect.vso");
+            PixelShaderCode = ReadEmbeddedResource("BasicEffect.pso");
         }
 
         private static byte[] ReadEmbeddedResource(string resourceName)

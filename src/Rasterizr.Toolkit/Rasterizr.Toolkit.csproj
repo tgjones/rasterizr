@@ -88,7 +88,7 @@
     <Hlsl Include="Effects\BasicEffect.vs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Hlsl>
-    <Hlsl Include="Effects\BasicEffect_4_0.ps">
+    <Hlsl Include="Effects\BasicEffect.ps">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Hlsl>
     <Content Include="Effects\BasicEffect.hlsl.h">
@@ -100,6 +100,10 @@
     <AvailableItemName Include="Hlsl">
       <Visible>false</Visible>
     </AvailableItemName>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Effects\BasicEffect.pso" />
+    <EmbeddedResource Include="Effects\BasicEffect.vso" />
   </ItemGroup>
   <UsingTask TaskName="MSBuild.Fxc.CompileShader" AssemblyFile="..\..\lib\MSBuild.Fxc.dll" />
   <Target Name="ShaderCompile" Condition="'@(Hlsl)' != '' " BeforeTargets="Build">
