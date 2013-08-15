@@ -57,10 +57,6 @@
     <Compile Include="Color3F.cs" />
     <Compile Include="Color4.cs" />
     <Compile Include="Color4F.cs" />
-    <Compile Include="Effects\BasicEffect.cs" />
-    <Compile Include="Effects\BasicEffectCode.cs" />
-    <Compile Include="Effects\DirectionalLight.cs" />
-    <Compile Include="Effects\Effect.cs" />
     <Compile Include="Models\ConversionExtensions.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\ModelLoader.cs" />
@@ -89,25 +85,12 @@
       <Link>Assimp64.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Hlsl Include="Effects\BasicEffect.vs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Hlsl>
-    <Hlsl Include="Effects\BasicEffect.ps">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Hlsl>
-    <Content Include="Effects\BasicEffect.hlsl.h">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <AvailableItemName Include="Hlsl">
       <Visible>false</Visible>
     </AvailableItemName>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Effects\BasicEffect.pso" />
-    <EmbeddedResource Include="Effects\BasicEffect.vso" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,17 +1,13 @@
 ﻿using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Controls;
-using Rasterizr.Diagnostics;
-using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Pipeline.OutputMerger;
-using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
-using Rasterizr.Toolkit.Effects;
 using Rasterizr.Toolkit.Models;
 using SharpDX;
 using SlimShader;
+using SlimShader.Compiler;
 using Viewport = Rasterizr.Pipeline.Rasterizer.Viewport;
 
 namespace Rasterizr.SampleBrowser.Samples.ModelLoading
@@ -25,8 +21,12 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 		private DepthStencilView _depthView;
 		private WpfSwapChain _swapChain;
 
-	    private BasicEffect _effect;
+        private Buffer _vertexConstantBuffer;
+        private Buffer _pixelConstantBuffer;
+	    private VertexShaderData _vertexShaderData;
+	    private PixelShaderData _pixelShaderData;
 		private Model _model;
+	    private Matrix _projection;
 
 		public override string Name
 		{
@@ -65,10 +65,14 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 		    var modelLoader = new ModelLoader(device, TextureLoader.CreateTextureFromStream);
             _model = modelLoader.Load("Samples/ModelLoading/Sponza/sponza.3ds");
 
-		    _effect = new BasicEffect(device.ImmediateContext);
-		    _effect.LightPosition = new Vector3(0, 2.5f, 0);
+            // Compile Vertex and Pixel shaders
+            var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Samples/ModelLoading/ModelLoading.fx", "VS", "vs_4_0");
+            var vertexShader = device.CreateVertexShader(vertexShaderByteCode);
 
-		    _model.SetInputLayout(device, _effect.VertexShader.Bytecode.InputSignature);
+            var pixelShaderByteCode = ShaderCompiler.CompileFromFile("Samples/ModelLoading/ModelLoading.fx", "PS", "ps_4_0");
+            var pixelShader = device.CreatePixelShader(pixelShaderByteCode);
+
+		    _model.SetInputLayout(device, vertexShaderByteCode.InputSignature);
 
 			var sampler = device.CreateSamplerState(new SamplerStateDescription
 			{
@@ -84,20 +88,39 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 				MaximumLod = 16,
 			});
 
+            // Create constant buffers.
+            _vertexConstantBuffer = device.CreateBuffer(new BufferDescription
+            {
+                SizeInBytes = Utilities.SizeOf<VertexShaderData>(),
+                BindFlags = BindFlags.ConstantBuffer
+            });
+            _pixelConstantBuffer = device.CreateBuffer(new BufferDescription
+            {
+                SizeInBytes = Utilities.SizeOf<PixelShaderData>(),
+                BindFlags = BindFlags.ConstantBuffer
+            });
+
 			// Prepare all the stages
+            _deviceContext.VertexShader.SetConstantBuffers(0, _vertexConstantBuffer);
+            _deviceContext.VertexShader.Shader = vertexShader;
+            _deviceContext.PixelShader.SetConstantBuffers(0, _pixelConstantBuffer);
+            _deviceContext.PixelShader.Shader = pixelShader;
 			_deviceContext.PixelShader.SetSamplers(0, sampler);
 
-			// Setup targets and viewport for rendering
+            _vertexShaderData = new VertexShaderData();
+
+            _pixelShaderData = new PixelShaderData
+            {
+                LightPos = new Vector4(0, 2.5f, 0, 0)
+            };
+		    _pixelConstantBuffer.SetData(ref _pixelShaderData);
+
+		    // Setup targets and viewport for rendering
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, width, height, 0.0f, 1.0f));
 			_deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
-            //_deviceContext.Rasterizer.State = device.CreateRasterizerState(new RasterizerStateDescription
-            //{
-            //    CullMode = CullMode.None
-            //});
-
 			// Prepare matrices
-			_effect.Projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, 
+			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, 
 				width / (float) height, 0.1f, 100.0f);
 		}
 
@@ -113,11 +136,20 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
             Vector4 tempPos = Vector3.Transform(cameraPosition, Matrix.RotationY(0.2f * time.ElapsedTime));
             cameraPosition = new Vector3(tempPos.X, tempPos.Y, tempPos.Z);
 
-            // Update matrices.
-		    _effect.World = Matrix.Translation(0, -_model.AxisAlignedBoxCentre.Y / 2, 0);
-            _effect.View = Matrix.LookAtLH(cameraPosition, cameraLookAt, Vector3.UnitY);
+            // Calculate the view matrix.
+            var view = Matrix.LookAtLH(cameraPosition, cameraLookAt, Vector3.UnitY);
+            var viewProjection = Matrix.Multiply(view, _projection);
 
-		    _effect.Apply();
+            // Update transformation matrices.
+            _vertexShaderData.World = Matrix.Translation(0, -_model.AxisAlignedBoxCentre.Y / 2, 0);
+            _vertexShaderData.WorldViewProjection = _vertexShaderData.World * viewProjection;
+
+            // Transpose matrices before sending them to the shader.
+            _vertexShaderData.World.Transpose();
+            _vertexShaderData.WorldViewProjection.Transpose();
+
+            _vertexConstantBuffer.SetData(ref _vertexShaderData);
+
 		    _model.Draw(_deviceContext);
 
 			// Present!
@@ -125,5 +157,18 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 
 			base.Draw(time);
 		}
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct VertexShaderData
+        {
+            public Matrix WorldViewProjection;
+            public Matrix World;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PixelShaderData
+        {
+            public Vector4 LightPos;
+        };
 	}
 }

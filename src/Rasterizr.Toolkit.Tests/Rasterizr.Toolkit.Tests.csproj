@@ -44,8 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Effects\BasicEffectCodeTests.cs" />
-    <Compile Include="Effects\BasicEffectTests.cs" />
     <Compile Include="ModelLoaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
