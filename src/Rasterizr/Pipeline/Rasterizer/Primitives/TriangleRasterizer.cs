@@ -28,6 +28,62 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			}
 		}
 
+        public override bool ShouldCull(
+            VertexShader.VertexShaderOutput[] vertices)
+        {
+            var a = vertices[0].Position;
+            var b = vertices[1].Position;
+            var c = vertices[2].Position;
+
+            var ab = Number4.Subtract(ref b, ref a);
+            var ac = Number4.Subtract(ref c, ref a);
+
+            var l0 = new Vector3ForCulling(ab.X, ab.Y, ab.Z);
+            var l1 = new Vector3ForCulling(ac.X, ac.Y, ac.Z);
+
+            l0.Normalize();
+            l1.Normalize();
+
+            var normal = Vector3ForCulling.CrossZ(ref l0, ref l1);
+
+            return RasterizerState.ShouldCull(normal > 0);
+        }
+
+        private struct Vector3ForCulling
+        {
+            public float X;
+            public float Y;
+            public float Z;
+
+            public Vector3ForCulling(float x, float y, float z)
+            {
+                X = x;
+                Y = y;
+                Z = z;
+            }
+
+            /// <summary>
+            /// Converts the vector into a unit vector.
+            /// </summary>
+            public void Normalize()
+            {
+                var length = (float) System.Math.Sqrt((X * X) + (Y * Y) + (Z * Z));
+                var inv = 1.0f / length;
+                X *= inv;
+                Y *= inv;
+                Z *= inv;
+            }
+
+            /// <summary>
+            /// Calculates the cross-product, but only of the Z component,
+            /// because that's all we need in order to do backface culling.
+            /// </summary>
+            public static float CrossZ(ref Vector3ForCulling left, ref Vector3ForCulling right)
+            {
+                return (left.X * right.Y) - (left.Y * right.X);
+            }
+        }
+
 		public override IEnumerable<FragmentQuad> Rasterize()
 		{
 			// Precompute alpha, beta and gamma denominator values. These are the same for all fragments.
@@ -199,7 +255,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 				case FillMode.Solid:
 					return true;
 				case FillMode.Wireframe:
-					const float wireframeThreshold = 0.00001f;
+					const float wireframeThreshold = 0.1f;
 					return coordinates.Alpha < wireframeThreshold || coordinates.Beta < wireframeThreshold || coordinates.Gamma < wireframeThreshold;
 				default:
 					throw new NotSupportedException();

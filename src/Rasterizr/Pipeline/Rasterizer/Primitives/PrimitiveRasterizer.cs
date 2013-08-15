@@ -13,6 +13,8 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 		public InputSignatureChunk PixelShaderInputSignature { get; set; }
         public IEnumerable<PixelShaderInputRegisterDeclarationToken> InputRegisterDeclarations { get; set; }
 
+        public RasterizerStateDescription RasterizerState { get; set; }
+
 		public bool IsMultiSamplingEnabled { get; set; }
 		public int MultiSampleCount { get; set; }
 
@@ -39,6 +41,8 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 		    foreach (var declaration in InputRegisterDeclarations)
 		        InputRegisterInterpolationModes[declaration.Operand.Indices[0].Value] = declaration.InterpolationMode;
 		}
+
+        public abstract bool ShouldCull(VertexShader.VertexShaderOutput[] vertices);
 
 		public abstract IEnumerable<FragmentQuad> Rasterize();
 

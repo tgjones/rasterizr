@@ -46,7 +46,16 @@ float4 PS(PS_IN input) : SV_Target
 
 	float3 diffuseTex = DiffuseTexture.Sample(DiffuseSampler, input.uv).xyz;
 
-	float3 diffuse = diffuseTex * saturate(dot(N,L)) ;
+	float3 result = float3(0.2, 0.2, 0.2);
 
-	return float4(diffuse, 1);
+	float lightIntensity = saturate(dot(N,L));
+
+	float3 diffuseColor = float3(1, 1, 1);
+	result += (diffuseColor * lightIntensity);
+
+	result = saturate(result);
+
+	result *= diffuseTex;
+
+	return float4(result, 1);
 }

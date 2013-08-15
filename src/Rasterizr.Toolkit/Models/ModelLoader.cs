@@ -67,7 +67,7 @@ namespace Rasterizr.Toolkit.Models
             ref Matrix transform)
         {
             var previousTransform = transform;
-            transform = previousTransform * node.Transform.ToMatrix();
+            transform = Matrix.Multiply(previousTransform, node.Transform.ToMatrix());
 
             if (node.HasMeshes)
             {
@@ -77,7 +77,8 @@ namespace Rasterizr.Toolkit.Models
                     for (int i = 0; i < mesh.VertexCount; i++)
                     {
                         var tmp = mesh.Vertices[i].ToVector3();
-                        var result = Vector3.TransformCoordinate(tmp, transform);
+                        Vector4 result;
+                        Vector3.Transform(ref tmp, ref transform, out result);
 
                         min.X = System.Math.Min(min.X, result.X);
                         min.Y = System.Math.Min(min.Y, result.Y);
@@ -136,12 +137,12 @@ namespace Rasterizr.Toolkit.Models
             ref Matrix transform)
         {
             var previousTransform = transform;
-            transform = previousTransform * node.Transform.ToMatrix();
+            transform = Matrix.Multiply(previousTransform, node.Transform.ToMatrix());
 
             // Also calculate inverse transpose matrix for normal/tangent/bitagent transformation.
             var invTranspose = transform;
             invTranspose.Invert();
-            invTranspose = Matrix.Transpose(invTranspose);
+            invTranspose.Transpose();
 
             if (node.HasMeshes)
             {
@@ -167,12 +168,6 @@ namespace Rasterizr.Toolkit.Models
                                 modelMesh.AddTextureDiffuse(device, texture);
                             }
                         }
-
-                        if (material.HasColorDiffuse)
-                        {
-                            var color = material.ColorDiffuse.ToColor4();
-                            modelMesh.DiffuseColor = new Color3F(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f);
-                        }
                     }
 
                     // Determine the elements in the vertex.
@@ -191,7 +186,7 @@ namespace Rasterizr.Toolkit.Models
                     if (hasColors)
                     {
                         vertexElements[elementIndex++] = new InputElement("COLOR", 0, Format.R8G8B8A8_UInt, 0, vertexSize);
-                        vertexSize += (short) Utilities.SizeOf<Color4>();
+                        vertexSize += (short) Utilities.SizeOf<Color>();
                     }
                     if (hasNormals)
                     {
@@ -258,35 +253,41 @@ namespace Rasterizr.Toolkit.Models
                             Vector4 tempResult;
                             Vector3 pos = positions[i].ToVector3();
                             Vector3.Transform(ref pos, ref transform, out tempResult);
-                            Vector3 result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
+                            var result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
                             vertexBuffer.SetData(ref result, byteOffset);
                             byteOffset += Vector3.SizeInBytes;
                         }
 
                         if (hasColors)
                         {
-                            var vertColor = colours[i].ToColor4();
+                            var vertColor = colours[i].ToColor();
                             vertexBuffer.SetData(ref vertColor, byteOffset);
-                            byteOffset += Color4.SizeInBytes;
+                            byteOffset += 4;
                         }
                         if (hasNormals)
                         {
                             var normal = normals[i].ToVector3();
-                            var result = Vector3.TransformNormal(normal, invTranspose);
+                            Vector4 tempResult;
+                            Vector3.Transform(ref normal, ref invTranspose, out tempResult);
+                            var result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
                             vertexBuffer.SetData(ref result, byteOffset);
                             byteOffset += Vector3.SizeInBytes;
                         }
                         if (hasTangents)
                         {
                             var tangent = tangents[i].ToVector3();
-                            var result = Vector3.TransformNormal(tangent, invTranspose);
+                            Vector4 tempResult;
+                            Vector3.Transform(ref tangent, ref invTranspose, out tempResult);
+                            var result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
                             vertexBuffer.SetData(ref result, byteOffset);
                             byteOffset += Vector3.SizeInBytes;
                         }
                         if (hasBitangents)
                         {
                             var biTangent = biTangents[i].ToVector3();
-                            var result = Vector3.TransformNormal(biTangent, invTranspose);
+                            Vector4 tempResult;
+                            Vector3.Transform(ref biTangent, ref invTranspose, out tempResult);
+                            var result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
                             vertexBuffer.SetData(ref result, byteOffset);
                             byteOffset += Vector3.SizeInBytes;
                         }

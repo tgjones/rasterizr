@@ -35,9 +35,9 @@ namespace Rasterizr.Toolkit.Models
             return v;
         }
 
-        public static Color4 ToColor4(this Assimp.Color4D color)
+        public static Color ToColor(this Assimp.Color4D color)
         {
-            Color4 c;
+            Color c;
             c.R = (byte) (color.R * 255);
             c.G = (byte) (color.G * 255);
             c.B = (byte) (color.B * 255);

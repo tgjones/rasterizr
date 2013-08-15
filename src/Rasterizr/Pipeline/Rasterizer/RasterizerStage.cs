@@ -59,28 +59,36 @@ namespace Rasterizr.Pipeline.Rasterizer
 			rasterizer.PreviousStageOutputSignature = previousStageOutputSignature;
 			rasterizer.PixelShaderInputSignature = pixelShaderInputSignature;
 		    rasterizer.InputRegisterDeclarations = inputRegisterDeclarations;
+		    rasterizer.RasterizerState = State.Description;
 			rasterizer.IsMultiSamplingEnabled = State.Description.IsMultisampleEnabled;
 			rasterizer.MultiSampleCount = multiSampleCount;
 			rasterizer.FillMode = State.Description.FillMode;
 			rasterizer.Initialize();
 
-			foreach (var primitive in inputs)
+            foreach (var primitive in inputs)
 			{
-                // TODO: Proper clipping.
-                var anyVertexOutsideViewport = false;
-				for (int i = 0; i < primitive.Vertices.Length; i++)
-				{
-					PerspectiveDivide(ref primitive.Vertices[i].Position);
-					ToScreenCoordinates(ref primitive.Vertices[i].Position);
+                // TODO: Clipping.
+			    for (int i = 0; i < primitive.Vertices.Length; i++)
+			        PerspectiveDivide(ref primitive.Vertices[i].Position);
+
+			    if (State.Description.CullMode != CullMode.None && rasterizer.ShouldCull(primitive.Vertices))
+			        continue;
+
+			    var anyVertexOutsideViewport = false;
+                for (int i = 0; i < primitive.Vertices.Length; i++)
+                {
+			        ToScreenCoordinates(ref primitive.Vertices[i].Position);
 
                     if (!IsVertexInViewport(ref primitive.Vertices[i].Position))
+                    {
                         anyVertexOutsideViewport = true;
-				}
-
+                        break;
+                    }
+                }
                 if (anyVertexOutsideViewport)
                     continue;
 
-				rasterizer.Primitive = primitive;
+                rasterizer.Primitive = primitive;
 				foreach (var fragmentQuad in rasterizer.Rasterize())
 				{
 					// TODO: Once clipping is implemented, these tests won't be necessary.

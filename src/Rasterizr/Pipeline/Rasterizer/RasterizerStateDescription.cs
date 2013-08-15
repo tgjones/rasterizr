@@ -32,5 +32,14 @@
 		public bool IsScissorEnabled;
 		public bool IsMultisampleEnabled;
 		public bool IsAntialiasedLineEnabled;
+
+        internal bool ShouldCull(bool counterClockwise)
+        {
+            // If triangle is CW, then cull if:
+            // (a) front faces are CW and we should cull front faces.
+            // (b) front faces are CCW and we should cull back faces.
+            return (IsFrontCounterClockwise == counterClockwise && CullMode == CullMode.Front)
+                || (IsFrontCounterClockwise != counterClockwise && CullMode == CullMode.Back);
+        }
 	}
 }

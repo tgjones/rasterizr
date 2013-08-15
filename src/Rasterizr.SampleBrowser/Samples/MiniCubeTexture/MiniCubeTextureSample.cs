@@ -170,8 +170,8 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 			_deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
 			// Prepare matrices
-            _view = Matrix.LookAtRH(new Vector3(0, 0, -5), Vector3.BackwardRH, Vector3.UnitY);
-			_projection = Matrix.PerspectiveFovRH(MathUtil.PiOverFour, 
+            _view = Matrix.LookAtLH(new Vector3(0, 0, -5), Vector3.Zero, Vector3.UnitY);
+			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, 
 				width / (float) height, 0.1f, 100.0f);
 		}
 
