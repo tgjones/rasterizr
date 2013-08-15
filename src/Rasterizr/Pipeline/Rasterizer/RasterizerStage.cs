@@ -59,6 +59,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 			rasterizer.PreviousStageOutputSignature = previousStageOutputSignature;
 			rasterizer.PixelShaderInputSignature = pixelShaderInputSignature;
 		    rasterizer.InputRegisterDeclarations = inputRegisterDeclarations;
+		    rasterizer.Viewport = _viewports[0];
 		    rasterizer.RasterizerState = State.Description;
 			rasterizer.IsMultiSamplingEnabled = State.Description.IsMultisampleEnabled;
 			rasterizer.MultiSampleCount = multiSampleCount;
@@ -74,51 +75,14 @@ namespace Rasterizr.Pipeline.Rasterizer
 			    if (State.Description.CullMode != CullMode.None && rasterizer.ShouldCull(primitive.Vertices))
 			        continue;
 
-			    var anyVertexOutsideViewport = false;
-                for (int i = 0; i < primitive.Vertices.Length; i++)
-                {
+			    for (int i = 0; i < primitive.Vertices.Length; i++)
 			        ToScreenCoordinates(ref primitive.Vertices[i].Position);
 
-                    if (!IsVertexInViewport(ref primitive.Vertices[i].Position))
-                    {
-                        anyVertexOutsideViewport = true;
-                        break;
-                    }
-                }
-                if (anyVertexOutsideViewport)
-                    continue;
-
-                rasterizer.Primitive = primitive;
+			    rasterizer.Primitive = primitive;
 				foreach (var fragmentQuad in rasterizer.Rasterize())
-				{
-					// TODO: Once clipping is implemented, these tests won't be necessary.
-					if (!IsFragmentInViewport(fragmentQuad.Fragment0))
-						continue;
-					if (!IsFragmentInViewport(fragmentQuad.Fragment1))
-						continue;
-					if (!IsFragmentInViewport(fragmentQuad.Fragment2))
-						continue;
-					if (!IsFragmentInViewport(fragmentQuad.Fragment3))
-						continue;
-
 					yield return fragmentQuad;
-				}
 			}
 		}
-
-		// TODO: Once clipping is implemented, this test won't be necessary.
-		private bool IsFragmentInViewport(Fragment fragment)
-		{
-			var viewport = _viewports[0];
-			return fragment.X > viewport.TopLeftX && fragment.X < viewport.TopLeftX + viewport.Width
-				&& fragment.Y > viewport.TopLeftY && fragment.Y < viewport.TopLeftY + viewport.Height;
-		}
-        private bool IsVertexInViewport(ref Number4 position)
-        {
-            var viewport = _viewports[0];
-            return position.X > viewport.TopLeftX && position.X < viewport.TopLeftX + viewport.Width
-                && position.Y > viewport.TopLeftY && position.Y < viewport.TopLeftY + viewport.Height;
-        }
 
         private static void PerspectiveDivide(ref Number4 position)
 		{

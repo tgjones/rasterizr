@@ -2,14 +2,14 @@
 {
 	public struct Viewport
 	{
-		public float TopLeftX;
-		public float TopLeftY;
-		public float Width;
-		public float Height;
+		public int TopLeftX;
+        public int TopLeftY;
+		public int Width;
+        public int Height;
 		public float MinDepth;
 		public float MaxDepth;
 
-		public Viewport(float x, float y, float width, float height, float minZ, float maxZ)
+		public Viewport(int x, int y, int width, int height, float minZ, float maxZ)
 		{
 			TopLeftX = x;
 			TopLeftY = y;

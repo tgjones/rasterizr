@@ -157,16 +157,13 @@ namespace Rasterizr.Toolkit.Models
 
                     // If mesh has a material extract the diffuse texture, if present.
                     Material material = scene.Materials[mesh.MaterialIndex];
-                    if (material != null)
+                    if (material != null && material.GetTextureCount(TextureType.Diffuse) > 0)
                     {
-                        if (material.GetTextureCount(TextureType.Diffuse) > 0)
+                        TextureSlot aiTexture = material.GetTexture(TextureType.Diffuse, 0);
+                        using (var fileStream = File.OpenRead(_modelPath + "\\" + aiTexture.FilePath))
                         {
-                            TextureSlot aiTexture = material.GetTexture(TextureType.Diffuse, 0);
-                            using (var fileStream = File.OpenRead(_modelPath + "\\" + aiTexture.FilePath))
-                            {
-                                var texture = _textureLoadHandler(_device, fileStream);
-                                modelMesh.AddTextureDiffuse(device, texture);
-                            }
+                            var texture = _textureLoadHandler(_device, fileStream);
+                            modelMesh.AddTextureDiffuse(device, texture);
                         }
                     }
 

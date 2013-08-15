@@ -90,6 +90,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 
 					// Use blend state to calculate final color.
 					var finalColor = BlendState.DoBlend(renderTargetIndex, ref source, ref destination, ref _blendFactor);
+				    finalColor = Number4.Saturate(ref finalColor);
 					renderTarget.SetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex, ref finalColor);
 
 					pixelHistoryEvent.Previous = destination;
