@@ -43,6 +43,7 @@
     <Compile Include="Format.cs" />
     <Compile Include="FormatHelper.cs" />
     <Compile Include="Math\MathUtility.cs" />
+    <Compile Include="Pipeline\Rasterizer\Primitives\Vector3ForCulling.cs" />
     <Compile Include="Pipeline\ShaderResourceView.InnerResourceView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture1DArrayView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture1DView.cs" />
