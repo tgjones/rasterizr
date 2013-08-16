@@ -10,7 +10,7 @@ namespace Rasterizr.Toolkit.Models
         private readonly List<ModelMesh> _meshes;
         private bool _inputLayoutSet;
 
-        public IEnumerable<ModelMesh> Meshes
+        public IList<ModelMesh> Meshes
         {
             get { return _meshes; }
         }

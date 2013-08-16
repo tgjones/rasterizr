@@ -119,6 +119,11 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, width, height, 0.0f, 1.0f));
 			_deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
+            //_deviceContext.Rasterizer.State = device.CreateRasterizerState(new Pipeline.Rasterizer.RasterizerStateDescription
+            //{
+            //    FillMode = Pipeline.Rasterizer.FillMode.Wireframe
+            //});
+
 			// Prepare matrices
 			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, 
 				width / (float) height, 0.1f, 100.0f);
@@ -131,7 +136,8 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
             _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
 
             // Rotate camera
-            var cameraPosition = new Vector3(0, 3, 5.0f);
+            //var cameraPosition = new Vector3(0, 3, 5.0f);
+            Vector3 cameraPosition = new Vector3(2, 5, 5.0f);
             var cameraLookAt = new Vector3(0, 2.0f, 0);
             //Vector4 tempPos = Vector3.Transform(cameraPosition, Matrix.RotationY(0.2f * time.ElapsedTime));
             //cameraPosition = new Vector3(tempPos.X, tempPos.Y, tempPos.Z);
