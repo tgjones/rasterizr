@@ -43,5 +43,13 @@ namespace Rasterizr.Math
 			if (v.Y > maxY)
 				maxY = v.Y;
 		}
+
+        public void IntersectWith(ref Box2D other)
+        {
+            MinX = System.Math.Max(MinX, other.MinX);
+            MaxX = System.Math.Min(MaxX, other.MaxX);
+            MinY = System.Math.Max(MinY, other.MinY);
+            MaxY = System.Math.Min(MaxY, other.MaxY);
+        }
 	}
 }

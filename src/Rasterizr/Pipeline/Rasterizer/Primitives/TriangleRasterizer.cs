@@ -96,28 +96,24 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
             //if (_alphaDenominator < degenerateThreshold || _betaDenominator < degenerateThreshold || _gammaDenominator < degenerateThreshold)
             //    yield break;
 
+            // Compute screen-space triangle bounding box.
 			var screenBounds = Box2D.CreateBoundingBox(ref _p0, ref _p1, ref _p2);
 
-            // Clip triangle's screen bounds to viewport bounds.
-            // TODO: Is this really how clipping works? How about "hither"
-            // vertices very close to the eye, is there a problem with homogeneous
-            // coordinates?
-		    screenBounds.MinX = System.Math.Max(screenBounds.MinX, 0);
-            screenBounds.MaxX = System.Math.Min(screenBounds.MaxX, Viewport.TopLeftX + Viewport.Width - 1);
-            screenBounds.MinY = System.Math.Max(screenBounds.MinY, 0);
-            screenBounds.MaxY = System.Math.Min(screenBounds.MaxY, Viewport.TopLeftY + Viewport.Height - 1);
-
-			// Scan pixels in target area, checking if they are inside the triangle.
-			// If they are, calculate the coverage.
+            // Clip triangle bounding box to screen bounds.
+		    screenBounds.IntersectWith(ref ScreenBounds);
 
 			// Calculate start and end positions. Because of the need to calculate derivatives
 			// in the pixel shader, we require that fragment quads always have even numbered
 			// coordinates (both x and y) for the top-left fragment.
-			int startY = NearestEvenNumber(screenBounds.MinY);
-			int startX = NearestEvenNumber(screenBounds.MinX);
+            var startX = NearestEvenNumber(screenBounds.MinX);
+            var startY = NearestEvenNumber(screenBounds.MinY);
 
-			for (int y = startY; y <= screenBounds.MaxY; y += 2)
-				for (int x = startX; x <= screenBounds.MaxX; x += 2)
+            // Scan pixels in target area, checking if they are inside the triangle.
+            // If they are, calculate the coverage.
+		    var maxX = screenBounds.MaxX;
+		    var maxY = screenBounds.MaxY;
+			for (int y = startY; y <= maxY; y += 2)
+				for (int x = startX; x <= maxX; x += 2)
 				{
 					// First check whether any fragments in this quad are covered. If not, we don't
 					// need to do any (expensive) interpolation of attributes.
@@ -137,6 +133,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 						bool covered1 = CalculateSampleCoverage(ref fragmentQuad.Fragment1);
 						bool covered2 = CalculateSampleCoverage(ref fragmentQuad.Fragment2);
 						bool covered3 = CalculateSampleCoverage(ref fragmentQuad.Fragment3);
+
 						if (!covered0 && !covered1 && !covered2 && !covered3)
 							continue;
 
@@ -247,16 +244,15 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 		{
 			// TODO: Use fill convention.
 
-			// Calculate depth.
-			// TODO: Does this only need to be calculated if the sample is inside the triangle?
-			depth = InterpolationUtility.Linear(coordinates.Alpha, coordinates.Beta, coordinates.Gamma, _p0.Z, _p1.Z, _p2.Z);
-
 			// If any of these tests fails, the current pixel is not inside the triangle.
 			if (coordinates.IsOutsideTriangle)
 			{
 				depth = 0;
 				return false;
 			}
+
+            // Calculate depth.
+            depth = InterpolationUtility.Linear(coordinates.Alpha, coordinates.Beta, coordinates.Gamma, _p0.Z, _p1.Z, _p2.Z);
 
 			// The exact value to compare against depends on fill mode - if we're rendering wireframe,
 			// then check whether sample position is within the "wireframe threshold" (i.e. 1 pixel) of an edge.
@@ -265,6 +261,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 				case FillMode.Solid:
 					return true;
 				case FillMode.Wireframe:
+                    // TODO: This threshold thing is not correct.
 					const float wireframeThreshold = 0.1f;
 					return coordinates.Alpha < wireframeThreshold || coordinates.Beta < wireframeThreshold || coordinates.Gamma < wireframeThreshold;
 				default:

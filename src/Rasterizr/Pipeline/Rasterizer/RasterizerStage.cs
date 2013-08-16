@@ -59,7 +59,10 @@ namespace Rasterizr.Pipeline.Rasterizer
 			rasterizer.PreviousStageOutputSignature = previousStageOutputSignature;
 			rasterizer.PixelShaderInputSignature = pixelShaderInputSignature;
 		    rasterizer.InputRegisterDeclarations = inputRegisterDeclarations;
-		    rasterizer.Viewport = _viewports[0];
+
+		    var vp = _viewports[0];
+		    rasterizer.ScreenBounds = new Math.Box2D(vp.TopLeftX, vp.TopLeftY, vp.TopLeftX + vp.Width, vp.TopLeftY + vp.Height);
+
 		    rasterizer.RasterizerState = State.Description;
 			rasterizer.IsMultiSamplingEnabled = State.Description.IsMultisampleEnabled;
 			rasterizer.MultiSampleCount = multiSampleCount;

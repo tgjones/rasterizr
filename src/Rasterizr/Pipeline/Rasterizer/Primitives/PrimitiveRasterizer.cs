@@ -13,7 +13,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 		public InputSignatureChunk PixelShaderInputSignature { get; set; }
         public IEnumerable<PixelShaderInputRegisterDeclarationToken> InputRegisterDeclarations { get; set; }
 
-        public Viewport Viewport { get; set; }
+	    public Box2D ScreenBounds;
         public RasterizerStateDescription RasterizerState { get; set; }
 
 		public bool IsMultiSamplingEnabled { get; set; }
