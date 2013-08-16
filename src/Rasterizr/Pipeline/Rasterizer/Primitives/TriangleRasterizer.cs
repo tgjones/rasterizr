@@ -257,6 +257,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 
 			// TODO: Cache as much of this as possible.
 			// Calculate interpolated attribute values for this fragment.
+            // TODO: Only interpolate values which are actually used by the pixel shader?
             var result = new Number4[OutputInputRegisterMappings.Length];
 		    for (int i = 0; i < result.Length; i++)
 		    {
