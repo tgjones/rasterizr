@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <Compile Include="Color4.cs" />
     <Compile Include="Format.cs" />
     <Compile Include="FormatHelper.cs" />
     <Compile Include="Math\MathUtility.cs" />

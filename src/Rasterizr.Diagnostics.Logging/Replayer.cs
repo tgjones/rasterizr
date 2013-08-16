@@ -8,7 +8,6 @@ using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
-using SlimShader;
 using Buffer = Rasterizr.Resources.Buffer;
 
 namespace Rasterizr.Diagnostics.Logging
@@ -75,7 +74,7 @@ namespace Rasterizr.Diagnostics.Logging
 					case OperationType.DeviceContextClearRenderTargetView:
 						_deviceContext.ClearRenderTargetView(
 							_device.GetDeviceChild<RenderTargetView>(args.Get<int>(0)),
-							args.Get<Number4>(1));
+							args.Get<Color4>(1));
 						break;
 					case OperationType.DeviceContextDraw:
 						_deviceContext.Draw(args.Get<int>(0), args.Get<int>(1));

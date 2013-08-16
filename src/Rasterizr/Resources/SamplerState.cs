@@ -1,4 +1,5 @@
 ﻿using System;
+using Rasterizr.Util;
 
 namespace Rasterizr.Resources
 {
@@ -32,7 +33,7 @@ namespace Rasterizr.Resources
                 MipLodBias = description.MipLodBias,
                 MaximumAnisotropy = description.MaximumAnisotropy,
                 ComparisonFunction = ConvertComparison(description.ComparisonFunction),
-                BorderColor = description.BorderColor
+                BorderColor = description.BorderColor.ToNumber4()
             };
 		}
 

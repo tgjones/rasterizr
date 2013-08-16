@@ -148,7 +148,7 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCube
 		{
 			// Clear views
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
+            _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.Black);
 
 			// Update WorldViewProj Matrix
 			var worldViewProj = Matrix.RotationX(time.ElapsedTime)

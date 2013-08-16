@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rasterizr.Diagnostics;
-using Rasterizr.Math;
 using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
@@ -11,7 +10,7 @@ using Rasterizr.Pipeline.PixelShader;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Resources;
-using SlimShader;
+using Rasterizr.Util;
 using SlimShader.Chunks.Shex.Tokens;
 using SlimShader.Chunks.Xsgn;
 
@@ -75,11 +74,13 @@ namespace Rasterizr
 			depthStencilView.Clear(clearFlags, depth, stencil);
 		}
 
-        public virtual void ClearRenderTargetView(RenderTargetView renderTargetView, Number4 color)
+        public virtual void ClearRenderTargetView(RenderTargetView renderTargetView, Color4 color)
 		{
 			_device.Loggers.BeginOperation(OperationType.DeviceContextClearRenderTargetView, renderTargetView, color);
-			_device.Loggers.AddPixelHistoryEvent(new ClearRenderTargetEvent(color));
-			renderTargetView.Clear(ref color);
+
+            var number = color.ToNumber4();
+			_device.Loggers.AddPixelHistoryEvent(new ClearRenderTargetEvent(number));
+			renderTargetView.Clear(ref number);
 		}
 
 		public void Draw(int vertexCount, int startVertexLocation)

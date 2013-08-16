@@ -87,7 +87,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			deviceContext.PixelShader.Shader = pixelShader;
 			deviceContext.OutputMerger.SetTargets(null, renderTargetView);
 
-            deviceContext.ClearRenderTargetView(renderTargetView, new Number4(0, 0, 0, 1));
+            deviceContext.ClearRenderTargetView(renderTargetView, Color4.Black);
 			deviceContext.Draw(3, 0);
 			swapChain.Present();
 

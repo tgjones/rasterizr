@@ -1,5 +1,6 @@
 ﻿using System;
 using Rasterizr.Pipeline.InputAssembler;
+using SlimShader;
 
 namespace Rasterizr.Util
 {
@@ -19,5 +20,10 @@ namespace Rasterizr.Util
 					throw new ArgumentOutOfRangeException("primitiveTopology");
 			}
 		}
+
+        public static Number4 ToNumber4(this Color4 color)
+        {
+            return new Number4(color.R, color.G, color.B, color.A);
+        }
 	}
 }

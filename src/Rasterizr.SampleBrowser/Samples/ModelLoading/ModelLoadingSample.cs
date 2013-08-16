@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.Composition;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
+using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.Toolkit.Models;
 using SharpDX;
-using SlimShader;
 using SlimShader.Compiler;
 using Viewport = Rasterizr.Pipeline.Rasterizer.Viewport;
 
@@ -28,6 +29,9 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 		private Model _model;
 	    private Matrix _projection;
 
+	    private TracefileGraphicsLogger _logger;
+	    private TextWriter _textWriter;
+
 		public override string Name
 		{
 			get { return "Model Loading"; }
@@ -35,11 +39,14 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 
 		public override void Initialize(Image image)
 		{
-			const int width = 600;
+            _textWriter = new StreamWriter("ModelLoading.json");
+            _logger = new TracefileGraphicsLogger(_textWriter, false);
+
+            const int width = 600;
 			const int height = 400;
 
 			// Create device and swap chain.
-			var device = new Device();
+			var device = new Device(_logger);
 			_swapChain = new WpfSwapChain(device, width, height);
 			image.Source = _swapChain.Bitmap;
 			_deviceContext = device.ImmediateContext;
@@ -80,7 +87,7 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 				AddressU = TextureAddressMode.Wrap,
 				AddressV = TextureAddressMode.Wrap,
 				AddressW = TextureAddressMode.Wrap,
-				BorderColor = new Number4(0, 0, 0, 1),
+				BorderColor = Color4.Black,
 				ComparisonFunction = Comparison.Never,
 				MaximumAnisotropy = 16,
 				MipLodBias = 0,
@@ -133,7 +140,7 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 		{
 			// Clear views
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            _deviceContext.ClearRenderTargetView(_renderTargetView, new Number4(0, 0, 0, 1));
+            _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.Black);
 
             // Rotate camera
             //var cameraPosition = new Vector3(0, 3, 5.0f);
@@ -160,6 +167,9 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 
 			// Present!
 			_swapChain.Present();
+
+            _logger.Flush();
+		    _textWriter.Close();
 
 			base.Draw(time);
 		}

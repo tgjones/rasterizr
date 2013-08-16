@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Pipeline.InputAssembler;
+using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Diagnostics.Logging
 {
@@ -62,6 +63,8 @@ namespace Rasterizr.Diagnostics.Logging
 					Offset = x.Offset,
 					Stride = x.Stride
 				});
+            if (arg is InputOutputSignatureChunk)
+                return ((InputOutputSignatureChunk) arg).Container.RawBytes;
 			return arg;
 		}
 
