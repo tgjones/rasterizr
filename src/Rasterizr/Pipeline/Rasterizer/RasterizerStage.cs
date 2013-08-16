@@ -4,7 +4,6 @@ using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer.Primitives;
 using SlimShader;
-using SlimShader.Chunks.Shex.Tokens;
 using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Pipeline.Rasterizer
@@ -36,8 +35,7 @@ namespace Rasterizr.Pipeline.Rasterizer
             IEnumerable<InputAssemblerPrimitiveOutput> inputs, 
             PrimitiveTopology primitiveTopology, 
             OutputSignatureChunk previousStageOutputSignature, 
-            InputSignatureChunk pixelShaderInputSignature, 
-            IEnumerable<PixelShaderInputRegisterDeclarationToken> inputRegisterDeclarations, 
+            BytecodeContainer pixelShader,
             int multiSampleCount)
 		{
 			PrimitiveRasterizer rasterizer;
@@ -56,9 +54,8 @@ namespace Rasterizr.Pipeline.Rasterizer
 					throw new ArgumentOutOfRangeException();
 			}
 
-			rasterizer.PreviousStageOutputSignature = previousStageOutputSignature;
-			rasterizer.PixelShaderInputSignature = pixelShaderInputSignature;
-		    rasterizer.InputRegisterDeclarations = inputRegisterDeclarations;
+		    rasterizer.OutputInputBindings = ShaderOutputInputBindings.FromShaderSignatures(
+		        previousStageOutputSignature, pixelShader);
 
 		    var vp = _viewports[0];
 		    rasterizer.ScreenBounds = new Math.Box2D(vp.TopLeftX, vp.TopLeftY, vp.TopLeftX + vp.Width, vp.TopLeftY + vp.Height);
@@ -67,7 +64,6 @@ namespace Rasterizr.Pipeline.Rasterizer
 			rasterizer.IsMultiSamplingEnabled = State.Description.IsMultisampleEnabled;
 			rasterizer.MultiSampleCount = multiSampleCount;
 			rasterizer.FillMode = State.Description.FillMode;
-			rasterizer.Initialize();
 
             foreach (var primitive in inputs)
 			{

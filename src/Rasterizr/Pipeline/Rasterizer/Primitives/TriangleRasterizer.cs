@@ -4,6 +4,7 @@ using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using SlimShader;
 using SlimShader.Chunks.Shex;
+using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Pipeline.Rasterizer.Primitives
 {
@@ -255,48 +256,50 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 				coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
 				_p0.W, _p1.W, _p2.W);
 
-			// TODO: Cache as much of this as possible.
-			// Calculate interpolated attribute values for this fragment.
-            // TODO: Only interpolate values which are actually used by the pixel shader?
-            var result = new Number4[OutputInputRegisterMappings.Length];
-		    for (int i = 0; i < result.Length; i++)
-		    {
-		        var outputRegister = OutputInputRegisterMappings[i];
-		        var v0Value = _primitive.Vertices[0].Data[outputRegister];
-		        var v1Value = _primitive.Vertices[1].Data[outputRegister];
-		        var v2Value = _primitive.Vertices[2].Data[outputRegister];
+		    var v0Data = _primitive.Vertices[0].Data;
+            var v1Data = _primitive.Vertices[1].Data;
+            var v2Data = _primitive.Vertices[2].Data;
 
-		        // Interpolate values.
-		        Number4 interpolatedValue;
-		        switch (InputRegisterInterpolationModes[i])
-		        {
+			// Calculate interpolated attribute values for this fragment.
+            // TODO: Optimize this.
+		    var result = new Number4[_primitive.Vertices[0].Data.Length];
+		    foreach (var outputInputBinding in OutputInputBindings.Bindings)
+		    {
+                var v0Value = v0Data[outputInputBinding.Register];
+                var v1Value = v1Data[outputInputBinding.Register];
+                var v2Value = v2Data[outputInputBinding.Register];
+
+                if (outputInputBinding.SystemValueType != Name.Undefined)
+                    throw new NotImplementedException();
+
+                // Create input values. Normally, this will require interpolation
+                // of the vertex attributes.
+                Number4 inputValue;
+                switch (outputInputBinding.InterpolationMode)
+                {
                     case InterpolationMode.Constant:
-		                interpolatedValue = v0Value;
-		                break;
-		            case InterpolationMode.Linear:
-		                interpolatedValue = InterpolationUtility.Perspective(
-		                    coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
-		                    ref v0Value, ref v1Value, ref v2Value,
-		                    _p0.W, _p1.W, _p2.W, w);
-		                break;
-		            case InterpolationMode.LinearNoPerspective:
-		                interpolatedValue = InterpolationUtility.Linear(
-		                    coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
-		                    ref v0Value, ref v1Value, ref v2Value);
-		                break;
-                    case InterpolationMode.Undefined:
-                        // TODO: This is used for SV_Position - can we just skip that semantic altogether?
-                        interpolatedValue = new Number4();
+                        inputValue = v0Value;
+                        break;
+                    case InterpolationMode.Linear:
+                        inputValue = InterpolationUtility.Perspective(
+                            coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
+                            ref v0Value, ref v1Value, ref v2Value,
+                            _p0.W, _p1.W, _p2.W, w);
+                        break;
+                    case InterpolationMode.LinearNoPerspective:
+                        inputValue = InterpolationUtility.Linear(
+                            coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
+                            ref v0Value, ref v1Value, ref v2Value);
                         break;
                     default:
-		                throw new NotImplementedException();
-		        }
+                        throw new InvalidOperationException("Unrecognised interpolation mode: " + outputInputBinding.InterpolationMode);
+                }
 
-		        // Set value onto pixel shader input.
-		        result[i] = interpolatedValue;
-
-		        // TODO: Do something different if input parameter is a system value.
+                // Apply component mask so that we don't overwrite other values in this register.
+		        result[outputInputBinding.Register].WriteMaskedValue(
+                    inputValue, outputInputBinding.ComponentMask);
 		    }
+            
 		    return result;
 		}
 	}
