@@ -78,8 +78,8 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
             // If they are, calculate the coverage.
 		    var maxX = screenBounds.MaxX;
 		    var maxY = screenBounds.MaxY;
-			for (int y = startY; y <= maxY; y += 2)
-				for (int x = startX; x <= maxX; x += 2)
+			for (int y = startY; y < maxY; y += 2)
+				for (int x = startX; x < maxX; x += 2)
 				{
 					// First check whether any fragments in this quad are covered. If not, we don't
 					// need to do any (expensive) interpolation of attributes.

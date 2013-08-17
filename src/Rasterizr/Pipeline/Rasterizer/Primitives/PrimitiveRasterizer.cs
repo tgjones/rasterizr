@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
-using SlimShader.Chunks.Shex;
-using SlimShader.Chunks.Shex.Tokens;
-using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Pipeline.Rasterizer.Primitives
 {

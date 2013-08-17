@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.Composition;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
-using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
@@ -29,9 +27,6 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 		private Model _model;
 	    private Matrix _projection;
 
-	    private TracefileGraphicsLogger _logger;
-	    private TextWriter _textWriter;
-
 		public override string Name
 		{
 			get { return "Model Loading"; }
@@ -39,14 +34,11 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 
 		public override void Initialize(Image image)
 		{
-            _textWriter = new StreamWriter("ModelLoading.json");
-            _logger = new TracefileGraphicsLogger(_textWriter, false);
-
             const int width = 600;
 			const int height = 400;
 
 			// Create device and swap chain.
-			var device = new Device(_logger);
+			var device = new Device();
 			_swapChain = new WpfSwapChain(device, width, height);
 			image.Source = _swapChain.Bitmap;
 			_deviceContext = device.ImmediateContext;
@@ -144,7 +136,7 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 
             // Rotate camera
             //var cameraPosition = new Vector3(0, 3, 5.0f);
-            Vector3 cameraPosition = new Vector3(2, 5, 5.0f);
+            Vector3 cameraPosition = new Vector3(0, 20, 2.0f);
             var cameraLookAt = new Vector3(0, 2.0f, 0);
             //Vector4 tempPos = Vector3.Transform(cameraPosition, Matrix.RotationY(0.2f * time.ElapsedTime));
             //cameraPosition = new Vector3(tempPos.X, tempPos.Y, tempPos.Z);
@@ -167,9 +159,6 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 
 			// Present!
 			_swapChain.Present();
-
-            _logger.Flush();
-		    _textWriter.Close();
 
 			base.Draw(time);
 		}

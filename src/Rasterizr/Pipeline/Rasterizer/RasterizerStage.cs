@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer.Primitives;
@@ -68,11 +69,14 @@ namespace Rasterizr.Pipeline.Rasterizer
             foreach (var primitive in inputs)
 			{
                 // TODO: Clipping.
+                // http://simonstechblog.blogspot.tw/2012/04/software-rasterizer-part-2.html#softwareRasterizerDemo
 			    for (int i = 0; i < primitive.Vertices.Length; i++)
 			        PerspectiveDivide(ref primitive.Vertices[i].Position);
 
 			    if (State.Description.CullMode != CullMode.None && rasterizer.ShouldCull(primitive.Vertices))
 			        continue;
+
+                // TODO: Viewport culling.
 
 			    for (int i = 0; i < primitive.Vertices.Length; i++)
 			        ToScreenCoordinates(ref primitive.Vertices[i].Position);
