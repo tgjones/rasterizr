@@ -106,6 +106,7 @@
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Framework\Controls\DebugImage.cs" />
+    <Compile Include="Framework\Design\DesignTimeShellViewModel.cs" />
     <Compile Include="Framework\IShell.cs" />
     <Compile Include="Framework\Services\IResourceLoader.cs" />
     <Compile Include="Framework\Services\ResourceLoader.cs" />
