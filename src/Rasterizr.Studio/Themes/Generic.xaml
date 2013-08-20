@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Rasterizr.Studio.Framework.Controls">
+	<Style TargetType="controls:DebugImage">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="controls:DebugImage">
+					<Grid HorizontalAlignment="Left">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="*" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<Image Grid.Row="0" Source="{TemplateBinding Source}" Stretch="None" />
+						<StackPanel Grid.Row="1" Orientation="Horizontal">
+							<TextBlock>Pixel: </TextBlock>
+							<TextBlock Text="{Binding MousePosition, RelativeSource={RelativeSource TemplatedParent}}" />
+						</StackPanel>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

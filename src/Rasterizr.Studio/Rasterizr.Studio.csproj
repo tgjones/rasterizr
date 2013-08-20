@@ -9,12 +9,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rasterizr.Studio</RootNamespace>
     <AssemblyName>Rasterizr.Studio</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -25,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.5.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
@@ -44,15 +47,43 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\GeminiWpf.0.3.1\lib\net40\Gemini.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net40\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Roslyn.Compilers">
+      <HintPath>..\packages\Roslyn.Compilers.Common.1.2.20906.2\lib\net45\Roslyn.Compilers.dll</HintPath>
+    </Reference>
+    <Reference Include="Roslyn.Compilers.CSharp">
+      <HintPath>..\packages\Roslyn.Compilers.CSharp.1.2.20906.2\lib\net45\Roslyn.Compilers.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.2.5.0\lib\net40\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.D3DCompiler">
+      <HintPath>..\packages\SharpDX.D3DCompiler.2.5.0\lib\net40\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
     <Reference Include="SlimShader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\SlimShader.dll</HintPath>
     </Reference>
+    <Reference Include="SlimShader.Compiler">
+      <HintPath>..\..\lib\SlimShader.Compiler.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimShader.VirtualMachine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\SlimShader.VirtualMachine.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimShader.VirtualMachine.Jitter">
+      <HintPath>..\..\lib\SlimShader.VirtualMachine.Jitter.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -88,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Controls\DebugImage.cs" />
     <Compile Include="Framework\Controls\NearestNeighborImage.cs" />
     <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
     <Compile Include="Framework\Controls\ZoomBorder.cs" />
@@ -117,6 +149,36 @@
     <Compile Include="Modules\GraphicsPixelHistory\Views\GraphicsPixelHistoryView.xaml.cs">
       <DependentUpon>GraphicsPixelHistoryView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\SampleBrowser\ISample.cs" />
+    <Compile Include="Modules\SampleBrowser\Module.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\BasicTriangle\BasicTriangleSample.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\BasicWindow\BasicWindowSample.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\DemoTime.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\ISampleMetadata.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\MiniCubeTexture\MiniCubeTextureSample.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\MiniCube\MiniCubeSample.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\ModelLoading\ModelLoadingSample.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\SampleBase.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\SampleView.xaml.cs">
+      <DependentUpon>SampleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\SampleBrowser\Samples\SampleViewModel.cs" />
+    <Compile Include="Modules\SampleBrowser\Views\SampleBrowserView.xaml.cs">
+      <DependentUpon>SampleBrowserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\SampleBrowser\ViewModels\SampleBrowserViewModel.cs" />
+    <Compile Include="Modules\SampleBrowser\TechDemos\ITechDemoMetadata.cs" />
+    <Compile Include="Modules\SampleBrowser\TechDemos\Resources\TextureMipmapping\MipMapViewModel.cs" />
+    <Compile Include="Modules\SampleBrowser\TechDemos\Resources\TextureMipmapping\TextureMipmappingView.xaml.cs">
+      <DependentUpon>TextureMipmappingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\SampleBrowser\TechDemos\Resources\TextureMipmapping\TextureMipmappingViewModel.cs" />
+    <Compile Include="Modules\SampleBrowser\TechDemos\Resources\TextureSampling\TextureSamplingView.xaml.cs">
+      <DependentUpon>TextureSamplingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\SampleBrowser\TechDemos\Resources\TextureSampling\TextureSamplingViewModel.cs" />
+    <Compile Include="Modules\SampleBrowser\TechDemos\TechDemoViewModel.cs" />
+    <Compile Include="Modules\SampleBrowser\ViewModels\SampleCategoryViewModel.cs" />
     <Compile Include="Modules\Startup\Module.cs" />
     <Compile Include="Modules\TracefileViewer\Design\DesignTimeTracefileViewerViewModel.cs" />
     <Compile Include="Modules\TracefileViewer\EditorProvider.cs" />
@@ -137,6 +199,66 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Modules\SampleBrowser\TechDemos\Resources\TextureMipmapping\window_28.jpg" />
+    <Resource Include="Modules\SampleBrowser\TechDemos\Resources\TextureSampling\CorrodedTiles.png" />
+    <Content Include="Modules\SampleBrowser\Samples\BasicTriangle\MiniTri.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Modules\SampleBrowser\Samples\MiniCubeTexture\GeneticaMortarlessBlocks.jpg" />
+    <Content Include="Modules\SampleBrowser\Samples\MiniCubeTexture\MiniCubeTexture.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\MiniCube\MiniCube.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\ModelLoading.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\00_skap.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_stub.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_St_kp.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_S_ba.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_S_kap.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\kamen-stup.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\kamen.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\prozor1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\reljef.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\sky.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\sp_luk.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\vrata_ko.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\vrata_kr.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\x01_st.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Modules\SampleBrowser\TechDemos\Resources\TextureSampling\Texture.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -144,6 +266,10 @@
     <Content Include="Examples\BasicTriangle.rlog">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\sponza.3ds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -168,7 +294,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Modules\SampleBrowser\Samples\SampleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\SampleBrowser\Views\SampleBrowserView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\SampleBrowser\TechDemos\Resources\TextureMipmapping\TextureMipmappingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\SampleBrowser\TechDemos\Resources\TextureSampling\TextureSamplingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Modules\TracefileViewer\Views\TracefileViewerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -191,6 +337,7 @@
       <Name>Rasterizr</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
