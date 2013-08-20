@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
-using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using Rasterizr.Diagnostics.Logging.ObjectModel;

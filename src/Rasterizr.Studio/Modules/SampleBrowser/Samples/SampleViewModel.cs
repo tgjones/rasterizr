@@ -14,6 +14,28 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 		private float _framePerSecond;
 		private Image _image;
 
+	    private bool _isPaused;
+        public bool IsPaused
+        {
+            get { return _isPaused; }
+            set
+            {
+                _isPaused = value;
+                NotifyOfPropertyChange(() => IsPaused);
+            }
+        }
+
+	    private string _playPauseText = "Pause";
+	    public string PlayPauseText
+	    {
+	        get { return _playPauseText; }
+	        set
+	        {
+	            _playPauseText = value;
+                NotifyOfPropertyChange(() => PlayPauseText);
+	        }
+	    }
+
 		public SampleViewModel(SampleBase sample)
 		{
 			_sample = sample;
@@ -23,10 +45,29 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 			_timer = new DispatcherTimer();
 			_timer.Tick += (sender, e) =>
 			{
+			    if (_isPaused)
+			        return;
+
 				OnUpdate();
 				Render();
 			};
 		}
+
+	    public void TogglePlayPause()
+	    {
+	        if (IsPaused)
+	        {
+	            PlayPauseText = "Pause";
+	            IsPaused = false;
+                _clock.Start();
+            }
+	        else
+	        {
+	            PlayPauseText = "Play";
+	            IsPaused = true;
+	            _clock.Stop();
+	        }
+	    }
 
 		protected override void OnViewLoaded(object view)
 		{
