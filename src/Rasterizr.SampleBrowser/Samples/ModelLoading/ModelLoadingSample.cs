@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using Rasterizr.Pipeline.OutputMerger;
@@ -7,6 +8,7 @@ using Rasterizr.Resources;
 using Rasterizr.Toolkit.Models;
 using SharpDX;
 using SlimShader.Compiler;
+using Buffer = Rasterizr.Resources.Buffer;
 using Viewport = Rasterizr.Pipeline.Rasterizer.Viewport;
 
 namespace Rasterizr.SampleBrowser.Samples.ModelLoading
@@ -128,7 +130,7 @@ namespace Rasterizr.SampleBrowser.Samples.ModelLoading
 				width / (float) height, 0.1f, 100.0f);
 		}
 
-		public override void Draw(DemoTime time)
+        public override void Draw(float time)
 		{
 			// Clear views
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);

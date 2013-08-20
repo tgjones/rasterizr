@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
@@ -86,7 +87,7 @@ namespace Rasterizr.SampleBrowser.Samples.BasicTriangle
 			_deviceContext.OutputMerger.SetTargets(null, _renderTargetView);
 		}
 
-		public override void Draw(DemoTime time)
+        public override void Draw(float time)
 		{
             _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.Black);
 		    _model.Draw(_deviceContext);

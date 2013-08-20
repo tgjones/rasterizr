@@ -5,6 +5,7 @@
         public DesignTimeShellViewModel()
             : base(null, null)
         {
+            
         }
     }
 }

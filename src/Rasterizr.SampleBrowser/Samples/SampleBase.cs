@@ -18,7 +18,7 @@ namespace Rasterizr.SampleBrowser.Samples
 		/// <summary>
 		/// In a derived class, implements logic to update any relevant sample state.
 		/// </summary>
-		public virtual void Update(DemoTime time)
+        public virtual void Update(float time)
 		{
 		}
 
@@ -33,7 +33,7 @@ namespace Rasterizr.SampleBrowser.Samples
 		/// <summary>
 		/// In a derived class, implements logic to render the sample.
 		/// </summary>
-		public virtual void Draw(DemoTime time)
+        public virtual void Draw(float time)
 		{
 		}
 

@@ -43,6 +43,7 @@
     <Compile Include="Format.cs" />
     <Compile Include="FormatHelper.cs" />
     <Compile Include="Math\MathUtility.cs" />
+    <Compile Include="Pipeline\Rasterizer\Culling\ViewportCuller.cs" />
     <Compile Include="Pipeline\Rasterizer\ShaderOutputInputBinding.cs" />
     <Compile Include="Pipeline\Rasterizer\Primitives\Vector3ForCulling.cs" />
     <Compile Include="Pipeline\Rasterizer\ShaderOutputInputBindings.cs" />

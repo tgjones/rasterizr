@@ -25,45 +25,34 @@
 	</Window.Resources>
 	<mahapps:MetroContentControl>
 		<Border Padding="20">
-			<TabControl SelectedIndex="{Binding SelectedTabIndex}">
-				<TabItem Header="Samples">
-					<Border Padding="0,20,0,0">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="200" />
-								<ColumnDefinition Width="40" />
-								<ColumnDefinition Width="*" />
-							</Grid.ColumnDefinitions>
-							<ListBox Grid.Column="0" ItemsSource="{Binding Samples}" DisplayMemberPath="DisplayName"
-									 SelectedItem="{Binding SelectedSample}" />
-							<Border Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="LightGray" HorizontalAlignment="Center" />
-							<ContentControl Grid.Column="2" cal:View.Model="{Binding SelectedSample}" />
-						</Grid>
-					</Border>
-				</TabItem>
-				<TabItem Header="Tech Demos">
-					<Border Padding="0,20,0,0">
-						<Grid>
-							<Grid.Resources>
-								<CollectionViewSource x:Key="GroupedTechDemos" Source="{Binding TechDemos}">
-									<CollectionViewSource.GroupDescriptions>
-										<PropertyGroupDescription PropertyName="Category" />
-									</CollectionViewSource.GroupDescriptions>
-								</CollectionViewSource>
-							</Grid.Resources>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="200" />
-								<ColumnDefinition Width="40" />
-								<ColumnDefinition Width="*" />
-							</Grid.ColumnDefinitions>
-							<ListBox Grid.Column="0" ItemsSource="{Binding Source={StaticResource GroupedTechDemos}}" DisplayMemberPath="DisplayName"
-									 SelectedItem="{Binding SelectedTechDemo}" />
-							<Border Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="LightGray" HorizontalAlignment="Center" />
-							<ContentControl Grid.Column="2" cal:View.Model="{Binding SelectedTechDemo}" />
-						</Grid>
-					</Border>
-				</TabItem>
-			</TabControl>
+            <TabControl ItemsSource="{Binding Items}" SelectedItem="{Binding ActiveItem}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding DisplayName}" Margin="0 0 5 0" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <Border Padding="0,20,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ListBox Grid.Column="0" ItemsSource="{Binding Items}" 
+                                         DisplayMemberPath="DisplayName"
+                                         SelectedItem="{Binding ActiveItem}" />
+                                <Border Grid.Column="1" BorderThickness="1,0,0,0" 
+                                        BorderBrush="LightGray" 
+                                        HorizontalAlignment="Center" />
+                                <ContentControl Grid.Column="2" 
+                                                cal:View.Model="{Binding ActiveItem}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
 		</Border>
 	</mahapps:MetroContentControl>
 </mahapps:MetroWindow>

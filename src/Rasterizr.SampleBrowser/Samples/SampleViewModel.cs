@@ -1,10 +1,11 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Threading;
 using Caliburn.Micro;
+using Rasterizr.SampleBrowser.Framework;
 
 namespace Rasterizr.SampleBrowser.Samples
 {
-	public class SampleViewModel : Screen
+	public class SampleViewModel : Screen, ISample
 	{
 		private readonly SampleBase _sample;
 		private readonly DemoTime _clock = new DemoTime();
@@ -95,7 +96,7 @@ namespace Rasterizr.SampleBrowser.Samples
 		private void OnUpdate()
 		{
 			FrameDelta = (float) _clock.Update();
-			_sample.Update(_clock);
+			_sample.Update(_clock.ElapsedTime);
 		}
 
 		/// <summary>
@@ -113,7 +114,7 @@ namespace Rasterizr.SampleBrowser.Samples
 			}
 
 			_sample.BeginDraw();
-			_sample.Draw(_clock);
+			_sample.Draw(_clock.ElapsedTime);
 			_sample.EndDraw();
 		}
 	}

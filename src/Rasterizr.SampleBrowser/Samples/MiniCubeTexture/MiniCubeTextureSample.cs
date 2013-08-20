@@ -174,16 +174,16 @@ namespace Rasterizr.SampleBrowser.Samples.MiniCubeTexture
 				width / (float) height, 0.1f, 100.0f);
 		}
 
-		public override void Draw(DemoTime time)
+        public override void Draw(float time)
 		{
 			// Clear views
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
             _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.Black);
 
 			// Update WorldViewProj Matrix
-			var worldViewProj = Matrix.RotationX(time.ElapsedTime)
-				* Matrix.RotationY(time.ElapsedTime * 1)
-				* Matrix.RotationZ(time.ElapsedTime * 0.3f)
+			var worldViewProj = Matrix.RotationX(time)
+				* Matrix.RotationY(time * 1)
+				* Matrix.RotationZ(time * 0.3f)
 				* _view * _projection;
 			worldViewProj = Matrix.Transpose(worldViewProj);
 			_constantBuffer.SetData(ref worldViewProj);

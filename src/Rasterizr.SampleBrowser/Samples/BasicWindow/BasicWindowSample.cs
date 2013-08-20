@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
@@ -52,9 +53,9 @@ namespace Rasterizr.SampleBrowser.Samples.BasicWindow
 			_deviceContext.OutputMerger.SetTargets(depthStencilView, _renderTargetView);
 		}
 
-		public override void Draw(DemoTime time)
+        public override void Draw(float time)
 		{
-            _deviceContext.ClearRenderTargetView(_renderTargetView, new Color4((float) (time.ElapsedTime / 5.0) % 1.0f, 0, 0, 1));
+            _deviceContext.ClearRenderTargetView(_renderTargetView, new Color4((float) (time / 5.0) % 1.0f, 0, 0, 1));
 			_swapChain.Present();
 		}
 	}

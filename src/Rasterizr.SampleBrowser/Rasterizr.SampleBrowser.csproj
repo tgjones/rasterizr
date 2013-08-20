@@ -105,9 +105,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="FrameAnalysis\FrameAnalyzerView.xaml.cs">
+      <DependentUpon>FrameAnalyzerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FrameAnalysis\FrameAnalyzerViewModel.cs" />
     <Compile Include="Framework\Controls\DebugImage.cs" />
     <Compile Include="Framework\Design\DesignTimeShellViewModel.cs" />
+    <Compile Include="Framework\ISample.cs" />
     <Compile Include="Framework\IShell.cs" />
+    <Compile Include="Framework\SampleCategoryViewModel.cs" />
     <Compile Include="Framework\Services\IResourceLoader.cs" />
     <Compile Include="Framework\Services\ResourceLoader.cs" />
     <Compile Include="Samples\BasicTriangle\BasicTriangleSample.cs" />
@@ -124,6 +130,10 @@
     </Compile>
     <Compile Include="TechDemos\Resources\TextureMipmapping\TextureMipmappingViewModel.cs" />
     <Compile Include="TechDemos\TechDemoViewModel.cs" />
+    <Page Include="FrameAnalysis\FrameAnalyzerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Framework\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.InputAssembler;
+using Rasterizr.Pipeline.Rasterizer.Culling;
 using Rasterizr.Pipeline.Rasterizer.Primitives;
 using SlimShader;
 using SlimShader.Chunks.Xsgn;
@@ -68,15 +70,19 @@ namespace Rasterizr.Pipeline.Rasterizer
 
             foreach (var primitive in inputs)
 			{
+                // Cull primitives that are outside view frustum.
+			    if (ViewportCuller.ShouldCullTriangle(primitive.Vertices))
+			        continue;
+
                 // TODO: Clipping.
                 // http://simonstechblog.blogspot.tw/2012/04/software-rasterizer-part-2.html#softwareRasterizerDemo
+
 			    for (int i = 0; i < primitive.Vertices.Length; i++)
 			        PerspectiveDivide(ref primitive.Vertices[i].Position);
 
+                // Backface culling.
 			    if (State.Description.CullMode != CullMode.None && rasterizer.ShouldCull(primitive.Vertices))
 			        continue;
-
-                // TODO: Viewport culling.
 
 			    for (int i = 0; i < primitive.Vertices.Length; i++)
 			        ToScreenCoordinates(ref primitive.Vertices[i].Position);
