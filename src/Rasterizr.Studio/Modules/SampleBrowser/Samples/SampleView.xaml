@@ -18,7 +18,15 @@
                 <Button Content="{Binding PlayPauseText, FallbackValue='Pause'}" 
                         Width="50" Margin="0 0 5 0" 
                         cal:Message.Attach="TogglePlayPause" />
-                <Button Content="Debug" Width="50" IsEnabled="{Binding IsPaused}" />
+                <Button Content="Step Backward" Width="100" Margin="0 0 5 0" 
+                        IsEnabled="{Binding IsPaused}"
+                        cal:Message.Attach="StepBackward" />
+                <Button Content="Step Forward" Width="100" Margin="0 0 5 0" 
+                        IsEnabled="{Binding IsPaused}"
+                        cal:Message.Attach="StepForward" />
+                <Button Content="Capture Next Frame" Width="120" 
+                        IsEnabled="{Binding IsPaused}"
+                        cal:Message.Attach="CaptureFrame"/>
             </StackPanel>
         </Border>
         <TextBlock Grid.Row="2" Padding="5"

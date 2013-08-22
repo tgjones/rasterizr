@@ -6,10 +6,12 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 {
 	public class SampleViewModel : Screen, ISample
 	{
+	    private const float TimeStep = (1000.0f / 60) / 1000.0f;
+
 		private readonly SampleBase _sample;
-		private readonly DemoTime _clock = new DemoTime();
-		private float _frameAccumulator;
-		private int _frameCount;
+		private readonly DemoTime _clock;
+	    private readonly FpsCounter _fpsCounter;
+		private float _totalTime;
 		private readonly DispatcherTimer _timer;
 		private float _framePerSecond;
 		private Image _image;
@@ -39,6 +41,8 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 		public SampleViewModel(SampleBase sample)
 		{
 			_sample = sample;
+		    _clock = new DemoTime();
+		    _fpsCounter = new FpsCounter(_clock);
 
 		    DisplayName = sample.Name;
 
@@ -48,8 +52,13 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 			    if (_isPaused)
 			        return;
 
-				OnUpdate();
-				Render();
+			    _clock.Update();
+			    _totalTime += _clock.DeltaTime;
+                
+                _fpsCounter.Update();
+                FramePerSecond = _fpsCounter.FramesPerSecond;
+
+                Render();
 			};
 		}
 
@@ -69,9 +78,26 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 	        }
 	    }
 
+        public void StepBackward()
+        {
+            _totalTime -= TimeStep;
+            Render();
+        }
+
+	    public void StepForward()
+	    {
+	        _totalTime += TimeStep;
+	        Render();
+	    }
+
+	    public void CaptureFrame()
+	    {
+	        
+	    }
+
 		protected override void OnViewLoaded(object view)
 		{
-			_image = ((SampleView)view).Image;
+			_image = ((SampleView) view).Image;
 			Activate();
 
 			base.OnViewLoaded(view);
@@ -82,7 +108,6 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 			_clock.Start();
 
 			_sample.Initialize(_image);
-			_sample.BeginRun();
 
 			_timer.Start();
 		}
@@ -100,18 +125,10 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 		protected override void OnDeactivate(bool close)
 		{
 			_timer.Stop();
-
-			_sample.EndRun();
-
 			_clock.Stop();
 
 			base.OnDeactivate(close);
 		}
-
-		/// <summary>
-		/// Gets the number of seconds passed since the last frame.
-		/// </summary>
-		public float FrameDelta { get; private set; }
 
 		/// <summary>
 		/// Gets the number of frames per second.
@@ -127,31 +144,11 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 		}
 
 		/// <summary>
-		///   Updates sample state.
-		/// </summary>
-		private void OnUpdate()
-		{
-			FrameDelta = (float) _clock.Update();
-			_sample.Update(_clock.ElapsedTime);
-		}
-
-		/// <summary>
-		///   Renders the sample.
+		/// Renders the sample.
 		/// </summary>
 		private void Render()
 		{
-			_frameAccumulator += FrameDelta;
-			++_frameCount;
-			if (_frameAccumulator >= 1.0f)
-			{
-				FramePerSecond = _frameCount / _frameAccumulator;
-				_frameAccumulator = 0.0f;
-				_frameCount = 0;
-			}
-
-			_sample.BeginDraw();
-			_sample.Draw(_clock.ElapsedTime);
-			_sample.EndDraw();
+			_sample.Draw(_totalTime);
 		}
 	}
 }

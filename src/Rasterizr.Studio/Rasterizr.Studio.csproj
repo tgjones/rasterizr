@@ -154,6 +154,7 @@
     <Compile Include="Modules\SampleBrowser\Samples\BasicTriangle\BasicTriangleSample.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\BasicWindow\BasicWindowSample.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\DemoTime.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\FpsCounter.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\ISampleMetadata.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\MiniCubeTexture\MiniCubeTextureSample.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\MiniCube\MiniCubeSample.cs" />

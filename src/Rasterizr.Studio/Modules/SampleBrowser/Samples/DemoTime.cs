@@ -2,12 +2,14 @@
 
 namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 {
-	public class DemoTime
+	internal class DemoTime
 	{
 		private readonly Stopwatch _stopwatch;
-		private double _lastUpdate;
+	    private float _lastElapsedTime;
 
-		public DemoTime()
+	    public float DeltaTime { get; private set; }
+
+	    public DemoTime()
 		{
 			_stopwatch = new Stopwatch();
 		}
@@ -15,7 +17,6 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 		public void Start()
 		{
 			_stopwatch.Start();
-			_lastUpdate = 0;
 		}
 
 		public void Stop()
@@ -23,17 +24,11 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 			_stopwatch.Stop();
 		}
 
-		public double Update()
-		{
-			double now = ElapsedTime;
-			double updateTime = now - _lastUpdate;
-			_lastUpdate = now;
-			return updateTime;
-		}
-
-		public float ElapsedTime
-		{
-			get { return _stopwatch.ElapsedMilliseconds * 0.001f; }
-		}
+	    public void Update()
+	    {
+	        var thisTime = _stopwatch.ElapsedMilliseconds * 0.001f;
+            DeltaTime = thisTime - _lastElapsedTime;
+	        _lastElapsedTime = thisTime;
+	    }
 	}
 }

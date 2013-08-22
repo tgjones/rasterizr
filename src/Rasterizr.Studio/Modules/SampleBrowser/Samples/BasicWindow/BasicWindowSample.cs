@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Controls;
+using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
@@ -20,13 +21,13 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.BasicWindow
 			get { return "Basic Window"; }
 		}
 
-		public override void Initialize(Image image)
+        public override void Initialize(Image image, params GraphicsLogger[] loggers)
 		{
 			const int width = 600;
 			const int height = 400;
 
 			// Create device and swap chain.
-			var device = new Device();
+			var device = new Device(loggers);
 			_swapChain = new WpfSwapChain(device, width, height);
 			image.Source = _swapChain.Bitmap;
 
