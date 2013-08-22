@@ -2,23 +2,25 @@
 {
     internal class FpsCounter
     {
-        private readonly DemoTime _clock;
-
+        private readonly SampleClock _clock;
+        private float _lastElapsedTime;
         private float _frameAccumulator;
         private int _frameCount;
 
         public float FramesPerSecond { get; private set; }
 
-        public FpsCounter(DemoTime clock)
+        public FpsCounter(SampleClock clock)
         {
             _clock = clock;
         }
 
         public void Update()
         {
-            var frameDelta = _clock.DeltaTime;
+            var thisTime = _clock.TotalTime;
+            var deltaTime = thisTime - _lastElapsedTime;
+            _lastElapsedTime = thisTime;
 
-            _frameAccumulator += frameDelta;
+            _frameAccumulator += deltaTime;
             ++_frameCount;
             if (_frameAccumulator >= 1.0f)
             {

@@ -9,7 +9,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 	    private const float TimeStep = (1000.0f / 60) / 1000.0f;
 
 		private readonly SampleBase _sample;
-		private readonly DemoTime _clock;
+		private readonly SampleClock _clock;
 	    private readonly FpsCounter _fpsCounter;
 		private float _totalTime;
 		private readonly DispatcherTimer _timer;
@@ -41,7 +41,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 		public SampleViewModel(SampleBase sample)
 		{
 			_sample = sample;
-		    _clock = new DemoTime();
+		    _clock = new SampleClock();
 		    _fpsCounter = new FpsCounter(_clock);
 
 		    DisplayName = sample.Name;
@@ -52,8 +52,9 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 			    if (_isPaused)
 			        return;
 
-			    _clock.Update();
-			    _totalTime += _clock.DeltaTime;
+			    var realTime = _clock.TotalTime;
+			    while (_totalTime < realTime)
+			        _totalTime += TimeStep;
                 
                 _fpsCounter.Update();
                 FramePerSecond = _fpsCounter.FramesPerSecond;
@@ -80,12 +81,14 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 
         public void StepBackward()
         {
+            _clock.ManuallySteppedTime -= TimeStep;
             _totalTime -= TimeStep;
             Render();
         }
 
 	    public void StepForward()
 	    {
+            _clock.ManuallySteppedTime += TimeStep;
 	        _totalTime += TimeStep;
 	        Render();
 	    }
