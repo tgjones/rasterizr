@@ -32,7 +32,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-						<Image Source="{Binding Image}" ToolTip="{Binding Number, StringFormat='Frame {0}'}" />
+						<Image Source="{Binding Image}" Height="110" ToolTip="{Binding Number, StringFormat='Frame {0}'}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
