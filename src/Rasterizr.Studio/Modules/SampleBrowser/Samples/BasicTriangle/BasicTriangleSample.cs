@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Composition;
-using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
@@ -26,7 +26,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.BasicTriangle
 			get { return "Basic Triangle"; }
 		}
 
-        public override void Initialize(Image image, params GraphicsLogger[] loggers)
+        public override WriteableBitmap Initialize(params GraphicsLogger[] loggers)
 		{
 			const int width = 600;
 			const int height = 400;
@@ -34,7 +34,6 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.BasicTriangle
 			// Create device and swap chain.
 			var device = new Device(loggers);
 			_swapChain = new WpfSwapChain(device, width, height);
-			image.Source = _swapChain.Bitmap;
 			_deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
@@ -85,6 +84,8 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.BasicTriangle
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, width, height, 0.0f, 1.0f));
 			_deviceContext.PixelShader.Shader = pixelShader;
 			_deviceContext.OutputMerger.SetTargets(null, _renderTargetView);
+
+            return _swapChain.Bitmap;
 		}
 
         public override void Draw(float time)

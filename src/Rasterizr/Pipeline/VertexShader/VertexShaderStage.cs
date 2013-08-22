@@ -9,6 +9,11 @@ namespace Rasterizr.Pipeline.VertexShader
 	{
 		private int? _outputPositionRegister;
 
+        protected override OperationType SetConstantBuffersOperationType
+        {
+            get { return OperationType.VertexShaderStageSetConstantBuffers; }
+        }
+
 		public VertexShaderStage(Device device)
 			: base(device)
 		{

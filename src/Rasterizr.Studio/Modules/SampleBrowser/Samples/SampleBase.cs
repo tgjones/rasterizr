@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows.Media.Imaging;
 using Rasterizr.Diagnostics;
 
 namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
@@ -10,7 +10,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 		/// <summary>
 		/// In a derived class, implements logic to initialize the sample.
 		/// </summary>
-		public abstract void Initialize(Image image, params GraphicsLogger[] loggers);
+		public abstract WriteableBitmap Initialize(params GraphicsLogger[] loggers);
 
 		/// <summary>
 		/// In a derived class, implements logic to render the sample.

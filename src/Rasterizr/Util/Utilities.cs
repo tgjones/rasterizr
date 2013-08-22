@@ -56,6 +56,18 @@
 			}
 		}
 
+        public static byte[] ToByteArray<T>(ref T source)
+            where T : struct
+        {
+            var destination = new byte[SizeOf<T>()];
+            unsafe
+            {
+                fixed (byte* pBuffer = &destination[0])
+                    Interop.Write(pBuffer, ref source);
+            }
+            return destination;
+        }
+
 		public static void FromByteArray<T>(T[] destination, int destinationOffset, byte[] source, int sourceOffset, int countInBytes)
 			where T : struct
 		{

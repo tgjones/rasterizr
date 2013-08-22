@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="500">
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
@@ -24,9 +24,9 @@
                 <Button Content="Step Forward" Width="100" Margin="0 0 5 0" 
                         IsEnabled="{Binding IsPaused}"
                         cal:Message.Attach="StepForward" />
-                <Button Content="Capture Next Frame" Width="120" 
+                <Button Content="Analyze Last Frame" Width="130" 
                         IsEnabled="{Binding IsPaused}"
-                        cal:Message.Attach="CaptureFrame"/>
+                        cal:Message.Attach="AnalyzeLastFrame"/>
             </StackPanel>
         </Border>
         <TextBlock Grid.Row="2" Padding="5"

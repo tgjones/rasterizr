@@ -12,17 +12,22 @@ namespace Rasterizr.Pipeline.PixelShader
 	{
 		private int _outputColorRegister;
 
-		protected override int BatchSize
+	    protected override int BatchSize
 		{
 			get { return 32; }
 		}
 
-		public PixelShaderStage(Device device)
+	    protected override OperationType SetConstantBuffersOperationType
+	    {
+	        get { return OperationType.PixelShaderStageSetConstantBuffers; }
+	    }
+
+	    public PixelShaderStage(Device device)
 			: base(device)
 		{
 		}
 
-		protected override void OnShaderChanged(PixelShader shader)
+	    protected override void OnShaderChanged(PixelShader shader)
 		{
 			Device.Loggers.BeginOperation(OperationType.PixelShaderStageSetShader, shader);
 

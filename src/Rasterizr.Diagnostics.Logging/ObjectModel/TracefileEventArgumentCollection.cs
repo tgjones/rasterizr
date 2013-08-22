@@ -31,5 +31,12 @@ namespace Rasterizr.Diagnostics.Logging.ObjectModel
 			}
 			return (T) this[index];
 		}
+
+	    public T Get<T>(Device device, int index)
+            where T : DeviceChild
+	    {
+	        var id = Get<int>(index);
+	        return device.GetDeviceChild<T>(id);
+	    }
 	}
 }

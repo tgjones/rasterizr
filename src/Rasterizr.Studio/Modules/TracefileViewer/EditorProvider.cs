@@ -29,9 +29,7 @@ namespace Rasterizr.Studio.Modules.TracefileViewer
 			using (var reader = new StreamReader(File.OpenRead(path)))
 			{
 				var tracefile = Tracefile.FromTextReader(reader);
-				var result = new TracefileViewerViewModel(_selectionService, path, tracefile);
-				result.SelectedFrame = result.Frames[0];
-				return result;
+				return new TracefileViewerViewModel(_selectionService, path, tracefile);
 			}
 		}
 	}

@@ -53,7 +53,10 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 
 		private void OnSelectedEventChanged(object sender, TracefileEventChangedEventArgs e)
 		{
-			Task.Factory.StartNew(() =>
+		    if (_selectionService.SelectedEvent == null)
+		        return;
+
+		    Task.Factory.StartNew(() =>
 			{
 				WpfSwapChain swapChain = null;
 				var replayer = new Replayer(_frame, _selectionService.SelectedEvent.Model, (d, desc) =>

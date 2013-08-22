@@ -16,6 +16,7 @@
 		DeviceContextDrawInstanced,
 		DeviceCreate,
 		GeometryShaderStageSetShader,
+        GeometryShaderStageSetConstantBuffers,
 		InputAssemblerStageSetIndexBuffer,
 		InputAssemblerStageSetInputLayout,
 		InputAssemblerStageSetPrimitiveTopology,
@@ -23,6 +24,7 @@
 		InputLayoutCreate,
 		OutputMergerStageSetTargets,
 		PixelShaderStageSetShader,
+        PixelShaderStageSetConstantBuffers,
 		RasterizerStageSetViewports,
 		RasterizerStateCreate,
 		CreateRenderTargetView,
@@ -34,5 +36,7 @@
 		CreateTexture2D,
 		CreateTexture3D,
 		VertexShaderStageSetShader,
+        VertexShaderStageSetConstantBuffers,
+        BufferSetData
 	}
 }

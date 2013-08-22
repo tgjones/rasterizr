@@ -19,10 +19,12 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 		public void EndToEndTest()
 		{	
 			// Arrange.
-			var stringWriter = new StringWriter();
-			var logger = new TracefileGraphicsLogger(stringWriter, false);
+			var logger = new TracefileGraphicsLogger(false);
 			var expectedData = RenderScene(logger);
-			logger.Flush();
+
+            var stringWriter = new StringWriter();
+			logger.WriteTo(stringWriter);
+
 			var loggedJson = stringWriter.ToString();
 			var logReader = new StringReader(loggedJson);
 			var tracefile = Tracefile.FromTextReader(logReader);

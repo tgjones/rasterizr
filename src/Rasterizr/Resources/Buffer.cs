@@ -1,4 +1,5 @@
-﻿using Rasterizr.Util;
+﻿using Rasterizr.Diagnostics;
+using Rasterizr.Util;
 
 namespace Rasterizr.Resources
 {
@@ -48,22 +49,22 @@ namespace Rasterizr.Resources
 			GetData(data, 0, _data.Length * Utilities.SizeOf<T>());
 		}
 
-		public void SetData<T>(T[] data, int startIndex)
-			where T : struct
-		{
-			Utilities.ToByteArray(data, _data, startIndex);
-		}
+        //public void SetData<T>(T[] data, int startIndex = 0)
+        //    where T : struct
+        //{
+        //    Utilities.ToByteArray(data, _data, startIndex);
+        //}
 
 		public void SetData<T>(ref T data, int offsetInBytes = 0)
 			where T : struct
 		{
-            Utilities.ToByteArray(ref data, _data, offsetInBytes);
+            SetData(Utilities.ToByteArray(ref data), offsetInBytes);
 		}
 
-		public void SetData<T>(T[] data)
-			where T : struct
-		{
-			SetData(data, 0);
-		}
+	    public void SetData(byte[] data, int offsetInBytes = 0)
+	    {
+            Device.Loggers.BeginOperation(OperationType.BufferSetData, ID, data, offsetInBytes);
+	        Utilities.ToByteArray(data, _data, offsetInBytes);
+	    }
 	}
 }

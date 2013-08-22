@@ -24,6 +24,11 @@ namespace Rasterizr.Pipeline.GeometryShader
 			get { return Shader != null; }
 		}
 
+        protected override OperationType SetConstantBuffersOperationType
+        {
+            get { return OperationType.GeometryShaderStageSetConstantBuffers; }
+        }
+
 		public GeometryShaderStage(Device device)
 			: base(device)
 		{

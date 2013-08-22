@@ -67,7 +67,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 
 		public void SetIndexBuffer(Buffer indexBuffer, Format format, int offset)
 		{
-			_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetInputLayout, indexBuffer, format, offset);
+			_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetIndexBuffer, indexBuffer, format, offset);
 			if (format != Format.R16_UInt && format != Format.R32_UInt)
 				throw new ArgumentOutOfRangeException("format");
 			_indexBufferBinding = new IndexBufferBinding(indexBuffer, format, offset);

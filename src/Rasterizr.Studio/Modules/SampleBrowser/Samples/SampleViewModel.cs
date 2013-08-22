@@ -1,6 +1,13 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.IO;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using Caliburn.Micro;
+using Gemini.Framework.Services;
+using Rasterizr.Diagnostics.Logging;
+using Rasterizr.Diagnostics.Logging.ObjectModel;
+using Rasterizr.Studio.Modules.GraphicsDebugging;
+using Rasterizr.Studio.Modules.TracefileViewer.ViewModels;
 
 namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 {
@@ -8,7 +15,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 	{
 	    private const float TimeStep = (1000.0f / 60) / 1000.0f;
 
-		private readonly SampleBase _sample;
+	    private readonly SampleBase _sample;
 		private readonly SampleClock _clock;
 	    private readonly FpsCounter _fpsCounter;
 		private float _totalTime;
@@ -40,7 +47,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 
 		public SampleViewModel(SampleBase sample)
 		{
-			_sample = sample;
+		    _sample = sample;
 		    _clock = new SampleClock();
 		    _fpsCounter = new FpsCounter(_clock);
 
@@ -93,9 +100,28 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 	        Render();
 	    }
 
-	    public void CaptureFrame()
+        public void AnalyzeLastFrame()
 	    {
-	        
+	        // Create new instance of sample object.
+	        var newSample = (SampleBase) Activator.CreateInstance(_sample.GetType());
+
+            // Create logger.
+            var logger = new TracefileGraphicsLogger(false);
+
+            // Initialize and draw.
+            newSample.Initialize(logger);
+            newSample.Draw(_totalTime);
+
+            // Serialize and deserialize tracefile.
+            var textWriter = new StringWriter();
+            logger.WriteTo(textWriter);
+            var tracefile = Tracefile.FromTextReader(new StringReader(textWriter.ToString()));
+
+            var tracefileDocument = new TracefileViewerViewModel(
+                IoC.Get<ISelectionService>(), 
+                "[Sample " + _sample.Name + "]",
+                tracefile);
+            IoC.Get<IShell>().OpenDocument(tracefileDocument);
 	    }
 
 		protected override void OnViewLoaded(object view)
@@ -110,7 +136,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 		{
 			_clock.Start();
 
-			_sample.Initialize(_image);
+			_image.Source = _sample.Initialize();
 
 			_timer.Start();
 		}

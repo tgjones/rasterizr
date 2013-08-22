@@ -108,6 +108,7 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 			_hasSelectedPixel = false;
 
 		    DisplayName = Path.GetFileName(fileName);
+		    SelectedFrame = _tracefile.Frames[0];
 		}
 	}
 }

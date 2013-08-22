@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
-using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Platform.Wpf;
@@ -34,7 +34,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 			get { return "Model Loading"; }
 		}
 
-        public override void Initialize(Image image, params GraphicsLogger[] loggers)
+        public override WriteableBitmap Initialize(params GraphicsLogger[] loggers)
 		{
             const int width = 600;
 			const int height = 400;
@@ -42,7 +42,6 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 			// Create device and swap chain.
 			var device = new Device(loggers);
 			_swapChain = new WpfSwapChain(device, width, height);
-			image.Source = _swapChain.Bitmap;
 			_deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
@@ -128,6 +127,8 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 			// Prepare matrices
 			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, 
 				width / (float) height, 0.1f, 100.0f);
+
+            return _swapChain.Bitmap;
 		}
 
         public override void Draw(float time)

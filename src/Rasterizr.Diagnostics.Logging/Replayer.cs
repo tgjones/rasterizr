@@ -36,7 +36,7 @@ namespace Rasterizr.Diagnostics.Logging
 			_frame = frame;
 			_lastEvent = lastEvent;
 			_createSwapChainCallback = createSwapChainCallback;
-			_logger = new TracefileGraphicsLogger(new StringWriter(), includePixelEvents);
+			_logger = new TracefileGraphicsLogger(includePixelEvents);
 		}
 
 		public void Replay()
@@ -57,6 +57,10 @@ namespace Rasterizr.Diagnostics.Logging
 					case OperationType.CreateDepthStencilState :
 						_device.CreateDepthStencilState(args.Get<DepthStencilStateDescription>(0));
 						break;
+                    case OperationType.CreateDepthStencilView:
+                        _device.CreateDepthStencilView(_device.GetDeviceChild<Resource>(args.Get<int>(0)), 
+                            args.Get<DepthStencilViewDescription?>(1));
+                        break;
 					case OperationType.DeviceCreate:
 						_device = new Device(_logger);
 						_deviceContext = _device.ImmediateContext;
@@ -66,7 +70,7 @@ namespace Rasterizr.Diagnostics.Logging
 						break;
 					case OperationType.DeviceContextClearDepthStencilView:
 						_deviceContext.ClearDepthStencilView(
-							_device.GetDeviceChild<DepthStencilView>(args.Get<int>(0)),
+							args.Get<DepthStencilView>(_device, 0),
 							args.Get<DepthStencilClearFlags>(1),
 							args.Get<float>(2),
 							args.Get<byte>(3));
@@ -83,7 +87,7 @@ namespace Rasterizr.Diagnostics.Logging
 						_deviceContext.DrawIndexed(args.Get<int>(0), args.Get<int>(1), args.Get<int>(2));
 						break;
 					case OperationType.InputAssemblerStageSetInputLayout:
-						_deviceContext.InputAssembler.InputLayout = _device.GetDeviceChild<InputLayout>(args.Get<int>(0));
+						_deviceContext.InputAssembler.InputLayout = args.Get<InputLayout>(_device, 0);
 						break;
 					case OperationType.InputAssemblerStageSetPrimitiveTopology:
 						_deviceContext.InputAssembler.PrimitiveTopology = args.Get<PrimitiveTopology>(0);
@@ -99,26 +103,26 @@ namespace Rasterizr.Diagnostics.Logging
 								}).ToArray());
 						break;
 					case OperationType.InputAssemblerStageSetIndexBuffer:
-						_deviceContext.InputAssembler.SetIndexBuffer(_device.GetDeviceChild<Buffer>(args.Get<int>(0)),
+						_deviceContext.InputAssembler.SetIndexBuffer(args.Get<Buffer>(_device, 0),
 							args.Get<Format>(1), args.Get<int>(2));
 						break;
 					case OperationType.InputLayoutCreate :
 						_device.CreateInputLayout(args.Get<InputElement[]>(0), args.Get<byte[]>(1));
 						break;
 					case OperationType.CreateRenderTargetView :
-						_device.CreateRenderTargetView(_device.GetDeviceChild<Texture2D>(args.Get<int>(0)),
+						_device.CreateRenderTargetView(args.Get<Texture2D>(_device, 0),
 							args.Get<RenderTargetViewDescription?>(1));
 						break;
 					case OperationType.OutputMergerStageSetTargets :
-						var depthStencilView = (args.Get<int?>(0) != null) ?
-							_device.GetDeviceChild<DepthStencilView>(args.Get<int>(0)) 
+						var depthStencilView = (args.Get<object>(0) != null) ?
+							args.Get<DepthStencilView>(_device, 0) 
 							: null;
 						_deviceContext.OutputMerger.SetTargets(depthStencilView,
 							args.Get<SerializedDeviceChildArray>(1).IDs
 								.Select(x => _device.GetDeviceChild<RenderTargetView>(x)).ToArray());
 						break;
 					case OperationType.PixelShaderStageSetShader:
-						_deviceContext.PixelShader.Shader = _device.GetDeviceChild<PixelShader>(args.Get<int>(0));
+                        _deviceContext.PixelShader.Shader = args.Get<PixelShader>(_device, 0);
 						break;
 					case OperationType.CreatePixelShader:
 						_device.CreatePixelShader(args.Get<byte[]>(0));
@@ -141,12 +145,28 @@ namespace Rasterizr.Diagnostics.Logging
 						_device.CreateTexture2D(args.Get<Texture2DDescription>(0));
 						break;
 					case OperationType.VertexShaderStageSetShader:
-						_deviceContext.VertexShader.Shader = _device.GetDeviceChild<VertexShader>(args.Get<int>(0));
+                        _deviceContext.VertexShader.Shader = args.Get<VertexShader>(_device, 0);
 						break;
 					case OperationType.CreateVertexShader :
 						_device.CreateVertexShader(args.Get<byte[]>(0));
 						break;
-					default:
+                    case OperationType.VertexShaderStageSetConstantBuffers :
+				        _deviceContext.VertexShader.SetConstantBuffers(args.Get<int>(0),
+				            args.Get<SerializedDeviceChildArray>(1).IDs
+				                .Select(x => _device.GetDeviceChild<Buffer>(x)).ToArray());
+				        break;
+                    case OperationType.PixelShaderStageSetConstantBuffers:
+				        _deviceContext.PixelShader.SetConstantBuffers(args.Get<int>(0),
+				            args.Get<SerializedDeviceChildArray>(1).IDs
+				                .Select(x => _device.GetDeviceChild<Buffer>(x)).ToArray());
+                        break;
+                    case OperationType.BufferSetData:
+				    {
+				        var buffer = _device.GetDeviceChild<Buffer>(args.Get<int>(0));
+                        buffer.SetData(args.Get<byte[]>(1), args.Get<int>(2));
+				        break;
+				    }
+				    default:
 						throw new ArgumentOutOfRangeException();
 				}
 

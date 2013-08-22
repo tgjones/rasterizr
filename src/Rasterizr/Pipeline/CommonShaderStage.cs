@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using Rasterizr.Diagnostics;
 using Rasterizr.Resources;
 using SlimShader;
 using SlimShader.Chunks.Rdef;
-using SlimShader.Chunks.Shex;
 using SlimShader.Chunks.Xsgn;
 using SlimShader.VirtualMachine;
 using SlimShader.VirtualMachine.Registers;
@@ -68,9 +68,13 @@ namespace Rasterizr.Pipeline
 
 		public void SetConstantBuffers(int startSlot, params Buffer[] constantBuffers)
 		{
+            _device.Loggers.BeginOperation(SetConstantBuffersOperationType, startSlot, constantBuffers);
 			for (int i = 0; i < constantBuffers.Length; i++)
 				_constantBuffers[i + startSlot] = constantBuffers[i];
 		}
+
+        // TODO: Not nice.
+        protected abstract OperationType SetConstantBuffersOperationType { get; }
 
 		public void GetSamplers(int startSlot, int count, SamplerState[] samplers)
 		{

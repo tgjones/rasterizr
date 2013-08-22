@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
@@ -9,7 +10,6 @@ namespace Rasterizr.Diagnostics.Logging
 {
 	public class TracefileGraphicsLogger : GraphicsLogger
 	{
-		private readonly TextWriter _textWriter;
 		private readonly bool _includePixelEvents;
 		private readonly Tracefile _tracefile;
 		private TracefileFrame _currentFrame;
@@ -17,12 +17,11 @@ namespace Rasterizr.Diagnostics.Logging
 		private int _frameNumber;
 		private int _operationNumber;
 
-		public TracefileGraphicsLogger(TextWriter textWriter, bool includePixelEvents)
-		{
-			_textWriter = textWriter;
-			_includePixelEvents = includePixelEvents;
-			_tracefile = new Tracefile();
-		}
+        public TracefileGraphicsLogger(bool includePixelEvents)
+        {
+            _includePixelEvents = includePixelEvents;
+            _tracefile = new Tracefile();
+        }
 
 		protected override void BeginOperation(OperationType type, params object[] methodArguments)
 		{
@@ -89,9 +88,9 @@ namespace Rasterizr.Diagnostics.Logging
 				});
 		}
 
-		public void Flush()
+		public void WriteTo(TextWriter textWriter)
 		{
-			_tracefile.Save(_textWriter);
+            _tracefile.Save(textWriter);
 		}
 	}
 }
