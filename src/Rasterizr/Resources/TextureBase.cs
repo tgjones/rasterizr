@@ -32,7 +32,7 @@ namespace Rasterizr.Resources
 			
 		}
 
-        public abstract Number4[] GetData(int subresource);
-        public abstract void SetData(int subresource, Number4[] data);
+        public abstract Color4[] GetData(int subresource);
+        public abstract void SetData(int subresource, Color4[] data);
 	}
 }

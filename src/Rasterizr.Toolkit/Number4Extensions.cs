@@ -4,9 +4,9 @@ namespace Rasterizr.Toolkit
 {
     public static class Number4Extensions
     {
-        public static Color4 ToColor4(this Number4 value)
+        public static Color ToColor(this Number4 value)
         {
-            return new Color4(
+            return new Color(
                 (byte) (value.R * 255.0f),
                 (byte) (value.G * 255.0f),
                 (byte) (value.B * 255.0f),

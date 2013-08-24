@@ -1,5 +1,4 @@
 ﻿using Rasterizr.Resources;
-using SlimShader;
 
 namespace Rasterizr.Toolkit
 {
@@ -13,13 +12,13 @@ namespace Rasterizr.Toolkit
 				Height = height,
 				ArraySize = 1
 			});
-			var data = new Number4[width * height];
+            var data = new Color4[width * height];
 			bool black = false;
 			for (int y = 0; y < height; y++)
 			{
 				for (int x = 0; x < width; x++)
 				{
-					data[(y * width) + x] = (black) ? new Number4(0, 0, 0, 1) : new Number4(1, 1, 1, 1);
+                    data[(y * width) + x] = (black) ? new Color4(0, 0, 0, 1) : new Color4(1, 1, 1, 1);
 					if (x % 8 == 0)
 						black = !black;
 				}

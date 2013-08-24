@@ -170,6 +170,12 @@ namespace Rasterizr.Diagnostics.Logging
                         buffer.SetData(args.Get<byte[]>(1), args.Get<int>(2));
 				        break;
 				    }
+                    case OperationType.Texture2DSetData:
+                    {
+                        var texture = _device.GetDeviceChild<Texture2D>(args.Get<int>(0));
+                        texture.SetData(args.Get<int>(1), args.Get<Color4[]>(2));
+                        break;
+                    }
 				    default:
 						throw new ArgumentOutOfRangeException();
 				}

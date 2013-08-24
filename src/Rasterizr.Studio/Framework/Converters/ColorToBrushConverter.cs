@@ -13,8 +13,8 @@ namespace Rasterizr.Studio.Framework.Converters
 			if (value == null)
 				return null;
 
-			var color = ((ColorViewModel) value).Color.ToColor4();
-			return new SolidColorBrush(Color.FromArgb(
+			var color = ((ColorViewModel) value).Color.ToColor();
+			return new SolidColorBrush(System.Windows.Media.Color.FromArgb(
 				color.A, color.R, color.G, color.B));
 		}
 

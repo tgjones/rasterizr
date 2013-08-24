@@ -1,7 +1,25 @@
-﻿namespace Rasterizr.Util
+﻿using System;
+
+namespace Rasterizr.Util
 {
 	public static class Utilities
 	{
+	    public static void Copy<T1, T2>(T1[] source, T2[] destination)
+            where T1 : struct
+            where T2 : struct
+	    {
+            if (SizeOf<T1>() != SizeOf<T2>())
+                throw new InvalidOperationException();
+
+	        var destinationBytes = new byte[source.Length * SizeOf<T2>()];
+            unsafe
+            {
+                fixed (byte* pBuffer = &destinationBytes[0])
+                    Interop.Write(pBuffer, source, 0, source.Length);
+            }
+            FromByteArray(destination, 0, destinationBytes, 0, destinationBytes.Length);
+	    }
+
 		/// <summary>
 		/// Converts a structured array to an equivalent byte array.
 		/// </summary>

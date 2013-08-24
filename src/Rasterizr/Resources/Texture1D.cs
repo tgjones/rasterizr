@@ -1,4 +1,5 @@
 ﻿using System;
+using Rasterizr.Util;
 using SlimShader;
 
 namespace Rasterizr.Resources
@@ -51,20 +52,23 @@ namespace Rasterizr.Resources
 					description.Width);
 		}
 
-        public override Number4[] GetData(int subresource)
+        public override Color4[] GetData(int subresource)
         {
             int mipSlice, arrayIndex;
             CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
 
-            return _subresources[arrayIndex][mipSlice].Data;
+            var data = _subresources[arrayIndex][mipSlice].Data;
+            var result = new Color4[data.Length];
+            Utilities.Copy(data, result);
+            return result;
         }
 
-        public override void SetData(int subresource, Number4[] data)
+        public override void SetData(int subresource, Color4[] data)
 		{
 			int mipSlice, arrayIndex;
 			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
 
-			Array.Copy(data, _subresources[arrayIndex][mipSlice].Data, data.Length);
+            Utilities.Copy(data, _subresources[arrayIndex][mipSlice].Data);
 		}
 
 		internal Texture1DSubresource GetSubresource(int arrayIndex, int mipSlice)

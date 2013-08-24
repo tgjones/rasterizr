@@ -37,6 +37,7 @@
 		CreateTexture3D,
 		VertexShaderStageSetShader,
         VertexShaderStageSetConstantBuffers,
-        BufferSetData
+        BufferSetData,
+        Texture2DSetData
 	}
 }

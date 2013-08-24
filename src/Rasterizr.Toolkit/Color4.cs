@@ -4,18 +4,18 @@ using SlimShader;
 namespace Rasterizr.Toolkit
 {
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
-	public struct Color4
+	public struct Color
 	{
         public static readonly int SizeInBytes = sizeof(byte) * 4;
 
-		public static Color4 Black
+		public static Color Black
 		{
-			get { return new Color4(0, 0, 0, 255); }
+			get { return new Color(0, 0, 0, 255); }
 		}
 
-		public static Color4 White
+		public static Color White
 		{
-			get { return new Color4(255, 255, 255, 255); }
+			get { return new Color(255, 255, 255, 255); }
 		}
 
 		public byte R;
@@ -23,7 +23,7 @@ namespace Rasterizr.Toolkit
 		public byte B;
 		public byte A;
 
-		public Color4(byte r, byte g, byte b, byte a)
+		public Color(byte r, byte g, byte b, byte a)
 		{
 			R = r;
 			G = g;

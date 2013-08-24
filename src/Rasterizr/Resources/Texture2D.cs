@@ -1,4 +1,6 @@
 ﻿using System;
+using Rasterizr.Diagnostics;
+using Rasterizr.Util;
 using SlimShader;
 using SlimShader.VirtualMachine.Resources;
 
@@ -76,20 +78,25 @@ namespace Rasterizr.Resources
 					description.Width, description.Height);
 		}
 
-        public override Number4[] GetData(int subresource)
+        public override Color4[] GetData(int subresource)
         {
             int mipSlice, arrayIndex;
             CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
 
-            return _subresources[arrayIndex][mipSlice].Data;
+            var data = _subresources[arrayIndex][mipSlice].Data;
+            var result = new Color4[data.Length];
+            Utilities.Copy(data, result);
+            return result;
         }
 
-        public override void SetData(int subresource, Number4[] data)
+        public override void SetData(int subresource, Color4[] data)
 		{
+            Device.Loggers.BeginOperation(OperationType.Texture2DSetData, ID, subresource, data);
+
 			int mipSlice, arrayIndex;
 			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
 
-			Array.Copy(data, _subresources[arrayIndex][mipSlice].Data, data.Length);
+            Utilities.Copy(data, _subresources[arrayIndex][mipSlice].Data);
 		}
 
         internal Number4[] GetData(int arrayIndex, int mipSlice)
