@@ -28,6 +28,11 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 			}
 		}
 
+	    public TracefileEventViewModel SelectedEvent
+	    {
+	        get { return _selectionService.SelectedEvent; }
+	    }
+
 		private Int32Point _hoverPixel;
 		internal Int32Point HoverPixel
 		{
@@ -104,6 +109,8 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 		public TracefileViewerViewModel(ISelectionService selectionService, string fileName, Tracefile tracefile)
 		{
 			_selectionService = selectionService;
+		    _selectionService.SelectedEventChanged += (sender, e) => NotifyOfPropertyChange(() => SelectedEvent);
+
 			_tracefile = new TracefileViewModel(selectionService, tracefile);
 			_hasSelectedPixel = false;
 

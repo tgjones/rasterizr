@@ -20,4 +20,8 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+    
+    <Style x:Key="LabelText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#FFCB5C6F" />
+    </Style>
 </ResourceDictionary>

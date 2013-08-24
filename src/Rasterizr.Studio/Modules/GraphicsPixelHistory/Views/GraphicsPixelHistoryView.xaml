@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="clr-namespace:Rasterizr.Studio.Modules.GraphicsPixelHistory.Design"
              xmlns:vm="clr-namespace:Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type={x:Type dd:DesignTimeGraphicsPixelHistoryViewModel}, IsDesignTimeCreatable=True}"
 			 Background="White">
@@ -14,11 +15,6 @@
 			<converters:ColorToBrushConverter x:Key="ColorToBrushConverter" />
 			<DataTemplate DataType="{x:Type vm:ColorViewModel}">
 				<Grid>
-					<Grid.Resources>
-						<Style x:Key="Label" TargetType="TextBlock">
-							<Setter Property="Foreground" Value="Red" />
-						</Style>
-					</Grid.Resources>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="15" />
 						<ColumnDefinition />
@@ -29,10 +25,10 @@
 						<RowDefinition />
 						<RowDefinition />
 					</Grid.RowDefinitions>
-					<TextBlock Grid.Column="0" Grid.Row="0" Text="R:" Style="{StaticResource Label}" />
-					<TextBlock Grid.Column="0" Grid.Row="1" Text="G:" Style="{StaticResource Label}" />
-					<TextBlock Grid.Column="0" Grid.Row="2" Text="B:" Style="{StaticResource Label}" />
-					<TextBlock Grid.Column="0" Grid.Row="3" Text="A:" Style="{StaticResource Label}" />
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="R:" Style="{StaticResource LabelText}" />
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="G:" Style="{StaticResource LabelText}" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="B:" Style="{StaticResource LabelText}" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="A:" Style="{StaticResource LabelText}" />
 					<TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Red, StringFormat={}{0:0.#########}}" />
 					<TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Green, StringFormat={}{0:0.#########}}" />
 					<TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Blue, StringFormat={}{0:0.#########}}" />
@@ -62,7 +58,7 @@
 		<TreeView Grid.Row="1" ItemsSource="{Binding PixelEvents}">
 			<TreeView.Resources>
 				<HierarchicalDataTemplate DataType="{x:Type vm:PixelHistoryEventViewModel}" ItemsSource="{Binding PixelHistoryEvents}">
-					<ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource EventTemplate}" />
+					<ContentControl cal:View.Model="{Binding}" />
 				</HierarchicalDataTemplate>
 				<DataTemplate DataType="{x:Type vm:SimplePixelHistoryEventViewModel}">
 					<StackPanel Orientation="Vertical">

@@ -5,7 +5,6 @@ namespace Rasterizr.Resources
 {
 	public class Buffer : Resource
 	{
-		private readonly int _sizeInBytes;
 		private readonly byte[] _data;
 
 		internal override ResourceType ResourceType
@@ -21,8 +20,7 @@ namespace Rasterizr.Resources
 		internal Buffer(Device device, BufferDescription description)
 			: base(device)
 		{
-			_sizeInBytes = description.SizeInBytes;
-			_data = new byte[_sizeInBytes];
+			_data = new byte[description.SizeInBytes];
 		}
 
 		public void GetData<T>(int dataOffset, T[] data, int startIndex, int countInBytes)
@@ -49,11 +47,11 @@ namespace Rasterizr.Resources
 			GetData(data, 0, _data.Length * Utilities.SizeOf<T>());
 		}
 
-        //public void SetData<T>(T[] data, int startIndex = 0)
-        //    where T : struct
-        //{
-        //    Utilities.ToByteArray(data, _data, startIndex);
-        //}
+        public void SetData<T>(T[] data, int offsetInBytes = 0)
+            where T : struct
+        {
+            SetData(Utilities.ToByteArray(data), offsetInBytes);
+        }
 
 		public void SetData<T>(ref T data, int offsetInBytes = 0)
 			where T : struct

@@ -5,17 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="clr-namespace:Rasterizr.Studio.Modules.TracefileViewer.Design"
              xmlns:local="clr-namespace:Rasterizr.Studio.Framework.Controls"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance Type={x:Type dd:DesignTimeTracefileViewerViewModel}, IsDesignTimeCreatable=True}"
              Background="{x:Static SystemColors.ControlLightBrush}">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="150" />
 			<RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-		<local:ZoomBorder x:Name="ZoomBorder" ClipToBounds="True">
+        <Border Grid.Row="0" Background="White" Padding="3">
+            <ContentControl cal:View.Model="{Binding SelectedEvent}" />
+        </Border>
+		<local:ZoomBorder x:Name="ZoomBorder" Grid.Row="1" ClipToBounds="True">
 			<local:NearestNeighborImage x:Name="FrameImage"
 										Source="{Binding SelectedFrame.Image}" 
 										Stretch="None"
@@ -23,7 +28,7 @@
 										MouseDown="OnFrameImageMouseDown"
 										MouseLeave="OnFrameImageMouseLeave" />
 		</local:ZoomBorder>
-        <Expander Grid.Row="1" Header="Frame List" IsExpanded="True">
+        <Expander Grid.Row="2" Header="Frame List" IsExpanded="True">
             <ListBox ItemsSource="{Binding Frames}" SelectedItem="{Binding SelectedFrame}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -37,7 +42,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Expander>
-		<StatusBar Grid.Row="2">
+		<StatusBar Grid.Row="3">
 			<StatusBar.ItemsPanel>
 				<ItemsPanelTemplate>
 					<Grid>

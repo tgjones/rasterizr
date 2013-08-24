@@ -136,6 +136,9 @@
     <Compile Include="Modules\GraphicsDebugging\ViewModels\TracefileEventViewModel.cs" />
     <Compile Include="Modules\GraphicsDebugging\ViewModels\TracefileFrameViewModel.cs" />
     <Compile Include="Modules\GraphicsDebugging\ViewModels\TracefileViewModel.cs" />
+    <Compile Include="Modules\GraphicsDebugging\Views\TracefileEventView.xaml.cs">
+      <DependentUpon>TracefileEventView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\GraphicsEventList\Design\DesignTimeGraphicsEventListViewModel.cs" />
     <Compile Include="Modules\GraphicsEventList\Module.cs" />
     <Compile Include="Modules\GraphicsEventList\ViewModels\GraphicsEventListViewModel.cs" />
@@ -283,7 +286,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Modules\GraphicsDebugging\Views\GraphicsDebuggingTemplates.xaml">
+    <Page Include="Modules\GraphicsDebugging\Views\TracefileEventView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
