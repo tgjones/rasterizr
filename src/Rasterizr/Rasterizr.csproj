@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparisonUtility.cs" />
-    <Compile Include="Diagnostics\ClearRenderTargetEvent.cs" />
+    <Compile Include="Diagnostics\SimpleEvent.cs" />
     <Compile Include="Diagnostics\DrawEvent.cs" />
     <Compile Include="Diagnostics\GraphicsLogger.cs" />
     <Compile Include="Diagnostics\GraphicsLoggerCollection.cs" />

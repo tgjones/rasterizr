@@ -17,7 +17,8 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.MiniCubeTexture
 	[ExportMetadata("SortOrder", 3)]
 	public class MiniCubeTextureSample : SampleBase
 	{
-		private readonly IResourceManager _resourceLoader;
+        [Import]
+		private IResourceManager _resourceLoader;
 
 		private DeviceContext _deviceContext;
 		private RenderTargetView _renderTargetView;
@@ -27,12 +28,6 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.MiniCubeTexture
 		private Buffer _constantBuffer;
 		private Matrix _view;
 		private Matrix _projection;
-
-		[ImportingConstructor]
-        public MiniCubeTextureSample(IResourceManager resourceLoader)
-		{
-			_resourceLoader = resourceLoader;
-		}
 
 		public override string Name
 		{

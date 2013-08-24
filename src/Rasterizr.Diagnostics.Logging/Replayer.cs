@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
+using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
@@ -138,12 +139,15 @@ namespace Rasterizr.Diagnostics.Logging
 						presented = true;
 						break;
                     case OperationType.CreateSamplerState :
-                        // TODO
-                        //_device.CreateSamplerState(args.Get<SamplerStateDescription>(0));
+                        _device.CreateSamplerState(args.Get<SamplerStateDescription>(0));
                         break;
 					case OperationType.CreateTexture2D:
 						_device.CreateTexture2D(args.Get<Texture2DDescription>(0));
 						break;
+                    case OperationType.CreateShaderResourceView:
+                        _device.CreateShaderResourceView(args.Get<Resource>(_device, 0), 
+                            args.Get<ShaderResourceViewDescription?>(1));
+                        break;
 					case OperationType.VertexShaderStageSetShader:
                         _deviceContext.VertexShader.Shader = args.Get<VertexShader>(_device, 0);
 						break;

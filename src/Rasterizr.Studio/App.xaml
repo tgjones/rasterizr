@@ -1,13 +1,13 @@
 ﻿<Application x:Class="Rasterizr.Studio.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-			 xmlns:gemini="clr-namespace:Gemini;assembly=Gemini">
+			 xmlns:studio="clr-namespace:Rasterizr.Studio">
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/Generic.xaml" />
 				<ResourceDictionary>
-					<gemini:AppBootstrapper x:Key="bootstrapper" />
+                    <studio:Bootstrapper x:Key="bootstrapper" />
 				</ResourceDictionary>
 			</ResourceDictionary.MergedDictionaries>
 			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

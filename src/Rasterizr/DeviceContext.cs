@@ -77,7 +77,7 @@ namespace Rasterizr
 			_device.Loggers.BeginOperation(OperationType.DeviceContextClearRenderTargetView, renderTargetView, color);
 
             var number = color.ToNumber4();
-			_device.Loggers.AddPixelHistoryEvent(new ClearRenderTargetEvent(number));
+			_device.Loggers.AddPixelHistoryEvent(new SimpleEvent(number));
 			renderTargetView.Clear(ref number);
 		}
 

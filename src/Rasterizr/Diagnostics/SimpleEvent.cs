@@ -2,11 +2,11 @@
 
 namespace Rasterizr.Diagnostics
 {
-	public class ClearRenderTargetEvent : PixelEvent
+	public class SimpleEvent : PixelEvent
 	{
         public Number4 Result { get; private set; }
 
-        public ClearRenderTargetEvent(Number4 result)
+        public SimpleEvent(Number4 result)
 		{
 			Result = result;
 		}

@@ -104,6 +104,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 	    {
 	        // Create new instance of sample object.
 	        var newSample = (SampleBase) Activator.CreateInstance(_sample.GetType());
+            IoC.BuildUp(newSample);
 
             // Create logger.
             var logger = new TracefileGraphicsLogger(false);

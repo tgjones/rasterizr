@@ -6,6 +6,7 @@ using Gemini.Framework.Services;
 using System.ComponentModel.Composition;
 using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Platform.Wpf;
+using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.GraphicsDebugging;
 using SlimShader;
 
@@ -21,6 +22,17 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 			get { return PaneLocation.Left; }
 		}
 
+        private bool _hasSelectedPixel;
+        public bool HasSelectedPixel
+        {
+            get { return _hasSelectedPixel; }
+            set
+            {
+                _hasSelectedPixel = value;
+                NotifyOfPropertyChange(() => HasSelectedPixel);
+            }
+        }
+
 		private ColorViewModel _finalFrameBufferColor;
 		public ColorViewModel FinalFrameBufferColor
 		{
@@ -31,6 +43,28 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 				NotifyOfPropertyChange(() => FinalFrameBufferColor);
 			}
 		}
+
+        private int _frameNumber;
+        public int FrameNumber
+        {
+            get { return _frameNumber; }
+            set
+            {
+                _frameNumber = value;
+                NotifyOfPropertyChange(() => FrameNumber);
+            }
+        }
+
+        private Int32Point _pixelLocation;
+        public Int32Point PixelLocation
+        {
+            get { return _pixelLocation; }
+            set
+            {
+                _pixelLocation = value;
+                NotifyOfPropertyChange(() => PixelLocation);
+            }
+        }
 
 		private readonly BindableCollection<PixelHistoryEventViewModel> _pixelEvents;
 		public BindableCollection<PixelHistoryEventViewModel> PixelEvents
@@ -50,6 +84,10 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 
 		private void OnSelectedPixelChanged(object sender, PixelChangedEventArgs e)
 		{
+		    FrameNumber = _selectionService.SelectedFrame.Number;
+		    PixelLocation = e.SelectedPixel;
+
+		    HasSelectedPixel = true;
 			_pixelEvents.Clear();
 
 			Task.Factory.StartNew(() =>
@@ -63,9 +101,10 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 				replayer.Replay();
 
 				var events = replayer.Logger.GetEvents(_selectionService.SelectedFrame.Number, e.SelectedPixel.X, e.SelectedPixel.Y);
+
 				_pixelEvents.AddRange(events.Select(x => new PixelHistoryEventViewModel(x)));
 
-                FinalFrameBufferColor = new ColorViewModel(new Number4(0, 1, 0, 1)); // TODO
+			    FinalFrameBufferColor = _pixelEvents.Last().Color;
 			});
 		}
 

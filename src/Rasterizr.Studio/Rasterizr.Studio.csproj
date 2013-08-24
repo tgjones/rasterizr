@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Framework\Controls\DebugImage.cs" />
     <Compile Include="Framework\Controls\NearestNeighborImage.cs" />
     <Compile Include="Framework\Controls\WriteableBitmapImage.cs" />
@@ -145,12 +146,26 @@
     <Compile Include="Modules\GraphicsEventList\Views\GraphicsEventListView.xaml.cs">
       <DependentUpon>GraphicsEventListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeColorViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeGraphicsPixelHistoryViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeSimplePixelHistoryEventViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\ColorViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\ViewModels\DrawPixelHistoryEventViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\GraphicsPixelHistoryViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\PixelHistoryEventViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\ViewModels\PixelHistoryEventViewModelBase.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\ViewModels\SimplePixelHistoryEventViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\Views\ColorView.xaml.cs">
+      <DependentUpon>ColorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\GraphicsPixelHistory\Views\DrawPixelHistoryEventView.xaml.cs">
+      <DependentUpon>DrawPixelHistoryEventView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\GraphicsPixelHistory\Views\GraphicsPixelHistoryView.xaml.cs">
       <DependentUpon>GraphicsPixelHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\GraphicsPixelHistory\Views\SimplePixelHistoryEventView.xaml.cs">
+      <DependentUpon>SimplePixelHistoryEventView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\SampleBrowser\ISample.cs" />
     <Compile Include="Modules\SampleBrowser\Module.cs" />
@@ -294,9 +309,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Modules\GraphicsPixelHistory\Views\ColorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\GraphicsPixelHistory\Views\DrawPixelHistoryEventView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\GraphicsPixelHistory\Views\GraphicsPixelHistoryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\GraphicsPixelHistory\Views\PixelHistoryResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\GraphicsPixelHistory\Views\SimplePixelHistoryEventView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\SampleBrowser\Samples\SampleView.xaml">
       <Generator>MSBuild:Compile</Generator>
