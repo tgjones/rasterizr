@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer.Culling;

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.Views
 {
     /// <summary>
-    /// Interaction logic for DrawPixelHistoryEventView.xaml
+    /// Interaction logic for OutputMergerDrawPixelHistoryEventPartView.xaml
     /// </summary>
-    public partial class DrawPixelHistoryEventView : UserControl
+    public partial class OutputMergerDrawPixelHistoryEventPartView : UserControl
     {
-        public DrawPixelHistoryEventView()
+        public OutputMergerDrawPixelHistoryEventPartView()
         {
             InitializeComponent();
         }

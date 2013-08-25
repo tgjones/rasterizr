@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Rasterizr.Diagnostics;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
-using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.GraphicsDebugging.Design;
 using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels;
@@ -34,13 +33,8 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.Design
                     OperationType = OperationType.DeviceContextDraw,
                     PixelEvents = new List<PixelEvent>(new[]
                     {
-                        new DrawEvent
-                        {
-                            PrimitiveTopology = PrimitiveTopology.TriangleList,
-                            Previous = new Number4(1, 0, 0, 1),
-                            PixelShader = new Number4(1, 1, 0, 1),
-                            Result = new Number4(1, 0, 1, 1)
-                        }
+                        DesignTimeDrawPixelHistoryEventViewModel.CreateDrawEvent(),
+                        DesignTimeDrawPixelHistoryEventViewModel.CreateDrawEvent()
                     })
                 }), 
 		    });

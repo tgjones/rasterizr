@@ -6,7 +6,8 @@
              xmlns:dd="clr-namespace:Rasterizr.Studio.Modules.GraphicsPixelHistory.Design"
              xmlns:vm="clr-namespace:Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels"
              xmlns:cal="http://www.caliburnproject.org"
-             mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="400"
+             xmlns:controls="clr-namespace:Rasterizr.Studio.Modules.GraphicsPixelHistory.Controls"
+             mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance Type={x:Type dd:DesignTimeGraphicsPixelHistoryViewModel}, IsDesignTimeCreatable=True}"
              cal:Bind.AtDesignTime="True"
 			 Background="White">
@@ -14,6 +15,63 @@
         <ResourceDictionary Source="PixelHistoryResources.xaml" />
     </UserControl.Resources>
     <Grid Visibility="{Binding HasSelectedPixel, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Grid.Resources>
+            <Style x:Key="ListItemResultColor" TargetType="Border"
+                   BasedOn="{StaticResource PixelColor}">
+                <Setter Property="Width" Value="16" />
+                <Setter Property="Height" Value="16" />
+                <Setter Property="CornerRadius" Value="2" />
+                <Setter Property="Margin" Value="0 0 5 0" />
+            </Style>
+            <controls:ItemToCollectionConverter x:Key="ItemToCollectionConverter" />
+            <controls:PixelHistoryEventTemplateSelector x:Key="PixelHistoryEventTemplateSelector">
+                <controls:PixelHistoryEventTemplateSelector.SimpleEventTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type vm:PixelHistoryEventViewModel}" 
+                                              ItemsSource="{Binding PixelHistoryEvents}">
+                        <HierarchicalDataTemplate.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl cal:View.Model="{Binding}" />
+                            </DataTemplate>
+                        </HierarchicalDataTemplate.ItemTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Style="{StaticResource ListItemResultColor}"
+                                    Background="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
+                            <ContentControl cal:View.Model="{Binding}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </controls:PixelHistoryEventTemplateSelector.SimpleEventTemplate>
+                <controls:PixelHistoryEventTemplateSelector.DrawEventTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type vm:PixelHistoryEventViewModel}" 
+                                              ItemsSource="{Binding PixelHistoryEvents}">
+                        <HierarchicalDataTemplate.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type vm:DrawPixelHistoryEventViewModel}"
+                                                      ItemsSource="{Binding Parts}">
+                                <HierarchicalDataTemplate.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding ., Converter={StaticResource ItemToCollectionConverter}}">
+                                        <HierarchicalDataTemplate.ItemTemplate>
+                                            <DataTemplate>
+                                                <ContentControl cal:View.Model="{Binding}" />
+                                            </DataTemplate>
+                                        </HierarchicalDataTemplate.ItemTemplate>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </HierarchicalDataTemplate>
+                                </HierarchicalDataTemplate.ItemTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Style="{StaticResource ListItemResultColor}"
+                                            Background="{Binding Result, Converter={StaticResource ColorToBrushConverter}}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </HierarchicalDataTemplate.ItemTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Style="{StaticResource ListItemResultColor}"
+                                    Background="{Binding Color, Converter={StaticResource ColorToBrushConverter}}" />
+                            <ContentControl cal:View.Model="{Binding}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </controls:PixelHistoryEventTemplateSelector.DrawEventTemplate>
+            </controls:PixelHistoryEventTemplateSelector>
+        </Grid.Resources>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition />
@@ -47,28 +105,14 @@
             </Grid>
         </StackPanel>
         <TreeView Grid.Row="1" ItemsSource="{Binding PixelEvents}" Padding="0 3 0 0"
-                  BorderThickness="0 1 0 0" BorderBrush="Gray">
+                  BorderThickness="0 1 0 0" BorderBrush="Gray"
+                  ItemTemplateSelector="{StaticResource PixelHistoryEventTemplateSelector}">
             <TreeView.ItemContainerStyle>
-				<Style>
-					<Setter Property="TreeViewItem.IsExpanded" Value="True"/>
-				</Style>
-			</TreeView.ItemContainerStyle>
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type vm:PixelHistoryEventViewModel}" 
-                                          ItemsSource="{Binding PixelHistoryEvents}">
-                    <HierarchicalDataTemplate.ItemTemplate>
-                        <DataTemplate>
-                            <ContentControl cal:View.Model="{Binding}" />
-                        </DataTemplate>
-                    </HierarchicalDataTemplate.ItemTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Border Width="16" Height="16" Style="{StaticResource PixelColor}" CornerRadius="2"
-                                Background="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"
-                                Margin="0 0 5 0"/>
-                        <ContentControl cal:View.Model="{Binding}" />
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-		</TreeView>
+                <Style>
+                    <Setter Property="TreeViewItem.IsExpanded" Value="True"/>
+                    <Setter Property="TreeViewItem.Padding" Value="2" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
 	</Grid>
 </UserControl>

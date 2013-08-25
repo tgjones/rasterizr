@@ -11,7 +11,7 @@ namespace Rasterizr.Diagnostics.Logging.Serialization
 		{
 			var originalTypeNameHandling = serializer.TypeNameHandling;
 			serializer.TypeNameHandling = TypeNameHandling.Objects;
-			serializer.Serialize(writer, new SerializedDeviceChildArray(((DeviceChild[]) value).Select(x => x.ID).ToArray()));
+			serializer.Serialize(writer, new SerializedDeviceChildArray(((DeviceChild[]) value).Select(x => (x != null) ? x.ID : -1).ToArray()));
 			serializer.TypeNameHandling = originalTypeNameHandling;
 		}
 

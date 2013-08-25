@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.PixelShader;
 using SlimShader;
@@ -65,8 +66,19 @@ namespace Rasterizr.Pipeline.OutputMerger
 					if (!pixel.Samples[sampleIndex].Covered)
 						continue;
 
+                    // TODO: Only create DrawEvent if logging is enabled.
+                    // TODO: Only create draw events for selected pixel.
 					var pixelHistoryEvent = new DrawEvent
 					{
+                        Vertices = pixel.Vertices.Select(x => new DrawEventVertex
+                        {
+                            VertexID = x.VertexID,
+                            Data = x.Data.Select(y => new DrawEventVertexData
+                            {
+                                Semantic = "TODO",
+                                Value = y.ToString()
+                            }).ToArray()
+                        }).ToArray(),
 						PrimitiveID = pixel.PrimitiveID,
 						X = pixel.X,
 						Y = pixel.Y,

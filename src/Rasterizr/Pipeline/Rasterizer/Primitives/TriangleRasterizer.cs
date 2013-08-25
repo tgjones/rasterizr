@@ -85,10 +85,10 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 					// need to do any (expensive) interpolation of attributes.
 					var fragmentQuad = new FragmentQuad
 					{
-						Fragment0 = new Fragment(_primitive.PrimitiveID, x, y, FragmentQuadLocation.TopLeft),
-						Fragment1 = new Fragment(_primitive.PrimitiveID, x + 1, y, FragmentQuadLocation.TopRight),
-						Fragment2 = new Fragment(_primitive.PrimitiveID, x, y + 1, FragmentQuadLocation.BottomLeft),
-						Fragment3 = new Fragment(_primitive.PrimitiveID, x + 1, y + 1, FragmentQuadLocation.BottomRight)
+						Fragment0 = new Fragment(_primitive.Vertices, _primitive.PrimitiveID, x, y, FragmentQuadLocation.TopLeft),
+                        Fragment1 = new Fragment(_primitive.Vertices, _primitive.PrimitiveID, x + 1, y, FragmentQuadLocation.TopRight),
+                        Fragment2 = new Fragment(_primitive.Vertices, _primitive.PrimitiveID, x, y + 1, FragmentQuadLocation.BottomLeft),
+                        Fragment3 = new Fragment(_primitive.Vertices, _primitive.PrimitiveID, x + 1, y + 1, FragmentQuadLocation.BottomRight)
 					};
 
 					if (IsMultiSamplingEnabled)

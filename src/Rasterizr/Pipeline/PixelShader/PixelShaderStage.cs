@@ -70,29 +70,32 @@ namespace Rasterizr.Pipeline.PixelShader
                 VirtualMachine.Execute();
 
                 contextIndex = 0;
-                foreach (var fragmentQuad in fragmentQuads)
+                for (int i = 0; i < fragmentQuads.Count; i++)
                 {
+                    var fragmentQuad = fragmentQuads[i];
+
                     if (fragmentQuad.Fragment0.Samples.AnyCovered)
-                        yield return GetPixel(fragmentQuad.Fragment0.X, fragmentQuad.Fragment0.Y, fragmentQuad.Fragment0.Samples, contextIndex + 0, fragmentQuad.Fragment0.PrimitiveID);
+                        yield return GetPixel(ref fragmentQuad.Fragment0, contextIndex + 0);
                     if (fragmentQuad.Fragment1.Samples.AnyCovered)
-                        yield return GetPixel(fragmentQuad.Fragment1.X, fragmentQuad.Fragment1.Y, fragmentQuad.Fragment1.Samples, contextIndex + 1, fragmentQuad.Fragment1.PrimitiveID);
+                        yield return GetPixel(ref fragmentQuad.Fragment1, contextIndex + 1);
                     if (fragmentQuad.Fragment2.Samples.AnyCovered)
-                        yield return GetPixel(fragmentQuad.Fragment2.X, fragmentQuad.Fragment2.Y, fragmentQuad.Fragment2.Samples, contextIndex + 2, fragmentQuad.Fragment2.PrimitiveID);
+                        yield return GetPixel(ref fragmentQuad.Fragment2, contextIndex + 2);
                     if (fragmentQuad.Fragment3.Samples.AnyCovered)
-                        yield return GetPixel(fragmentQuad.Fragment3.X, fragmentQuad.Fragment3.Y, fragmentQuad.Fragment3.Samples, contextIndex + 3, fragmentQuad.Fragment3.PrimitiveID);
+                        yield return GetPixel(ref fragmentQuad.Fragment3, contextIndex + 3);
                     contextIndex += 4;
                 }
             }
 		}
 
-		private Pixel GetPixel(int x, int y, Samples samples, int contextIndex, int primitiveID)
+		private Pixel GetPixel(ref Fragment fragment, int contextIndex)
 		{
 			var outputs = GetShaderOutputs(contextIndex);
-			return new Pixel(x, y)
+			return new Pixel(fragment.X, fragment.Y)
 			{
-				Samples = samples,
+                Vertices = fragment.Vertices,
+				Samples = fragment.Samples,
 				Color = outputs[_outputColorRegister],
-				PrimitiveID = primitiveID
+				PrimitiveID = fragment.PrimitiveID
 			};
 		}
 	}

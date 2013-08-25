@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using Rasterizr.Diagnostics;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
     public class DrawPixelHistoryEventViewModel : PixelHistoryEventViewModelBase
     {
+        private readonly List<DrawPixelHistoryEventPartViewModel> _parts; 
         private readonly DrawEvent _event;
 
         public string Name
@@ -11,28 +13,23 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
             get { return string.Format("Triangle {0}", _event.PrimitiveID); }
         }
 
-        public PixelExclusionReason ExclusionReason
-        {
-            get { return _event.ExclusionReason; }
-        }
-
-        public ColorViewModel Previous
-        {
-            get { return new ColorViewModel(_event.Previous); }
-        }
-
-        public ColorViewModel PixelShader
-        {
-            get { return new ColorViewModel(_event.PixelShader); }
-        }
-
         public override ColorViewModel Result
         {
             get { return new ColorViewModel(_event.Result); }
         }
 
+        public IEnumerable<DrawPixelHistoryEventPartViewModel> Parts
+        {
+            get { return _parts; }
+        }
+
         public DrawPixelHistoryEventViewModel(DrawEvent @event)
         {
+            _parts = new List<DrawPixelHistoryEventPartViewModel>
+            {
+                new VertexShaderDrawPixelHistoryEventPartViewModel(@event),
+                new OutputMergerDrawPixelHistoryEventPartViewModel(@event)
+            };
             _event = @event;
         }
     }
