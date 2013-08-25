@@ -114,15 +114,10 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
             newSample.Initialize(device);
             newSample.Draw(_totalTime);
 
-            // Serialize and deserialize tracefile.
-            var textWriter = new StringWriter();
-            logger.WriteTo(textWriter);
-            var tracefile = Tracefile.FromTextReader(new StringReader(textWriter.ToString()));
-
             var tracefileDocument = new TracefileViewerViewModel(
                 IoC.Get<ISelectionService>(), 
                 "[Sample " + _sample.Name + "]",
-                tracefile);
+                logger.Tracefile);
             IoC.Get<IShell>().OpenDocument(tracefileDocument);
 	    }
 

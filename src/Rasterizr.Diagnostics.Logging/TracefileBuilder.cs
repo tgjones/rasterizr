@@ -15,6 +15,11 @@ namespace Rasterizr.Diagnostics.Logging
         private int _frameNumber;
         private int _operationNumber;
 
+        public Tracefile Tracefile
+        {
+            get { return _tracefile; }
+        }
+
         public TracefileBuilder(Device device, int? pixelX = null, int? pixelY = null)
         {
             _tracefile = new Tracefile();

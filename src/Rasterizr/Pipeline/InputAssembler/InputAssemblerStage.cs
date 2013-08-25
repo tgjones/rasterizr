@@ -64,7 +64,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 		            Buffer = x.Buffer.ID,
 		            Offset = x.Offset,
 		            Stride = x.Stride
-		        }));
+		        }).ToArray());
 			for (int i = 0; i < vertexBufferBindings.Length; i++)
 				_vertexBufferBindings[i + startSlot] = vertexBufferBindings[i];
 		}

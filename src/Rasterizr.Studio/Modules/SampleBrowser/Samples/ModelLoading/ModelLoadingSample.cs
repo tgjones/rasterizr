@@ -62,13 +62,13 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 
             // Load model.
 		    var modelLoader = new ModelLoader(device, TextureLoader.CreateTextureFromStream);
-            _model = modelLoader.Load("Samples/ModelLoading/Sponza/sponza.3ds");
+            _model = modelLoader.Load("Modules/SampleBrowser/Samples/ModelLoading/Sponza/sponza.3ds");
 
             // Compile Vertex and Pixel shaders
-            var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Samples/ModelLoading/ModelLoading.fx", "VS", "vs_4_0");
+            var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/ModelLoading/ModelLoading.fx", "VS", "vs_4_0");
             var vertexShader = device.CreateVertexShader(vertexShaderByteCode);
 
-            var pixelShaderByteCode = ShaderCompiler.CompileFromFile("Samples/ModelLoading/ModelLoading.fx", "PS", "ps_4_0");
+            var pixelShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/ModelLoading/ModelLoading.fx", "PS", "ps_4_0");
             var pixelShader = device.CreatePixelShader(pixelShaderByteCode);
 
 		    _model.SetInputLayout(device, vertexShaderByteCode.InputSignature);

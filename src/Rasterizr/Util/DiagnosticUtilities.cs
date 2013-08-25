@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.VertexShader;
@@ -21,13 +22,12 @@ namespace Rasterizr.Util
             return deviceChild.ID;
         }
 
-        public static IEnumerable<int> GetIDs(IEnumerable<DeviceChild> deviceChildren)
+        public static int[] GetIDs(IEnumerable<DeviceChild> deviceChildren)
         {
             if (deviceChildren == null)
-                yield break;
+                return new int[0];
 
-            foreach (var deviceChild in deviceChildren)
-                yield return GetID(deviceChild);
+            return deviceChildren.Select(GetID).ToArray();
         }
 
         public static void RaisePixelEvent(object sender, PixelEventHandler @event,

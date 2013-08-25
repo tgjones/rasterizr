@@ -242,48 +242,48 @@
     <Content Include="Modules\SampleBrowser\Samples\ModelLoading\ModelLoading.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\00_skap.jpg">
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\00_skap.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_stub.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_stub.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_St_kp.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_St_kp.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_S_ba.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_S_ba.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_S_kap.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\01_S_kap.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\kamen-stup.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\kamen-stup.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\kamen.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\kamen.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\prozor1.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\prozor1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\reljef.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\reljef.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\sky.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\sky.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\sp_luk.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\sp_luk.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\vrata_ko.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\vrata_ko.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\vrata_kr.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\vrata_kr.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\x01_st.jpg">
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Sponza\x01_st.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
     <Content Include="Modules\SampleBrowser\TechDemos\Resources\TextureSampling\Texture.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
