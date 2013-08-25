@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
-using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
@@ -20,7 +19,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 		private DeviceContext _deviceContext;
 		private RenderTargetView _renderTargetView;
 		private DepthStencilView _depthView;
-		private WpfSwapChain _swapChain;
+		private SwapChain _swapChain;
 
         private Buffer _vertexConstantBuffer;
         private Buffer _pixelConstantBuffer;
@@ -34,14 +33,14 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 			get { return "Model Loading"; }
 		}
 
-        public override WriteableBitmap Initialize(params GraphicsLogger[] loggers)
+        public override WriteableBitmap Initialize(Device device)
 		{
             const int width = 600;
 			const int height = 400;
 
 			// Create device and swap chain.
-			var device = new Device(loggers);
-			_swapChain = new WpfSwapChain(device, width, height);
+            var swapChainPresenter = new WpfSwapChainPresenter();
+            _swapChain = device.CreateSwapChain(width, height, swapChainPresenter);
 			_deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
@@ -113,7 +112,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
             {
                 LightPos = new Vector4(0, 2.5f, 0, 0)
             };
-		    _pixelConstantBuffer.SetData(ref _pixelShaderData);
+            _deviceContext.SetBufferData(_pixelConstantBuffer, ref _pixelShaderData);
 
 		    // Setup targets and viewport for rendering
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, width, height, 0.0f, 1.0f));
@@ -128,7 +127,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, 
 				width / (float) height, 0.1f, 100.0f);
 
-            return _swapChain.Bitmap;
+            return swapChainPresenter.Bitmap;
 		}
 
         public override void Draw(float time)
@@ -156,12 +155,12 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
             _vertexShaderData.World.Transpose();
             _vertexShaderData.WorldViewProjection.Transpose();
 
-            _vertexConstantBuffer.SetData(ref _vertexShaderData);
+            _deviceContext.SetBufferData(_vertexConstantBuffer, ref _vertexShaderData);
 
 		    _model.Draw(_deviceContext);
 
 			// Present!
-			_swapChain.Present();
+            _deviceContext.Present(_swapChain);
 
 			base.Draw(time);
 		}

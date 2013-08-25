@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Rasterizr.Diagnostics.Logging.ObjectModel
 {
@@ -36,7 +37,22 @@ namespace Rasterizr.Diagnostics.Logging.ObjectModel
             where T : DeviceChild
 	    {
 	        var id = Get<int>(index);
-	        return device.GetDeviceChild<T>(id);
+	        return GetDeviceChild<T>(device, id);
+	    }
+
+	    public T[] GetArray<T>(Device device, int index)
+            where T : DeviceChild
+	    {
+            var ids = Get<int[]>(index);
+            return ids.Select(x => GetDeviceChild<T>(device, x)).ToArray();
+	    }
+
+	    private static T GetDeviceChild<T>(Device device, int id)
+            where T : DeviceChild
+	    {
+            if (id == -1)
+                return null;
+            return device.GetDeviceChild<T>(id);
 	    }
 	}
 }

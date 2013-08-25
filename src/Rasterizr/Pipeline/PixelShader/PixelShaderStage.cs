@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
-using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.Rasterizer;
 using SlimShader.Chunks.Xsgn;
 
@@ -17,21 +16,6 @@ namespace Rasterizr.Pipeline.PixelShader
 			get { return 32; }
 		}
 
-	    protected override OperationType SetConstantBuffersOperationType
-	    {
-	        get { return OperationType.PixelShaderStageSetConstantBuffers; }
-	    }
-
-        protected override OperationType SetSamplersOperationType
-        {
-            get { return OperationType.PixelShaderStageSetSamplers; }
-        }
-
-        protected override OperationType SetShaderResourcesOperationType
-        {
-            get { return OperationType.PixelShaderStageSetShaderResources; }
-        }
-
 	    public PixelShaderStage(Device device)
 			: base(device)
 		{
@@ -39,8 +23,6 @@ namespace Rasterizr.Pipeline.PixelShader
 
 	    protected override void OnShaderChanged(PixelShader shader)
 		{
-			Device.Loggers.BeginOperation(OperationType.PixelShaderStageSetShader, shader);
-
 			var outputColorRegister = GetSystemValueRegister(Name.Target);
 			if (outputColorRegister == null)
 				throw new ArgumentException("Shader doesn't contain output color", "shader");

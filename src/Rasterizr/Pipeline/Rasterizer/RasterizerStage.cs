@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer.Culling;
 using Rasterizr.Pipeline.Rasterizer.Primitives;
+using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Chunks.Xsgn;
 
@@ -11,16 +11,26 @@ namespace Rasterizr.Pipeline.Rasterizer
 {
 	public class RasterizerStage
 	{
-		private readonly Device _device;
+        public event DiagnosticEventHandler SettingState;
+        public event DiagnosticEventHandler SettingViewports;
+
 		private Viewport[] _viewports;
 
 		private readonly TriangleRasterizer _triangleRasterizer;
+	    private RasterizerState _state;
 
-		public RasterizerState State { get; set; }
+	    public RasterizerState State
+	    {
+	        get { return _state; }
+	        set
+	        {
+                DiagnosticUtilities.RaiseEvent(this, SettingState, DiagnosticUtilities.GetID(value));
+	            _state = value;
+	        }
+	    }
 
-		public RasterizerStage(Device device)
+	    public RasterizerStage(Device device)
 		{
-			_device = device;
 			_triangleRasterizer = new TriangleRasterizer();
 
 			State = new RasterizerState(device, RasterizerStateDescription.Default);
@@ -28,7 +38,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 		public void SetViewports(params Viewport[] viewports)
 		{
-			_device.Loggers.BeginOperation(OperationType.RasterizerStageSetViewports, viewports);
+            DiagnosticUtilities.RaiseEvent(this, SettingViewports, viewports);
 			_viewports = viewports;
 		}
 

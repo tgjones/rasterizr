@@ -1,5 +1,4 @@
 ﻿using System;
-using Rasterizr.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Util;
 using SlimShader;
@@ -90,10 +89,8 @@ namespace Rasterizr.Resources
             return result;
         }
 
-        public override void SetData(int subresource, Color4[] data)
+        internal override void SetData(int subresource, Color4[] data)
 		{
-            Device.Loggers.BeginOperation(OperationType.Texture2DSetData, ID, subresource, data);
-
 			int mipSlice, arrayIndex;
 			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);
 
@@ -169,7 +166,7 @@ namespace Rasterizr.Resources
                 ArraySize = 1,
             });
 
-            result.SetData(0, data);
+            device.ImmediateContext.SetTextureData(result, 0, data);
             device.ImmediateContext.GenerateMips(result);
 
             return result;

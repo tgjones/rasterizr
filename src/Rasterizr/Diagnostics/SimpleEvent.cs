@@ -10,10 +10,5 @@ namespace Rasterizr.Diagnostics
 		{
 			Result = result;
 		}
-
-		public override bool Matches(int x, int y)
-		{
-			return true;
-		}
 	}
 }

@@ -83,7 +83,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.TechDemos.Resources.TextureSamp
 	        private readonly Matrix _view, _projection;
             private readonly RenderTargetView _renderTargetView;
             private readonly DepthStencilView _depthView;
-	        private readonly WpfSwapChain _swapChain;
+	        private readonly SwapChain _swapChain;
 	        private readonly Buffer _constantBuffer;
 
 	        public WriteableBitmap OutputBitmap
@@ -98,8 +98,9 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.TechDemos.Resources.TextureSamp
 
                 // Create device and swap chain.
                 _device = new Device();
-                _swapChain = new WpfSwapChain(_device, width, height);
-                _outputBitmap = _swapChain.Bitmap;
+                var swapChainPresenter = new WpfSwapChainPresenter();
+                _swapChain = _device.CreateSwapChain(width, height, swapChainPresenter);
+                _outputBitmap = swapChainPresenter.Bitmap;
                 _deviceContext = _device.ImmediateContext;
 
                 // Create RenderTargetView from the backbuffer.
@@ -242,13 +243,13 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.TechDemos.Resources.TextureSamp
 	                * Matrix.RotationZ(0.6f)
 	                * _view * _projection;
 	            worldViewProj = Matrix.Transpose(worldViewProj);
-	            _constantBuffer.SetData(ref worldViewProj);
+                _deviceContext.SetBufferData(_constantBuffer, ref worldViewProj);
 
 	            // Draw the cube
 	            _deviceContext.Draw(36, 0);
 
 	            // Present!
-	            _swapChain.Present();
+                _deviceContext.Present(_swapChain);
 	        }
 	    }
 	}

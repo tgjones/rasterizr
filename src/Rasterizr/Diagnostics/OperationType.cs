@@ -2,49 +2,69 @@
 {
 	public enum OperationType
 	{
-		CreateBlendState,
-		CreateBuffer,
-		CreateDepthStencilState,
-		CreateDepthStencilView,
-		CreateGeometryShader,
-		CreatePixelShader,
-		CreateVertexShader,
+        // Device operations.
+		DeviceCreateBlendState,
+		DeviceCreateBuffer,
+		DeviceCreateDepthStencilState,
+		DeviceCreateDepthStencilView,
+		DeviceCreateGeometryShader,
+        DeviceCreateInputLayout,
+		DeviceCreatePixelShader,
+        DeviceCreateRasterizerState,
+        DeviceCreateRenderTargetView,
+        DeviceCreateSamplerState,
+        DeviceCreateShaderResourceView,
+        DeviceCreateSwapChain,
+        DeviceCreateTexture1D,
+        DeviceCreateTexture2D,
+        DeviceCreateTexture3D,
+		DeviceCreateVertexShader,
+
+        // Device context operations.
 		DeviceContextClearDepthStencilView,
 		DeviceContextClearRenderTargetView,
 		DeviceContextDraw,
 		DeviceContextDrawIndexed,
 		DeviceContextDrawInstanced,
-		DeviceCreate,
+        DeviceContextGenerateMips,
+        DeviceContextPresent,
+        DeviceContextSetBufferData,
+        DeviceContextSetTextureData,
+
+        // Input assembler stage operations.
+        InputAssemblerStageSetInputLayout,
+        InputAssemblerStageSetPrimitiveTopology,
+        InputAssemblerStageSetVertexBuffers,
+        InputAssemblerStageSetIndexBuffer,
+
+        // Vertex shader stage operations.
+        VertexShaderStageSetShader,
+        VertexShaderStageSetConstantBuffers,
+        VertexShaderStageSetSamplers,
+        VertexShaderStageSetShaderResources,
+
+        // Geometry shader stage operations.
 		GeometryShaderStageSetShader,
         GeometryShaderStageSetConstantBuffers,
         GeometryShaderStageSetSamplers,
         GeometryShaderStageSetShaderResources,
-		InputAssemblerStageSetIndexBuffer,
-		InputAssemblerStageSetInputLayout,
-		InputAssemblerStageSetPrimitiveTopology,
-		InputAssemblerStageSetVertexBuffers,
-		InputLayoutCreate,
-		OutputMergerStageSetTargets,
-		PixelShaderStageSetShader,
+
+        // Rasterizer stage operations.
+        RasterizerStageSetState,
+        RasterizerStageSetViewports,
+
+        // Pixel shader stage operations.
+        PixelShaderStageSetShader,
         PixelShaderStageSetConstantBuffers,
         PixelShaderStageSetSamplers,
         PixelShaderStageSetShaderResources,
-		RasterizerStageSetViewports,
-		RasterizerStateCreate,
-		CreateRenderTargetView,
-		CreateSamplerState,
-		CreateShaderResourceView,
-		SwapChainCreate,
-		SwapChainPresent,
-		CreateTexture1D,
-		CreateTexture2D,
-		CreateTexture3D,
-		VertexShaderStageSetShader,
-        VertexShaderStageSetConstantBuffers,
-        VertexShaderStageSetSamplers,
-        VertexShaderStageSetShaderResources,
-        BufferSetData,
-        Texture2DSetData,
-        GenerateMips
+
+        // Output merger stage operations.
+        OutputMergerStageSetDepthStencilState,
+        OutputMergerStageSetDepthStencilReference,
+        OutputMergerStageSetBlendState,
+        OutputMergerStageSetBlendFactor,
+        OutputMergerStageSetBlendSampleMask,
+		OutputMergerStageSetTargets
 	}
 }

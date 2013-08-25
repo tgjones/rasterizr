@@ -14,11 +14,6 @@ namespace Rasterizr.Diagnostics
         public Number4 Previous { get; set; }
 		public Number4 PixelShader { get; set; }
         public Number4 Result { get; set; }
-
-		public override bool Matches(int x, int y)
-		{
-			return X == x && Y == y;
-		}
 	}
 
     public class DrawEventVertex

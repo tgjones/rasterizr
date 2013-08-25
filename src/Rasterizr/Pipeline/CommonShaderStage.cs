@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Rasterizr.Diagnostics;
 using Rasterizr.Resources;
+using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Chunks.Rdef;
 using SlimShader.Chunks.Xsgn;
@@ -9,9 +9,14 @@ using SlimShader.VirtualMachine.Registers;
 
 namespace Rasterizr.Pipeline
 {
-	public abstract class CommonShaderStage<T>
+    public abstract class CommonShaderStage<T>
 		where T : ShaderBase
 	{
+        public event DiagnosticEventHandler SettingConstantBuffers;
+        public event DiagnosticEventHandler SettingSamplers;
+        public event DiagnosticEventHandler SettingShader;
+        public event DiagnosticEventHandler SettingShaderResources;
+
 		private readonly Device _device;
 		public const int ConstantBufferSlotCount = 14;
 		public const int SamplerSlotCount = 16;
@@ -35,6 +40,8 @@ namespace Rasterizr.Pipeline
 			get { return _shader; }
 			set
 			{
+                DiagnosticUtilities.RaiseEvent(this, SettingShader, DiagnosticUtilities.GetID(value));
+
 				_shader = value;
 				_outputParametersCount = value.Bytecode.OutputSignature.Parameters.Count;
                 _virtualMachine = new VirtualMachine(value.Bytecode, BatchSize);
@@ -68,15 +75,10 @@ namespace Rasterizr.Pipeline
 
 		public void SetConstantBuffers(int startSlot, params Buffer[] constantBuffers)
 		{
-            _device.Loggers.BeginOperation(SetConstantBuffersOperationType, startSlot, constantBuffers);
+            DiagnosticUtilities.RaiseEvent(this, SettingConstantBuffers, startSlot, DiagnosticUtilities.GetIDs(constantBuffers));
 			for (int i = 0; i < constantBuffers.Length; i++)
 				_constantBuffers[i + startSlot] = constantBuffers[i];
 		}
-
-        // TODO: Not nice.
-        protected abstract OperationType SetConstantBuffersOperationType { get; }
-        protected abstract OperationType SetSamplersOperationType { get; }
-        protected abstract OperationType SetShaderResourcesOperationType { get; }
 
 		public void GetSamplers(int startSlot, int count, SamplerState[] samplers)
 		{
@@ -86,7 +88,7 @@ namespace Rasterizr.Pipeline
 
 		public void SetSamplers(int startSlot, params SamplerState[] samplers)
 		{
-            _device.Loggers.BeginOperation(SetSamplersOperationType, startSlot, samplers);
+            DiagnosticUtilities.RaiseEvent(this, SettingSamplers, startSlot, DiagnosticUtilities.GetIDs(samplers));
 			for (int i = 0; i < samplers.Length; i++)
 				_samplers[i + startSlot] = samplers[i];
 		}
@@ -99,7 +101,7 @@ namespace Rasterizr.Pipeline
 
 		public void SetShaderResources(int startSlot, params ShaderResourceView[] shaderResources)
 		{
-            _device.Loggers.BeginOperation(SetShaderResourcesOperationType, startSlot, shaderResources);
+            DiagnosticUtilities.RaiseEvent(this, SettingShaderResources, startSlot, DiagnosticUtilities.GetIDs(shaderResources));
 			for (int i = 0; i < shaderResources.Length; i++)
 				_shaderResources[i + startSlot] = shaderResources[i];
 		}

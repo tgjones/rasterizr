@@ -19,8 +19,9 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 		public void EndToEndTest()
 		{	
 			// Arrange.
-			var logger = new TracefileGraphicsLogger(false);
-			var expectedData = RenderScene(logger);
+		    var device = new Device();
+            var logger = new TracefileBuilder(device);
+            var expectedData = RenderScene(device);
 
             var stringWriter = new StringWriter();
 			logger.WriteTo(stringWriter);
@@ -30,27 +31,27 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			var tracefile = Tracefile.FromTextReader(logReader);
 
 			// Act.
-			RawSwapChain swapChain = null;
-			var replayer = new Replayer(tracefile.Frames[0], tracefile.Frames[0].Events.Last(), (d, desc) =>
-			{
-				swapChain = new RawSwapChain(d, desc.Width, desc.Height);
-				return swapChain;
-			}, false);
+			var swapChainPresenter = new RawSwapChainPresenter();
+			var replayer = new Replayer(
+                tracefile.Frames[0], tracefile.Frames[0].Events.Last(),
+                swapChainPresenter);
 			replayer.Replay();
-			var actualData = swapChain.Data;
+            var actualData = swapChainPresenter.Data;
 
 			// Assert.
 			Assert.That(actualData, Is.EqualTo(expectedData));
 		}
 
-        private static Number4[] RenderScene(TracefileGraphicsLogger logger)
+        private static Number4[] RenderScene(Device device)
 		{
 			const int width = 200;
 			const int height = 100;
 
 			// Create device and swap chain.
-			var device = new Device(logger);
-			var swapChain = new RawSwapChain(device, width, height);
+            var swapChainPresenter = new RawSwapChainPresenter();
+			var swapChain = device.CreateSwapChain(
+                new SwapChainDescription(width, height), 
+                swapChainPresenter);
 			var deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
@@ -93,7 +94,7 @@ namespace Rasterizr.Tests.Diagnostics.Logging
 			deviceContext.Draw(3, 0);
 			swapChain.Present();
 
-			return swapChain.Data;
+            return swapChainPresenter.Data;
 		}
 	}
 }

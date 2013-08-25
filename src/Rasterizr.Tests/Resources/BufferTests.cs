@@ -21,7 +21,7 @@ namespace Rasterizr.Tests.Resources
             var matrix = Matrix.LookAtRH(new Vector3(1, 2, 3), Vector3.ForwardRH, Vector3.Up);
 
 			// Act.
-			buffer.SetData(ref matrix);
+            device.ImmediateContext.SetBufferData(buffer, ref matrix);
 
 			Matrix retrievedMatrix;
 			buffer.GetData(out retrievedMatrix, 0, Utilities.SizeOf<Matrix>());

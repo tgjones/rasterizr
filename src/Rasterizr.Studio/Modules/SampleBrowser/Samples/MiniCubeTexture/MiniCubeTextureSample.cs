@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Media.Imaging;
 using Gemini.Framework.Services;
-using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Platform.Wpf;
@@ -23,7 +22,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.MiniCubeTexture
 		private DeviceContext _deviceContext;
 		private RenderTargetView _renderTargetView;
 		private DepthStencilView _depthView;
-		private WpfSwapChain _swapChain;
+		private SwapChain _swapChain;
 
 		private Buffer _constantBuffer;
 		private Matrix _view;
@@ -34,14 +33,14 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.MiniCubeTexture
 			get { return "Rotating Cube (Textured)"; }
 		}
 
-        public override WriteableBitmap Initialize(params GraphicsLogger[] loggers)
+        public override WriteableBitmap Initialize(Device device)
 		{
 			const int width = 600;
 			const int height = 400;
 
 			// Create device and swap chain.
-			var device = new Device(loggers);
-			_swapChain = new WpfSwapChain(device, width, height);
+            var swapChainPresenter = new WpfSwapChainPresenter();
+            _swapChain = device.CreateSwapChain(width, height, swapChainPresenter);
 			_deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
@@ -170,7 +169,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.MiniCubeTexture
 			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, 
 				width / (float) height, 0.1f, 100.0f);
 
-            return _swapChain.Bitmap;
+            return swapChainPresenter.Bitmap;
 		}
 
         public override void Draw(float time)
@@ -185,13 +184,13 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.MiniCubeTexture
 				* Matrix.RotationZ(time * 0.3f)
 				* _view * _projection;
 			worldViewProj = Matrix.Transpose(worldViewProj);
-			_constantBuffer.SetData(ref worldViewProj);
+            _deviceContext.SetBufferData(_constantBuffer, ref worldViewProj);
 
 			// Draw the cube
 			_deviceContext.Draw(36, 0);
 
 			// Present!
-			_swapChain.Present();
+            _deviceContext.Present(_swapChain);
 
 			base.Draw(time);
 		}

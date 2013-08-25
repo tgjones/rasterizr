@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
@@ -56,16 +57,15 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 		    if (_selectionService.SelectedEvent == null)
 		        return;
 
+            var swapChainPresenter = new WpfSwapChainPresenter(Dispatcher.CurrentDispatcher);
+		    var replayer = new Replayer(
+		        _frame, _selectionService.SelectedEvent.Model,
+		        swapChainPresenter);
+
 		    Task.Factory.StartNew(() =>
-			{
-				WpfSwapChain swapChain = null;
-				var replayer = new Replayer(_frame, _selectionService.SelectedEvent.Model, (d, desc) =>
-				{
-					Execute.OnUIThread(() => swapChain = new WpfSwapChain(d, desc.Width, desc.Height));
-					return swapChain;
-				}, false);
-				replayer.Replay();
-				Image = swapChain.Bitmap;
+		    {
+                replayer.Replay();
+                Image = swapChainPresenter.Bitmap;
 			});
 		}
 

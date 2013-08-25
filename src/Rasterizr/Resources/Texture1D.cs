@@ -63,7 +63,7 @@ namespace Rasterizr.Resources
             return result;
         }
 
-        public override void SetData(int subresource, Color4[] data)
+        internal override void SetData(int subresource, Color4[] data)
 		{
 			int mipSlice, arrayIndex;
 			CalculateArrayMipSlice(subresource, _subresources[0].Length, out mipSlice, out arrayIndex);

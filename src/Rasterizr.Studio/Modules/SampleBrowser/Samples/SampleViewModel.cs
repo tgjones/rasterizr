@@ -107,10 +107,11 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
             IoC.BuildUp(newSample);
 
             // Create logger.
-            var logger = new TracefileGraphicsLogger(false);
+            var device = new Device();
+            var logger = new TracefileBuilder(device);
 
             // Initialize and draw.
-            newSample.Initialize(logger);
+            newSample.Initialize(device);
             newSample.Draw(_totalTime);
 
             // Serialize and deserialize tracefile.
@@ -137,7 +138,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples
 		{
 			_clock.Start();
 
-			_image.Source = _sample.Initialize();
+			_image.Source = _sample.Initialize(new Device());
 
 			_timer.Start();
 		}

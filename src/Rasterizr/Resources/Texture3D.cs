@@ -63,7 +63,7 @@ namespace Rasterizr.Resources
             return result;
         }
 
-        public override void SetData(int subresource, Color4[] data)
+        internal override void SetData(int subresource, Color4[] data)
 		{
             Utilities.Copy(data, _subresources[subresource].Data);
 		}

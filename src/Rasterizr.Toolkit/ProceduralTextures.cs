@@ -25,7 +25,7 @@ namespace Rasterizr.Toolkit
 				if (y % 8 == 0)
 					black = !black;
 			}
-		    texture.SetData(0, data);
+            device.ImmediateContext.SetTextureData(texture, 0, data);
 			return texture;
 		}
 	}

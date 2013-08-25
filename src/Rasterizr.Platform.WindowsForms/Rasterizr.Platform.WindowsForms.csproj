@@ -51,7 +51,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RenderLoop.cs" />
-    <Compile Include="WindowsFormsSwapChain.cs" />
+    <Compile Include="WindowsFormsSwapChainPresenter.cs" />
     <Compile Include="Win32Native.cs" />
   </ItemGroup>
   <ItemGroup>

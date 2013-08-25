@@ -251,14 +251,14 @@ namespace Rasterizr.Toolkit.Models
                             Vector3 pos = positions[i].ToVector3();
                             Vector3.Transform(ref pos, ref transform, out tempResult);
                             var result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
-                            vertexBuffer.SetData(ref result, byteOffset);
+                            device.ImmediateContext.SetBufferData(vertexBuffer, ref result, byteOffset);
                             byteOffset += Vector3.SizeInBytes;
                         }
 
                         if (hasColors)
                         {
                             var vertColor = colours[i].ToColor();
-                            vertexBuffer.SetData(ref vertColor, byteOffset);
+                            device.ImmediateContext.SetBufferData(vertexBuffer, ref vertColor, byteOffset);
                             byteOffset += 4;
                         }
                         if (hasNormals)
@@ -267,7 +267,7 @@ namespace Rasterizr.Toolkit.Models
                             Vector4 tempResult;
                             Vector3.Transform(ref normal, ref invTranspose, out tempResult);
                             var result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
-                            vertexBuffer.SetData(ref result, byteOffset);
+                            device.ImmediateContext.SetBufferData(vertexBuffer, ref result, byteOffset);
                             byteOffset += Vector3.SizeInBytes;
                         }
                         if (hasTangents)
@@ -276,7 +276,7 @@ namespace Rasterizr.Toolkit.Models
                             Vector4 tempResult;
                             Vector3.Transform(ref tangent, ref invTranspose, out tempResult);
                             var result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
-                            vertexBuffer.SetData(ref result, byteOffset);
+                            device.ImmediateContext.SetBufferData(vertexBuffer, ref result, byteOffset);
                             byteOffset += Vector3.SizeInBytes;
                         }
                         if (hasBitangents)
@@ -285,13 +285,13 @@ namespace Rasterizr.Toolkit.Models
                             Vector4 tempResult;
                             Vector3.Transform(ref biTangent, ref invTranspose, out tempResult);
                             var result = new Vector3(tempResult.X, tempResult.Y, tempResult.Z);
-                            vertexBuffer.SetData(ref result, byteOffset);
+                            device.ImmediateContext.SetBufferData(vertexBuffer, ref result, byteOffset);
                             byteOffset += Vector3.SizeInBytes;
                         }
                         if (hasTexCoords)
                         {
                             var result = new Vector2(texCoords[i].X, 1 - texCoords[i].Y);
-                            vertexBuffer.SetData(ref result, byteOffset);
+                            device.ImmediateContext.SetBufferData(vertexBuffer, ref result, byteOffset);
                             byteOffset += Vector2.SizeInBytes;
                         }
                     }

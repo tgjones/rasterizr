@@ -1,27 +1,27 @@
-﻿using System.Diagnostics;
-using Rasterizr.Diagnostics;
-using Rasterizr.Resources;
-using SlimShader;
+﻿using Rasterizr.Resources;
 
 namespace Rasterizr
 {
-	public abstract class SwapChain
+	public class SwapChain : DeviceChild
 	{
-		private readonly Device _device;
 		private readonly SwapChainDescription _description;
-		private readonly Texture2D _backBuffer;
+	    private readonly ISwapChainPresenter _presenter;
+	    private readonly Texture2D _backBuffer;
 
 		public SwapChainDescription Description
 		{
 			get { return _description; }
 		}
 
-		protected SwapChain(Device device, SwapChainDescription description)
+		internal SwapChain(Device device, SwapChainDescription description, ISwapChainPresenter presenter)
+            : base(device)
 		{
-			device.Loggers.BeginOperation(OperationType.SwapChainCreate, description);
-			_device = device;
 			_description = description;
-			_backBuffer = new Texture2D(device, new Texture2DDescription
+
+            presenter.Initialize(description.Width, description.Height);
+		    _presenter = presenter;
+
+		    _backBuffer = new Texture2D(device, new Texture2DDescription
 			{
 				Width = description.Width,
 				Height = description.Height,
@@ -35,18 +35,11 @@ namespace Rasterizr
 			return _backBuffer;
 		}
 
-		private int _frameCounter;
-		public void Present()
+		internal void Present()
 		{
-			_device.Loggers.BeginOperation(OperationType.SwapChainPresent);
-
 			// TODO: Resolve multi-sampled back buffer.
 			var resolvedColors = _backBuffer.GetData(0, 0);
-			Present(resolvedColors);
-
-			Debug.WriteLine("Done frame " + _frameCounter++);
+            _presenter.Present(resolvedColors);
 		}
-
-        protected abstract void Present(Number4[] colors);
 	}
 }

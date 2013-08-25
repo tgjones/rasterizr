@@ -1,30 +1,83 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.PixelShader;
+using Rasterizr.Util;
 using SlimShader;
 
 namespace Rasterizr.Pipeline.OutputMerger
 {
 	public class OutputMergerStage
 	{
-		private readonly Device _device;
+        public event DiagnosticEventHandler SettingDepthStencilState;
+        public event DiagnosticEventHandler SettingDepthStencilReference;
+        public event DiagnosticEventHandler SettingBlendState;
+        public event DiagnosticEventHandler SettingBlendFactor;
+        public event DiagnosticEventHandler SettingBlendSampleMask;
+        public event DiagnosticEventHandler SettingTargets;
+
+	    internal event PixelEventHandler ProcessedPixel;
+
 		private RenderTargetView[] _renderTargetViews;
 		private DepthStencilView _depthStencilView;
-	    private Number4 _blendFactor;
+        private Color4 _blendFactor;
+        private Number4 _blendFactorNumber;
+	    private DepthStencilState _depthStencilState;
+	    private int _depthStencilReference;
+	    private BlendState _blendState;
+	    private int _blendSampleMask;
 
-		public DepthStencilState DepthStencilState { get; set; }
-		public int DepthStencilReference { get; set; }
+	    public DepthStencilState DepthStencilState
+	    {
+	        get { return _depthStencilState; }
+	        set
+	        {
+                DiagnosticUtilities.RaiseEvent(this, SettingDepthStencilState, DiagnosticUtilities.GetID(value));
+	            _depthStencilState = value;
+	        }
+	    }
 
-		public BlendState BlendState { get; set; }
-	    public Number4 BlendFactor
+	    public int DepthStencilReference
+	    {
+	        get { return _depthStencilReference; }
+	        set
+	        {
+                DiagnosticUtilities.RaiseEvent(this, SettingDepthStencilReference, value);
+	            _depthStencilReference = value;
+	        }
+	    }
+
+	    public BlendState BlendState
+	    {
+	        get { return _blendState; }
+	        set
+	        {
+                DiagnosticUtilities.RaiseEvent(this, SettingBlendState, DiagnosticUtilities.GetID(value));
+	            _blendState = value;
+	        }
+	    }
+
+	    public Color4 BlendFactor
 	    {
             get { return _blendFactor; }
-            set { _blendFactor = value; }
+	        set
+	        {
+                DiagnosticUtilities.RaiseEvent(this, SettingBlendFactor, value);
+	            _blendFactor = value;
+	            _blendFactorNumber = value.ToNumber4();
+	        }
 	    }
-		public int BlendSampleMask { get; set; }
 
-		internal int MultiSampleCount
+	    public int BlendSampleMask
+	    {
+	        get { return _blendSampleMask; }
+	        set
+	        {
+                DiagnosticUtilities.RaiseEvent(this, SettingBlendSampleMask, value);
+	            _blendSampleMask = value;
+	        }
+	    }
+
+	    internal int MultiSampleCount
 		{
 			// TODO
 			get { return 1; }
@@ -32,7 +85,6 @@ namespace Rasterizr.Pipeline.OutputMerger
 
 		public OutputMergerStage(Device device)
 		{
-			_device = device;
 			DepthStencilState = new DepthStencilState(device, DepthStencilStateDescription.Default);
 			BlendState = new BlendState(device, BlendStateDescription.Default);
 		}
@@ -45,7 +97,9 @@ namespace Rasterizr.Pipeline.OutputMerger
 
 		public void SetTargets(DepthStencilView depthStencilView, params RenderTargetView[] renderTargetViews)
 		{
-			_device.Loggers.BeginOperation(OperationType.OutputMergerStageSetTargets, depthStencilView, renderTargetViews);
+            DiagnosticUtilities.RaiseEvent(this, SettingTargets, 
+                DiagnosticUtilities.GetID(depthStencilView),
+                DiagnosticUtilities.GetIDs(renderTargetViews));
 			_depthStencilView = depthStencilView;
 			_renderTargetViews = renderTargetViews;
 		}
@@ -66,48 +120,34 @@ namespace Rasterizr.Pipeline.OutputMerger
 					if (!pixel.Samples[sampleIndex].Covered)
 						continue;
 
-                    // TODO: Only create DrawEvent if logging is enabled.
-                    // TODO: Only create draw events for selected pixel.
-					var pixelHistoryEvent = new DrawEvent
-					{
-                        Vertices = pixel.Vertices.Select(x => new DrawEventVertex
-                        {
-                            VertexID = x.VertexID,
-                            Data = x.Data.Select(y => new DrawEventVertexData
-                            {
-                                Semantic = "TODO",
-                                Value = y.ToString()
-                            }).ToArray()
-                        }).ToArray(),
-						PrimitiveID = pixel.PrimitiveID,
-						X = pixel.X,
-						Y = pixel.Y,
-						PixelShader = pixel.Color
-					};
-
 					float newDepth = pixel.Samples[sampleIndex].Depth;
+
+                    var source = pixel.Color;
+                    var destination = renderTarget.GetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex);
+
+				    var finalColor = new Number4();
                     if (_depthStencilView != null)
 					{
                         float currentDepth = _depthStencilView.GetDepth(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex);
 					    if (!DepthStencilState.DepthTestPasses(newDepth, currentDepth))
 					    {
-					        pixelHistoryEvent.ExclusionReason = PixelExclusionReason.FailedDepthTest;
-					        _device.Loggers.AddPixelHistoryEvent(pixelHistoryEvent);
+                            DiagnosticUtilities.RaisePixelEvent(this, ProcessedPixel, 
+                                pixel.Vertices, pixel.PrimitiveID, pixel.X, pixel.Y,
+                                ref source, ref destination, ref finalColor,
+                                PixelExclusionReason.FailedDepthTest);
 					        continue;
 					    }
 					}
-
-					var source = pixel.Color;
-					var destination = renderTarget.GetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex);
-
+					
 					// Use blend state to calculate final color.
-					var finalColor = BlendState.DoBlend(renderTargetIndex, ref source, ref destination, ref _blendFactor);
+                    finalColor = BlendState.DoBlend(renderTargetIndex, ref source, ref destination, ref _blendFactorNumber);
 				    finalColor = Number4.Saturate(ref finalColor);
 					renderTarget.SetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex, ref finalColor);
 
-					pixelHistoryEvent.Previous = destination;
-					pixelHistoryEvent.Result = finalColor;
-					_device.Loggers.AddPixelHistoryEvent(pixelHistoryEvent);
+				    DiagnosticUtilities.RaisePixelEvent(this, ProcessedPixel,
+				        pixel.Vertices, pixel.PrimitiveID, pixel.X, pixel.Y,
+                        ref source, ref destination, ref finalColor,
+				        PixelExclusionReason.NotExcluded);
 
 					if (_depthStencilView != null && DepthStencilState.Description.IsDepthEnabled)
 						_depthStencilView.SetDepth(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex, newDepth);

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Rasterizr.Diagnostics;
+﻿using System.Collections.Generic;
 using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.InputAssembler;
@@ -16,6 +14,16 @@ namespace Rasterizr
 {
 	public class DeviceContext : DeviceChild
 	{
+        public event DiagnosticEventHandler ClearingDepthStencilView;
+        public event DiagnosticEventHandler ClearingRenderTargetView;
+        public event DiagnosticEventHandler Drawing;
+        public event DiagnosticEventHandler DrawingIndexed;
+	    public event DiagnosticEventHandler DrawingInstanced;
+        public event DiagnosticEventHandler GeneratingMips;
+        public event DiagnosticEventHandler Presenting;
+        public event DiagnosticEventHandler SettingBufferData;
+        public event DiagnosticEventHandler SettingTextureData;
+
 		private readonly Device _device;
 		private readonly InputAssemblerStage _inputAssembler;
 		private readonly VertexShaderStage _vertexShader;
@@ -68,35 +76,33 @@ namespace Rasterizr
 
 		public virtual void ClearDepthStencilView(DepthStencilView depthStencilView, DepthStencilClearFlags clearFlags, float depth, byte stencil)
 		{
-			_device.Loggers.BeginOperation(OperationType.DeviceContextClearDepthStencilView, depthStencilView, clearFlags, depth, stencil);
+            DiagnosticUtilities.RaiseEvent(this, ClearingDepthStencilView, DiagnosticUtilities.GetID(depthStencilView), clearFlags, depth, stencil);
 			depthStencilView.Clear(clearFlags, depth, stencil);
 		}
 
         public virtual void ClearRenderTargetView(RenderTargetView renderTargetView, Color4 color)
 		{
-			_device.Loggers.BeginOperation(OperationType.DeviceContextClearRenderTargetView, renderTargetView, color);
+            DiagnosticUtilities.RaiseEvent(this, ClearingRenderTargetView, DiagnosticUtilities.GetID(renderTargetView), color);
 
             var number = color.ToNumber4();
-			_device.Loggers.AddPixelHistoryEvent(new SimpleEvent(number));
 			renderTargetView.Clear(ref number);
 		}
 
 		public void Draw(int vertexCount, int startVertexLocation)
 		{
-			_device.Loggers.BeginOperation(OperationType.DeviceContextDraw, vertexCount, startVertexLocation);
+            DiagnosticUtilities.RaiseEvent(this, Drawing, vertexCount, startVertexLocation);
 			DrawInternal(_inputAssembler.GetVertexStream(_vertexShader.Shader.Bytecode.InputSignature, vertexCount, startVertexLocation));
 		}
 
 		public void DrawIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
 		{
-			_device.Loggers.BeginOperation(OperationType.DeviceContextDrawIndexed, indexCount, startIndexLocation, baseVertexLocation);
+            DiagnosticUtilities.RaiseEvent(this, DrawingIndexed, indexCount, startIndexLocation, baseVertexLocation);
 			DrawInternal(_inputAssembler.GetVertexStreamIndexed(_vertexShader.Shader.Bytecode.InputSignature, indexCount, startIndexLocation, baseVertexLocation));
 		}
 
 		public void DrawInstanced(int vertexCountPerInstance, int instanceCount, int startVertexLocation, int startInstanceLocation)
 		{
-			_device.Loggers.BeginOperation(OperationType.DeviceContextDrawInstanced, vertexCountPerInstance,
-				instanceCount, startVertexLocation, startInstanceLocation);
+            DiagnosticUtilities.RaiseEvent(this, DrawingInstanced, vertexCountPerInstance, instanceCount, startVertexLocation, startInstanceLocation);
 			DrawInternal(_inputAssembler.GetVertexStreamInstanced(_vertexShader.Shader.Bytecode.InputSignature, vertexCountPerInstance,
 				instanceCount, startVertexLocation, startInstanceLocation));
 		}
@@ -137,8 +143,38 @@ namespace Rasterizr
 
 	    public void GenerateMips(TextureBase texture)
 	    {
-            Device.Loggers.BeginOperation(OperationType.GenerateMips, texture);
+            DiagnosticUtilities.RaiseEvent(this, GeneratingMips, DiagnosticUtilities.GetID(texture));
             texture.GenerateMips();
+	    }
+
+	    public void Present(SwapChain swapChain)
+	    {
+            DiagnosticUtilities.RaiseEvent(this, Presenting, DiagnosticUtilities.GetID(swapChain));
+            swapChain.Present();
+	    }
+
+        public void SetBufferData<T>(Buffer buffer, T[] data, int offsetInBytes = 0)
+            where T : struct
+        {
+            SetBufferData(buffer, Utilities.ToByteArray(data), offsetInBytes);
+        }
+
+        public void SetBufferData<T>(Buffer buffer, ref T data, int offsetInBytes = 0)
+            where T : struct
+        {
+            SetBufferData(buffer, Utilities.ToByteArray(ref data), offsetInBytes);
+        }
+
+        public void SetBufferData(Buffer buffer, byte[] data, int offsetInBytes = 0)
+	    {
+            DiagnosticUtilities.RaiseEvent(this, SettingBufferData, DiagnosticUtilities.GetID(buffer), data, offsetInBytes);
+            buffer.SetData(data, offsetInBytes);
+	    }
+
+        public void SetTextureData(TextureBase texture, int subresource, Color4[] data)
+	    {
+            DiagnosticUtilities.RaiseEvent(this, SettingTextureData, DiagnosticUtilities.GetID(texture), subresource, data);
+            texture.SetData(subresource, data);
 	    }
 	}
 }

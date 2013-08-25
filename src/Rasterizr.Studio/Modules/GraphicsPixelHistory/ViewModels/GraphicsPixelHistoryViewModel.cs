@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Framework.Services;
@@ -90,18 +91,16 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 		    HasSelectedPixel = true;
 			_pixelEvents.Clear();
 
+            var swapChainPresenter = new WpfSwapChainPresenter(Dispatcher.CurrentDispatcher);
+            var replayer = new Replayer(
+                _selectionService.SelectedFrame.Model, _selectionService.SelectedEvent.Model,
+                swapChainPresenter, e.SelectedPixel.X, e.SelectedPixel.Y);
+
 			Task.Factory.StartNew(() =>
 			{
-				WpfSwapChain swapChain = null;
-				var replayer = new Replayer(_selectionService.SelectedFrame.Model, _selectionService.SelectedEvent.Model, (d, desc) =>
-				{
-					Execute.OnUIThread(() => swapChain = new WpfSwapChain(d, desc.Width, desc.Height));
-					return swapChain;
-				}, true);
 				replayer.Replay();
 
-				var events = replayer.Logger.GetEvents(_selectionService.SelectedFrame.Number, e.SelectedPixel.X, e.SelectedPixel.Y);
-
+				var events = replayer.Logger.GetEvents(_selectionService.SelectedFrame.Number);
 				_pixelEvents.AddRange(events.Select(x => new PixelHistoryEventViewModel(x)));
 
 			    FinalFrameBufferColor = _pixelEvents.Last().Color;

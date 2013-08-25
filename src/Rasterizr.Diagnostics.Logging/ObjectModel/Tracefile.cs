@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using Rasterizr.Diagnostics.Logging.Serialization;
 
 namespace Rasterizr.Diagnostics.Logging.ObjectModel
 {
@@ -15,13 +14,7 @@ namespace Rasterizr.Diagnostics.Logging.ObjectModel
 			{
 				ConstructorHandling = ConstructorHandling.Default,
 				Formatting = Formatting.Indented,
-				TypeNameHandling = TypeNameHandling.Auto,
-				Converters = new List<JsonConverter>
-				{
-					new DeviceChildConverter(),
-					new DeviceChildArrayConverter(),
-					new VertexBufferBindingConverter()
-				}
+				TypeNameHandling = TypeNameHandling.Auto
 			};
 		}
 

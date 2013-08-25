@@ -29,5 +29,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
+[assembly: InternalsVisibleTo("Rasterizr.Diagnostics.Logging")]
 [assembly: InternalsVisibleTo("Rasterizr.Platform.Wpf")]
 [assembly: InternalsVisibleTo("Rasterizr.Tests")]

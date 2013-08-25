@@ -1,4 +1,4 @@
-﻿namespace Rasterizr.Diagnostics.Logging.ObjectModel
+﻿namespace Rasterizr.Util
 {
 	internal class SerializedVertexBufferBinding
 	{

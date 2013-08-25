@@ -40,9 +40,12 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <Compile Include="Color4.cs" />
+    <Compile Include="DiagnosticEventArgs.cs" />
     <Compile Include="Format.cs" />
     <Compile Include="FormatHelper.cs" />
+    <Compile Include="ISwapChainPresenter.cs" />
     <Compile Include="Math\MathUtility.cs" />
+    <Compile Include="Pipeline\OutputMerger\PixelEventArgs.cs" />
     <Compile Include="Pipeline\Rasterizer\Culling\ViewportCuller.cs" />
     <Compile Include="Pipeline\Rasterizer\ShaderOutputInputBinding.cs" />
     <Compile Include="Pipeline\Rasterizer\Primitives\Vector3ForCulling.cs" />
@@ -65,12 +68,9 @@
     <Compile Include="ComparisonUtility.cs" />
     <Compile Include="Diagnostics\SimpleEvent.cs" />
     <Compile Include="Diagnostics\DrawEvent.cs" />
-    <Compile Include="Diagnostics\GraphicsLogger.cs" />
-    <Compile Include="Diagnostics\GraphicsLoggerCollection.cs" />
     <Compile Include="Diagnostics\OperationType.cs" />
     <Compile Include="Diagnostics\PixelEvent.cs" />
     <Compile Include="Diagnostics\PixelExclusionReason.cs" />
-    <Compile Include="Diagnostics\TextWriterGraphicsLogger.cs" />
     <Compile Include="Math\Point.cs" />
     <Compile Include="Pipeline\CommonShaderStage.cs" />
     <Compile Include="Pipeline\GeometryShader\GeometryShader.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="Pipeline\VertexShader\VertexShaderOutput.cs" />
     <Compile Include="Pipeline\VertexShader\VertexShaderStage.cs" />
     <Compile Include="Comparison.cs" />
-    <Compile Include="RawSwapChain.cs" />
+    <Compile Include="RawSwapChainPresenter.cs" />
     <Compile Include="Resources\Filter.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDescription.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetViewDimension.cs" />
@@ -164,7 +164,9 @@
     <Compile Include="Resources\Texture2DDescription.cs" />
     <Compile Include="Util\Batch.cs" />
     <Compile Include="Util\ConversionExtensions.cs" />
+    <Compile Include="Util\DiagnosticUtilities.cs" />
     <Compile Include="Util\Interop.cs" />
+    <Compile Include="Util\SerializedVertexBufferBinding.cs" />
     <Compile Include="Util\Utilities.cs" />
     <Compile Include="Pipeline\InputAssembler\VertexBufferBinding.cs" />
     <Compile Include="Pipeline\Rasterizer\Viewport.cs" />

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.VertexShader;
+using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Chunks.Xsgn;
 using Buffer = Rasterizr.Resources.Buffer;
@@ -11,6 +11,11 @@ namespace Rasterizr.Pipeline.InputAssembler
 {
 	public class InputAssemblerStage
 	{
+	    public event DiagnosticEventHandler SettingPrimitiveTopology;
+        public event DiagnosticEventHandler SettingInputLayout;
+        public event DiagnosticEventHandler SettingVertexBuffers;
+        public event DiagnosticEventHandler SettingIndexBuffer;
+
 		private readonly Device _device;
 		public const int VertexInputResourceSlotCount = 32;
 
@@ -24,7 +29,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			get { return _inputLayout; }
 			set
 			{
-				_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetInputLayout, value);
+                DiagnosticUtilities.RaiseEvent(this, SettingInputLayout, DiagnosticUtilities.GetID(value));
 				_inputLayout = value;
 			}
 		}
@@ -34,7 +39,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			get { return _primitiveTopology; }
 			set
 			{
-				_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetPrimitiveTopology, value);
+                DiagnosticUtilities.RaiseEvent(this, SettingPrimitiveTopology, value);
 				_primitiveTopology = value;
 			}
 		}
@@ -53,7 +58,13 @@ namespace Rasterizr.Pipeline.InputAssembler
 
 		public void SetVertexBuffers(int startSlot, params VertexBufferBinding[] vertexBufferBindings)
 		{
-			_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetVertexBuffers, startSlot, vertexBufferBindings);
+            DiagnosticUtilities.RaiseEvent(this, SettingVertexBuffers, startSlot,
+		        vertexBufferBindings.Select(x => new SerializedVertexBufferBinding
+		        {
+		            Buffer = x.Buffer.ID,
+		            Offset = x.Offset,
+		            Stride = x.Stride
+		        }));
 			for (int i = 0; i < vertexBufferBindings.Length; i++)
 				_vertexBufferBindings[i + startSlot] = vertexBufferBindings[i];
 		}
@@ -67,7 +78,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 
 		public void SetIndexBuffer(Buffer indexBuffer, Format format, int offset)
 		{
-			_device.Loggers.BeginOperation(OperationType.InputAssemblerStageSetIndexBuffer, indexBuffer, format, offset);
+            DiagnosticUtilities.RaiseEvent(this, SettingIndexBuffer, DiagnosticUtilities.GetID(indexBuffer), format, offset);
 			if (format != Format.R16_UInt && format != Format.R32_UInt)
 				throw new ArgumentOutOfRangeException("format");
 			_indexBufferBinding = new IndexBufferBinding(indexBuffer, format, offset);

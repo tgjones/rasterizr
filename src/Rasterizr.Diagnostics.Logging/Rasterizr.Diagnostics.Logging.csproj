@@ -36,18 +36,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ObjectModel\PixelEventCollection.cs" />
-    <Compile Include="ObjectModel\SerializedDeviceChildArray.cs" />
     <Compile Include="ObjectModel\TracefileEvent.cs" />
     <Compile Include="ObjectModel\TracefileEventArgumentCollection.cs" />
     <Compile Include="ObjectModel\TracefileFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Replayer.cs" />
-    <Compile Include="ObjectModel\SerializedVertexBufferBinding.cs" />
-    <Compile Include="Serialization\DeviceChildArrayConverter.cs" />
-    <Compile Include="Serialization\DeviceChildConverter.cs" />
-    <Compile Include="Serialization\VertexBufferBindingConverter.cs" />
     <Compile Include="ObjectModel\Tracefile.cs" />
-    <Compile Include="TracefileGraphicsLogger.cs" />
+    <Compile Include="TracefileBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

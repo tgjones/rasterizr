@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Media.Imaging;
-using Rasterizr.Diagnostics;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.Rasterizer;
 using Rasterizr.Platform.Wpf;
@@ -14,21 +13,21 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.BasicWindow
 	{
 		private DeviceContext _deviceContext;
 		private RenderTargetView _renderTargetView;
-		private WpfSwapChain _swapChain;
+		private SwapChain _swapChain;
 
 		public override string Name
 		{
 			get { return "Basic Window"; }
 		}
 
-        public override WriteableBitmap Initialize(params GraphicsLogger[] loggers)
+        public override WriteableBitmap Initialize(Device device)
 		{
 			const int width = 600;
 			const int height = 400;
 
 			// Create device and swap chain.
-			var device = new Device(loggers);
-			_swapChain = new WpfSwapChain(device, width, height);
+            var swapChainPresenter = new WpfSwapChainPresenter();
+			_swapChain = device.CreateSwapChain(width, height, swapChainPresenter);
 
 			_deviceContext = device.ImmediateContext;
 
@@ -51,13 +50,13 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.BasicWindow
 			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, width, height, 0.0f, 1.0f));
 			_deviceContext.OutputMerger.SetTargets(depthStencilView, _renderTargetView);
 
-            return _swapChain.Bitmap;
+            return swapChainPresenter.Bitmap;
 		}
 
         public override void Draw(float time)
 		{
             _deviceContext.ClearRenderTargetView(_renderTargetView, new Color4((float) (time / 5.0) % 1.0f, 0, 0, 1));
-			_swapChain.Present();
+			_deviceContext.Present(_swapChain);
 		}
 	}
 }
