@@ -75,6 +75,8 @@ namespace Rasterizr.Pipeline
 
         // TODO: Not nice.
         protected abstract OperationType SetConstantBuffersOperationType { get; }
+        protected abstract OperationType SetSamplersOperationType { get; }
+        protected abstract OperationType SetShaderResourcesOperationType { get; }
 
 		public void GetSamplers(int startSlot, int count, SamplerState[] samplers)
 		{
@@ -84,6 +86,7 @@ namespace Rasterizr.Pipeline
 
 		public void SetSamplers(int startSlot, params SamplerState[] samplers)
 		{
+            _device.Loggers.BeginOperation(SetSamplersOperationType, startSlot, samplers);
 			for (int i = 0; i < samplers.Length; i++)
 				_samplers[i + startSlot] = samplers[i];
 		}
@@ -96,6 +99,7 @@ namespace Rasterizr.Pipeline
 
 		public void SetShaderResources(int startSlot, params ShaderResourceView[] shaderResources)
 		{
+            _device.Loggers.BeginOperation(SetShaderResourcesOperationType, startSlot, shaderResources);
 			for (int i = 0; i < shaderResources.Length; i++)
 				_shaderResources[i + startSlot] = shaderResources[i];
 		}

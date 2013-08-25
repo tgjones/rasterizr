@@ -17,6 +17,8 @@
 		DeviceCreate,
 		GeometryShaderStageSetShader,
         GeometryShaderStageSetConstantBuffers,
+        GeometryShaderStageSetSamplers,
+        GeometryShaderStageSetShaderResources,
 		InputAssemblerStageSetIndexBuffer,
 		InputAssemblerStageSetInputLayout,
 		InputAssemblerStageSetPrimitiveTopology,
@@ -25,6 +27,8 @@
 		OutputMergerStageSetTargets,
 		PixelShaderStageSetShader,
         PixelShaderStageSetConstantBuffers,
+        PixelShaderStageSetSamplers,
+        PixelShaderStageSetShaderResources,
 		RasterizerStageSetViewports,
 		RasterizerStateCreate,
 		CreateRenderTargetView,
@@ -37,7 +41,10 @@
 		CreateTexture3D,
 		VertexShaderStageSetShader,
         VertexShaderStageSetConstantBuffers,
+        VertexShaderStageSetSamplers,
+        VertexShaderStageSetShaderResources,
         BufferSetData,
-        Texture2DSetData
+        Texture2DSetData,
+        GenerateMips
 	}
 }

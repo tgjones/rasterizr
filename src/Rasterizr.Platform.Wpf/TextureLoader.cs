@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Rasterizr.Math;
 using Rasterizr.Resources;
 
 namespace Rasterizr.Platform.Wpf
@@ -21,17 +20,6 @@ namespace Rasterizr.Platform.Wpf
 			var pixelData = new byte[bitmap.PixelWidth * bitmap.PixelHeight * bitmap.Format.BitsPerPixel / 8];
 			bitmap.CopyPixels(pixelData, bitmap.PixelWidth * bitmap.Format.BitsPerPixel / 8, 0);
 
-		    var mipLevels = (MathUtility.IsPowerOfTwo(bitmap.PixelWidth) && MathUtility.IsPowerOfTwo(bitmap.PixelHeight))
-		        ? 0 : 1;
-
-			var result = device.CreateTexture2D(new Texture2DDescription
-			{
-				Width = bitmap.PixelWidth,
-				Height = bitmap.PixelHeight,
-				MipLevels = mipLevels,
-				ArraySize = 1,
-			});
-
             var colors = new Color4[bitmap.PixelWidth * bitmap.PixelHeight];
 		    for (int i = 0; i < colors.Length; i++)
 		    {
@@ -43,10 +31,7 @@ namespace Rasterizr.Platform.Wpf
                 colors[i] = new Color4(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 		    }
 
-		    result.SetData(0, colors);
-			device.ImmediateContext.GenerateMips(device.CreateShaderResourceView(result));
-
-			return result;
+		    return Texture2D.FromColors(device, colors, bitmap.PixelWidth, bitmap.PixelHeight);
 		}
 
 		public static WriteableBitmap CreateBitmapFromTexture(Texture2D texture, int mipLevel)

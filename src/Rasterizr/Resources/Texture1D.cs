@@ -92,5 +92,10 @@ namespace Rasterizr.Resources
 		{
 			GetDimensions(0, out width);
 		}
+
+	    internal override void GenerateMips()
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

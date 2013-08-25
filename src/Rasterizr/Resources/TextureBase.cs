@@ -34,5 +34,7 @@ namespace Rasterizr.Resources
 
         public abstract Color4[] GetData(int subresource);
         public abstract void SetData(int subresource, Color4[] data);
+
+	    internal abstract void GenerateMips();
 	}
 }

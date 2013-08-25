@@ -1,5 +1,6 @@
 ﻿using System;
 using Rasterizr.Diagnostics;
+using Rasterizr.Math;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.VirtualMachine.Resources;
@@ -127,7 +128,7 @@ namespace Rasterizr.Resources
 			GetDimensions(0, out width, out height);
 		}
 
-		internal void GenerateMips()
+		internal override void GenerateMips()
 		{
 			for (int i = 0; i < _description.ArraySize; i++)
 				for (int mipSlice = 1; mipSlice < _subresources[0].Length; ++mipSlice)
@@ -154,5 +155,24 @@ namespace Rasterizr.Resources
 					}
 				}
 		}
+
+        public static Texture2D FromColors(Device device, Color4[] data, int width, int height)
+        {
+            var mipLevels = (MathUtility.IsPowerOfTwo(width) && MathUtility.IsPowerOfTwo(height))
+                ? 0 : 1;
+
+            var result = device.CreateTexture2D(new Texture2DDescription
+            {
+                Width = width,
+                Height = height,
+                MipLevels = mipLevels,
+                ArraySize = 1,
+            });
+
+            result.SetData(0, data);
+            device.ImmediateContext.GenerateMips(result);
+
+            return result;
+        }
 	}
 }

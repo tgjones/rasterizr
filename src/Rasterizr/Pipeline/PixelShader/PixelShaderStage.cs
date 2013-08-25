@@ -22,6 +22,16 @@ namespace Rasterizr.Pipeline.PixelShader
 	        get { return OperationType.PixelShaderStageSetConstantBuffers; }
 	    }
 
+        protected override OperationType SetSamplersOperationType
+        {
+            get { return OperationType.PixelShaderStageSetSamplers; }
+        }
+
+        protected override OperationType SetShaderResourcesOperationType
+        {
+            get { return OperationType.PixelShaderStageSetShaderResources; }
+        }
+
 	    public PixelShaderStage(Device device)
 			: base(device)
 		{

@@ -132,14 +132,13 @@ namespace Rasterizr
 
 		public void GenerateMips(ShaderResourceView shaderResourceView)
 		{
-			switch (shaderResourceView.Resource.ResourceType)
-			{
-				case ResourceType.Texture2D:
-					((Texture2D) shaderResourceView.Resource).GenerateMips();
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+            GenerateMips((TextureBase) shaderResourceView.Resource);
 		}
+
+	    public void GenerateMips(TextureBase texture)
+	    {
+            Device.Loggers.BeginOperation(OperationType.GenerateMips, texture);
+            texture.GenerateMips();
+	    }
 	}
 }

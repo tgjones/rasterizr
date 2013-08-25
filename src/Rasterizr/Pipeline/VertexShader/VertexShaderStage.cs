@@ -14,6 +14,16 @@ namespace Rasterizr.Pipeline.VertexShader
             get { return OperationType.VertexShaderStageSetConstantBuffers; }
         }
 
+        protected override OperationType SetSamplersOperationType
+        {
+            get { return OperationType.VertexShaderStageSetSamplers; }
+        }
+
+        protected override OperationType SetShaderResourcesOperationType
+        {
+            get { return OperationType.VertexShaderStageSetShaderResources; }
+        }
+
 		public VertexShaderStage(Device device)
 			: base(device)
 		{

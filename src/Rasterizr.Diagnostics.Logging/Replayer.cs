@@ -159,10 +159,30 @@ namespace Rasterizr.Diagnostics.Logging
 				            args.Get<SerializedDeviceChildArray>(1).IDs
 				                .Select(x => _device.GetDeviceChild<Buffer>(x)).ToArray());
 				        break;
+                    case OperationType.VertexShaderStageSetSamplers:
+                        _deviceContext.VertexShader.SetSamplers(args.Get<int>(0),
+                            args.Get<SerializedDeviceChildArray>(1).IDs
+                                .Select(x => _device.GetDeviceChild<SamplerState>(x)).ToArray());
+                        break;
+                    case OperationType.VertexShaderStageSetShaderResources:
+                        _deviceContext.VertexShader.SetShaderResources(args.Get<int>(0),
+                            args.Get<SerializedDeviceChildArray>(1).IDs
+                                .Select(x => _device.GetDeviceChild<ShaderResourceView>(x)).ToArray());
+                        break;
                     case OperationType.PixelShaderStageSetConstantBuffers:
 				        _deviceContext.PixelShader.SetConstantBuffers(args.Get<int>(0),
 				            args.Get<SerializedDeviceChildArray>(1).IDs
 				                .Select(x => _device.GetDeviceChild<Buffer>(x)).ToArray());
+                        break;
+                    case OperationType.PixelShaderStageSetSamplers:
+                        _deviceContext.PixelShader.SetSamplers(args.Get<int>(0),
+                            args.Get<SerializedDeviceChildArray>(1).IDs
+                                .Select(x => _device.GetDeviceChild<SamplerState>(x)).ToArray());
+                        break;
+                    case OperationType.PixelShaderStageSetShaderResources:
+                        _deviceContext.PixelShader.SetShaderResources(args.Get<int>(0),
+                            args.Get<SerializedDeviceChildArray>(1).IDs
+                                .Select(x => _device.GetDeviceChild<ShaderResourceView>(x)).ToArray());
                         break;
                     case OperationType.BufferSetData:
 				    {
@@ -176,6 +196,9 @@ namespace Rasterizr.Diagnostics.Logging
                         texture.SetData(args.Get<int>(1), args.Get<Color4[]>(2));
                         break;
                     }
+                    case OperationType.GenerateMips:
+                        _deviceContext.GenerateMips(args.Get<TextureBase>(_device, 0));
+				        break;
 				    default:
 						throw new ArgumentOutOfRangeException();
 				}
