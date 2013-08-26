@@ -142,9 +142,9 @@ namespace Rasterizr.Resources
 
 							var moreDetailedMipLevel = GetSubresource(i, mipSlice - 1);
 							var c00 = moreDetailedMipLevel.GetData(previousLevelX, previousLevelY);
-							var c10 = moreDetailedMipLevel.GetData(previousLevelX + 1, previousLevelY);
-							var c01 = moreDetailedMipLevel.GetData(previousLevelX, previousLevelY + 1);
-							var c11 = moreDetailedMipLevel.GetData(previousLevelX + 1, previousLevelY + 1);
+							var c10 = moreDetailedMipLevel.GetData(ClampToDimension(previousLevelX + 1, moreDetailedMipLevel.Width), previousLevelY);
+                            var c01 = moreDetailedMipLevel.GetData(previousLevelX, ClampToDimension(previousLevelY + 1, moreDetailedMipLevel.Height));
+                            var c11 = moreDetailedMipLevel.GetData(ClampToDimension(previousLevelX + 1, moreDetailedMipLevel.Width), ClampToDimension(previousLevelY + 1, moreDetailedMipLevel.Height));
 							var interpolatedColor = Number4.Average(ref c00, ref c10, ref c01, ref c11);
 
 						    subresource.SetData(x, y, ref interpolatedColor);
@@ -153,16 +153,21 @@ namespace Rasterizr.Resources
 				}
 		}
 
+        /// <summary>
+        /// Takes care of non-power-of-two textures not necessarily having double the size in all dimensions.
+        /// </summary>
+        private static int ClampToDimension(int value, int dimension)
+	    {
+	        return System.Math.Min(value, dimension - 1);
+	    }
+
         public static Texture2D FromColors(Device device, Color4[] data, int width, int height)
         {
-            var mipLevels = (MathUtility.IsPowerOfTwo(width) && MathUtility.IsPowerOfTwo(height))
-                ? 0 : 1;
-
             var result = device.CreateTexture2D(new Texture2DDescription
             {
                 Width = width,
                 Height = height,
-                MipLevels = mipLevels,
+                MipLevels = 0,
                 ArraySize = 1,
             });
 

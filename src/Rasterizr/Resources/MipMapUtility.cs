@@ -8,13 +8,10 @@ namespace Rasterizr.Resources
 	{
 		public static int CalculateMipMapCount(int mipLevels, params int[] dimensions)
 		{
-			if (mipLevels != 1 && dimensions.Any(x => !MathUtility.IsPowerOfTwo(x)))
-				throw new ArgumentException("MipLevels must be 1 for non-power of 2 dimensions.");
-
 			if (mipLevels != 0)
 				return mipLevels;
 
-			return (int) MathUtility.Log2(dimensions.Max()) + 1;
+			return 1 + (int) System.Math.Floor(MathUtility.Log2(dimensions.Max()));
 		}
 
 		public static Texture1D.Texture1DSubresource[] CreateMipMaps(int mipLevels, int width)
@@ -24,7 +21,7 @@ namespace Rasterizr.Resources
 			{
 				result[level] = new Texture1D.Texture1DSubresource(width);
 
-				width = System.Math.Max(width / 2, 1);
+                width = System.Math.Max((int) System.Math.Floor(width / 2.0), 1);
 			}
 			return result;
 		}
@@ -36,8 +33,8 @@ namespace Rasterizr.Resources
 			{
 				result[level] = new Texture2D.Texture2DSubresource(width, height);
 
-				width = System.Math.Max(width / 2, 1);
-				height = System.Math.Max(height / 2, 1);
+				width = System.Math.Max((int) System.Math.Floor(width / 2.0), 1);
+                height = System.Math.Max((int) System.Math.Floor(height / 2.0), 1);
 			}
 			return result;
 		}
@@ -49,9 +46,9 @@ namespace Rasterizr.Resources
 			{
 				result[level] = new Texture3D.Texture3DSubresource(width, height, depth);
 
-				width = System.Math.Max(width / 2, 1);
-				height = System.Math.Max(height / 2, 1);
-				depth = System.Math.Max(depth / 2, 1);
+                width = System.Math.Max((int) System.Math.Floor(width / 2.0), 1);
+                height = System.Math.Max((int) System.Math.Floor(height / 2.0), 1);
+                depth = System.Math.Max((int) System.Math.Floor(depth / 2.0), 1);
 			}
 			return result;
 		}

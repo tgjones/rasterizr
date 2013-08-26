@@ -28,6 +28,7 @@ namespace Rasterizr.Platform.Wpf
 		{
 		    _width = width;
 
+            //_dispatcher.CheckAccess()
 	        Action createBitmap = () => _bitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
 	        if (_dispatcher != null)
 	            _dispatcher.Invoke(createBitmap);
