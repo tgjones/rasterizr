@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
-using Gemini.Framework.Services;
+using Caliburn.Micro;
+using Gemini.Framework;
+using Gemini.Framework.Results;
+using Microsoft.Win32;
 using Rasterizr.Platform.Wpf;
+using Rasterizr.Resources;
 
 namespace Rasterizr.Studio.Modules.SampleBrowser.TechDemos.Resources.TextureMipmapping
 {
@@ -15,24 +20,41 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.TechDemos.Resources.TextureMipm
 			get { return "Resources"; }
 		}
 
-		private readonly IEnumerable<MipMapViewModel> _mipMaps;
+		private IEnumerable<MipMapViewModel> _mipMaps;
 		public IEnumerable<MipMapViewModel> MipMaps
 		{
 			get { return _mipMaps; }
+		    set
+		    {
+		        _mipMaps = value;
+                NotifyOfPropertyChange(() => MipMaps);
+		    }
 		}
 
-		[ImportingConstructor]
-		public TextureMipmappingViewModel(IResourceManager resourceLoader)
+		public TextureMipmappingViewModel()
 		{
 		    DisplayName = "Texture Mipmapping";
-
-			var textureStream = resourceLoader.GetStream(
-                "Modules/SampleBrowser/TechDemos/Resources/TextureMipmapping/window_28.jpg",
-                GetType().Assembly.FullName);
-			var texture = TextureLoader.CreateTextureFromStream(new Device(), textureStream);
-
-			_mipMaps = Enumerable.Range(0, texture.Description.MipLevels)
-				.Select((x, i) => new MipMapViewModel(TextureLoader.CreateBitmapFromTexture(texture, x), i));
+            LoadImage("Modules/SampleBrowser/TechDemos/Resources/TextureMipmapping/window_28.jpg");
 		}
+
+	    public IEnumerable<IResult> LoadImage()
+	    {
+	        var openDialog = new OpenFileDialog
+	        {
+                Filter = "Image files (*.png, *.jpg)|*.png;*.jpg"
+	        };
+	        yield return Show.Dialog(openDialog);
+	        LoadImage(openDialog.FileName);
+	    }
+
+	    private void LoadImage(string fileName)
+	    {
+	        Texture2D texture;
+	        using (var fileStream = File.OpenRead(fileName))
+                texture = TextureLoader.CreateTextureFromStream(new Device(), fileStream);
+
+            MipMaps = Enumerable.Range(0, texture.Description.MipLevels)
+                .Select((x, i) => new MipMapViewModel(TextureLoader.CreateBitmapFromTexture(texture, x), i));
+	    }
 	}
 }

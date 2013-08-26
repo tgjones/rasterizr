@@ -34,7 +34,8 @@ namespace Rasterizr.Pipeline.VertexShader
 				{
 					VertexID = input.VertexID,
 					InstanceID = input.InstanceID,
-					Data = outputs
+                    InputData = input.Data,
+					OutputData = outputs
 				};
 				if (_outputPositionRegister != null)
 					result.Position = outputs[_outputPositionRegister.Value];

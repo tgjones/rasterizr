@@ -13,7 +13,7 @@ namespace Rasterizr.Pipeline.OutputMerger
         private readonly int _y;
         private readonly Number4 _pixelShader;
         private readonly Number4 _previous;
-        private readonly Number4 _result;
+        private readonly Number4? _result;
         private readonly PixelExclusionReason _exclusionReason;
 
         public VertexShaderOutput[] Vertices
@@ -46,7 +46,7 @@ namespace Rasterizr.Pipeline.OutputMerger
             get { return _previous; }
         }
 
-        public Number4 Result
+        public Number4? Result
         {
             get { return _result; }
         }
@@ -63,7 +63,7 @@ namespace Rasterizr.Pipeline.OutputMerger
             int y,
             ref Number4 pixelShader,
             ref Number4 previous,
-            ref Number4 result,
+            Number4? result,
             PixelExclusionReason exclusionReason)
         {
             _vertices = vertices;

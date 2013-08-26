@@ -34,7 +34,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.Design
                     PixelEvents = new List<PixelEvent>(new[]
                     {
                         DesignTimeDrawPixelHistoryEventViewModel.CreateDrawEvent(),
-                        DesignTimeDrawPixelHistoryEventViewModel.CreateDrawEvent()
+                        DesignTimeDrawPixelHistoryEventViewModel.CreateDrawEvent(PixelExclusionReason.FailedDepthTest)
                     })
                 }), 
 		    });

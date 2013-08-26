@@ -41,26 +41,12 @@ PS_IN VS(VS_IN input)
 
 float4 PS(PS_IN input) : SV_Target
 {
-	//return float4(input.worldPos / 10, 1);
+    float3 L = normalize(LightPos.xyz - input.worldPos);
+    float3 N = normalize(input.normal);
 
-	// Temp: Shouldn't be hardcoded.
-	float3 lightPos = float3(0, 2.5, 0);
+    float3 diffuseTex = DiffuseTexture.Sample(DiffuseSampler, input.uv).xyz;
 
-	float3 L = normalize(lightPos.xyz - input.worldPos);
-	float3 N = normalize(input.normal);
+    float3 diffuse = diffuseTex * saturate(dot(N, L));
 
-	float3 diffuseTex = DiffuseTexture.Sample(DiffuseSampler, input.uv).xyz;
-
-	float3 result = float3(0.2, 0.2, 0.2);
-
-	float lightIntensity = saturate(dot(N,L));
-
-	float3 diffuseColor = float3(0.5, 0.5, 0.5);
-	result += (diffuseColor * lightIntensity);
-
-	result = saturate(result);
-
-	result *= diffuseTex;
-
-	return float4(result, 1);
+    return float4(diffuse, 1);
 }

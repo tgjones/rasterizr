@@ -1,4 +1,5 @@
 using Rasterizr.Diagnostics;
+using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels.PixelResults;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
@@ -26,9 +27,19 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
             get { return new ColorViewModel(_event.PixelShader); }
         }
 
-        public ColorViewModel Result
+        public PixelResultViewModel Result
         {
-            get { return new ColorViewModel(_event.Result); }
+            get { return PixelResultViewModel.Create(_event); }
+        }
+
+        public ColorViewModel FinalColor
+        {
+            get
+            {
+                if (_event.Result == null)
+                    return null;
+                return new ColorViewModel(_event.Result.Value);
+            }
         }
 
         public OutputMergerDrawPixelHistoryEventPartViewModel(DrawEvent @event)

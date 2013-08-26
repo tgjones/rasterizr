@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using Caliburn.Micro;
 using Gemini.Framework;
 using Rasterizr.Studio.Modules.GraphicsEventList.ViewModels;
 using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels;
+using Rasterizr.Studio.Modules.SampleBrowser.ViewModels;
 
 namespace Rasterizr.Studio.Modules.Startup
 {
@@ -22,6 +24,7 @@ namespace Rasterizr.Studio.Modules.Startup
 	    public override void Initialize()
 		{
 			Shell.Title = "Rasterizr Studio";
+            Shell.OpenDocument(IoC.Get<SampleBrowserViewModel>());
 		}
 	}
 }

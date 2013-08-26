@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Rasterizr.Diagnostics;
-using Rasterizr.Pipeline.OutputMerger;
-using Rasterizr.Pipeline.VertexShader;
-using SlimShader;
 
 namespace Rasterizr.Util
 {
@@ -28,15 +24,6 @@ namespace Rasterizr.Util
                 return new int[0];
 
             return deviceChildren.Select(GetID).ToArray();
-        }
-
-        public static void RaisePixelEvent(object sender, PixelEventHandler @event,
-            VertexShaderOutput[] vertices, int primitiveID, int x, int y,
-            ref Number4 pixelShader, ref Number4 previous, ref Number4 result,
-            PixelExclusionReason exclusionReason)
-        {
-            if (@event != null)
-                @event(sender, new PixelEventArgs(vertices, primitiveID, x, y, ref pixelShader, ref previous, ref result, exclusionReason));
         }
     }
 }

@@ -147,25 +147,40 @@
       <DependentUpon>GraphicsEventListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\GraphicsPixelHistory\Controls\ItemToCollectionConverter.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\Controls\NullToVisibilityConverter.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Controls\PixelHistoryEventTemplateSelector.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeColorResultViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeColorViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeDrawPixelHistoryEventViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeGraphicsPixelHistoryViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeOutputMergerDrawPixelHistoryEventPartViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Design\DesignTimeSimplePixelHistoryEventViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\ViewModels\PixelResults\ColorResultViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\ColorViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\DrawPixelHistoryEventViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\DrawPixelHistoryEventPartViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\ViewModels\PixelResults\PixelResultViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\ViewModels\PixelResults\ExcludedPixelResultViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\GraphicsPixelHistoryViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\OutputMergerDrawPixelHistoryEventPartViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\PixelHistoryEventViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\PixelHistoryEventViewModelBase.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\SimplePixelHistoryEventViewModel.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\ViewModels\VertexShaderDrawPixelHistoryEventPartViewModel.cs" />
+    <Compile Include="Modules\GraphicsPixelHistory\Views\PixelResults\ColorResultView.xaml.cs">
+      <DependentUpon>ColorResultView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\GraphicsPixelHistory\Views\ColorView.xaml.cs">
       <DependentUpon>ColorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\GraphicsPixelHistory\Views\PixelResults\ExcludedPixelResultView.xaml.cs">
+      <DependentUpon>ExcludedPixelResultView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\GraphicsPixelHistory\Views\GraphicsPixelHistoryView.xaml.cs">
       <DependentUpon>GraphicsPixelHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\GraphicsPixelHistory\Views\InputAssemblerDrawPixelHistoryEventPartView.xaml.cs">
+      <DependentUpon>InputAssemblerDrawPixelHistoryEventPartView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\GraphicsPixelHistory\Views\OutputMergerDrawPixelHistoryEventPartView.xaml.cs">
       <DependentUpon>OutputMergerDrawPixelHistoryEventPartView.xaml</DependentUpon>
@@ -227,8 +242,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="Modules\SampleBrowser\TechDemos\Resources\TextureMipmapping\window_28.jpg" />
+    <Content Include="Modules\SampleBrowser\TechDemos\Resources\TextureMipmapping\window_28.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Modules\SampleBrowser\TechDemos\Resources\TextureSampling\CorrodedTiles.png" />
+    <Resource Include="Modules\GraphicsPixelHistory\Resources\FailedZTestLarge.png" />
+    <Resource Include="Modules\GraphicsPixelHistory\Resources\FailedZTestSmall.png" />
     <Content Include="Modules\SampleBrowser\Samples\BasicTriangle\MiniTri.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -318,13 +337,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Modules\GraphicsPixelHistory\Views\PixelResults\ColorResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\GraphicsPixelHistory\Views\ColorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\GraphicsPixelHistory\Views\PixelResults\ExcludedPixelResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\GraphicsPixelHistory\Views\GraphicsPixelHistoryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\GraphicsPixelHistory\Views\InputAssemblerDrawPixelHistoryEventPartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\GraphicsPixelHistory\Views\OutputMergerDrawPixelHistoryEventPartView.xaml">
       <SubType>Designer</SubType>

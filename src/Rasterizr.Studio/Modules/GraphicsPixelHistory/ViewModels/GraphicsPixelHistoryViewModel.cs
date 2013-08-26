@@ -9,6 +9,7 @@ using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.GraphicsDebugging;
+using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels.PixelResults;
 using SlimShader;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
@@ -103,7 +104,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 				var events = replayer.Logger.GetEvents(_selectionService.SelectedFrame.Number);
 				_pixelEvents.AddRange(events.Select(x => new PixelHistoryEventViewModel(x)));
 
-			    FinalFrameBufferColor = _pixelEvents.Last().Color;
+			    FinalFrameBufferColor = ((ColorResultViewModel) _pixelEvents.Last(x => x.Result is ColorResultViewModel).Result).Result;
 			});
 		}
 

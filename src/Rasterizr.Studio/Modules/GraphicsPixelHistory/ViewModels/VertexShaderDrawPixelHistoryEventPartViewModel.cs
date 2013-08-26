@@ -21,4 +21,24 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
             _event = @event;
         }
     }
+
+    public class InputAssemblerDrawPixelHistoryEventPartViewModel : DrawPixelHistoryEventPartViewModel
+    {
+        private readonly DrawEvent _event;
+
+        public override string Name
+        {
+            get { return "Input Assembler"; }
+        }
+
+        public DrawEventVertex[] Vertices
+        {
+            get { return _event.Vertices; }
+        }
+
+        public InputAssemblerDrawPixelHistoryEventPartViewModel(DrawEvent @event)
+        {
+            _event = @event;
+        }
+    }
 }

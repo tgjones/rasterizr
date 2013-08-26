@@ -12,7 +12,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.Design
         {
         }
 
-        internal static DrawEvent CreateDrawEvent()
+        internal static DrawEvent CreateDrawEvent(PixelExclusionReason exclusionReason = PixelExclusionReason.NotExcluded)
         {
             return new DrawEvent
             {
@@ -22,32 +22,36 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.Design
                     new DrawEventVertex
                     {
                         VertexID = 1470,
-                        Data = CreateData()
+                        PreVertexShaderData = CreateData(false),
+                        PostVertexShaderData = CreateData(true)
                     }, 
                     new DrawEventVertex
                     {
                         VertexID = 7736,
-                        Data = CreateData()
+                        PreVertexShaderData = CreateData(false),
+                        PostVertexShaderData = CreateData(true)
                     }, 
                     new DrawEventVertex
                     {
                         VertexID = 7735,
-                        Data = CreateData()
+                        PreVertexShaderData = CreateData(false),
+                        PostVertexShaderData = CreateData(true)
                     }
                 },
                 Previous = new Number4(1, 0, 0, 1),
                 PixelShader = new Number4(1, 1, 0, 1),
-                Result = new Number4(1, 0, 1, 1)
+                Result = (exclusionReason == PixelExclusionReason.NotExcluded) ? new Number4(1, 0, 1, 1) : (Number4?) null,
+                ExclusionReason = exclusionReason
             };
         }
 
-        private static DrawEventVertexData[] CreateData()
+        private static DrawEventVertexData[] CreateData(bool post)
         {
             return new[]
             {
                 new DrawEventVertexData
                 {
-                    Semantic = "POSITION",
+                    Semantic = (post) ? "SV_POSITION" : "POSITION",
                     Value = "x=87.21292, y=-0.3009186, z=8.930054"
                 },
                 new DrawEventVertexData

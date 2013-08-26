@@ -4,17 +4,18 @@ using System.Linq;
 using Rasterizr.Diagnostics;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
+using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels.PixelResults;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
     public class PixelHistoryEventViewModel : TracefileEventViewModel
 	{
-		private readonly IEnumerable<PixelHistoryEventViewModelBase> _pixelHistoryEvents;
-        private readonly ColorViewModel _color;
+		private readonly List<PixelHistoryEventViewModelBase> _pixelHistoryEvents;
+        private readonly PixelResultViewModel _result;
 
-        public ColorViewModel Color
+        public PixelResultViewModel Result
         {
-            get { return _color; }
+            get { return _result; }
         }
 
 		public IEnumerable<PixelHistoryEventViewModelBase> PixelHistoryEvents
@@ -28,12 +29,13 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 			_pixelHistoryEvents = tracefileEvent.PixelEvents.Select<PixelEvent, PixelHistoryEventViewModelBase>(x =>
 			{
 				if (x is SimpleEvent)
-					return new SimplePixelHistoryEventViewModel(((SimpleEvent) x).Result);
+					return new SimplePixelHistoryEventViewModel((SimpleEvent) x);
 				if (x is DrawEvent)
 					return new DrawPixelHistoryEventViewModel((DrawEvent) x);
 				throw new ArgumentOutOfRangeException();
-			});
-		    _color = _pixelHistoryEvents.Last().Result;
+			}).ToList();
+            
+            _result = (_pixelHistoryEvents.LastOrDefault(x => x.Result is ColorResultViewModel) ?? _pixelHistoryEvents.Last()).Result;
 		}
 	}
 }

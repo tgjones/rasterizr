@@ -20,9 +20,9 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" Style="{StaticResource PixelColor}"
-                    Background="{Binding Result, FallbackValue=Red, Converter={StaticResource ColorToBrushConverter}}"
+                    Background="{Binding Color, FallbackValue=Red, Converter={StaticResource ColorToBrushConverter}}"
                     Width="50" Height="50" />
-            <ContentControl Grid.Column="1" cal:View.Model="{Binding Result}" />
+            <ContentControl Grid.Column="1" cal:View.Model="{Binding Color}" />
         </Grid>
     </StackPanel>
 </UserControl>

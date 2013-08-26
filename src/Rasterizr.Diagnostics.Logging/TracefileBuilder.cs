@@ -109,7 +109,12 @@ namespace Rasterizr.Diagnostics.Logging
                         Vertices = e.Vertices.Select(x => new DrawEventVertex
                         {
                             VertexID = x.VertexID,
-                            Data = x.Data.Select(y => new DrawEventVertexData
+                            PreVertexShaderData = x.InputData.Select(y => new DrawEventVertexData
+                            {
+                                Semantic = "TODO",
+                                Value = y.ToString()
+                            }).ToArray(),
+                            PostVertexShaderData = x.OutputData.Select(y => new DrawEventVertexData
                             {
                                 Semantic = "TODO",
                                 Value = y.ToString()

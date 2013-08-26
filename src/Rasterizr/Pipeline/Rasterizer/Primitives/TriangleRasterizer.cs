@@ -267,13 +267,13 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 				coordinates.Alpha, coordinates.Beta, coordinates.Gamma,
 				_p0.W, _p1.W, _p2.W);
 
-		    var v0Data = _primitive.Vertices[0].Data;
-            var v1Data = _primitive.Vertices[1].Data;
-            var v2Data = _primitive.Vertices[2].Data;
+		    var v0Data = _primitive.Vertices[0].OutputData;
+            var v1Data = _primitive.Vertices[1].OutputData;
+            var v2Data = _primitive.Vertices[2].OutputData;
 
 			// Calculate interpolated attribute values for this fragment.
             // TODO: Optimize this.
-		    var result = new Number4[_primitive.Vertices[0].Data.Length];
+            var result = new Number4[_primitive.Vertices[0].OutputData.Length];
 		    foreach (var outputInputBinding in OutputInputBindings.Bindings)
 		    {
                 var v0Value = v0Data[outputInputBinding.Register];

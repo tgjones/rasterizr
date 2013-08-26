@@ -1,19 +1,25 @@
-using SlimShader;
+using Rasterizr.Diagnostics;
+using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels.PixelResults;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
     public class SimplePixelHistoryEventViewModel : PixelHistoryEventViewModelBase
     {
-        private readonly ColorViewModel _result;
+        private readonly ColorResultViewModel _result;
 
-        public override ColorViewModel Result
+        public override PixelResultViewModel Result
         {
             get { return _result; }
         }
 
-        public SimplePixelHistoryEventViewModel(Number4 result)
+        public ColorViewModel Color
         {
-            _result = new ColorViewModel(result);
+            get { return _result.Result;}
+        }
+
+        public SimplePixelHistoryEventViewModel(SimpleEvent @event)
+        {
+            _result = new ColorResultViewModel(@event.Result);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Rasterizr.Pipeline.InputAssembler
 			_device = device;
 			_vertexBufferBindings = new VertexBufferBinding[VertexInputResourceSlotCount];
 		}
-
+        
 		public void GetVertexBuffers(int startSlot, int numBuffers, VertexBufferBinding[] vertexBufferBindings)
 		{
 			for (int i = 0; i < numBuffers; i++)

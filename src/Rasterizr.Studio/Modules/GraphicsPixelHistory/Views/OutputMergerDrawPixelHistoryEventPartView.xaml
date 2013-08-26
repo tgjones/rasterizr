@@ -4,12 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:dd="clr-namespace:Rasterizr.Studio.Modules.GraphicsPixelHistory.Design"
+             xmlns:controls="clr-namespace:Rasterizr.Studio.Modules.GraphicsPixelHistory.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance Type={x:Type dd:DesignTimeOutputMergerDrawPixelHistoryEventPartViewModel}, IsDesignTimeCreatable=True}"
+             cal:Bind.AtDesignTime="True">
     <UserControl.Resources>
         <ResourceDictionary Source="PixelHistoryResources.xaml" />
     </UserControl.Resources>
     <Grid Margin="0 4 0 4">
+        <Grid.Resources>
+            <controls:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -49,14 +56,13 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Border Grid.Column="0" Grid.Row="1" Style="{StaticResource PixelColor}"
-                        Background="{Binding Result, FallbackValue=Red, Converter={StaticResource ColorToBrushConverter}}"
-                        Width="40" Height="70" />
-                <Label Grid.Column="1" Grid.Row="0" 
-                       Content="Result" 
+                <ContentControl Grid.Column="0" Grid.Row="1" Width="40" Height="70"
+                                cal:View.Model="{Binding Result}" />
+                <Label Grid.Column="1" Grid.Row="0" Content="Result"
+                       Visibility="{Binding FinalColor, Converter={StaticResource NullToVisibilityConverter}}"
                        Style="{StaticResource PixelColorLabel}" />
                 <ContentControl Grid.Column="1" Grid.Row="1" 
-                                cal:View.Model="{Binding Result}" />
+                                cal:View.Model="{Binding FinalColor}" />
             </Grid>
         </StackPanel>
     </Grid>

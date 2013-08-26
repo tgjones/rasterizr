@@ -8,6 +8,7 @@ namespace Rasterizr.Pipeline.VertexShader
 		public int VertexID;
 		public int InstanceID;
 		public Number4 Position;
-		public Number4[] Data;
+	    public Number4[] InputData;
+		public Number4[] OutputData;
 	}
 }
