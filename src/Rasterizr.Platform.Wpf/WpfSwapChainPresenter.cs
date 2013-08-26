@@ -21,16 +21,20 @@ namespace Rasterizr.Platform.Wpf
 
 	    public WpfSwapChainPresenter(Dispatcher dispatcher = null)
 	    {
-	        if (dispatcher == null)
-	            dispatcher = Dispatcher.CurrentDispatcher;
 	        _dispatcher = dispatcher;
 	    }
 
 	    void ISwapChainPresenter.Initialize(int width, int height)
 		{
 		    _width = width;
-            _dispatcher.Invoke((Action) (() => _bitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null)));
-		    _outputBytes = new byte[width * height * 4];
+
+	        Action createBitmap = () => _bitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
+	        if (_dispatcher != null)
+	            _dispatcher.Invoke(createBitmap);
+	        else
+	            createBitmap();
+
+	        _outputBytes = new byte[width * height * 4];
 		}
 
 		void ISwapChainPresenter.Present(Number4[] colors)

@@ -112,8 +112,8 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.TechDemos.Resources.TextureSamp
                 {
                     ArraySize = 1,
                     MipLevels = 1,
-                    Width = _outputBitmap.PixelWidth,
-                    Height = _outputBitmap.PixelHeight,
+                    Width = width,
+                    Height = height,
                     BindFlags = BindFlags.DepthStencil
                 });
 

@@ -220,16 +220,16 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
             // Calculate depth.
             depth = InterpolationUtility.Linear(coordinates.Alpha, coordinates.Beta, coordinates.Gamma, _p0.Z, _p1.Z, _p2.Z);
 
-            // Clip to near and far planes.
-		    if (depth < 0 || depth > 1)
-		        return false;
+            //// Clip to near and far planes.
+            //if (depth < 0 || depth > 1)
+            //    return false;
 
-            // Clip to 0 < w.
-            // TODO: Is this right?
-            // TODO: We do the same thing later on for attribute interpolations, can it be optimised?
-            var w = InterpolationUtility.Linear(coordinates.Alpha, coordinates.Beta, coordinates.Gamma, _p0.W, _p1.W, _p2.W);
-		    if (w <= 0)
-		        return false;
+            //// Clip to 0 < w.
+            //// TODO: Is this right?
+            //// TODO: We do the same thing later on for attribute interpolations, can it be optimised?
+            //var w = InterpolationUtility.Linear(coordinates.Alpha, coordinates.Beta, coordinates.Gamma, _p0.W, _p1.W, _p2.W);
+            //if (w <= 0)
+            //    return false;
 
 			// The exact value to compare against depends on fill mode - if we're rendering wireframe,
 			// then check whether sample position is within the "wireframe threshold" (i.e. 1 pixel) of an edge.

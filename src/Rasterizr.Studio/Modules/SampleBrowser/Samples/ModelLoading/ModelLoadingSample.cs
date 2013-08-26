@@ -137,11 +137,10 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
             _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.Black);
 
             // Rotate camera
-            //var cameraPosition = new Vector3(0, 3, 5.0f);
-            Vector3 cameraPosition = new Vector3(0, 5, 3.0f);
+            var cameraPosition = new Vector3(0, 3, 5.0f);
             var cameraLookAt = new Vector3(0, 2.0f, 0);
-            //Vector4 tempPos = Vector3.Transform(cameraPosition, Matrix.RotationY(0.2f * time.ElapsedTime));
-            //cameraPosition = new Vector3(tempPos.X, tempPos.Y, tempPos.Z);
+            var tempPos = Vector3.Transform(cameraPosition, Matrix.RotationY(0.2f * time));
+            cameraPosition = new Vector3(tempPos.X, tempPos.Y, tempPos.Z);
 
             // Calculate the view matrix.
             var view = Matrix.LookAtLH(cameraPosition, cameraLookAt, Vector3.UnitY);
