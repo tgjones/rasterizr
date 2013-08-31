@@ -74,15 +74,50 @@ namespace Rasterizr.Tests.Util
 					B = 5.5f
 				}
 			};
-			var byteArray = new byte[Utilities.SizeOf<TestStruct>()];
+			var byteArray = new byte[2 * Utilities.SizeOf<TestStruct>()];
 			Utilities.ToByteArray(structArray, byteArray, 0);
 
 			// Act.
 			var result = new TestStruct[2];
-			Utilities.FromByteArray(result, 0, byteArray, 0, 2 * Utilities.SizeOf<TestStruct>());
+			Utilities.FromByteArray(result, 0, byteArray, 0, byteArray.Length);
 
 			// Assert.
 			Assert.That(result, Is.EqualTo(structArray));
 		}
+
+        [Test]
+        public void CanCopyByteArrayToStructArrayWithOffset()
+        {
+            // Arrange.
+            var structArray = new[]
+			{
+				new TestStruct
+				{
+					A = 2,
+					B = 3.0f
+				},
+				new TestStruct
+				{
+					A = 4,
+					B = 5.5f
+				}
+			};
+            var byteArray = new byte[2 * Utilities.SizeOf<TestStruct>()];
+            Utilities.ToByteArray(structArray, byteArray, 0);
+
+            // Act.
+            var result = new TestStruct[1];
+            Utilities.FromByteArray(result, 0, byteArray, Utilities.SizeOf<TestStruct>(), Utilities.SizeOf<TestStruct>());
+
+            // Assert.
+            Assert.That(result, Is.EqualTo(new[]
+            {
+                new TestStruct
+                {
+                    A = 4,
+                    B = 5.5f
+                }
+            }));
+        }
 	}
 }
