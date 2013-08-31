@@ -22,14 +22,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Studio", "Rasteri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Toolkit", "Rasterizr.Toolkit\Rasterizr.Toolkit.csproj", "{C7886048-659E-44CA-8921-2416CCE3A795}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{330BF1C5-05B4-44B6-A38F-ADFC7F8ED409}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Toolkit.Tests", "Rasterizr.Toolkit.Tests\Rasterizr.Toolkit.Tests.csproj", "{BEF8E52F-CA36-4D85-911E-31AE25D154E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3B643157-3C31-4505-943C-C01121844115}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rasterizr.Toolkit.Tests", "Rasterizr.Toolkit.Tests\Rasterizr.Toolkit.Tests.csproj", "{BEF8E52F-CA36-4D85-911E-31AE25D154E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
