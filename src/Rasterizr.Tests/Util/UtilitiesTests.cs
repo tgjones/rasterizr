@@ -7,13 +7,18 @@ namespace Rasterizr.Tests.Util
 	[TestFixture]
 	public class UtilitiesTests
 	{
-		private struct TestStruct
-		{
-			public int A;
-			public float B;
-		}
+	    private struct TestStruct
+	    {
+	        public int A;
+	        public float B;
 
-		[Test]
+	        public override string ToString()
+	        {
+	            return string.Format("{{A:{0} B:{1}}}", A, B);
+	        }
+	    }
+
+	    [Test]
 		public void TestSizeOf()
 		{
 			Assert.That(Utilities.SizeOf<TestStruct>(), Is.EqualTo(8));
