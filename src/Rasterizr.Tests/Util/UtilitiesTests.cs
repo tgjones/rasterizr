@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Rasterizr.Util;
 
@@ -7,6 +8,7 @@ namespace Rasterizr.Tests.Util
 	[TestFixture]
 	public class UtilitiesTests
 	{
+        [StructLayout(LayoutKind.Sequential, Pack=1)]
 	    private struct TestStruct
 	    {
 	        public int A;
@@ -25,7 +27,7 @@ namespace Rasterizr.Tests.Util
 		}
 
 		[Test]
-		public void CanCopyStructToByteArray()
+		public void CanCopyStructArrayToByteArray()
 		{
 			// Arrange.
 			var structArray = new[]
@@ -34,17 +36,24 @@ namespace Rasterizr.Tests.Util
 				{
 					A = 2,
 					B = 3.0f
+				},
+                new TestStruct
+				{
+					A = 4,
+					B = 5.5f
 				}
 			};
 
 			// Act.
-			var byteArray = new byte[Utilities.SizeOf<TestStruct>()];
+			var byteArray = new byte[2 * Utilities.SizeOf<TestStruct>()];
 			Utilities.ToByteArray(structArray, byteArray, 0);
 
 			// Assert.
 			var expectedByteArray = TestHelper.MergeByteArrays(
 				BitConverter.GetBytes(2),
-				BitConverter.GetBytes(3.0f));
+				BitConverter.GetBytes(3.0f),
+                BitConverter.GetBytes(4),
+                BitConverter.GetBytes(5.5f));
 			Assert.That(byteArray, Is.EqualTo(expectedByteArray));
 		}
 
