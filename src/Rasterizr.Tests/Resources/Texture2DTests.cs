@@ -9,51 +9,27 @@ namespace Rasterizr.Tests.Resources
 	[TestFixture]
 	public class Texture2DTests
 	{
-		[Test]
-		public void TextureHasCorrectNumberOfMipMapLevels()
+		[TestCase(32, 32, 6)]
+        [TestCase(31, 32, 6)]
+        [TestCase(7, 16, 5)]
+		public void TextureHasCorrectNumberOfMipMapLevels(int width, int height, int expectedNumberOfLevels)
 		{
 			// Arrange.
 			var texture = new Texture2D(new Device(), new Texture2DDescription
 			{
-				Width = 32,
-				Height = 32,
+				Width = width,
+				Height = height,
 				ArraySize = 1
 			});
-			int width, height, numberOfLevels;
+			int actualWidth, actualHeight, numberOfLevels;
 
 			// Act.
-			texture.GetDimensions(0, out width, out height, out numberOfLevels);
+            texture.GetDimensions(0, out actualWidth, out actualHeight, out numberOfLevels);
 
 			// Assert.
-			Assert.That(width, Is.EqualTo(32));
-			Assert.That(height, Is.EqualTo(32));
-			Assert.That(numberOfLevels, Is.EqualTo(6));
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentException))]
-		public void NonPowerOf2TexturesCannotHaveMipMaps()
-		{
-			// Act.
-			new Texture2D(new Device(), new Texture2DDescription
-			{
-				Width = 31,
-				Height = 32,
-				ArraySize = 1
-			});
-		}
-
-		[Test]
-		public void NonPowerOf2TexturesWithoutMipMapsAreAllowed()
-		{
-			// Act / Assert.
-			Assert.DoesNotThrow(() => new Texture2D(new Device(), new Texture2DDescription
-			{
-				Width = 31,
-				Height = 32,
-				ArraySize = 1,
-				MipLevels = 1
-			}));
+            Assert.That(actualWidth, Is.EqualTo(width));
+            Assert.That(actualHeight, Is.EqualTo(height));
+            Assert.That(numberOfLevels, Is.EqualTo(expectedNumberOfLevels));
 		}
 
 		[TestCase(0, 64, 32)]
@@ -63,7 +39,7 @@ namespace Rasterizr.Tests.Resources
 		[TestCase(4, 4, 2)]
 		[TestCase(5, 2, 1)]
 		[TestCase(6, 1, 1)]
-		public void MipMapsHaveCorrectDimensions(int mipLevel, int expectedWidth, int expectedHeight)
+		public void MipMapsHaveCorrectDimensionsForPowerOfTwoTexture(int mipLevel, int expectedWidth, int expectedHeight)
 		{
 			// Arrange.
 			var texture = new Texture2D(new Device(), new Texture2DDescription
@@ -79,6 +55,28 @@ namespace Rasterizr.Tests.Resources
 			Assert.That(actualWidth, Is.EqualTo(expectedWidth));
 			Assert.That(actualHeight, Is.EqualTo(expectedHeight));
 		}
+
+        [TestCase(0, 5, 16)]
+        [TestCase(1, 2, 8)]
+        [TestCase(2, 1, 4)]
+        [TestCase(3, 1, 2)]
+        [TestCase(4, 1, 1)]
+        public void MipMapsHaveCorrectDimensionsForNonPowerOfTwoTexture(int mipLevel, int expectedWidth, int expectedHeight)
+        {
+            // Arrange.
+            var texture = new Texture2D(new Device(), new Texture2DDescription
+            {
+                Width = 5,
+                Height = 16,
+                ArraySize = 1
+            });
+
+            // Act / Assert.
+            int actualWidth, actualHeight;
+            texture.GetDimensions(mipLevel, out actualWidth, out actualHeight);
+            Assert.That(actualWidth, Is.EqualTo(expectedWidth));
+            Assert.That(actualHeight, Is.EqualTo(expectedHeight));
+        }
 
 		[Test, Ignore("Doesn't yet work")]
 		public void CanGenerateMips()
