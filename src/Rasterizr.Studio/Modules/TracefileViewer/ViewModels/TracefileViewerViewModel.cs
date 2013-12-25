@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Caliburn.Micro;
 using Gemini.Framework;
+using Gemini.Framework.Services;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.GraphicsDebugging;
 using Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels;
+using Rasterizr.Studio.Modules.GraphicsEventList.ViewModels;
+using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels;
 
 namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 {
@@ -117,5 +121,12 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 		    DisplayName = Path.GetFileName(fileName);
 		    SelectedFrame = _tracefile.Frames[0];
 		}
+
+	    protected override void OnActivate()
+	    {
+            IoC.Get<IShell>().ShowTool(IoC.Get<GraphicsPixelHistoryViewModel>());
+            IoC.Get<IShell>().ShowTool(IoC.Get<GraphicsEventListViewModel>());
+	        base.OnActivate();
+	    }
 	}
 }

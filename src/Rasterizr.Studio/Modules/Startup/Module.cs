@@ -22,8 +22,8 @@ namespace Rasterizr.Studio.Modules.Startup
 	    }
 
 	    public override void Initialize()
-		{
-			Shell.Title = "Rasterizr Studio";
+	    {
+	        MainWindow.Title = "Rasterizr Studio";
             Shell.OpenDocument(IoC.Get<SampleBrowserViewModel>());
 		}
 	}

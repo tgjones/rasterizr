@@ -43,9 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Gemini, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\GeminiWpf.0.3.1\lib\net40\Gemini.dll</HintPath>
+      <HintPath>..\packages\GeminiWpf.0.4.0\lib\net40\Gemini.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net40\MahApps.Metro.dll</HintPath>
