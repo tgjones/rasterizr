@@ -62,7 +62,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 
             // Load model.
 		    var modelLoader = new ModelLoader(device, TextureLoader.CreateTextureFromStream);
-            _model = modelLoader.Load("Modules/SampleBrowser/Samples/ModelLoading/Sponza/sponza.3ds");
+            _model = modelLoader.Load("Modules/SampleBrowser/Samples/ModelLoading/Car/car.obj");
 
             // Compile Vertex and Pixel shaders
             var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/ModelLoading/ModelLoading.fx", "VS", "vs_4_0");
@@ -110,7 +110,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 
             _pixelShaderData = new PixelShaderData
             {
-                LightPos = new Vector4(0, 2.5f, 0, 0)
+                LightDirection = new Vector4(Vector3.Normalize(new Vector3(0.5f, 0, -1)), 1)
             };
             _deviceContext.SetBufferData(_pixelConstantBuffer, ref _pixelShaderData);
 
@@ -124,8 +124,8 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
             //});
 
 			// Prepare matrices
-			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, 
-				width / (float) height, 0.1f, 100.0f);
+			_projection = Matrix.PerspectiveFovLH(MathUtil.Pi / 3.0f, 
+				width / (float) height, 1f, 1000.0f);
 
             return swapChainPresenter.Bitmap;
 		}
@@ -134,20 +134,14 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
 		{
 			// Clear views
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.Black);
-
-            // Rotate camera
-            var cameraPosition = new Vector3(0, 3, 5.0f);
-            var cameraLookAt = new Vector3(0, 2.0f, 0);
-            var tempPos = Vector3.Transform(cameraPosition, Matrix.RotationY(0.2f * time));
-            cameraPosition = new Vector3(tempPos.X, tempPos.Y, tempPos.Z);
+            _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.CornflowerBlue);
 
             // Calculate the view matrix.
-            var view = Matrix.LookAtLH(cameraPosition, cameraLookAt, Vector3.UnitY);
+            var view = Matrix.LookAtLH(new Vector3(0, 10, -30), Vector3.Zero, Vector3.UnitY);
             var viewProjection = Matrix.Multiply(view, _projection);
 
             // Update transformation matrices.
-            _vertexShaderData.World = Matrix.Translation(0, -_model.AxisAlignedBoxCentre.Y / 2, 0);
+            _vertexShaderData.World = Matrix.RotationY(time);
             _vertexShaderData.WorldViewProjection = _vertexShaderData.World * viewProjection;
 
             // Transpose matrices before sending them to the shader.
@@ -174,7 +168,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.ModelLoading
         [StructLayout(LayoutKind.Sequential)]
         private struct PixelShaderData
         {
-            public Vector4 LightPos;
+            public Vector4 LightDirection;
         };
 	}
 }

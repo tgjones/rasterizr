@@ -9,16 +9,11 @@ namespace Rasterizr.Platform.Wpf
 	{
 		public static Texture2D CreateTextureFromStream(Device device, Stream stream)
 		{
-			var bitmap = new BitmapImage
-			{
-				CacheOption = BitmapCacheOption.OnLoad
-			};
-			bitmap.BeginInit();
-			bitmap.StreamSource = stream;
-			bitmap.EndInit();
+		    var bitmapFrame = BitmapFrame.Create(stream);
+            var bitmap = new FormatConvertedBitmap(bitmapFrame, PixelFormats.Bgra32, null, 0.0);
 
-			var pixelData = new byte[bitmap.PixelWidth * bitmap.PixelHeight * bitmap.Format.BitsPerPixel / 8];
-			bitmap.CopyPixels(pixelData, bitmap.PixelWidth * bitmap.Format.BitsPerPixel / 8, 0);
+            var pixelData = new byte[bitmap.PixelWidth * bitmap.PixelHeight * bitmap.Format.BitsPerPixel / 8];
+            bitmap.CopyPixels(pixelData, bitmap.PixelWidth * bitmap.Format.BitsPerPixel / 8, 0);
 
             var colors = new Color4[bitmap.PixelWidth * bitmap.PixelHeight];
 		    for (int i = 0; i < colors.Length; i++)

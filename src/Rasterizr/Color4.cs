@@ -16,6 +16,11 @@ namespace Rasterizr
         public static readonly Color4 White = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
 
         /// <summary>
+        /// The CornflowerBlue color (0.39, 0.58, 0.93, 1).
+        /// </summary>
+        public static readonly Color4 CornflowerBlue = new Color4(0.39f, 0.58f, 0.93f, 1.0f);
+
+        /// <summary>
         /// The red component of the color.
         /// </summary>
         public float R;
