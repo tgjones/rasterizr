@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
+using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Util;
+using SlimShader;
+using SlimShader.Chunks.Common;
+using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Diagnostics.Logging
 {
@@ -109,16 +113,8 @@ namespace Rasterizr.Diagnostics.Logging
                         Vertices = e.Vertices.Select(x => new DrawEventVertex
                         {
                             VertexID = x.VertexID,
-                            PreVertexShaderData = x.InputData.Select(y => new DrawEventVertexData
-                            {
-                                Semantic = "TODO",
-                                Value = y.ToString()
-                            }).ToArray(),
-                            PostVertexShaderData = x.OutputData.Select(y => new DrawEventVertexData
-                            {
-                                Semantic = "TODO",
-                                Value = y.ToString()
-                            }).ToArray()
+                            PreVertexShaderData = MapVertexShaderData(x.InputData, vertexShaderStage.Shader.Bytecode.InputSignature),
+                            PostVertexShaderData = MapVertexShaderData(x.OutputData, vertexShaderStage.Shader.Bytecode.OutputSignature)
                         }).ToArray(),
                         PrimitiveID = e.PrimitiveID,
                         X = e.X,
@@ -130,6 +126,32 @@ namespace Rasterizr.Diagnostics.Logging
                     });
                 };
             }
+        }
+
+        private static DrawEventVertexData[] MapVertexShaderData(
+            IEnumerable<Number4> data,
+            InputOutputSignatureChunk signature)
+        {
+            return data.Select((datum, i) =>
+            {
+                var parameter = signature.Parameters[i];
+                
+                var value = string.Empty;
+                if (parameter.Mask.HasFlag(ComponentMask.X))
+                    value += "x=" + datum.X + ", ";
+                if (parameter.Mask.HasFlag(ComponentMask.Y))
+                    value += "y=" + datum.Y + ", ";
+                if (parameter.Mask.HasFlag(ComponentMask.Z))
+                    value += "z=" + datum.Z + ", ";
+                if (parameter.Mask.HasFlag(ComponentMask.W))
+                    value += "w=" + datum.W + ", ";
+                value = value.TrimEnd(' ', ',');
+                return new DrawEventVertexData
+                {
+                    Semantic = parameter.SemanticName,
+                    Value = value
+                };
+            }).ToArray();
         }
 
         private void LogOperation(OperationType type, params object[] methodArguments)

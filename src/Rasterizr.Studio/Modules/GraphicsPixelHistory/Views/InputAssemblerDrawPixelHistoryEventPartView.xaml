@@ -15,8 +15,8 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Semantic}" 
-                                                       Foreground="Gray"
-                                                       Width="70"/>
+                                               Foreground="Gray"
+                                               Width="80"/>
                                     <TextBlock Text="{Binding Value}" />
                                 </StackPanel>
                             </DataTemplate>
