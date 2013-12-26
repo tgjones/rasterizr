@@ -82,8 +82,8 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
             // If they are, calculate the coverage.
 		    var maxX = screenBounds.MaxX;
 		    var maxY = screenBounds.MaxY;
-			for (int y = startY; y <= maxY; y += 2)
-				for (int x = startX; x <= maxX; x += 2)
+			for (int y = startY; y < maxY; y += 2)
+				for (int x = startX; x < maxX; x += 2)
 				{
 				    if (FragmentFilter != null)
 				    {
@@ -98,10 +98,10 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 					// need to do any (expensive) interpolation of attributes.
 					var fragmentQuad = new FragmentQuad
 					{
-						Fragment0 = new Fragment(_primitive.Vertices, _primitive.PrimitiveID, x, y, FragmentQuadLocation.TopLeft),
-                        Fragment1 = new Fragment(_primitive.Vertices, _primitive.PrimitiveID, x + 1, y, FragmentQuadLocation.TopRight),
-                        Fragment2 = new Fragment(_primitive.Vertices, _primitive.PrimitiveID, x, y + 1, FragmentQuadLocation.BottomLeft),
-                        Fragment3 = new Fragment(_primitive.Vertices, _primitive.PrimitiveID, x + 1, y + 1, FragmentQuadLocation.BottomRight)
+						Fragment0 = CreateFragment(x, y, FragmentQuadLocation.TopLeft, ref screenBounds),
+                        Fragment1 = CreateFragment(x + 1, y, FragmentQuadLocation.TopRight, ref screenBounds),
+                        Fragment2 = CreateFragment(x, y + 1, FragmentQuadLocation.BottomLeft, ref screenBounds),
+                        Fragment3 = CreateFragment(x + 1, y + 1, FragmentQuadLocation.BottomRight, ref screenBounds)
 					};
 
 					if (RasterizerState.IsMultisampleEnabled)
@@ -148,6 +148,15 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 					yield return fragmentQuad;
 				}
 		}
+
+	    private Fragment CreateFragment(int x, int y, FragmentQuadLocation quadLocation, ref Box2D screenBounds)
+	    {
+	        return new Fragment(
+                _primitive.Vertices, 
+                _primitive.PrimitiveID, 
+                x, y, quadLocation,
+	            screenBounds.IsPointInside(x, y));
+	    }
 
 		private bool CalculateCoverageAndInterpolateFragmentData(ref Fragment fragment, out BarycentricCoordinates coordinates)
 		{

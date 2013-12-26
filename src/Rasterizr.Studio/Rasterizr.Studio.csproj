@@ -195,6 +195,7 @@
     <Compile Include="Modules\SampleBrowser\Module.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\BasicTriangle\BasicTriangleSample.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\BasicWindow\BasicWindowSample.cs" />
+    <Compile Include="Modules\SampleBrowser\Samples\EnvironmentMapping\EnvironmentMappingSample.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\SampleClock.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\FpsCounter.cs" />
     <Compile Include="Modules\SampleBrowser\Samples\ISampleMetadata.cs" />
@@ -242,6 +243,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Modules\SampleBrowser\Samples\EnvironmentMapping\EnvironmentMapping.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Car\body.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -330,6 +334,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Modules\SampleBrowser\Samples\ModelLoading\Car\car.obj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\EnvironmentMapping\teapot.mtl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Modules\SampleBrowser\Samples\EnvironmentMapping\teapot.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

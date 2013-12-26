@@ -41,6 +41,9 @@ namespace Rasterizr.Toolkit.Models
         {
             foreach (var mesh in _meshes)
             {
+                if (mesh.PrimitiveTopology != PrimitiveTopology.TriangleList)
+                    continue; // TODO
+
                 context.InputAssembler.InputLayout = mesh.InputLayout;
                 context.InputAssembler.PrimitiveTopology = mesh.PrimitiveTopology;
                 context.InputAssembler.SetVertexBuffers(0,

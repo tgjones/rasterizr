@@ -27,7 +27,9 @@ namespace Rasterizr.Math
 			CheckMinMax(ref v1, ref minX, ref maxX, ref minY, ref maxY);
 			CheckMinMax(ref v2, ref minX, ref maxX, ref minY, ref maxY);
 
-			return new Box2D((int)minX, (int)minY, (int)maxX, (int)maxY);
+			return new Box2D(
+                MathUtility.FloorToInt(minX), MathUtility.FloorToInt(minY),
+                MathUtility.CeilingToInt(maxX), MathUtility.CeilingToInt(maxY));
 		}
 
         private static void CheckMinMax(ref Number4 v,
@@ -56,5 +58,11 @@ namespace Rasterizr.Math
                 MaxY = System.Math.Min(MaxY, other.MaxY),
             };
         }
+
+	    public bool IsPointInside(int x, int y)
+	    {
+	        return x >= MinX && x <= MaxX
+	            && y >= MinY && y <= MaxY;
+	    }
 	}
 }

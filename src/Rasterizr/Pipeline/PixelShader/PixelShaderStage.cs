@@ -56,13 +56,13 @@ namespace Rasterizr.Pipeline.PixelShader
                 {
                     var fragmentQuad = fragmentQuads[i];
 
-                    if (fragmentQuad.Fragment0.Samples.AnyCovered)
+                    if (fragmentQuad.Fragment0.IsInsideViewport && fragmentQuad.Fragment0.Samples.AnyCovered)
                         yield return GetPixel(ref fragmentQuad.Fragment0, contextIndex + 0);
-                    if (fragmentQuad.Fragment1.Samples.AnyCovered)
+                    if (fragmentQuad.Fragment1.IsInsideViewport && fragmentQuad.Fragment1.Samples.AnyCovered)
                         yield return GetPixel(ref fragmentQuad.Fragment1, contextIndex + 1);
-                    if (fragmentQuad.Fragment2.Samples.AnyCovered)
+                    if (fragmentQuad.Fragment2.IsInsideViewport && fragmentQuad.Fragment2.Samples.AnyCovered)
                         yield return GetPixel(ref fragmentQuad.Fragment2, contextIndex + 2);
-                    if (fragmentQuad.Fragment3.Samples.AnyCovered)
+                    if (fragmentQuad.Fragment3.IsInsideViewport && fragmentQuad.Fragment3.Samples.AnyCovered)
                         yield return GetPixel(ref fragmentQuad.Fragment3, contextIndex + 3);
                     contextIndex += 4;
                 }
