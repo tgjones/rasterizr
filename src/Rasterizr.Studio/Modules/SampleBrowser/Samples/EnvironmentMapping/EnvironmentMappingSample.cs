@@ -16,6 +16,9 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 	[ExportMetadata("SortOrder", 5)]
 	public class EnvironmentMappingSample : SampleBase
 	{
+        const int Width = 600;
+        const int Height = 400;
+
 		private DeviceContext _deviceContext;
 		private RenderTargetView _renderTargetView;
 		private DepthStencilView _depthView;
@@ -35,12 +38,9 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 
         public override WriteableBitmap Initialize(Device device)
 		{
-            const int width = 600;
-			const int height = 400;
-
 			// Create device and swap chain.
             var swapChainPresenter = new WpfSwapChainPresenter();
-            _swapChain = device.CreateSwapChain(width, height, swapChainPresenter);
+            _swapChain = device.CreateSwapChain(Width, Height, swapChainPresenter);
 			_deviceContext = device.ImmediateContext;
 
 			// Create RenderTargetView from the backbuffer.
@@ -52,8 +52,8 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 			{
 				ArraySize = 1,
 				MipLevels = 1,
-				Width = width,
-				Height = height,
+				Width = Width,
+				Height = Height,
 				BindFlags = BindFlags.DepthStencil
 			});
 
@@ -115,19 +115,19 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
             _deviceContext.SetBufferData(_pixelConstantBuffer, ref _pixelShaderData);
 
 		    // Setup targets and viewport for rendering
-			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, width, height, 0.0f, 1.0f));
+			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height, 0.0f, 1.0f));
 			_deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
 			// Prepare matrices
 			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverTwo, 
-				width / (float) height, 1f, 10000.0f);
+				Width / (float) Height, 1f, 10000.0f);
 
             return swapChainPresenter.Bitmap;
 		}
 
         public override void Draw(float time)
 		{
-			// Clear views
+            // Render cubemap.
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
             _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.CornflowerBlue);
 
@@ -138,17 +138,27 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
             var view = Matrix.LookAtLH(from, to, Vector3.UnitY);
             var viewProjection = Matrix.Multiply(view, _projection);
 
-            // Update transformation matrices.
+            // Render scene.
+            _deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height, 0.0f, 1.0f));
+            _deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
+            _deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
+            _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.Blue);
+
+            // Draw rotating teapot.
             _vertexShaderData.World = Matrix.Translation(0, 0, 50) * Matrix.RotationY(time);
             _vertexShaderData.WorldViewProjection = _vertexShaderData.World * viewProjection;
-
-            // Transpose matrices before sending them to the shader.
             _vertexShaderData.World.Transpose();
             _vertexShaderData.WorldViewProjection.Transpose();
-
             _deviceContext.SetBufferData(_vertexConstantBuffer, ref _vertexShaderData);
-
 		    _model.Draw(_deviceContext);
+
+            // Draw stationary teapot.
+            _vertexShaderData.World = Matrix.Identity;
+            _vertexShaderData.WorldViewProjection = _vertexShaderData.World * viewProjection;
+            _vertexShaderData.World.Transpose();
+            _vertexShaderData.WorldViewProjection.Transpose();
+            _deviceContext.SetBufferData(_vertexConstantBuffer, ref _vertexShaderData);
+            _model.Draw(_deviceContext);
 
 			// Present!
             _deviceContext.Present(_swapChain);
