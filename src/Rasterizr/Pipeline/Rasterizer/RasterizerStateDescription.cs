@@ -1,4 +1,6 @@
-﻿namespace Rasterizr.Pipeline.Rasterizer
+﻿using System.Diagnostics.Contracts;
+
+namespace Rasterizr.Pipeline.Rasterizer
 {
 	public struct RasterizerStateDescription
 	{
@@ -33,6 +35,7 @@
 		public bool IsMultisampleEnabled;
 		public bool IsAntialiasedLineEnabled;
 
+        [Pure]
         internal bool ShouldCull(bool counterClockwise)
         {
             // If triangle is CW, then cull if:

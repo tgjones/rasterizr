@@ -6,25 +6,32 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 {
 	internal abstract class PrimitiveRasterizer
 	{
-        public ShaderOutputInputBindings OutputInputBindings { get; set; }
+	    protected readonly RasterizerStateDescription RasterizerState;
+	    protected readonly int MultiSampleCount;
+	    protected readonly ShaderOutputInputBindings OutputInputBindings;
+        protected readonly Box2D ScreenBounds;
 
-        public Box2D ScreenBounds;
-        public RasterizerStateDescription RasterizerState { get; set; }
-
-		public bool IsMultiSamplingEnabled { get; set; }
-		public int MultiSampleCount { get; set; }
-
-		public FillMode FillMode { get; set; }
-
-		public abstract InputAssemblerPrimitiveOutput Primitive { get; set; }
+	    protected PrimitiveRasterizer(
+            RasterizerStateDescription rasterizerState, int multiSampleCount,
+            ShaderOutputInputBindings outputInputBindings,
+            ref Viewport viewport)
+	    {
+            RasterizerState = rasterizerState;
+            MultiSampleCount = multiSampleCount;
+	        OutputInputBindings = outputInputBindings;
+            ScreenBounds = new Box2D(
+                viewport.TopLeftX, viewport.TopLeftY,
+                viewport.TopLeftX + viewport.Width, 
+                viewport.TopLeftY + viewport.Height);
+	    }
 
         public abstract bool ShouldCull(VertexShader.VertexShaderOutput[] vertices);
 
-		public abstract IEnumerable<FragmentQuad> Rasterize();
+		public abstract IEnumerable<FragmentQuad> Rasterize(InputAssemblerPrimitiveOutput primitive);
 
         protected Point GetSamplePosition(int x, int y, int sampleIndex)
 		{
-			return MultiSamplingUtility.GetSamplePosition(MultiSampleCount, x, y, sampleIndex);
+            return MultiSamplingUtility.GetSamplePosition(MultiSampleCount, x, y, sampleIndex);
 		}
 	}
 }

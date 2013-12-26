@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer.Culling;
 using Rasterizr.Pipeline.Rasterizer.Primitives;
@@ -16,7 +15,6 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 		private Viewport[] _viewports;
 
-		private readonly TriangleRasterizer _triangleRasterizer;
 	    private RasterizerState _state;
 
 	    public RasterizerState State
@@ -31,8 +29,6 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 	    public RasterizerStage(Device device)
 		{
-			_triangleRasterizer = new TriangleRasterizer();
-
 			State = new RasterizerState(device, RasterizerStateDescription.Default);
 		}
 
@@ -49,54 +45,39 @@ namespace Rasterizr.Pipeline.Rasterizer
             BytecodeContainer pixelShader,
             int multiSampleCount)
 		{
-			PrimitiveRasterizer rasterizer;
-			switch (primitiveTopology)
-			{
-				case PrimitiveTopology.PointList:
-					throw new NotImplementedException();
-				case PrimitiveTopology.LineList:
-				case PrimitiveTopology.LineStrip:
-					throw new NotImplementedException();
-				case PrimitiveTopology.TriangleList:
-				case PrimitiveTopology.TriangleStrip:
-					rasterizer = _triangleRasterizer;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+            // TODO: Allow selection of different viewport.
+		    var viewport = _viewports[0];
 
-		    rasterizer.OutputInputBindings = ShaderOutputInputBindings.FromShaderSignatures(
+		    var outputInputBindings = ShaderOutputInputBindings.FromShaderSignatures(
 		        previousStageOutputSignature, pixelShader);
 
-		    var vp = _viewports[0];
-		    rasterizer.ScreenBounds = new Math.Box2D(vp.TopLeftX, vp.TopLeftY, vp.TopLeftX + vp.Width, vp.TopLeftY + vp.Height);
-
-		    rasterizer.RasterizerState = State.Description;
-			rasterizer.IsMultiSamplingEnabled = State.Description.IsMultisampleEnabled;
-			rasterizer.MultiSampleCount = multiSampleCount;
-			rasterizer.FillMode = State.Description.FillMode;
+			var rasterizer = PrimitiveRasterizerFactory.CreateRasterizer(
+                primitiveTopology, State.Description, multiSampleCount,
+                outputInputBindings, ref viewport);
 
             foreach (var primitive in inputs)
 			{
-                // Cull primitives that are outside view frustum.
+                // Frustum culling.
 			    if (ViewportCuller.ShouldCullTriangle(primitive.Vertices))
 			        continue;
 
                 // TODO: Clipping.
                 // http://simonstechblog.blogspot.tw/2012/04/software-rasterizer-part-2.html#softwareRasterizerDemo
 
+                // Perspective divide.
 			    for (int i = 0; i < primitive.Vertices.Length; i++)
 			        PerspectiveDivide(ref primitive.Vertices[i].Position);
 
-                // Backface culling.
+			    // Backface culling.
 			    if (State.Description.CullMode != CullMode.None && rasterizer.ShouldCull(primitive.Vertices))
 			        continue;
 
+                // Transform from clip space to screen space.
 			    for (int i = 0; i < primitive.Vertices.Length; i++)
-			        ToScreenCoordinates(ref primitive.Vertices[i].Position);
+                    viewport.MapClipSpaceToScreenSpace(ref primitive.Vertices[i].Position);
 
-			    rasterizer.Primitive = primitive;
-				foreach (var fragmentQuad in rasterizer.Rasterize())
+                // Rasterize.
+				foreach (var fragmentQuad in rasterizer.Rasterize(primitive))
 					yield return fragmentQuad;
 			}
 		}
@@ -106,19 +87,6 @@ namespace Rasterizr.Pipeline.Rasterizer
 			position.X /= position.W;
 			position.Y /= position.W;
 			position.Z /= position.W;
-		}
-
-		/// <summary>
-		/// Formulae from http://msdn.microsoft.com/en-us/library/bb205126(v=vs.85).aspx
-		/// </summary>
-		/// <param name="position"></param>
-		/// <returns></returns>
-        private void ToScreenCoordinates(ref Number4 position)
-		{
-			var viewport = _viewports[0];
-			position.X = (position.X + 1) * viewport.Width * 0.5f + viewport.TopLeftX;
-			position.Y = (1 - position.Y) * viewport.Height * 0.5f + viewport.TopLeftY;
-			position.Z = viewport.MinDepth + position.Z * (viewport.MaxDepth - viewport.MinDepth);
 		}
 	}
 }

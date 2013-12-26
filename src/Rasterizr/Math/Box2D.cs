@@ -1,4 +1,5 @@
-﻿using SlimShader;
+﻿using System.Diagnostics.Contracts;
+using SlimShader;
 
 namespace Rasterizr.Math
 {
@@ -44,12 +45,16 @@ namespace Rasterizr.Math
 				maxY = v.Y;
 		}
 
-        public void IntersectWith(ref Box2D other)
+        [Pure]
+        public Box2D IntersectWith(ref Box2D other)
         {
-            MinX = System.Math.Max(MinX, other.MinX);
-            MaxX = System.Math.Min(MaxX, other.MaxX);
-            MinY = System.Math.Max(MinY, other.MinY);
-            MaxY = System.Math.Min(MaxY, other.MaxY);
+            return new Box2D
+            {
+                MinX = System.Math.Max(MinX, other.MinX),
+                MaxX = System.Math.Min(MaxX, other.MaxX),
+                MinY = System.Math.Max(MinY, other.MinY),
+                MaxY = System.Math.Min(MaxY, other.MaxY),
+            };
         }
 	}
 }

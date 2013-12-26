@@ -47,6 +47,7 @@
     <Compile Include="Math\MathUtility.cs" />
     <Compile Include="Pipeline\OutputMerger\PixelEventArgs.cs" />
     <Compile Include="Pipeline\Rasterizer\Culling\ViewportCuller.cs" />
+    <Compile Include="Pipeline\Rasterizer\Primitives\PrimitiveRasterizerFactory.cs" />
     <Compile Include="Pipeline\Rasterizer\ShaderOutputInputBinding.cs" />
     <Compile Include="Pipeline\Rasterizer\Primitives\Vector3ForCulling.cs" />
     <Compile Include="Pipeline\Rasterizer\ShaderOutputInputBindings.cs" />

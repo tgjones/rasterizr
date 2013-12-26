@@ -1,4 +1,6 @@
-﻿namespace Rasterizr.Pipeline.Rasterizer
+﻿using SlimShader;
+
+namespace Rasterizr.Pipeline.Rasterizer
 {
 	public struct Viewport
 	{
@@ -18,5 +20,16 @@
 			MinDepth = minZ;
 			MaxDepth = maxZ;
 		}
+
+        /// <summary>
+        /// Converts from clip space to screen space.
+        /// Formulae from http://msdn.microsoft.com/en-us/library/bb205126(v=vs.85).aspx
+        /// </summary>
+        public void MapClipSpaceToScreenSpace(ref Number4 position)
+        {
+            position.X = (position.X + 1) * Width * 0.5f + TopLeftX;
+            position.Y = (1 - position.Y) * Height * 0.5f + TopLeftY;
+            position.Z = MinDepth + position.Z * (MaxDepth - MinDepth);
+        }
 	}
 }

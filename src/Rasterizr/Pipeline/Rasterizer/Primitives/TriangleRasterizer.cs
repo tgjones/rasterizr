@@ -17,20 +17,16 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 		private float _betaDenominator;
 		private float _gammaDenominator;
 
-		public override InputAssemblerPrimitiveOutput Primitive
-		{
-			get { return _primitive; }
-			set
-			{
-				_primitive = value;
-				_p0 = _primitive.Vertices[0].Position;
-				_p1 = _primitive.Vertices[1].Position;
-				_p2 = _primitive.Vertices[2].Position;
-			}
-		}
+	    public TriangleRasterizer(
+            RasterizerStateDescription rasterizerState, 
+            int multiSampleCount, 
+            ShaderOutputInputBindings outputInputBindings, 
+            ref Viewport viewport) 
+            : base(rasterizerState, multiSampleCount, outputInputBindings, ref viewport)
+	    {
+	    }
 
-        public override bool ShouldCull(
-            VertexShader.VertexShaderOutput[] vertices)
+	    public override bool ShouldCull(VertexShader.VertexShaderOutput[] vertices)
         {
             var a = vertices[0].Position;
             var b = vertices[1].Position;
@@ -50,8 +46,13 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
             return RasterizerState.ShouldCull(normal > 0);
         }
 
-		public override IEnumerable<FragmentQuad> Rasterize()
+		public override IEnumerable<FragmentQuad> Rasterize(InputAssemblerPrimitiveOutput primitive)
 		{
+		    _primitive = primitive;
+            _p0 = _primitive.Vertices[0].Position;
+            _p1 = _primitive.Vertices[1].Position;
+            _p2 = _primitive.Vertices[2].Position;
+
 			// Precompute alpha, beta and gamma denominator values. These are the same for all fragments.
 			_alphaDenominator = ComputeFunction(_p0.X, _p0.Y, ref _p1, ref _p2);
 			_betaDenominator = ComputeFunction(_p1.X, _p1.Y, ref _p2, ref _p0);
@@ -66,13 +67,13 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			var screenBounds = Box2D.CreateBoundingBox(ref _p0, ref _p1, ref _p2);
 
             // Clip triangle bounding box to screen bounds.
-		    screenBounds.IntersectWith(ref ScreenBounds);
+		    screenBounds = ScreenBounds.IntersectWith(ref screenBounds);
 
 			// Calculate start and end positions. Because of the need to calculate derivatives
 			// in the pixel shader, we require that fragment quads always have even numbered
 			// coordinates (both x and y) for the top-left fragment.
-            var startX = NearestEvenNumber(screenBounds.MinX);
-            var startY = NearestEvenNumber(screenBounds.MinY);
+            var startX = RoundDownToEven(screenBounds.MinX);
+            var startY = RoundDownToEven(screenBounds.MinY);
 
             // Scan pixels in target area, checking if they are inside the triangle.
             // If they are, calculate the coverage.
@@ -91,7 +92,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
                         Fragment3 = new Fragment(_primitive.Vertices, _primitive.PrimitiveID, x + 1, y + 1, FragmentQuadLocation.BottomRight)
 					};
 
-					if (IsMultiSamplingEnabled)
+					if (RasterizerState.IsMultisampleEnabled)
 					{
 						// For multisampling, we test coverage and interpolate attributes in two separate steps.
 						// Check all samples to determine whether they are inside the triangle.
@@ -153,7 +154,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 			return true;
 		}
 
-		private static int NearestEvenNumber(int value)
+		private static int RoundDownToEven(int value)
 		{
 			return (value % 2 == 0) ? value : value - 1;
 		}
@@ -233,7 +234,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 
 			// The exact value to compare against depends on fill mode - if we're rendering wireframe,
 			// then check whether sample position is within the "wireframe threshold" (i.e. 1 pixel) of an edge.
-			switch (FillMode)
+			switch (RasterizerState.FillMode)
 			{
 				case FillMode.Solid:
 					return true;
