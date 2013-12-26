@@ -92,8 +92,6 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
                             && !FragmentFilter(x, y + 1)
                             && !FragmentFilter(x + 1, y + 1))
                             continue;
-
-                        Debug.WriteLine("p0 = " + _p0 + ", p1 = " + _p1 + ", p2 = " + _p2);
 				    }
 
 				    // First check whether any fragments in this quad are covered. If not, we don't
