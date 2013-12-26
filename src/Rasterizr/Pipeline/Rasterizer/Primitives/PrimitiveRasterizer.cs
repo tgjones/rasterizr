@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 
@@ -10,11 +11,13 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 	    protected readonly int MultiSampleCount;
 	    protected readonly ShaderOutputInputBindings OutputInputBindings;
         protected readonly Box2D ScreenBounds;
+	    protected Func<int, int, bool> FragmentFilter;
 
 	    protected PrimitiveRasterizer(
             RasterizerStateDescription rasterizerState, int multiSampleCount,
             ShaderOutputInputBindings outputInputBindings,
-            ref Viewport viewport)
+            ref Viewport viewport,
+            Func<int, int, bool> fragmentFilter)
 	    {
             RasterizerState = rasterizerState;
             MultiSampleCount = multiSampleCount;
@@ -23,6 +26,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
                 viewport.TopLeftX, viewport.TopLeftY,
                 viewport.TopLeftX + viewport.Width, 
                 viewport.TopLeftY + viewport.Height);
+	        FragmentFilter = fragmentFilter;
 	    }
 
         public abstract bool ShouldCull(VertexShader.VertexShaderOutput[] vertices);

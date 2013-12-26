@@ -6,7 +6,7 @@ using SlimShader.Chunks.Xsgn;
 
 namespace Rasterizr.Pipeline.Rasterizer
 {
-    internal struct ShaderOutputInputBindings
+    internal class ShaderOutputInputBindings
     {
         public ShaderOutputInputBinding[] Bindings;
 

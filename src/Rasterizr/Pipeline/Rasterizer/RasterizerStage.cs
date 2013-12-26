@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.Rasterizer.Culling;
 using Rasterizr.Pipeline.Rasterizer.Primitives;
@@ -27,6 +28,8 @@ namespace Rasterizr.Pipeline.Rasterizer
 	        }
 	    }
 
+        public Func<int, int, bool> FragmentFilter { get; set; }
+
 	    public RasterizerStage(Device device)
 		{
 			State = new RasterizerState(device, RasterizerStateDescription.Default);
@@ -53,7 +56,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 
 			var rasterizer = PrimitiveRasterizerFactory.CreateRasterizer(
                 primitiveTopology, State.Description, multiSampleCount,
-                outputInputBindings, ref viewport);
+                outputInputBindings, ref viewport, FragmentFilter);
 
             foreach (var primitive in inputs)
 			{

@@ -10,7 +10,8 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
             RasterizerStateDescription rasterizerState, 
             int multiSampleCount, 
             ShaderOutputInputBindings outputInputBindings, 
-            ref Viewport viewport)
+            ref Viewport viewport,
+            Func<int, int, bool> fragmentQuadFilter)
         {
             switch (primitiveTopology)
             {
@@ -23,7 +24,8 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
                 case PrimitiveTopology.TriangleStrip:
                     return new TriangleRasterizer(
                         rasterizerState, multiSampleCount,
-                        outputInputBindings, ref viewport);
+                        outputInputBindings, ref viewport,
+                        fragmentQuadFilter);
                 default:
                     throw new ArgumentOutOfRangeException("primitiveTopology");
             }

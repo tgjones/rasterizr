@@ -103,6 +103,8 @@ namespace Rasterizr.Diagnostics.Logging
                     AddPixelEvent(new SimpleEvent(color.ToNumber4()));
                 };
 
+                rasterizerStage.FragmentFilter = (x, y) => x == pixelX.Value && y == pixelY.Value;
+
                 outputMergerStage.ProcessedPixel += (sender, e) =>
                 {
                     if (e.X != pixelX || e.Y != pixelY)

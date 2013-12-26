@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Rasterizr.Math;
 using Rasterizr.Pipeline.InputAssembler;
 using SlimShader;
@@ -10,7 +11,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 {
 	internal class TriangleRasterizer : PrimitiveRasterizer
 	{
-		private InputAssemblerPrimitiveOutput _primitive;
+	    private InputAssemblerPrimitiveOutput _primitive;
 		private Number4 _p0, _p1, _p2;
 
 		private float _alphaDenominator;
@@ -21,9 +22,11 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
             RasterizerStateDescription rasterizerState, 
             int multiSampleCount, 
             ShaderOutputInputBindings outputInputBindings, 
-            ref Viewport viewport) 
-            : base(rasterizerState, multiSampleCount, outputInputBindings, ref viewport)
+            ref Viewport viewport,
+            Func<int, int, bool> fragmentFilter) 
+            : base(rasterizerState, multiSampleCount, outputInputBindings, ref viewport, fragmentFilter)
 	    {
+	        
 	    }
 
 	    public override bool ShouldCull(VertexShader.VertexShaderOutput[] vertices)
@@ -79,10 +82,21 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
             // If they are, calculate the coverage.
 		    var maxX = screenBounds.MaxX;
 		    var maxY = screenBounds.MaxY;
-			for (int y = startY; y < maxY; y += 2)
-				for (int x = startX; x < maxX; x += 2)
+			for (int y = startY; y <= maxY; y += 2)
+				for (int x = startX; x <= maxX; x += 2)
 				{
-					// First check whether any fragments in this quad are covered. If not, we don't
+				    if (FragmentFilter != null)
+				    {
+                        if (!FragmentFilter(x, y)
+                            && !FragmentFilter(x + 1, y)
+                            && !FragmentFilter(x, y + 1)
+                            && !FragmentFilter(x + 1, y + 1))
+                            continue;
+
+                        Debug.WriteLine("p0 = " + _p0 + ", p1 = " + _p1 + ", p2 = " + _p2);
+				    }
+
+				    // First check whether any fragments in this quad are covered. If not, we don't
 					// need to do any (expensive) interpolation of attributes.
 					var fragmentQuad = new FragmentQuad
 					{
