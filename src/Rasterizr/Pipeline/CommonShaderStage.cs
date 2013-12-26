@@ -43,9 +43,17 @@ namespace Rasterizr.Pipeline
                 DiagnosticUtilities.RaiseEvent(this, SettingShader, DiagnosticUtilities.GetID(value));
 
 				_shader = value;
-				_outputParametersCount = value.Bytecode.OutputSignature.Parameters.Count;
-                _virtualMachine = new VirtualMachine(value.Bytecode, BatchSize);
-				OnShaderChanged(value);
+			    if (value != null)
+			    {
+			        _outputParametersCount = value.Bytecode.OutputSignature.Parameters.Count;
+			        _virtualMachine = new VirtualMachine(value.Bytecode, BatchSize);
+			    }
+			    else
+			    {
+			        _outputParametersCount = 0;
+			        _virtualMachine = null;
+			    }
+			    OnShaderChanged(value);
 			}
 		}
 

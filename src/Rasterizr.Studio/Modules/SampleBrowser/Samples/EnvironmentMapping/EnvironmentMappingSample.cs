@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
+using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.OutputMerger;
+using Rasterizr.Pipeline.PixelShader;
+using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Platform.Wpf;
 using Rasterizr.Resources;
 using Rasterizr.Toolkit.Models;
@@ -24,12 +27,16 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 		private DepthStencilView _depthView;
 		private SwapChain _swapChain;
 
+        private VertexShader _vertexShaderCubeMap, _vertexShaderStandard;
+	    private GeometryShader _geometryShaderCubeMap;
+	    private PixelShader _pixelShaderCubeMap, _pixelShaderStandard, _pixelShaderReflective;
         private Buffer _vertexConstantBuffer;
-        private Buffer _pixelConstantBuffer;
 	    private VertexShaderData _vertexShaderData;
-	    private PixelShaderData _pixelShaderData;
-		private Model _model;
+        private Buffer _geometryConstantBuffer;
+	    private Matrix _view1, _view2, _view3, _view4, _view5, _view6;
 	    private Matrix _projection;
+		private Model _model;
+	    private Matrix _viewProjection;
 
 		public override string Name
 		{
@@ -65,11 +72,15 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
             _model = modelLoader.Load("Modules/SampleBrowser/Samples/EnvironmentMapping/teapot.obj");
 
             // Compile Vertex and Pixel shaders
-            var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "VS", "vs_4_0");
-            var vertexShader = device.CreateVertexShader(vertexShaderByteCode);
+            var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "VS_CubeMap", "vs_5_0");
+            _vertexShaderCubeMap = device.CreateVertexShader(vertexShaderByteCode);
+            _vertexShaderStandard = device.CreateVertexShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "VS_Standard", "vs_5_0"));
 
-            var pixelShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "PS", "ps_4_0");
-            var pixelShader = device.CreatePixelShader(pixelShaderByteCode);
+            _geometryShaderCubeMap = device.CreateGeometryShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "GS_CubeMap", "gs_5_0"));
+
+            _pixelShaderCubeMap = device.CreatePixelShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "PS_CubeMap", "ps_4_0"));
+            _pixelShaderStandard = device.CreatePixelShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "PS_Standard", "ps_4_0"));
+            _pixelShaderReflective = device.CreatePixelShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "PS_Reflective", "ps_4_0"));
 
 		    _model.SetInputLayout(device, vertexShaderByteCode.InputSignature);
 
@@ -93,7 +104,12 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
                 SizeInBytes = Utilities.SizeOf<VertexShaderData>(),
                 BindFlags = BindFlags.ConstantBuffer
             });
-            _pixelConstantBuffer = device.CreateBuffer(new BufferDescription
+            _geometryConstantBuffer = device.CreateBuffer(new BufferDescription
+            {
+                SizeInBytes = Utilities.SizeOf<GeometryShaderData>(),
+                BindFlags = BindFlags.ConstantBuffer
+            });
+            var pixelConstantBuffer = device.CreateBuffer(new BufferDescription
             {
                 SizeInBytes = Utilities.SizeOf<PixelShaderData>(),
                 BindFlags = BindFlags.ConstantBuffer
@@ -101,60 +117,88 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 
 			// Prepare all the stages
             _deviceContext.VertexShader.SetConstantBuffers(0, _vertexConstantBuffer);
-            _deviceContext.VertexShader.Shader = vertexShader;
-            _deviceContext.PixelShader.SetConstantBuffers(0, _pixelConstantBuffer);
-            _deviceContext.PixelShader.Shader = pixelShader;
+            _deviceContext.GeometryShader.SetConstantBuffers(0, _geometryConstantBuffer);
+            _deviceContext.PixelShader.SetConstantBuffers(0, pixelConstantBuffer);
 			_deviceContext.PixelShader.SetSamplers(0, sampler);
 
             _vertexShaderData = new VertexShaderData();
 
-            _pixelShaderData = new PixelShaderData
-            {
-                LightDirection = new Vector4(Vector3.Normalize(new Vector3(0.5f, 0, -1)), 1)
-            };
-            _deviceContext.SetBufferData(_pixelConstantBuffer, ref _pixelShaderData);
+            _view1 = Matrix.LookAtLH(new Vector3(), new Vector3(1, 0, 0), Vector3.UnitY);
+            _view2 = Matrix.LookAtLH(new Vector3(), new Vector3(-1, 0, 0), Vector3.UnitY);
+            _view3 = Matrix.LookAtLH(new Vector3(), new Vector3(0, 1, 0), -Vector3.UnitZ);
+            _view4 = Matrix.LookAtLH(new Vector3(), new Vector3(0, -1, 0), Vector3.UnitZ);
+            _view5 = Matrix.LookAtLH(new Vector3(), new Vector3(0, 0, 1), Vector3.UnitY);
+            _view6 = Matrix.LookAtLH(new Vector3(), new Vector3(0, 0, -1), Vector3.UnitY);
 
-		    // Setup targets and viewport for rendering
-			_deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height, 0.0f, 1.0f));
-			_deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
+            var from = new Vector3(0, 30, 70);
+            var to = new Vector3(0, 0, 0);
 
-			// Prepare matrices
+            // Prepare matrices
+            var view = Matrix.LookAtLH(from, to, Vector3.UnitY);
 			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverTwo, 
 				Width / (float) Height, 1f, 10000.0f);
+
+            _viewProjection = Matrix.Multiply(view, _projection);
+
+            var pixelShaderData = new PixelShaderData
+            {
+                LightDirection = new Vector4(Vector3.Normalize(new Vector3(0.5f, 0, -1)), 1),
+                EyePosition = new Vector4(from, 1)
+            };
+            _deviceContext.SetBufferData(pixelConstantBuffer, ref pixelShaderData);
+
+            // Setup targets and viewport for rendering
+            _deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height, 0.0f, 1.0f));
+            _deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
 
             return swapChainPresenter.Bitmap;
 		}
 
         public override void Draw(float time)
-		{
+        {
+            var world = Matrix.Translation(0, 0, 50) * Matrix.RotationY(time);
+
             // Render cubemap.
 			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
             _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.CornflowerBlue);
 
-            var from = new Vector3(0, 30, 70);
-            var to = new Vector3(0, 0, 0);
-
-            // Calculate the view matrix.
-            var view = Matrix.LookAtLH(from, to, Vector3.UnitY);
-            var viewProjection = Matrix.Multiply(view, _projection);
+            var geometryShaderData = new GeometryShaderData
+            {
+                Matrix1 = world * _view1 * _projection,
+                Matrix2 = world * _view2 * _projection,
+                Matrix3 = world * _view3 * _projection,
+                Matrix4 = world * _view4 * _projection,
+                Matrix5 = world * _view5 * _projection,
+                Matrix6 = world * _view6 * _projection
+            };
+            _deviceContext.SetBufferData(_geometryConstantBuffer, ref geometryShaderData);
 
             // Render scene.
+            _deviceContext.VertexShader.Shader = _vertexShaderCubeMap;
+            _deviceContext.GeometryShader.Shader = _geometryShaderCubeMap;
+            _deviceContext.PixelShader.Shader = _pixelShaderCubeMap;
             _deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height, 0.0f, 1.0f));
             _deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
             _deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
             _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.Blue);
 
             // Draw rotating teapot.
-            _vertexShaderData.World = Matrix.Translation(0, 0, 50) * Matrix.RotationY(time);
-            _vertexShaderData.WorldViewProjection = _vertexShaderData.World * viewProjection;
+            _deviceContext.VertexShader.Shader = _vertexShaderStandard;
+            _deviceContext.GeometryShader.Shader = null;
+            _deviceContext.PixelShader.Shader = _pixelShaderStandard;
+            _vertexShaderData.World = world;
+            _vertexShaderData.WorldViewProjection = _vertexShaderData.World * _viewProjection;
             _vertexShaderData.World.Transpose();
             _vertexShaderData.WorldViewProjection.Transpose();
             _deviceContext.SetBufferData(_vertexConstantBuffer, ref _vertexShaderData);
 		    _model.Draw(_deviceContext);
 
             // Draw stationary teapot.
+            _deviceContext.VertexShader.Shader = _vertexShaderStandard;
+            _deviceContext.GeometryShader.Shader = null;
+            _deviceContext.PixelShader.Shader = _pixelShaderReflective;
             _vertexShaderData.World = Matrix.Identity;
-            _vertexShaderData.WorldViewProjection = _vertexShaderData.World * viewProjection;
+            _vertexShaderData.WorldViewProjection = _vertexShaderData.World * _viewProjection;
             _vertexShaderData.World.Transpose();
             _vertexShaderData.WorldViewProjection.Transpose();
             _deviceContext.SetBufferData(_vertexConstantBuffer, ref _vertexShaderData);
@@ -174,9 +218,21 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
         }
 
         [StructLayout(LayoutKind.Sequential)]
+        private struct GeometryShaderData
+        {
+            public Matrix Matrix1;
+            public Matrix Matrix2;
+            public Matrix Matrix3;
+            public Matrix Matrix4;
+            public Matrix Matrix5;
+            public Matrix Matrix6;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
         private struct PixelShaderData
         {
             public Vector4 LightDirection;
+            public Vector4 EyePosition;
         };
 	}
 }

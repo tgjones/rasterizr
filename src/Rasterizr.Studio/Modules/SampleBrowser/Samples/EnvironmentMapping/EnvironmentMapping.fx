@@ -5,11 +5,29 @@ struct VS_IN
 	float2 uv : TEXCOORD;
 };
 
+struct GS_CUBE_IN
+{
+    float3 position : TEXCOORD0;
+    float3 worldPosition: TEXCOORD1;
+    float3 normal : TEXCOORD2;
+    float2 uv : TEXCOORD3;
+};
+
+struct PS_CUBE_IN
+{
+    float4 position : SV_POSITION;
+    float3 worldPosition : TEXCOORD0;
+    float3 normal : TEXCOORD1;
+    float2 uv : TEXCOORD2;
+    uint RTIndex : SV_RenderTargetArrayIndex;
+};
+
 struct PS_IN
 {
     float4 position : SV_POSITION;
-    float3 normal : TEXCOORD0;
-    float2 uv : TEXCOORD1;
+    float3 worldPosition: TEXCOORD0;
+    float3 normal : TEXCOORD1;
+    float2 uv : TEXCOORD2;
 };
 
 cbuffer VertexConstantData
@@ -18,33 +36,104 @@ cbuffer VertexConstantData
 	float4x4 World;
 }
 
+cbuffer GeometryConstantData
+{
+    float4x4 TransformMatrixArray[6];
+}
+
 cbuffer PixelConstantData
 {
 	float4 LightDirection;
+    float4 EyePosition;
 }
 
 Texture2D DiffuseTexture;
 SamplerState DiffuseSampler;
+TextureCube CubeMap;
 
-PS_IN VS(VS_IN input)
+GS_CUBE_IN VS_CubeMap(VS_IN input)
 {
-	PS_IN output = (PS_IN) 0;
+    GS_CUBE_IN output = (GS_CUBE_IN) 0;
 	
-    output.position = mul(float4(input.position, 1), WorldViewProjection);
+    output.position = input.position;
+    output.worldPosition = mul(float4(input.position, 1), World).xyz;
 	output.normal = mul(input.normal, (float3x3) World);
 	output.uv = input.uv;
 	
 	return output;
 }
 
-float4 PS(PS_IN input) : SV_Target
+[maxvertexcount(24)]
+void GS_CubeMap(triangle GS_CUBE_IN input[3], inout TriangleStream<PS_CUBE_IN> CubeMapStream)
 {
-    float3 L = LightDirection.xyz;
+    for (int f = 0; f < 6; f++)
+    {
+        // Compute screen coordinates
+        PS_CUBE_IN output;
+        output.RTIndex = f;
+        for (int v = 0; v < 3; v++)
+        {
+            output.position = mul(TransformMatrixArray[f], float4(input[v].position, 1));
+            output.worldPosition = input[v].worldPosition;
+            output.uv = input[v].uv;
+            output.normal = input[v].normal;
+            CubeMapStream.Append(output);
+        }
+        CubeMapStream.RestartStrip();
+    }
+}
+
+float4 PS_CubeMap(PS_CUBE_IN input) : SV_Target
+{
+    float3 L = normalize(LightDirection.xyz);
+    float D = saturate(dot(input.normal, L));
+
+    float3 diffuseT = DiffuseTexture.Sample(DiffuseSampler, input.uv).rgb;
+    return float4(diffuseT * D, 1);
+}
+
+PS_IN VS_Standard(VS_IN input)
+{
+    PS_IN output = (PS_IN) 0;
+
+    output.position = mul(float4(input.position, 1), WorldViewProjection);
+    output.worldPosition = mul(float4(input.position, 1), World).xyz;
+    output.normal = mul(input.normal, (float3x3) World);
+    output.uv = input.uv;
+
+    return output;
+}
+
+float4 PS_Standard(PS_IN input) : SV_Target
+{
+    float3 L = normalize(LightDirection.xyz);
+    float D = saturate(dot(input.normal, L));
+
+    float3 diffuseT = DiffuseTexture.Sample(DiffuseSampler, input.uv).rgb;
+    return float4(diffuseT * D, 1);
+}
+
+float4 PS_Reflective(PS_IN input) : SV_Target
+{
     float3 N = normalize(input.normal);
+    //store Light vector
+    float3 L = normalize(LightDirection.xyz);
 
-    float3 diffuseTex = DiffuseTexture.Sample(DiffuseSampler, input.uv).xyz;
+    //diffuse light	
+    float D = saturate(dot(N, L));
 
-    float3 diffuse = diffuseTex * saturate(dot(N, L));
+    //specular light	
+    float power = 3;
+    float3 V = normalize(EyePosition.xyz - input.worldPosition.xyz);
+    float3 R = normalize(2.0f * N * dot(N, L) - L);
+    float3 S = pow(max(0.0f, dot(R, V)), power);
 
-    return float4(diffuse, 1);
+    //reflection
+    float3 reflection = normalize(reflect(-V, N));
+
+    //final light
+    float3 diffuseT = DiffuseTexture.Sample(DiffuseSampler, input.uv).rgb;
+    float3 refleColor = CubeMap.Sample(DiffuseSampler, reflection).rgb;
+
+    return float4(lerp(diffuseT * D + S, refleColor, 0.7f), 1);
 }

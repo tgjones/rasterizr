@@ -31,14 +31,22 @@ namespace Rasterizr.Pipeline.GeometryShader
 
 		protected override void OnShaderChanged(GeometryShader shader)
 		{
-			var outputPositionRegister = GetSystemValueRegister(Name.Position);
-			if (outputPositionRegister == null)
-				throw new ArgumentException("Shader doesn't contain output position", "shader");
-			_outputPositionRegister = outputPositionRegister.Value;
+		    if (shader != null)
+		    {
+		        var outputPositionRegister = GetSystemValueRegister(Name.Position);
+		        if (outputPositionRegister == null)
+		            throw new ArgumentException("Shader doesn't contain output position", "shader");
+		        _outputPositionRegister = outputPositionRegister.Value;
 
-			_outputTopology = shader.Bytecode.Statistics.GeometryShaderOutputTopology.ToPrimitiveTopology();
+		        _outputTopology = shader.Bytecode.Statistics.GeometryShaderOutputTopology.ToPrimitiveTopology();
+		    }
+		    else
+		    {
+		        _outputPositionRegister = -1;
+		        _outputTopology = PrimitiveTopology.Undefined;
+		    }
 
-			base.OnShaderChanged(shader);
+		    base.OnShaderChanged(shader);
 		}
 
 		internal IEnumerable<InputAssemblerPrimitiveOutput> Execute(IEnumerable<InputAssemblerPrimitiveOutput> inputs, PrimitiveTopology primitiveTopology)
