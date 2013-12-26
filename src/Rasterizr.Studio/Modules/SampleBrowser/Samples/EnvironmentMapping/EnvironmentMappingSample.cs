@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
+using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.GeometryShader;
 using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Pipeline.PixelShader;
@@ -19,13 +20,18 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 	[ExportMetadata("SortOrder", 5)]
 	public class EnvironmentMappingSample : SampleBase
 	{
-        const int Width = 600;
-        const int Height = 400;
+        private const int Width = 600;
+        private const int Height = 400;
 
 		private DeviceContext _deviceContext;
 		private RenderTargetView _renderTargetView;
 		private DepthStencilView _depthView;
 		private SwapChain _swapChain;
+
+	    private const int CubeMapSize = 512;
+	    private RenderTargetView _renderTargetViewCube;
+	    private DepthStencilView _depthViewCube;
+	    private ShaderResourceView _resourceViewCube;
 
         private VertexShader _vertexShaderCubeMap, _vertexShaderStandard;
 	    private GeometryShader _geometryShaderCubeMap;
@@ -66,6 +72,27 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 
 			// Create the depth buffer view
 			_depthView = device.CreateDepthStencilView(depthBuffer);
+
+            // Create cube map resources.
+            var cubeMapTexture = device.CreateTexture2D(new Texture2DDescription
+            {
+                Width = CubeMapSize,
+                Height= CubeMapSize,
+                ArraySize = 6,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                MipLevels = 1
+            });
+            _renderTargetViewCube = device.CreateRenderTargetView(cubeMapTexture);
+            _resourceViewCube = device.CreateShaderResourceView(cubeMapTexture);
+            var depthBufferCube = device.CreateTexture2D(new Texture2DDescription
+            {
+                ArraySize = 6,
+                MipLevels = 1,
+                Width = CubeMapSize,
+                Height = CubeMapSize,
+                BindFlags = BindFlags.DepthStencil
+            });
+            _depthViewCube = device.CreateDepthStencilView(depthBufferCube);
 
             // Load model.
 		    var modelLoader = new ModelLoader(device, TextureLoader.CreateTextureFromStream);
@@ -159,8 +186,13 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
             var world = Matrix.Translation(0, 0, 50) * Matrix.RotationY(time);
 
             // Render cubemap.
-			_deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            _deviceContext.ClearRenderTargetView(_renderTargetView, Color4.CornflowerBlue);
+            _deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, CubeMapSize, CubeMapSize, 0.0f, 1.0f));
+            _deviceContext.OutputMerger.SetTargets(_depthViewCube, _renderTargetViewCube);
+            _deviceContext.ClearDepthStencilView(_depthViewCube, DepthStencilClearFlags.Depth, 1.0f, 0);
+            _deviceContext.ClearRenderTargetView(_renderTargetViewCube, Color4.CornflowerBlue);
+            _deviceContext.VertexShader.Shader = _vertexShaderCubeMap;
+            _deviceContext.GeometryShader.Shader = _geometryShaderCubeMap;
+            _deviceContext.PixelShader.Shader = _pixelShaderCubeMap;
 
             var geometryShaderData = new GeometryShaderData
             {
@@ -172,11 +204,9 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
                 Matrix6 = world * _view6 * _projection
             };
             _deviceContext.SetBufferData(_geometryConstantBuffer, ref geometryShaderData);
+            _model.Draw(_deviceContext);
 
             // Render scene.
-            _deviceContext.VertexShader.Shader = _vertexShaderCubeMap;
-            _deviceContext.GeometryShader.Shader = _geometryShaderCubeMap;
-            _deviceContext.PixelShader.Shader = _pixelShaderCubeMap;
             _deviceContext.Rasterizer.SetViewports(new Viewport(0, 0, Width, Height, 0.0f, 1.0f));
             _deviceContext.OutputMerger.SetTargets(_depthView, _renderTargetView);
             _deviceContext.ClearDepthStencilView(_depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
