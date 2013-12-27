@@ -26,6 +26,11 @@ namespace Rasterizr.Diagnostics.Logging
 
         private readonly TracefileBuilder _logger;
 
+	    public Device Device
+	    {
+	        get { return _device; }
+	    }
+
         public TracefileBuilder Logger
 		{
 			get { return _logger; }

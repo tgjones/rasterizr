@@ -35,6 +35,11 @@ namespace Rasterizr
 		private readonly DeviceContext _immediateContext;
 		private int _id;
 
+        public IEnumerable<DeviceChild> DeviceChildren
+	    {
+	        get { return _deviceChildMap.Values; }
+	    }
+
 		public DeviceContext ImmediateContext
 		{
 			get { return _immediateContext; }

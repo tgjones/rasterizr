@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Pipeline;
-using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Chunks.Common;
@@ -104,7 +103,8 @@ namespace Rasterizr.Diagnostics.Logging
                     AddPixelEvent(new SimpleEvent(color.ToNumber4()));
                 };
 
-                rasterizerStage.FragmentFilter = (x, y) => x == pixelX.Value && y == pixelY.Value;
+                // TODO: Can't use this because it only works for the back buffer.
+                //rasterizerStage.FragmentFilter = (x, y) => x == pixelX.Value && y == pixelY.Value;
 
                 outputMergerStage.ProcessedPixel += (sender, e) =>
                 {
