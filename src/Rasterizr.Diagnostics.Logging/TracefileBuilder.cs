@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
+using Rasterizr.Pipeline;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Util;
 using SlimShader;
@@ -110,13 +111,17 @@ namespace Rasterizr.Diagnostics.Logging
                     if (e.X != pixelX || e.Y != pixelY)
                         return;
 
+                    var activeShader = (geometryShaderStage.Shader != null)
+                        ? (ShaderBase) geometryShaderStage.Shader
+                        : vertexShaderStage.Shader;
+
                     AddPixelEvent(new DrawEvent
                     {
                         Vertices = e.Vertices.Select(x => new DrawEventVertex
                         {
                             VertexID = x.VertexID,
-                            PreVertexShaderData = MapVertexShaderData(x.InputData, vertexShaderStage.Shader.Bytecode.InputSignature),
-                            PostVertexShaderData = MapVertexShaderData(x.OutputData, vertexShaderStage.Shader.Bytecode.OutputSignature)
+                            PreVertexShaderData = MapVertexShaderData(x.InputData, activeShader.Bytecode.InputSignature),
+                            PostVertexShaderData = MapVertexShaderData(x.OutputData, activeShader.Bytecode.OutputSignature)
                         }).ToArray(),
                         PrimitiveID = e.PrimitiveID,
                         X = e.X,

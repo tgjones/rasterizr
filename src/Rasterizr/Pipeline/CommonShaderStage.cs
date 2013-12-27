@@ -110,8 +110,11 @@ namespace Rasterizr.Pipeline
 		public void SetShaderResources(int startSlot, params ShaderResourceView[] shaderResources)
 		{
             DiagnosticUtilities.RaiseEvent(this, SettingShaderResources, startSlot, DiagnosticUtilities.GetIDs(shaderResources));
-			for (int i = 0; i < shaderResources.Length; i++)
-				_shaderResources[i + startSlot] = shaderResources[i];
+		    if (shaderResources != null)
+		        for (int i = 0; i < shaderResources.Length; i++)
+		            _shaderResources[i + startSlot] = shaderResources[i];
+		    else
+		        _shaderResources[startSlot] = null;
 		}
 
 		protected virtual void OnShaderChanged(T shader)
@@ -126,15 +129,16 @@ namespace Rasterizr.Pipeline
 				ushort registerIndex = 0;
 				var constantBufferDefinition = _shader.Bytecode.ResourceDefinition.ConstantBuffers[i];
 				foreach (var variableDefinition in constantBufferDefinition.Variables)
-					for (ushort k = 0; k < variableDefinition.ShaderType.Rows; k++)
-					{
-						Number4 value;
-						_constantBuffers[i].GetData(out value, 
-							(int) variableDefinition.StartOffset + k * variableDefinition.ShaderType.Columns * 4,
-							variableDefinition.ShaderType.Columns * 4);
-						_virtualMachine.SetConstantBufferRegisterValue(
-							i, registerIndex++, ref value);
-					}
+                    for (ushort j = 0; j < System.Math.Max((int) variableDefinition.ShaderType.ElementCount, 1); j++) // Element count is 0 if not an array.
+					    for (ushort k = 0; k < variableDefinition.ShaderType.Rows; k++)
+					    {
+						    Number4 value;
+						    _constantBuffers[i].GetData(out value, 
+							    (int) variableDefinition.StartOffset + (j * variableDefinition.ShaderType.Rows * variableDefinition.ShaderType.Columns * 4) + (k * variableDefinition.ShaderType.Columns * 4),
+							    variableDefinition.ShaderType.Columns * 4);
+						    _virtualMachine.SetConstantBufferRegisterValue(
+							    i, registerIndex++, ref value);
+					    }
 			}
 
 			// TODO: Get texture count from virtual machine.

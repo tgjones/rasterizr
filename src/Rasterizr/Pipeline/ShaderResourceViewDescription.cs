@@ -13,14 +13,44 @@ namespace Rasterizr.Pipeline
 			switch (resource.ResourceType)
 			{
 				case ResourceType.Texture1D:
-					result.Dimension = ShaderResourceViewDimension.Texture1D;
-					break;
+			    {
+                    var texture = (Texture1D) resource;
+                    if (texture.Description.ArraySize > 1)
+                    {
+                        result.Dimension = ShaderResourceViewDimension.Texture1DArray;
+                        result.Texture1DArray.ArraySize = texture.Description.ArraySize;
+                        result.Texture1DArray.FirstArraySlice = 0;
+                        result.Texture1DArray.MostDetailedMip = 0;
+                        result.Texture1DArray.MipLevels = texture.Description.MipLevels;
+                    }
+                    else
+                    {
+                        result.Dimension = ShaderResourceViewDimension.Texture1D;
+                        result.Texture1D.MostDetailedMip = 0;
+                        result.Texture1D.MipLevels = texture.Description.MipLevels;
+                    }
+                    break;
+			    }
 				case ResourceType.Texture2D:
-					result.Dimension = ShaderResourceViewDimension.Texture2D;
-					result.Texture2D.MostDetailedMip = 0;
-					result.Texture2D.MipLevels = ((Texture2D) resource).Description.MipLevels;
-					break;
-				case ResourceType.Texture3D:
+			    {
+			        var texture = (Texture2D) resource;
+			        if (texture.Description.ArraySize > 1)
+			        {
+			            result.Dimension = ShaderResourceViewDimension.Texture2DArray;
+			            result.Texture2DArray.ArraySize = texture.Description.ArraySize;
+			            result.Texture2DArray.FirstArraySlice = 0;
+			            result.Texture2DArray.MostDetailedMip = 0;
+			            result.Texture2DArray.MipLevels = texture.Description.MipLevels;
+			        }
+			        else
+			        {
+			            result.Dimension = ShaderResourceViewDimension.Texture2D;
+			            result.Texture2D.MostDetailedMip = 0;
+			            result.Texture2D.MipLevels = texture.Description.MipLevels;
+			        }
+			        break;
+			    }
+			    case ResourceType.Texture3D:
 					result.Dimension = ShaderResourceViewDimension.Texture3D;
 					break;
 				default:

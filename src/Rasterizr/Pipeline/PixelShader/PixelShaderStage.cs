@@ -77,7 +77,8 @@ namespace Rasterizr.Pipeline.PixelShader
                 Vertices = fragment.Vertices,
 				Samples = fragment.Samples,
 				Color = outputs[_outputColorRegister],
-				PrimitiveID = fragment.PrimitiveID
+				PrimitiveID = fragment.PrimitiveID,
+                RenderTargetArrayIndex = fragment.RenderTargetArrayIndex
 			};
 		}
 	}

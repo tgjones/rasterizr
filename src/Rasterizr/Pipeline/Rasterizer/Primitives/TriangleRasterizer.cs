@@ -101,7 +101,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 						Fragment0 = CreateFragment(x, y, FragmentQuadLocation.TopLeft, ref screenBounds),
                         Fragment1 = CreateFragment(x + 1, y, FragmentQuadLocation.TopRight, ref screenBounds),
                         Fragment2 = CreateFragment(x, y + 1, FragmentQuadLocation.BottomLeft, ref screenBounds),
-                        Fragment3 = CreateFragment(x + 1, y + 1, FragmentQuadLocation.BottomRight, ref screenBounds)
+                        Fragment3 = CreateFragment(x + 1, y + 1, FragmentQuadLocation.BottomRight, ref screenBounds),
 					};
 
 					if (RasterizerState.IsMultisampleEnabled)
@@ -154,6 +154,7 @@ namespace Rasterizr.Pipeline.Rasterizer.Primitives
 	        return new Fragment(
                 _primitive.Vertices, 
                 _primitive.PrimitiveID, 
+                _primitive.RenderTargetArrayIndex,
                 x, y, quadLocation,
 	            screenBounds.IsPointInside(x, y));
 	    }

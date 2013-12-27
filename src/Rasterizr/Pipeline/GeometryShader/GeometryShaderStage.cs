@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Rasterizr.Pipeline.InputAssembler;
 using Rasterizr.Pipeline.VertexShader;
 using Rasterizr.Util;
+using SlimShader;
 using SlimShader.Chunks.Xsgn;
 using SlimShader.VirtualMachine;
 
@@ -11,6 +12,7 @@ namespace Rasterizr.Pipeline.GeometryShader
 	public class GeometryShaderStage : CommonShaderStage<GeometryShader>
 	{
 		private int _outputPositionRegister;
+	    private int? _renderTargetArrayIndexRegister;
 		private PrimitiveTopology _outputTopology;
 
 		internal PrimitiveTopology OutputTopology
@@ -38,11 +40,14 @@ namespace Rasterizr.Pipeline.GeometryShader
 		            throw new ArgumentException("Shader doesn't contain output position", "shader");
 		        _outputPositionRegister = outputPositionRegister.Value;
 
+                _renderTargetArrayIndexRegister = GetSystemValueRegister(Name.RenderTargetArrayIndex);
+
 		        _outputTopology = shader.Bytecode.Statistics.GeometryShaderOutputTopology.ToPrimitiveTopology();
 		    }
 		    else
 		    {
 		        _outputPositionRegister = -1;
+		        _renderTargetArrayIndexRegister = null;
 		        _outputTopology = PrimitiveTopology.Undefined;
 		    }
 
@@ -58,8 +63,21 @@ namespace Rasterizr.Pipeline.GeometryShader
 				for (ushort i = 0; i < input.Vertices.Length; i++)
 					SetShaderInputs(0, i, input.Vertices[i].OutputData);
 
-				foreach (var primitive in PrimitiveAssembler.GetPrimitiveStream(GetVertices(), _outputTopology))
-					yield return primitive;
+			    foreach (var primitive in PrimitiveAssembler.GetPrimitiveStream(GetVertices(), _outputTopology))
+			    {
+			        if (_renderTargetArrayIndexRegister != null)
+			        {
+                        var tempPrimitive = primitive;
+                        tempPrimitive.RenderTargetArrayIndex = primitive.Vertices[0]
+                            .OutputData[_renderTargetArrayIndexRegister.Value]
+                            .Number0.UInt;
+			            yield return tempPrimitive;
+			        }
+			        else
+			        {
+                        yield return primitive;
+			        }
+			    }
 			}
 		}
 
@@ -76,7 +94,7 @@ namespace Rasterizr.Pipeline.GeometryShader
 						yield return new VertexShaderOutput
 						{
 							Position = outputs[_outputPositionRegister],
-                            InputData = null, // TODO
+                            InputData = new Number4[0],
 							OutputData = outputs
 						};
 						break;

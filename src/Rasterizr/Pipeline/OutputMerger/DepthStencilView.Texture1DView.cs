@@ -14,12 +14,12 @@ namespace Rasterizr.Pipeline.OutputMerger
 				_subresource = resource.GetSubresource(0, description.MipSlice);
 			}
 
-            public override float GetData(int arrayIndex, int x, int y, int sampleIndex)
+            public override float GetData(uint arrayIndex, int x, int y, int sampleIndex)
             {
                 return _subresource.GetData(x).R;
             }
 
-            public override void SetData(int arrayIndex, int x, int y, int sampleIndex, float value)
+            public override void SetData(uint arrayIndex, int x, int y, int sampleIndex, float value)
             {
                 var color = new Number4(value, 0, 0, 0);
                 _subresource.SetData(x, ref color);

@@ -13,15 +13,49 @@ namespace Rasterizr.Pipeline.OutputMerger
 			switch (resource.ResourceType)
 			{
 				case ResourceType.Texture1D:
-					result.Dimension = RenderTargetViewDimension.Texture1D;
-					break;
+			    {
+                    var texture = (Texture1D) resource;
+                    if (texture.Description.ArraySize > 1)
+                    {
+                        result.Dimension = RenderTargetViewDimension.Texture1DArray;
+                        result.Texture1DArray.ArraySize = texture.Description.ArraySize;
+                        result.Texture1DArray.FirstArraySlice = 0;
+                        result.Texture1DArray.MipSlice = 0;
+                    }
+                    else
+                    {
+                        result.Dimension = RenderTargetViewDimension.Texture1D;
+                        result.Texture1D.MipSlice = 0;
+                    }
+                    break;
+			    }
 				case ResourceType.Texture2D:
-					result.Dimension = RenderTargetViewDimension.Texture2D;
-					break;
-				case ResourceType.Texture3D:
-					result.Dimension = RenderTargetViewDimension.Texture3D;
-					break;
-				default:
+			    {
+                    var texture = (Texture2D) resource;
+                    if (texture.Description.ArraySize > 1)
+                    {
+                        result.Dimension = RenderTargetViewDimension.Texture2DArray;
+                        result.Texture2DArray.ArraySize = texture.Description.ArraySize;
+                        result.Texture2DArray.FirstArraySlice = 0;
+                        result.Texture2DArray.MipSlice = 0;
+                    }
+                    else
+                    {
+                        result.Dimension = RenderTargetViewDimension.Texture2D;
+                        result.Texture2D.MipSlice = 0;
+                    }
+			        break;
+			    }
+			    case ResourceType.Texture3D:
+			    {
+                    var texture = (Texture3D) resource;
+			        result.Dimension = RenderTargetViewDimension.Texture3D;
+			        result.Texture3D.DepthSliceCount = texture.Description.Depth;
+			        result.Texture3D.FirstDepthSlice = 0;
+			        result.Texture3D.MipSlice = 0;
+			        break;
+			    }
+			    default:
 					throw new ArgumentOutOfRangeException();
 			}
 			return result;

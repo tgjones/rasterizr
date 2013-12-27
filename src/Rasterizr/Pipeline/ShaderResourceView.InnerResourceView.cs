@@ -20,7 +20,7 @@ namespace Rasterizr.Pipeline
 					case ShaderResourceViewDimension.Texture2D:
 						return new Texture2DView((Texture2D) resource, description.Texture2D);
 					case ShaderResourceViewDimension.Texture2DArray:
-						throw new NotImplementedException();
+                        return new Texture2DArrayView((Texture2D) resource, description.Texture2DArray);
 					case ShaderResourceViewDimension.Texture2DMultisampled:
 						throw new NotImplementedException();
 					case ShaderResourceViewDimension.Texture2DMultisampledArray:

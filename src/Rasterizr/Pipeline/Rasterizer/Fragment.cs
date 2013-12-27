@@ -7,6 +7,7 @@ namespace Rasterizr.Pipeline.Rasterizer
 	{
 	    public VertexShaderOutput[] Vertices;
 		public int PrimitiveID;
+        public uint RenderTargetArrayIndex;
 		public int X;
 		public int Y;
 		public FragmentQuadLocation QuadLocation;
@@ -15,12 +16,14 @@ namespace Rasterizr.Pipeline.Rasterizer
 		public Number4[] Data;
 
 		public Fragment(VertexShaderOutput[] vertices, 
-            int primitiveID, int x, int y, 
+            int primitiveID, uint renderTargetArrayIndex,
+            int x, int y, 
             FragmentQuadLocation quadLocation,
             bool isInsideViewport)
 		{
 		    Vertices = vertices;
 			PrimitiveID = primitiveID;
+		    RenderTargetArrayIndex = renderTargetArrayIndex;
 			X = x;
 			Y = y;
 			QuadLocation = quadLocation;

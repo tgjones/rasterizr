@@ -10,11 +10,5 @@
 		public Fragment Fragment1;
 		public Fragment Fragment2;
 		public Fragment Fragment3;
-
-		//public Fragment this[FragmentQuadLocation location]
-		//{
-		//    get { return Fragments[(int)location]; }
-		//    set { Fragments[(int)location] = value; }
-		//}
 	}
 }

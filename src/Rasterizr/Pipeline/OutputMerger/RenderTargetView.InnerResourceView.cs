@@ -8,8 +8,8 @@ namespace Rasterizr.Pipeline.OutputMerger
 	{
 		private abstract class InnerResourceView
 		{
-            public abstract Number4 GetData(int arrayIndex, int x, int y, int sampleIndex);
-            public abstract void SetData(int arrayIndex, int x, int y, int sampleIndex, ref Number4 value);
+            public abstract Number4 GetData(uint arrayIndex, int x, int y, int sampleIndex);
+            public abstract void SetData(uint arrayIndex, int x, int y, int sampleIndex, ref Number4 value);
             public abstract void Clear(ref Number4 color);
 
 			public static InnerResourceView Create(Resource resource, RenderTargetViewDescription description)

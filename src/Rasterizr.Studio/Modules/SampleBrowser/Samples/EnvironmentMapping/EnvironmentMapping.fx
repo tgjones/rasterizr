@@ -56,8 +56,8 @@ GS_CUBE_IN VS_CubeMap(VS_IN input)
     GS_CUBE_IN output = (GS_CUBE_IN) 0;
 	
     output.position = input.position;
-    output.worldPosition = mul(float4(input.position, 1), World).xyz;
-	output.normal = mul(input.normal, (float3x3) World);
+    output.worldPosition = mul(World, input.position);
+	output.normal = mul(World, input.normal);
 	output.uv = input.uv;
 	
 	return output;
@@ -96,9 +96,9 @@ PS_IN VS_Standard(VS_IN input)
 {
     PS_IN output = (PS_IN) 0;
 
-    output.position = mul(float4(input.position, 1), WorldViewProjection);
-    output.worldPosition = mul(float4(input.position, 1), World).xyz;
-    output.normal = mul(input.normal, (float3x3) World);
+    output.position = mul(WorldViewProjection, float4(input.position, 1));
+    output.worldPosition = mul(World, input.position);
+    output.normal = mul(World, input.normal);
     output.uv = input.uv;
 
     return output;

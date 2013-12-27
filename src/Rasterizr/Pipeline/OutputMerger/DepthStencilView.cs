@@ -26,12 +26,12 @@ namespace Rasterizr.Pipeline.OutputMerger
 			_innerView = InnerResourceView.Create(resource, _description);
 		}
 
-		internal float GetDepth(int arrayIndex, int x, int y, int sampleIndex)
+		internal float GetDepth(uint arrayIndex, int x, int y, int sampleIndex)
 		{
 		    return _innerView.GetData(arrayIndex, x, y, sampleIndex);
 		}
 
-		internal void SetDepth(int arrayIndex, int x, int y, int sampleIndex, float depth)
+		internal void SetDepth(uint arrayIndex, int x, int y, int sampleIndex, float depth)
 		{
 		    _innerView.SetData(arrayIndex, x, y, sampleIndex, depth);
 		}

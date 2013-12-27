@@ -63,6 +63,7 @@
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.InnerResourceView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture3DView.cs" />
     <Compile Include="Pipeline\OutputMerger\RenderTargetView.Texture2DView.cs" />
+    <Compile Include="Pipeline\ShaderResourceView.Texture2DArrayView.cs" />
     <Compile Include="Pipeline\ShaderResourceView.Texture2DView.cs" />
   </ItemGroup>
   <ItemGroup>

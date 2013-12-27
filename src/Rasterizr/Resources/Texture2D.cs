@@ -1,5 +1,4 @@
 ﻿using System;
-using Rasterizr.Math;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.VirtualMachine.Resources;

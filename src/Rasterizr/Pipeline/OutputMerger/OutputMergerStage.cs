@@ -112,8 +112,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 				const int renderTargetIndex = 0;
 				var renderTarget = _renderTargetViews[renderTargetIndex];
 
-				// TODO
-				const int renderTargetArrayIndex = 0;
+				var renderTargetArrayIndex = pixel.RenderTargetArrayIndex;
 
 			    var processedPixelHandler = ProcessedPixel;
 
@@ -126,7 +125,6 @@ namespace Rasterizr.Pipeline.OutputMerger
 
                     var source = pixel.Color;
                     var destination = renderTarget.GetColor(renderTargetArrayIndex, pixel.X, pixel.Y, sampleIndex);
-
 				    
                     if (_depthStencilView != null)
 					{

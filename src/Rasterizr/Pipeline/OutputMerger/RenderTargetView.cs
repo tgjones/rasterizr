@@ -1,5 +1,4 @@
-﻿using Rasterizr.Math;
-using Rasterizr.Resources;
+﻿using Rasterizr.Resources;
 using SlimShader;
 
 namespace Rasterizr.Pipeline.OutputMerger
@@ -21,12 +20,12 @@ namespace Rasterizr.Pipeline.OutputMerger
 			_innerView = InnerResourceView.Create(resource, _description);
 		}
 
-        internal Number4 GetColor(int arrayIndex, int x, int y, int sampleIndex)
+        internal Number4 GetColor(uint arrayIndex, int x, int y, int sampleIndex)
 		{
 			return _innerView.GetData(arrayIndex, x, y, sampleIndex);
 		}
 
-        internal void SetColor(int arrayIndex, int x, int y, int sampleIndex, ref Number4 color)
+        internal void SetColor(uint arrayIndex, int x, int y, int sampleIndex, ref Number4 color)
 		{
 		    _innerView.SetData(arrayIndex, x, y, sampleIndex, ref color);
 		}

@@ -193,6 +193,10 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
             _deviceContext.VertexShader.Shader = _vertexShaderCubeMap;
             _deviceContext.GeometryShader.Shader = _geometryShaderCubeMap;
             _deviceContext.PixelShader.Shader = _pixelShaderCubeMap;
+            _deviceContext.PixelShader.SetShaderResources(1, null);
+            _vertexShaderData.World = world;
+            _vertexShaderData.WorldViewProjection = _vertexShaderData.World * _viewProjection;
+            _deviceContext.SetBufferData(_vertexConstantBuffer, ref _vertexShaderData);
 
             var geometryShaderData = new GeometryShaderData
             {
@@ -218,8 +222,6 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
             _deviceContext.PixelShader.Shader = _pixelShaderStandard;
             _vertexShaderData.World = world;
             _vertexShaderData.WorldViewProjection = _vertexShaderData.World * _viewProjection;
-            _vertexShaderData.World.Transpose();
-            _vertexShaderData.WorldViewProjection.Transpose();
             _deviceContext.SetBufferData(_vertexConstantBuffer, ref _vertexShaderData);
 		    _model.Draw(_deviceContext);
 
@@ -229,9 +231,8 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
             _deviceContext.PixelShader.Shader = _pixelShaderReflective;
             _vertexShaderData.World = Matrix.Identity;
             _vertexShaderData.WorldViewProjection = _vertexShaderData.World * _viewProjection;
-            _vertexShaderData.World.Transpose();
-            _vertexShaderData.WorldViewProjection.Transpose();
             _deviceContext.SetBufferData(_vertexConstantBuffer, ref _vertexShaderData);
+            _deviceContext.PixelShader.SetShaderResources(1, _resourceViewCube);
             _model.Draw(_deviceContext);
 
 			// Present!

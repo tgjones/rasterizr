@@ -1,5 +1,4 @@
-﻿using System;
-using Rasterizr.Resources;
+﻿using Rasterizr.Resources;
 using SlimShader.VirtualMachine.Resources;
 
 namespace Rasterizr.Pipeline
