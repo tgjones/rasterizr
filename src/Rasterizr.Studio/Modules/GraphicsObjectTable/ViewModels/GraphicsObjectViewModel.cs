@@ -7,9 +7,14 @@ namespace Rasterizr.Studio.Modules.GraphicsObjectTable.ViewModels
     {
         private readonly DeviceChild _deviceChild;
 
-        public int Identifier
+        internal DeviceChild DeviceChild
         {
-            get { return _deviceChild.ID; }
+            get { return _deviceChild; }
+        }
+
+        public string Identifier
+        {
+            get { return "obj:" + _deviceChild.ID; }
         }
 
         public string Type

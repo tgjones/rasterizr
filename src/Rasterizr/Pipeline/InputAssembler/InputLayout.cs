@@ -8,9 +8,15 @@ namespace Rasterizr.Pipeline.InputAssembler
 {
 	public class InputLayout : DeviceChild
 	{
+	    private readonly InputElement[] _rawElements;
 		private readonly ProcessedInputElement[] _elements;
 		private readonly InputSlotElement[] _slots;
 		private readonly InputSignatureChunk _inputSignature;
+
+	    internal InputElement[] RawElements
+	    {
+	        get { return _rawElements; }
+	    }
 
 		public ProcessedInputElement[] Elements
 		{
@@ -31,14 +37,12 @@ namespace Rasterizr.Pipeline.InputAssembler
 		/// <summary>
 		/// Only used in unit tests.
 		/// </summary>
-		/// <param name="device"></param>
-		/// <param name="elements"></param>
-		/// <param name="inputSignature"></param>
 		internal InputLayout(Device device, InputElement[] elements, InputSignatureChunk inputSignature)
 			: base(device)
 		{
 			// TODO: Verify that shader bytecode matches input elements.
 			_inputSignature = inputSignature;
+		    _rawElements = elements;
 			_elements = ProcessElements(elements);
 			_slots = ProcessSlots(elements);
 		}

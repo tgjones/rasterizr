@@ -146,10 +146,22 @@
     <Compile Include="Modules\GraphicsEventList\Views\GraphicsEventListView.xaml.cs">
       <DependentUpon>GraphicsEventListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\GraphicsObjectTable\ViewModels\BufferViewModel.cs" />
+    <Compile Include="Modules\GraphicsObjectTable\ViewModels\GraphicsObjectDocumentViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\GraphicsObjectTableViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\GraphicsObjectViewModel.cs" />
+    <Compile Include="Modules\GraphicsObjectTable\ViewModels\InputLayoutViewModel.cs" />
+    <Compile Include="Modules\GraphicsObjectTable\Views\BufferView.xaml.cs">
+      <DependentUpon>BufferView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\GraphicsObjectTable\Views\GraphicsObjectDocumentView.xaml.cs">
+      <DependentUpon>GraphicsObjectDocumentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\GraphicsObjectTable\Views\GraphicsObjectTableView.xaml.cs">
       <DependentUpon>GraphicsObjectTableView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\GraphicsObjectTable\Views\InputLayoutView.xaml.cs">
+      <DependentUpon>InputLayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\GraphicsPixelHistory\Controls\ItemToCollectionConverter.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Controls\NullToVisibilityConverter.cs" />
@@ -370,7 +382,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Modules\GraphicsObjectTable\Views\BufferView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\GraphicsObjectTable\Views\GraphicsObjectDocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\GraphicsObjectTable\Views\GraphicsObjectTableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\GraphicsObjectTable\Views\InputLayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
