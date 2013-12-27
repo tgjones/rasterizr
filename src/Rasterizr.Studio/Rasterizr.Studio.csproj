@@ -146,12 +146,16 @@
     <Compile Include="Modules\GraphicsEventList\Views\GraphicsEventListView.xaml.cs">
       <DependentUpon>GraphicsEventListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\GraphicsObjectTable\ViewModels\BlendStateViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\BufferViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\GraphicsObjectDocumentViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\GraphicsObjectTableViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\GraphicsObjectViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\InputLayoutViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\Texture2DViewModel.cs" />
+    <Compile Include="Modules\GraphicsObjectTable\Views\BlendStateView.xaml.cs">
+      <DependentUpon>BlendStateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\GraphicsObjectTable\Views\BufferView.xaml.cs">
       <DependentUpon>BufferView.xaml</DependentUpon>
     </Compile>
@@ -385,6 +389,10 @@
     <Page Include="Modules\GraphicsEventList\Views\GraphicsEventListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\GraphicsObjectTable\Views\BlendStateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\GraphicsObjectTable\Views\BufferView.xaml">
       <SubType>Designer</SubType>

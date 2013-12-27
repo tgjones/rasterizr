@@ -1,5 +1,6 @@
 ﻿using Gemini.Framework;
 using Rasterizr.Pipeline.InputAssembler;
+using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Resources;
 
 namespace Rasterizr.Studio.Modules.GraphicsObjectTable.ViewModels
@@ -12,6 +13,8 @@ namespace Rasterizr.Studio.Modules.GraphicsObjectTable.ViewModels
         {
             get
             {
+                if (_objectViewModel.DeviceChild is BlendState)
+                    return new BlendStateViewModel((BlendState) _objectViewModel.DeviceChild);
                 if (_objectViewModel.DeviceChild is InputLayout)
                     return new InputLayoutViewModel((InputLayout) _objectViewModel.DeviceChild);
                 if (_objectViewModel.DeviceChild is Buffer)
