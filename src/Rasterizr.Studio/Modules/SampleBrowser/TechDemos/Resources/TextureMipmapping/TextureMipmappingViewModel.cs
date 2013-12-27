@@ -54,7 +54,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.TechDemos.Resources.TextureMipm
                 texture = TextureLoader.CreateTextureFromStream(new Device(), fileStream);
 
             MipMaps = Enumerable.Range(0, texture.Description.MipLevels)
-                .Select((x, i) => new MipMapViewModel(TextureLoader.CreateBitmapFromTexture(texture, x), i));
+                .Select((x, i) => new MipMapViewModel(TextureLoader.CreateBitmapFromTexture(texture, 0, x), i));
 	    }
 	}
 }

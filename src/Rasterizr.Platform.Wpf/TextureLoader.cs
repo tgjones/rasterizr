@@ -29,9 +29,9 @@ namespace Rasterizr.Platform.Wpf
 		    return Texture2D.FromColors(device, colors, bitmap.PixelWidth, bitmap.PixelHeight);
 		}
 
-		public static WriteableBitmap CreateBitmapFromTexture(Texture2D texture, int mipLevel)
+		public static WriteableBitmap CreateBitmapFromTexture(Texture2D texture, int arraySlice, int mipLevel)
 		{
-		    var subresource = Resource.CalculateSubresource(mipLevel, 0, texture.Description.MipLevels);
+		    var subresource = Resource.CalculateSubresource(mipLevel, arraySlice, texture.Description.MipLevels);
             var colors = texture.GetData(subresource);
 
             var pixelData = new byte[colors.Length * 4];
