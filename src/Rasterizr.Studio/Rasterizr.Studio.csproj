@@ -152,6 +152,7 @@
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\GraphicsObjectTableViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\GraphicsObjectViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\InputLayoutViewModel.cs" />
+    <Compile Include="Modules\GraphicsObjectTable\ViewModels\ShaderViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\ViewModels\Texture2DViewModel.cs" />
     <Compile Include="Modules\GraphicsObjectTable\Views\BlendStateView.xaml.cs">
       <DependentUpon>BlendStateView.xaml</DependentUpon>
@@ -167,6 +168,9 @@
     </Compile>
     <Compile Include="Modules\GraphicsObjectTable\Views\InputLayoutView.xaml.cs">
       <DependentUpon>InputLayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\GraphicsObjectTable\Views\ShaderView.xaml.cs">
+      <DependentUpon>ShaderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\GraphicsObjectTable\Views\Texture2DView.xaml.cs">
       <DependentUpon>Texture2DView.xaml</DependentUpon>
@@ -407,6 +411,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\GraphicsObjectTable\Views\InputLayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\GraphicsObjectTable\Views\ShaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
