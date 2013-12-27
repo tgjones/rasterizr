@@ -31,4 +31,5 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("Rasterizr.Diagnostics.Logging")]
 [assembly: InternalsVisibleTo("Rasterizr.Platform.Wpf")]
+[assembly: InternalsVisibleTo("Rasterizr.Studio")]
 [assembly: InternalsVisibleTo("Rasterizr.Tests")]

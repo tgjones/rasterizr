@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="300" d:DesignWidth="600"
              Background="{x:Static SystemColors.ControlLightBrush}">
     <Grid>
         <Grid.RowDefinitions>
@@ -15,8 +15,22 @@
         <Border Grid.Row="0" Background="White" Padding="3">
             <ContentControl cal:View.Model="{Binding SelectedEvent}" />
         </Border>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Objects}">
-            
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Objects}" 
+                  AutoGenerateColumns="False"
+                  GridLinesVisibility="None" 
+                  SelectionMode="Single" 
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Identifier" Binding="{Binding Identifier, Mode=OneWay}" />
+                <DataGridTextColumn Header="Type" Binding="{Binding Type, Mode=OneWay}" />
+                <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive, Mode=OneWay}" />
+                <DataGridTextColumn Header="Size" Binding="{Binding Size, StringFormat='N0', Mode=OneWay}" />
+                <DataGridTextColumn Header="Mips" Binding="{Binding Mips, Mode=OneWay}" />
+                <DataGridTextColumn Header="Width" Binding="{Binding Width, Mode=OneWay}" />
+                <DataGridTextColumn Header="Height" Binding="{Binding Height, Mode=OneWay}" />
+                <DataGridTextColumn Header="Depth" Binding="{Binding Depth, Mode=OneWay}" />
+                <DataGridTextColumn Header="Array Size" Binding="{Binding ArraySize, Mode=OneWay}" />
+            </DataGrid.Columns>
         </DataGrid>
     </Grid>
 </UserControl>

@@ -1,17 +1,20 @@
 ﻿using Caliburn.Micro;
+using Rasterizr.Resources;
 
 namespace Rasterizr.Studio.Modules.GraphicsObjectTable.ViewModels
 {
     public class GraphicsObjectViewModel : PropertyChangedBase
     {
-        public string Identifier
+        private readonly DeviceChild _deviceChild;
+
+        public int Identifier
         {
-            get { return "1234"; }
+            get { return _deviceChild.ID; }
         }
 
         public string Type
         {
-            get { return "Depth-Stencil State"; }
+            get { return _deviceChild.GetType().Name; }
         }
 
         public bool IsActive
@@ -21,32 +24,80 @@ namespace Rasterizr.Studio.Modules.GraphicsObjectTable.ViewModels
 
         public int Size
         {
-            get { return 100; }
+            get
+            {
+                var resource = _deviceChild as Resource;
+                if (resource == null)
+                    return 0;
+                return resource.Size;
+            }
         }
 
         public int Mips
         {
-            get { return 5; }
+            get
+            {
+                if (_deviceChild is Texture1D)
+                    return ((Texture1D) _deviceChild).Description.MipLevels;
+                if (_deviceChild is Texture2D)
+                    return ((Texture2D) _deviceChild).Description.MipLevels;
+                if (_deviceChild is Texture3D)
+                    return ((Texture3D) _deviceChild).Description.MipLevels;
+                return 0;
+            }
         }
 
         public int Width
         {
-            get { return 800; }
+            get
+            {
+                if (_deviceChild is Texture1D)
+                    return ((Texture1D) _deviceChild).Description.Width;
+                if (_deviceChild is Texture2D)
+                    return ((Texture2D) _deviceChild).Description.Width;
+                if (_deviceChild is Texture3D)
+                    return ((Texture3D) _deviceChild).Description.Width;
+                return 0;
+            }
         }
 
         public int Height
         {
-            get { return 600; }
+            get
+            {
+                if (_deviceChild is Texture2D)
+                    return ((Texture2D) _deviceChild).Description.Height;
+                if (_deviceChild is Texture3D)
+                    return ((Texture3D) _deviceChild).Description.Height;
+                return 0;
+            }
         }
 
         public int Depth
         {
-            get { return 1; }
+            get
+            {
+                if (_deviceChild is Texture3D)
+                    return ((Texture3D) _deviceChild).Description.Depth;
+                return 0;
+            }
+        }
+
+        public int ArraySize
+        {
+            get
+            {
+                if (_deviceChild is Texture1D)
+                    return ((Texture1D) _deviceChild).Description.ArraySize;
+                if (_deviceChild is Texture2D)
+                    return ((Texture2D) _deviceChild).Description.ArraySize;
+                return 0;
+            }
         }
 
         public GraphicsObjectViewModel(DeviceChild deviceChild)
         {
-            
+            _deviceChild = deviceChild;
         }
     }
 }

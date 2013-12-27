@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Rasterizr.Util;
 using SlimShader;
 
@@ -43,6 +44,11 @@ namespace Rasterizr.Resources
 		{
 			get { return ResourceType.Texture3D; }
 		}
+
+        internal override int Size
+        {
+            get { return _subresources.Sum(x => x.Size); }
+        }
 
 		internal Texture3D(Device device, Texture3DDescription description)
 			: base(device)

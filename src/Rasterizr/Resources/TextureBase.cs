@@ -1,4 +1,5 @@
-﻿using SlimShader;
+﻿using Rasterizr.Util;
+using SlimShader;
 
 namespace Rasterizr.Resources
 {
@@ -7,6 +8,11 @@ namespace Rasterizr.Resources
 		internal abstract class TextureSubresource : ISubresource
 		{
             internal readonly Number4[] Data;
+
+		    internal int Size
+		    {
+		        get { return Data.Length * Utilities.SizeOf<Number4>(); }
+		    }
 
 			protected TextureSubresource(int numElements)
 			{

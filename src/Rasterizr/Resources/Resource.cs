@@ -15,6 +15,7 @@ namespace Rasterizr.Resources
 		}
 
 		internal abstract ResourceType ResourceType { get; }
+        internal abstract int Size { get; }
 
 		protected Resource(Device device)
 			: base(device)

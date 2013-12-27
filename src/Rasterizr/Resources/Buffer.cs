@@ -6,12 +6,17 @@ namespace Rasterizr.Resources
 	{
 		private readonly byte[] _data;
 
-		internal override ResourceType ResourceType
+	    internal override ResourceType ResourceType
 		{
 			get { return ResourceType.Buffer; }
 		}
 
-		internal byte[] Data
+	    internal override int Size
+	    {
+	        get { return _data.Length; }
+	    }
+
+	    internal byte[] Data
 		{
 			get { return _data; }
 		}
