@@ -113,7 +113,7 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 		public TracefileViewerViewModel(ISelectionService selectionService, string fileName, Tracefile tracefile)
 		{
 			_selectionService = selectionService;
-		    _selectionService.SelectedEventChanged += (sender, e) => NotifyOfPropertyChange(() => SelectedEvent);
+		    _selectionService.SelectedEventChanged += OnSelectedEventChanged;
 
 			_tracefile = new TracefileViewModel(selectionService, tracefile);
 			_hasSelectedPixel = false;
@@ -122,11 +122,22 @@ namespace Rasterizr.Studio.Modules.TracefileViewer.ViewModels
 		    SelectedFrame = _tracefile.Frames[0];
 		}
 
+	    private void OnSelectedEventChanged(object sender, TracefileEventChangedEventArgs e)
+	    {
+	        NotifyOfPropertyChange(() => SelectedEvent);
+	    }
+
 	    protected override void OnActivate()
 	    {
             IoC.Get<IShell>().ShowTool(IoC.Get<GraphicsPixelHistoryViewModel>());
             IoC.Get<IShell>().ShowTool(IoC.Get<GraphicsEventListViewModel>());
 	        base.OnActivate();
+	    }
+
+	    protected override void OnDeactivate(bool close)
+	    {
+	        _selectionService.SelectedEventChanged -= OnSelectedEventChanged;
+	        base.OnDeactivate(close);
 	    }
 	}
 }

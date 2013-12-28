@@ -18,7 +18,19 @@
 			<RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0" Background="White" Padding="3">
-            <ContentControl cal:View.Model="{Binding SelectedEvent}" />
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <ContentControl cal:View.Model="{Binding SelectedEvent}" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding SelectedFrame.ActiveRenderTargetViewIdentifier, StringFormat='[Render Target View: {0}]'}"
+                                   Margin="5 0 0 0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Label>Array Slice:</Label>
+                    <ComboBox Width="30" ItemsSource="{Binding SelectedFrame.ActiveRenderTargetArraySlices}"
+                              SelectedItem="{Binding SelectedFrame.ActiveRenderTargetArraySlice}" />
+                </StackPanel>
+            </DockPanel>
         </Border>
 		<local:ZoomBorder x:Name="ZoomBorder" Grid.Row="1" ClipToBounds="True">
 			<local:NearestNeighborImage x:Name="FrameImage"

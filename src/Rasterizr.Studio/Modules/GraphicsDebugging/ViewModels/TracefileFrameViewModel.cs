@@ -7,7 +7,9 @@ using System.Windows.Threading;
 using Caliburn.Micro;
 using Rasterizr.Diagnostics.Logging;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
+using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Platform.Wpf;
+using Rasterizr.Resources;
 
 namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 {
@@ -16,6 +18,7 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 		private readonly ISelectionService _selectionService;
 		private readonly TracefileFrame _frame;
 		private readonly IList<TracefileEventViewModel> _events;
+	    private Texture2D _activeRenderTarget;
 
 		internal TracefileFrame Model
 		{
@@ -27,16 +30,48 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 			get { return _frame.Number; }
 		}
 
-		private BitmapSource _image;
 		public BitmapSource Image
 		{
-			get { return _image; }
-			set
-			{
-				_image = value;
-				NotifyOfPropertyChange(() => Image);
-			}
+		    get
+		    {
+		        if (_activeRenderTarget == null)
+		            return null;
+		        return TextureLoader.CreateBitmapFromTexture(_activeRenderTarget, ActiveRenderTargetArraySlice, 0);
+		    }
 		}
+
+        private string _activeRenderTargetViewIdentifier;
+        public string ActiveRenderTargetViewIdentifier
+        {
+            get { return _activeRenderTargetViewIdentifier; }
+            set
+            {
+                _activeRenderTargetViewIdentifier = value;
+                NotifyOfPropertyChange(() => ActiveRenderTargetViewIdentifier);
+            }
+        }
+
+        public IEnumerable<int> ActiveRenderTargetArraySlices
+        {
+            get
+            {
+                if (_activeRenderTarget == null)
+                    return Enumerable.Empty<int>();
+                return Enumerable.Range(0, _activeRenderTarget.Description.ArraySize);
+            }
+        }
+
+        private int _activeRenderTargetArraySlice;
+        public int ActiveRenderTargetArraySlice
+        {
+            get { return _activeRenderTargetArraySlice; }
+            set
+            {
+                _activeRenderTargetArraySlice = value;
+                NotifyOfPropertyChange(() => ActiveRenderTargetArraySlice);
+                NotifyOfPropertyChange(() => Image);
+            }
+        }
 
 		public IList<TracefileEventViewModel> Events
 		{
@@ -57,7 +92,8 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 		    if (_selectionService.SelectedEvent == null)
 		        return;
 
-            var swapChainPresenter = new WpfSwapChainPresenter(Dispatcher.CurrentDispatcher);
+		    var dispatcher = Dispatcher.CurrentDispatcher;
+            var swapChainPresenter = new WpfSwapChainPresenter(dispatcher);
 		    var replayer = new Replayer(
 		        _frame, _selectionService.SelectedEvent.Model,
 		        swapChainPresenter);
@@ -65,8 +101,18 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 		    Task.Factory.StartNew(() =>
 		    {
                 replayer.Replay();
-                Image = swapChainPresenter.Bitmap;
-			});
+
+		        DepthStencilView depthStencilView; RenderTargetView[] renderTargetViews;
+                replayer.Device.ImmediateContext.OutputMerger.GetTargets(
+                    out depthStencilView, out renderTargetViews);
+
+		        var activeRenderTargetView = renderTargetViews[0];
+		        _activeRenderTarget = (Texture2D) activeRenderTargetView.Resource;
+
+		        ActiveRenderTargetViewIdentifier = "obj:" + activeRenderTargetView.ID;
+                NotifyOfPropertyChange(() => ActiveRenderTargetArraySlices);
+                ActiveRenderTargetArraySlice = 0;
+		    });
 		}
 
 		public void Dispose()

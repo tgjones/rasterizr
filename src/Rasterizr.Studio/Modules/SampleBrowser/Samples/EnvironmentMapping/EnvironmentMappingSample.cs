@@ -28,7 +28,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 		private DepthStencilView _depthView;
 		private SwapChain _swapChain;
 
-	    private const int CubeMapSize = 512;
+	    private const int CubeMapSize = 64;
 	    private RenderTargetView _renderTargetViewCube;
 	    private DepthStencilView _depthViewCube;
 	    private ShaderResourceView _resourceViewCube;
@@ -150,12 +150,12 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 
             _vertexShaderData = new VertexShaderData();
 
-            _view1 = Matrix.LookAtLH(new Vector3(), new Vector3(1, 0, 0), Vector3.UnitY);
-            _view2 = Matrix.LookAtLH(new Vector3(), new Vector3(-1, 0, 0), Vector3.UnitY);
-            _view3 = Matrix.LookAtLH(new Vector3(), new Vector3(0, 1, 0), -Vector3.UnitZ);
-            _view4 = Matrix.LookAtLH(new Vector3(), new Vector3(0, -1, 0), Vector3.UnitZ);
-            _view5 = Matrix.LookAtLH(new Vector3(), new Vector3(0, 0, 1), Vector3.UnitY);
-            _view6 = Matrix.LookAtLH(new Vector3(), new Vector3(0, 0, -1), Vector3.UnitY);
+            _view1 = Matrix.LookAtLH(Vector3.Zero, new Vector3(1, 0, 0), Vector3.UnitY);
+            _view2 = Matrix.LookAtLH(Vector3.Zero, new Vector3(-1, 0, 0), Vector3.UnitY);
+            _view3 = Matrix.LookAtLH(Vector3.Zero, new Vector3(0, 1, 0), -Vector3.UnitZ);
+            _view4 = Matrix.LookAtLH(Vector3.Zero, new Vector3(0, -1, 0), Vector3.UnitZ);
+            _view5 = Matrix.LookAtLH(Vector3.Zero, new Vector3(0, 0, 1), Vector3.UnitY);
+            _view6 = Matrix.LookAtLH(Vector3.Zero, new Vector3(0, 0, -1), Vector3.UnitY);
 
             var from = new Vector3(0, 30, 70);
             var to = new Vector3(0, 0, 0);

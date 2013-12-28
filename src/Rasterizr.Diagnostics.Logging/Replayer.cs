@@ -49,8 +49,6 @@ namespace Rasterizr.Diagnostics.Logging
 
 		public void Replay()
 		{
-			bool presented = false;
-
 			foreach (var @event in _frame.Events)
 			{
 				var args = @event.Arguments;
@@ -142,7 +140,6 @@ namespace Rasterizr.Diagnostics.Logging
 				        break;
 				    case OperationType.DeviceContextPresent:
 				        _deviceContext.Present(args.Get<SwapChain>(_device, 0));
-				        presented = true;
 				        break;
 				    case OperationType.DeviceContextSetBufferData:
 				        _deviceContext.SetBufferData(args.Get<Buffer>(_device, 0),
@@ -263,9 +260,6 @@ namespace Rasterizr.Diagnostics.Logging
 			    if (@event == _lastEvent)
 					break;
 			}
-
-			if (!presented)
-				_swapChain.Present();
 		}
 	}
 }

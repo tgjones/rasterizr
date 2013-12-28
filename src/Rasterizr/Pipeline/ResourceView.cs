@@ -1,5 +1,4 @@
-﻿using Rasterizr.Pipeline.OutputMerger;
-using Rasterizr.Resources;
+﻿using Rasterizr.Resources;
 
 namespace Rasterizr.Pipeline
 {
