@@ -9,17 +9,19 @@ using Buffer = Rasterizr.Resources.Buffer;
 
 namespace Rasterizr.Pipeline.InputAssembler
 {
-	public class InputAssemblerStage
+    public class InputAssemblerStage
 	{
 	    public event DiagnosticEventHandler SettingPrimitiveTopology;
         public event DiagnosticEventHandler SettingInputLayout;
         public event DiagnosticEventHandler SettingVertexBuffers;
         public event DiagnosticEventHandler SettingIndexBuffer;
 
-		private readonly Device _device;
+        internal event InputAssemblerVertexEventHandler ProcessedVertex;
+
 		public const int VertexInputResourceSlotCount = 32;
 
-		private readonly VertexBufferBinding[] _vertexBufferBindings;
+        private readonly Device _device;
+        private readonly VertexBufferBinding[] _vertexBufferBindings;
 		private IndexBufferBinding _indexBufferBinding;
 		private InputLayout _inputLayout;
 		private PrimitiveTopology _primitiveTopology;
@@ -165,6 +167,8 @@ namespace Rasterizr.Pipeline.InputAssembler
 			if (InputLayout != null)
 				inputElementsKeyedByRegister = InputLayout.Elements.ToDictionary(x => x.RegisterIndex);
 
+		    var processedVertexHandler = ProcessedVertex;
+
 			for (int i = 0; i < vertexCount; i++)
 			{
 				var output = new InputAssemblerVertexOutput();
@@ -195,6 +199,9 @@ namespace Rasterizr.Pipeline.InputAssembler
 							break;
 					}
 				}
+
+                if (processedVertexHandler != null)
+                    processedVertexHandler(this, new InputAssemblerVertexEventArgs(output));
 
 				yield return output;
 

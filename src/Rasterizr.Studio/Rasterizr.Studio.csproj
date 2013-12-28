@@ -175,6 +175,10 @@
     <Compile Include="Modules\GraphicsObjectTable\Views\Texture2DView.xaml.cs">
       <DependentUpon>Texture2DView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\GraphicsPipelineStages\ViewModels\GraphicsPipelineStagesViewModel.cs" />
+    <Compile Include="Modules\GraphicsPipelineStages\Views\GraphicsPipelineStagesView.xaml.cs">
+      <DependentUpon>GraphicsPipelineStagesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\GraphicsPixelHistory\Controls\ItemToCollectionConverter.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Controls\NullToVisibilityConverter.cs" />
     <Compile Include="Modules\GraphicsPixelHistory\Controls\PixelHistoryEventTemplateSelector.cs" />
@@ -419,6 +423,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\GraphicsObjectTable\Views\Texture2DView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\GraphicsPipelineStages\Views\GraphicsPipelineStagesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

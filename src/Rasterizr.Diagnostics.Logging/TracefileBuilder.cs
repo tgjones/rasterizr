@@ -69,6 +69,12 @@ namespace Rasterizr.Diagnostics.Logging
             inputAssemblerStage.SettingVertexBuffers += makeHandler(OperationType.InputAssemblerStageSetVertexBuffers);
             inputAssemblerStage.SettingIndexBuffer += makeHandler(OperationType.InputAssemblerStageSetIndexBuffer);
 
+            inputAssemblerStage.ProcessedVertex += (sender, e) =>
+            {
+                var lastEvent = _currentFrame.Events.Last();
+                lastEvent.InputAssemblerOutputs.Add(e.Vertex);
+            };
+
             var vertexShaderStage = deviceContext.VertexShader;
             vertexShaderStage.SettingShader += makeHandler(OperationType.VertexShaderStageSetShader);
             vertexShaderStage.SettingConstantBuffers += makeHandler(OperationType.VertexShaderStageSetConstantBuffers);
@@ -205,7 +211,7 @@ namespace Rasterizr.Diagnostics.Logging
             lastEvent.PixelEvents.Add(@event);
         }
 
-        public IEnumerable<TracefileEvent> GetEvents(int frame)
+        public IEnumerable<TracefileEvent> GetPixelHistoryEvents(int frame)
         {
             return _tracefile.Frames.Single(f => f.Number == frame).Events
                 .Where(e => e.PixelEvents.Any())

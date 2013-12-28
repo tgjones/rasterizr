@@ -103,7 +103,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 			{
 				replayer.Replay();
 
-				var events = replayer.Logger.GetEvents(_selectionService.SelectedFrame.Number);
+				var events = replayer.Logger.GetPixelHistoryEvents(_selectionService.SelectedFrame.Number);
 				_pixelEvents.AddRange(events.Select(x => new PixelHistoryEventViewModel(x)));
 
 			    FinalFrameBufferColor = ((ColorResultViewModel) _pixelEvents.Last(x => x.Result is ColorResultViewModel).Result).Result;

@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="Rasterizr.Studio.Modules.GraphicsPipelineStages.Views.GraphicsPipelineStagesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="400"
+             Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="White" Padding="3">
+            <ContentControl cal:View.Model="{Binding SelectedEvent}" />
+        </Border>
+        <TabControl Grid.Row="1" TabStripPlacement="Left" Margin="10">
+            <TabItem Header="Input Assembler">
+            
+            </TabItem>
+            <TabItem Header="Vertex Shader">
+
+            </TabItem>
+            <TabItem Header="Geometry Shader">
+
+            </TabItem>
+            <TabItem Header="Pixel Shader">
+
+            </TabItem>
+            <TabItem Header="Output Merger">
+
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

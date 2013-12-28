@@ -45,6 +45,7 @@
     <Compile Include="FormatHelper.cs" />
     <Compile Include="ISwapChainPresenter.cs" />
     <Compile Include="Math\MathUtility.cs" />
+    <Compile Include="Pipeline\InputAssembler\InputAssemblerVertexEventArgs.cs" />
     <Compile Include="Pipeline\OutputMerger\PixelEventArgs.cs" />
     <Compile Include="Pipeline\Rasterizer\Culling\ViewportCuller.cs" />
     <Compile Include="Pipeline\Rasterizer\Primitives\PrimitiveRasterizerFactory.cs" />
