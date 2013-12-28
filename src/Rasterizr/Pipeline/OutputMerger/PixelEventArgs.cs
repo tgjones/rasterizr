@@ -9,6 +9,7 @@ namespace Rasterizr.Pipeline.OutputMerger
     {
         private readonly VertexShaderOutput[] _vertices;
         private readonly int _primitiveID;
+        private readonly uint _renderTargetArrayIndex;
         private readonly int _x;
         private readonly int _y;
         private readonly Number4 _pixelShader;
@@ -24,6 +25,11 @@ namespace Rasterizr.Pipeline.OutputMerger
         public int PrimitiveID
         {
             get { return _primitiveID; }
+        }
+
+        public uint RenderTargetArrayIndex
+        {
+            get { return _renderTargetArrayIndex; }
         }
 
         public int X
@@ -59,6 +65,7 @@ namespace Rasterizr.Pipeline.OutputMerger
         public PixelEventArgs(
             VertexShaderOutput[] vertices, 
             int primitiveID,
+            uint renderTargetArrayIndex,
             int x,
             int y,
             ref Number4 pixelShader,
@@ -68,6 +75,7 @@ namespace Rasterizr.Pipeline.OutputMerger
         {
             _vertices = vertices;
             _primitiveID = primitiveID;
+            _renderTargetArrayIndex = renderTargetArrayIndex;
             _x = x;
             _y = y;
             _pixelShader = pixelShader;

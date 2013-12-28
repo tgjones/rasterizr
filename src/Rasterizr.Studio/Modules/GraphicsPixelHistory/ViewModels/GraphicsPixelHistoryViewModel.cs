@@ -96,6 +96,7 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
                 _selectionService.SelectedFrame.Model, _selectionService.SelectedEvent.Model,
                 swapChainPresenter, 
                 _selectionService.SelectedFrame.ActiveRenderTargetViewIdentifier,
+                _selectionService.SelectedFrame.ActiveRenderTargetArraySlice,
                 e.SelectedPixel.X, e.SelectedPixel.Y);
 
 			Task.Factory.StartNew(() =>

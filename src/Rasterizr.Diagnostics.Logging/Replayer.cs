@@ -37,7 +37,7 @@ namespace Rasterizr.Diagnostics.Logging
 
 		public Replayer(TracefileFrame frame, TracefileEvent lastEvent, 
 			ISwapChainPresenter swapChainPresenter, 
-            int? renderTargetViewID = null, 
+            int? renderTargetViewID = null, int? renderTargetArrayIndex = null,
             int? pixelX = null, int? pixelY = null)
 		{
 			_frame = frame;
@@ -45,7 +45,9 @@ namespace Rasterizr.Diagnostics.Logging
 		    _swapChainPresenter = swapChainPresenter;
 		    _device = new Device();
 		    _deviceContext = _device.ImmediateContext;
-            _logger = new TracefileBuilder(_device, renderTargetViewID, pixelX, pixelY);
+            _logger = new TracefileBuilder(_device, 
+                renderTargetViewID, renderTargetArrayIndex, 
+                pixelX, pixelY);
 		}
 
 		public void Replay()

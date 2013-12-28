@@ -26,7 +26,8 @@ namespace Rasterizr.Diagnostics.Logging
         }
 
         public TracefileBuilder(
-            Device device, int? renderTargetViewID = null, 
+            Device device, 
+            int? renderTargetViewID = null, int? renderTargetArrayIndex = null,
             int? pixelX = null, int? pixelY = null)
         {
             _tracefile = new Tracefile();
@@ -113,7 +114,7 @@ namespace Rasterizr.Diagnostics.Logging
 
                 outputMergerStage.ProcessedPixel += (sender, e) =>
                 {
-                    if (e.X != pixelX || e.Y != pixelY)
+                    if (e.X != pixelX || e.Y != pixelY || e.RenderTargetArrayIndex != renderTargetArrayIndex)
                         return;
 
                     // TODO: Support multiple render targets.

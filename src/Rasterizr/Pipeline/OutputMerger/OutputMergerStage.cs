@@ -133,7 +133,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 					    {
 					        if (processedPixelHandler != null)
 					            processedPixelHandler(this, new PixelEventArgs(
-					                pixel.Vertices, pixel.PrimitiveID, pixel.X, pixel.Y,
+					                pixel.Vertices, pixel.PrimitiveID, renderTargetArrayIndex, pixel.X, pixel.Y,
                                     ref source, ref destination, null,
 					                PixelExclusionReason.FailedDepthTest));
 					        continue;
@@ -147,7 +147,7 @@ namespace Rasterizr.Pipeline.OutputMerger
 
 				    if (processedPixelHandler != null)
 				        processedPixelHandler(this, new PixelEventArgs(
-				            pixel.Vertices, pixel.PrimitiveID, pixel.X, pixel.Y,
+				            pixel.Vertices, pixel.PrimitiveID, renderTargetArrayIndex, pixel.X, pixel.Y,
 				            ref source, ref destination, finalColor,
 				            PixelExclusionReason.NotExcluded));
 
