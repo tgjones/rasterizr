@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Rasterizr.Diagnostics.Logging.ObjectModel;
 using Rasterizr.Pipeline;
+using Rasterizr.Pipeline.OutputMerger;
 using Rasterizr.Util;
 using SlimShader;
 using SlimShader.Chunks.Common;
@@ -24,7 +25,9 @@ namespace Rasterizr.Diagnostics.Logging
             get { return _tracefile; }
         }
 
-        public TracefileBuilder(Device device, int? pixelX = null, int? pixelY = null)
+        public TracefileBuilder(
+            Device device, int? renderTargetViewID = null, 
+            int? pixelX = null, int? pixelY = null)
         {
             _tracefile = new Tracefile();
 
@@ -99,6 +102,8 @@ namespace Rasterizr.Diagnostics.Logging
             {
                 deviceContext.ClearingRenderTargetView += (sender, e) =>
                 {
+                    if ((int) e.Arguments[0] != renderTargetViewID)
+                        return;
                     var color = (Color4) e.Arguments[1];
                     AddPixelEvent(new SimpleEvent(color.ToNumber4()));
                 };
@@ -109,6 +114,12 @@ namespace Rasterizr.Diagnostics.Logging
                 outputMergerStage.ProcessedPixel += (sender, e) =>
                 {
                     if (e.X != pixelX || e.Y != pixelY)
+                        return;
+
+                    // TODO: Support multiple render targets.
+                    DepthStencilView depthStencilView; RenderTargetView[] renderTargetViews;
+                    outputMergerStage.GetTargets(out depthStencilView, out renderTargetViews);
+                    if (renderTargetViews[0].ID != renderTargetViewID)
                         return;
 
                     var activeShader = (geometryShaderStage.Shader != null)

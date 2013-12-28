@@ -20,7 +20,6 @@ namespace Rasterizr.Diagnostics.Logging
 		private readonly TracefileEvent _lastEvent;
 	    private readonly ISwapChainPresenter _swapChainPresenter;
 
-	    private SwapChain _swapChain;
         private readonly Device _device;
 		private readonly DeviceContext _deviceContext;
 
@@ -37,14 +36,16 @@ namespace Rasterizr.Diagnostics.Logging
 		}
 
 		public Replayer(TracefileFrame frame, TracefileEvent lastEvent, 
-			ISwapChainPresenter swapChainPresenter, int? pixelX = null, int? pixelY = null)
+			ISwapChainPresenter swapChainPresenter, 
+            int? renderTargetViewID = null, 
+            int? pixelX = null, int? pixelY = null)
 		{
 			_frame = frame;
 			_lastEvent = lastEvent;
 		    _swapChainPresenter = swapChainPresenter;
-            _device = new Device();
+		    _device = new Device();
 		    _deviceContext = _device.ImmediateContext;
-		    _logger = new TracefileBuilder(_device, pixelX, pixelY);
+            _logger = new TracefileBuilder(_device, renderTargetViewID, pixelX, pixelY);
 		}
 
 		public void Replay()
@@ -92,7 +93,7 @@ namespace Rasterizr.Diagnostics.Logging
 				            args.Get<ShaderResourceViewDescription?>(1));
 				        break;
 				    case OperationType.DeviceCreateSwapChain:
-				        _swapChain = _device.CreateSwapChain(
+				        _device.CreateSwapChain(
                             args.Get<SwapChainDescription>(0), 
                             _swapChainPresenter);
 				        break;

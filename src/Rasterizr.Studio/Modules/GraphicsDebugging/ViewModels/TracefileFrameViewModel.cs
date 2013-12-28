@@ -40,8 +40,8 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 		    }
 		}
 
-        private string _activeRenderTargetViewIdentifier;
-        public string ActiveRenderTargetViewIdentifier
+        private int _activeRenderTargetViewIdentifier;
+        public int ActiveRenderTargetViewIdentifier
         {
             get { return _activeRenderTargetViewIdentifier; }
             set
@@ -109,7 +109,7 @@ namespace Rasterizr.Studio.Modules.GraphicsDebugging.ViewModels
 		        var activeRenderTargetView = renderTargetViews[0];
 		        _activeRenderTarget = (Texture2D) activeRenderTargetView.Resource;
 
-		        ActiveRenderTargetViewIdentifier = "obj:" + activeRenderTargetView.ID;
+		        ActiveRenderTargetViewIdentifier = activeRenderTargetView.ID;
                 NotifyOfPropertyChange(() => ActiveRenderTargetArraySlices);
                 ActiveRenderTargetArraySlice = 0;
 		    });

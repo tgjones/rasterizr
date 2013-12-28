@@ -31,7 +31,7 @@
                     HorizontalAlignment="Left"
                     Orientation="Horizontal">
             <Label>Array Slice: </Label>
-            <ComboBox Width="30" ItemsSource="{Binding ArraySlices}"
+            <ComboBox Width="40" ItemsSource="{Binding ArraySlices}"
                       SelectedItem="{Binding SelectedArraySlice}" />
         </StackPanel>
         <ScrollViewer Grid.Row="2" Margin="0 10 0 0"

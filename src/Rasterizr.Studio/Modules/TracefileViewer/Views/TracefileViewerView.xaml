@@ -21,13 +21,13 @@
             <DockPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <ContentControl cal:View.Model="{Binding SelectedEvent}" HorizontalAlignment="Left" />
-                    <TextBlock Text="{Binding SelectedFrame.ActiveRenderTargetViewIdentifier, StringFormat='[Render Target View: {0}]'}"
+                    <TextBlock Text="{Binding SelectedFrame.ActiveRenderTargetViewIdentifier, StringFormat='[Render Target View: obj:{0}]'}"
                                    Margin="5 0 0 0"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label>Array Slice:</Label>
-                    <ComboBox Width="30" ItemsSource="{Binding SelectedFrame.ActiveRenderTargetArraySlices}"
+                    <ComboBox Width="40" ItemsSource="{Binding SelectedFrame.ActiveRenderTargetArraySlices}"
                               SelectedItem="{Binding SelectedFrame.ActiveRenderTargetArraySlice}" />
                 </StackPanel>
             </DockPanel>

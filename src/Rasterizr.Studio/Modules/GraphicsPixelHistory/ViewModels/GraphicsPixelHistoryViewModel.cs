@@ -10,7 +10,6 @@ using Rasterizr.Platform.Wpf;
 using Rasterizr.Studio.Framework;
 using Rasterizr.Studio.Modules.GraphicsDebugging;
 using Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels.PixelResults;
-using SlimShader;
 
 namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
 {
@@ -95,7 +94,9 @@ namespace Rasterizr.Studio.Modules.GraphicsPixelHistory.ViewModels
             var swapChainPresenter = new WpfSwapChainPresenter(Dispatcher.CurrentDispatcher);
             var replayer = new Replayer(
                 _selectionService.SelectedFrame.Model, _selectionService.SelectedEvent.Model,
-                swapChainPresenter, e.SelectedPixel.X, e.SelectedPixel.Y);
+                swapChainPresenter, 
+                _selectionService.SelectedFrame.ActiveRenderTargetViewIdentifier,
+                e.SelectedPixel.X, e.SelectedPixel.Y);
 
 			Task.Factory.StartNew(() =>
 			{
