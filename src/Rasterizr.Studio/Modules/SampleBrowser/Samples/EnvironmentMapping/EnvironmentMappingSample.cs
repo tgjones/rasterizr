@@ -28,7 +28,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 		private DepthStencilView _depthView;
 		private SwapChain _swapChain;
 
-	    private const int CubeMapSize = 64;
+	    private const int CubeMapSize = 128;
 	    private RenderTargetView _renderTargetViewCube;
 	    private DepthStencilView _depthViewCube;
 	    private ShaderResourceView _resourceViewCube;
@@ -40,9 +40,9 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 	    private VertexShaderData _vertexShaderData;
         private Buffer _geometryConstantBuffer;
 	    private Matrix _view1, _view2, _view3, _view4, _view5, _view6;
-	    private Matrix _projection;
+	    private Matrix _projection, _projectionCube;
 		private Model _model;
-	    private Matrix _viewProjection;
+	    private Matrix _viewProjection, _viewProjectionCube;
 
 		public override string Name
 		{
@@ -99,11 +99,11 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
             _model = modelLoader.Load("Modules/SampleBrowser/Samples/EnvironmentMapping/teapot.obj");
 
             // Compile Vertex and Pixel shaders
-            var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "VS_CubeMap", "vs_5_0");
+            var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "VS_CubeMap", "vs_4_0");
             _vertexShaderCubeMap = device.CreateVertexShader(vertexShaderByteCode);
-            _vertexShaderStandard = device.CreateVertexShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "VS_Standard", "vs_5_0"));
+            _vertexShaderStandard = device.CreateVertexShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "VS_Standard", "vs_4_0"));
 
-            _geometryShaderCubeMap = device.CreateGeometryShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "GS_CubeMap", "gs_5_0"));
+            _geometryShaderCubeMap = device.CreateGeometryShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "GS_CubeMap", "gs_4_0"));
 
             _pixelShaderCubeMap = device.CreatePixelShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "PS_CubeMap", "ps_4_0"));
             _pixelShaderStandard = device.CreatePixelShader(ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/EnvironmentMapping/EnvironmentMapping.fx", "PS_Standard", "ps_4_0"));
@@ -111,19 +111,7 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 
 		    _model.SetInputLayout(device, vertexShaderByteCode.InputSignature);
 
-			var sampler = device.CreateSamplerState(new SamplerStateDescription
-			{
-				Filter = Filter.MinMagMipPoint,
-				AddressU = TextureAddressMode.Wrap,
-				AddressV = TextureAddressMode.Wrap,
-				AddressW = TextureAddressMode.Wrap,
-				BorderColor = Color4.Black,
-				ComparisonFunction = Comparison.Never,
-				MaximumAnisotropy = 16,
-				MipLodBias = 0,
-				MinimumLod = 0,
-				MaximumLod = 16,
-			});
+            var sampler = device.CreateSamplerState(SamplerStateDescription.Default);
 
             // Create constant buffers.
             _vertexConstantBuffer = device.CreateBuffer(new BufferDescription
@@ -162,9 +150,11 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
 
             // Prepare matrices
             var view = Matrix.LookAtLH(from, to, Vector3.UnitY);
-			_projection = Matrix.PerspectiveFovLH(MathUtil.PiOverTwo, 
-				Width / (float) Height, 1f, 10000.0f);
+            
+			_projectionCube = Matrix.PerspectiveFovLH(MathUtil.PiOverTwo, 1.0f, 1f, 10000.0f);
+            _projection = Matrix.PerspectiveFovLH(MathUtil.Pi / 3.0f, Width / (float) Height, 1f, 10000.0f);
 
+            _viewProjectionCube = Matrix.Multiply(view, _projectionCube);
             _viewProjection = Matrix.Multiply(view, _projection);
 
             var pixelShaderData = new PixelShaderData
@@ -195,17 +185,17 @@ namespace Rasterizr.Studio.Modules.SampleBrowser.Samples.EnvironmentMapping
             _deviceContext.PixelShader.Shader = _pixelShaderCubeMap;
             _deviceContext.PixelShader.SetShaderResources(1, null);
             _vertexShaderData.World = world;
-            _vertexShaderData.WorldViewProjection = _vertexShaderData.World * _viewProjection;
+            _vertexShaderData.WorldViewProjection = _vertexShaderData.World * _viewProjectionCube;
             _deviceContext.SetBufferData(_vertexConstantBuffer, ref _vertexShaderData);
 
             var geometryShaderData = new GeometryShaderData
             {
-                Matrix1 = world * _view1 * _projection,
-                Matrix2 = world * _view2 * _projection,
-                Matrix3 = world * _view3 * _projection,
-                Matrix4 = world * _view4 * _projection,
-                Matrix5 = world * _view5 * _projection,
-                Matrix6 = world * _view6 * _projection
+                Matrix1 = world * _view1 * _projectionCube,
+                Matrix2 = world * _view2 * _projectionCube,
+                Matrix3 = world * _view3 * _projectionCube,
+                Matrix4 = world * _view4 * _projectionCube,
+                Matrix5 = world * _view5 * _projectionCube,
+                Matrix6 = world * _view6 * _projectionCube
             };
             _deviceContext.SetBufferData(_geometryConstantBuffer, ref geometryShaderData);
             _model.Draw(_deviceContext);

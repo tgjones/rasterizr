@@ -9,11 +9,6 @@ namespace Rasterizr.Pipeline
 		{
 			private readonly Texture2D.Texture2DSubresource[] _subresources;
 
-            public override TextureDimension Dimension
-            {
-                get { return TextureDimension.Texture2D; }
-            }
-
             public override int MipMapCount
             {
                 get { return _subresources.Length; }
@@ -26,9 +21,9 @@ namespace Rasterizr.Pipeline
 					_subresources[i] = resource.GetSubresource(0, i);
 			}
 
-		    public override ITextureMipMap GetMipMap(int level)
+		    public override ITextureMipMap GetMipMap(int arraySlice, int mipLevel)
 		    {
-		        return _subresources[level];
+		        return _subresources[mipLevel];
 		    }
 		}
 	}

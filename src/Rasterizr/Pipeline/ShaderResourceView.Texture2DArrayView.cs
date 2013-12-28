@@ -1,4 +1,5 @@
-﻿using Rasterizr.Resources;
+﻿using Rasterizr.Math;
+using Rasterizr.Resources;
 using SlimShader.VirtualMachine.Resources;
 
 namespace Rasterizr.Pipeline
@@ -8,12 +9,8 @@ namespace Rasterizr.Pipeline
 		private class Texture2DArrayView : InnerResourceView
 		{
             private readonly int _mipMapCount;
+		    private readonly int _arraySize;
             private readonly Texture2D.Texture2DSubresource[] _subresources;
-
-		    public override TextureDimension Dimension
-            {
-                get { return TextureDimension.Texture2D; }
-            }
 
             public override int MipMapCount
             {
@@ -23,6 +20,7 @@ namespace Rasterizr.Pipeline
             public Texture2DArrayView(Texture2D resource, ShaderResourceViewDescription.Texture2DArrayResource description)
             {
                 _mipMapCount = description.MipLevels;
+                _arraySize = description.ArraySize;
 
 				_subresources = new Texture2D.Texture2DSubresource[description.MipLevels * description.ArraySize];
 
@@ -32,9 +30,10 @@ namespace Rasterizr.Pipeline
 					    _subresources[counter++] = resource.GetSubresource(i, j);
 			}
 
-		    public override ITextureMipMap GetMipMap(int level)
+		    public override ITextureMipMap GetMipMap(int arraySlice, int mipLevel)
 		    {
-		        return _subresources[level];
+		        arraySlice = MathUtility.Clamp(arraySlice, 0, _arraySize - 1);
+                return _subresources[(arraySlice * _mipMapCount) + mipLevel];
 		    }
 		}
 	}

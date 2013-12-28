@@ -50,6 +50,9 @@ namespace Rasterizr.Studio.Modules.GraphicsPipelineStages.ViewModels
 		{
             NotifyOfPropertyChange(() => SelectedEvent);
 
+		    if (_selectionService.SelectedEvent == null)
+		        return;
+
             var swapChainPresenter = new WpfSwapChainPresenter(Dispatcher.CurrentDispatcher);
             var replayer = new Replayer(
                 _selectionService.SelectedFrame.Model, _selectionService.SelectedEvent.Model,

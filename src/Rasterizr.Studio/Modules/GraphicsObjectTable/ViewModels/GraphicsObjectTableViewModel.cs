@@ -52,6 +52,9 @@ namespace Rasterizr.Studio.Modules.GraphicsObjectTable.ViewModels
 
 			_objects.Clear();
 
+		    if (_selectionService.SelectedEvent == null)
+		        return;
+
             var swapChainPresenter = new WpfSwapChainPresenter(Dispatcher.CurrentDispatcher);
             var replayer = new Replayer(
                 _selectionService.SelectedFrame.Model, _selectionService.SelectedEvent.Model,

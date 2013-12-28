@@ -1,6 +1,5 @@
 ﻿using System;
 using Rasterizr.Resources;
-using SlimShader;
 using SlimShader.VirtualMachine.Resources;
 
 namespace Rasterizr.Pipeline
@@ -36,10 +35,8 @@ namespace Rasterizr.Pipeline
 				}
 			}
 
-            public abstract TextureDimension Dimension { get; }
-
             public abstract int MipMapCount { get; }
-            public abstract ITextureMipMap GetMipMap(int level);
+            public abstract ITextureMipMap GetMipMap(int arraySlice, int mipLevel);
 		}
 	}
 }
