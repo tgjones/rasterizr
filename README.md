@@ -5,7 +5,7 @@ Rasterizr is a software rasterizer written in C#. It adheres closely to the Dire
 but is completely implemented in software. If you're familiar with SharpDX and / or Direct3D 10/11, you'll be immediately at home with
 Rasterizr's API.
 
-Rasterizr is primarily intended as an education tool: its inner workings are roughly comparable 
+Rasterizr is primarily intended as an educational tool. Its inner workings are roughly comparable 
 to a modern GPU, so by studying how Rasterizr works, you will get a good idea of what your 
 GPU is doing when you use a hardware API like Direct3D or OpenGL.
 
@@ -43,7 +43,7 @@ Features
 * Pipeline configuration is organised into state objects.
 * Barycentric triangle rasterization, with perspective-correct attribute interpolation.
 * Input assembler supports indexing and instancing.
-* Pixel shader uses partial derivatives, calculated from a 2x2 pixel quad, to properly implement texture mipmapping.
+* Pixel shader uses partial derivatives, calculated from a 2x2 fragment quad, to properly implement texture mipmapping.
 * Bilinear and anisotropic texture filtering.
 * Output merger supports full range of blend operations.
 
@@ -69,10 +69,10 @@ var backBuffer = Texture2D.FromSwapChain(swapChain, 0);
 var renderTargetView = device.CreateRenderTargetView(backBuffer);
 
 // Compile Vertex and Pixel shaders
-var vertexShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/BasicTriangle/MiniTri.fx", "VS", "vs_4_0");
+var vertexShaderByteCode = ShaderCompiler.CompileFromFile("MiniTri.fx", "VS", "vs_4_0");
 var vertexShader = device.CreateVertexShader(vertexShaderByteCode);
 
-var pixelShaderByteCode = ShaderCompiler.CompileFromFile("Modules/SampleBrowser/Samples/BasicTriangle/MiniTri.fx", "PS", "ps_4_0");
+var pixelShaderByteCode = ShaderCompiler.CompileFromFile("MiniTri.fx", "PS", "ps_4_0");
 var pixelShader = device.CreatePixelShader(pixelShaderByteCode);
 
 // Layout from VertexShader input signature
@@ -165,6 +165,14 @@ Rasterizr Studio includes some samples ported from
 [SharpDX](https://github.com/sharpdx/SharpDX/tree/master/Samples). The environment mapping
 sample was ported from RobyDX's [SharpDX demos](https://github.com/RobyDX/SharpDX_Demo).
   
+Disclaimer
+----------
+
+Rasterizr is not feature-complete. It is a hobby project, and I've only implemented
+as much as I needed to in order to get the samples working. If you find a bug or missing feature,
+and you feel like digging into the code, then go for it - I'll probably accept any pull requests.
+But I don't intend to spend much more time on it myself. 3 years (on and mostly off) is long enough!
+
 License
 -------
 
